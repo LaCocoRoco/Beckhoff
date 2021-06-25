@@ -364,7 +364,7 @@ public class AdsCmd {
         try {
             ads.open();
             ads.setTimeout(CMD_ADS_TIMEOUT);
-            List<String> symbolNameList = ads.readVariableSymbolNameList();
+            List<String> symbolNameList = ads.readSymbolNameTable();
             for (String symbolName : symbolNameList)
                 logger.log(Level.ALL, symbolName);
         } catch (AdsException e) {

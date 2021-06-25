@@ -4,7 +4,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import twincat.ads.datatype.STRING;
-import twincat.ads.enums.DataType;
 
 public class AdsSymbolInfo {
 	/*************************/
@@ -28,9 +27,7 @@ public class AdsSymbolInfo {
 	private int flags = 0;
 	
 	private int dataType = 0;
-	
-	//private DataType dataType = DataType.UNKNOWN;
-	
+
 	private String name = new String();
 
 	private String type = new String();

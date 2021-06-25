@@ -131,7 +131,7 @@ public class Ads extends AdsNative {
 		return new AdsSymbolInfo(readBuffer);		
 	}
 
-	public List<AdsSymbolInfo> readSymbolInfoList() throws AdsException {
+	public List<AdsSymbolInfo> readSymbolInfoTable() throws AdsException {
 		byte[] uploadInfoBuffer = new byte[AdsData.SYM_UPLOADINFO_SIZE];
 		read(AdsIdxGrp.SYM_UPLOADINFO, 0, uploadInfoBuffer);
 		ByteBuffer uploadInfoByteBuffer = ByteBuffer.wrap(uploadInfoBuffer);
@@ -151,47 +151,86 @@ public class Ads extends AdsNative {
 		for (int i = 0; i < symbolCount; i++) {
 			AdsSymbolInfo symbolInfo = new AdsSymbolInfo(uploadBuffer, index);
 			symbolInfoList.add(symbolInfo);
-
-			if (symbolInfo.getType().contains(AdsData.SYM_INFO_TYP_ARRAY)) {
-				List<String> symbolNameList = getTypeArrayToSymbolName(symbolInfo.getName(), symbolInfo.getType());
-				
-				for (String symbolName : symbolNameList) {
-					AdsSymbolInfo symbolArrayInfo = readSymbolInfoBySymbolName(symbolName);
-					symbolInfoList.add(symbolArrayInfo);
-				}		
-			}
-
 			index += symbolInfo.getInfoLength();
 		}
 		
 		return symbolInfoList;
 	}
 	
-	public List<String> readVariableSymbolNameList() throws AdsException {
-		List<AdsSymbolInfo> symbolInfoList = readSymbolInfoList();
+	public List<String> readSymbolNameTable() throws AdsException {
+		List<AdsSymbolInfo> symbolInfoList = readSymbolInfoTable();
 		List<String> symbolNameList = new ArrayList<String>();
 		
 		for (AdsSymbolInfo symbolInfo : symbolInfoList) {
-			DataType dataType = DataType.getByValue(symbolInfo.getDataType());
-			if (dataType.size != DataType.UNKNOWN.size) {
-				symbolNameList.add(symbolInfo.getName());		
-			}
+			symbolNameList.add(symbolInfo.getName());		
 		}
 		
 		return symbolNameList;
 	}
+	   
+    public List<String> readSymbolVariableTable() throws AdsException {
+        List<AdsSymbolInfo> symbolInfoList = readSymbolInfoTable();
+        List<String> symbolNameList = new ArrayList<String>();
+        
+        for (AdsSymbolInfo symbolInfo : symbolInfoList) {
+            
+            // add primitive arrays to table
+            if (symbolInfo.getType().contains(AdsData.SYM_INFO_TYP_ARRAY)) {
+                List<String> symbolNameArrayList = getSymbolNameOfArrayTypeBySymbolInfo(symbolInfo);
+                symbolNameList.addAll(symbolNameArrayList); 
+            }
+
+            symbolNameList.add(symbolInfo.getName());       
+        }
+        
+        return symbolNameList;
+    }
 	
+    public List<AdsSymbolInfo> readSymbolInfoOfArrayType(AdsSymbolInfo symbolInfo) throws AdsException {
+        List<String> indexList = getSymbolNameOfArrayTypeBySymbolInfo(symbolInfo);
+        List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
+        for (String index : indexList)  {
+            symbolInfoList.add(readSymbolInfoBySymbolName(index));    
+        }
+
+        return symbolInfoList;  
+    }   
+	
+    public List<AdsSymbolInfo> readSymbolInfoOfBigType(AdsSymbolInfo symbolInfo) {
+        // unknown ads command
+        return null;
+    }
+    
 	/*************************/
 	/******** private ********/
 	/*************************/	
 
-	private List<String> dimensionToRange(List<Point> dimension, int index) {
+    private List<String> getSymbolNameOfArrayTypeBySymbolInfo(AdsSymbolInfo symbolInfo) {
+        String name = symbolInfo.getName();
+        String type = symbolInfo.getType();
+        
+        int beg = type.indexOf("[");
+        int end = type.indexOf("]");
+        
+        String[] data = type.substring(beg + 1, end).split(",");
+        List<Point> dimension = new ArrayList<Point>();
+        for (String position : data) {
+            String[] size = position.replace(" ", "").split("\\..");
+            int x = Integer.valueOf(size[0]);
+            int y = Integer.valueOf(size[1]);
+            dimension.add(new Point(x, y));
+        }
+
+        return dimensionalArrayToSymbolNameList(dimension, name, 0);    
+    }
+    
+	private List<String> dimensionalArrayToSymbolNameList(List<Point> dimension, String name, int index) {
 		List<String> data = new ArrayList<>();
 		Point range = dimension.get(index);
-		String end = index == 0 ? "[" : "";
+		String end = index == 0 ? name + "[" : "";
 		for (int i = range.x; i <= range.y; i++) {
 			if (dimension.size() > index + 1) {
-				for (String r : dimensionToRange(dimension, index + 1))
+				for (String r : dimensionalArrayToSymbolNameList(dimension, name, index + 1))
 					data.add(end + Integer.toString(i) + "," + r);
 			} else {
 				data.add(end + Integer.toString(i) + "]");
@@ -201,25 +240,6 @@ public class Ads extends AdsNative {
 		return data;
 	}
 
-	private List<String> getTypeArrayToSymbolName(String name, String type) {
-		String[] list = type.substring(type.indexOf("[") + 1, type.indexOf("]")).split(",");
-		List<Point> dimension = new ArrayList<Point>();
-		for (String index : list) {
-			String[] size = index.replace(" ", "").split("\\..");
-			int x = Integer.valueOf(size[0]);
-			int y = Integer.valueOf(size[1]);
-			dimension.add(new Point(x, y));
-		}
-
-		List<String> range = dimensionToRange(dimension, 0);
-		for (int i = 0; i < range.size(); i++) {
-			String value = range.get(i);
-			range.set(i, name + value);
-		}
-
-		return range;	
-	}	
-	
 	/*************************/
 	/******** mapping ********/
 	/*************************/

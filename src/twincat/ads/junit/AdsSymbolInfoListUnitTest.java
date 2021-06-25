@@ -21,7 +21,7 @@ public class AdsSymbolInfoListUnitTest {
 	public void adsSymbolTableUnitTest() {
 		try {
 			// get symbol info list
-			List<AdsSymbolInfo> symbolInfoList = ads.readSymbolInfoList();
+			List<AdsSymbolInfo> symbolInfoList = ads.readSymbolInfoTable();
 			
 			// print symbol info name
 			for (AdsSymbolInfo symbolInfo : symbolInfoList) {
