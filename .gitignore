@@ -1,14 +1,9 @@
 # compiled class file
 *.class
 
-# package files
-*.jar
-
 # eclipse
 /.settings
 
 # folders
 /bin
-/exp
 /twc
-/doc
