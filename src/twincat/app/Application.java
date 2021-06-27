@@ -7,8 +7,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -17,9 +15,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
-
+import twincat.ads.AdsLogger;
 import twincat.app.components.AdsInfoPanel;
-import twincat.app.components.AxxaPanel;
+import twincat.app.components.AxisPanel;
 import twincat.app.components.ConsolePanel;
 import twincat.app.components.ScopePanel;
 
@@ -39,11 +37,11 @@ public class Application extends JFrame {
 
 	private static final String WINDOW_SCOPE = "Scope";
 
-	private static final String WINDOW_ADS = "Ads";
+	private static final String WINDOW_ADS_INFO = "Ads Info";
 	
-	private static final String WINDOW_AXXA = "Axxa";
+	private static final String WINDOW_AXIS = "Achsen";
 
-	private static final Level LOG_LEVEL = Level.ALL;
+	private static final Level LOG_LEVEL = Level.INFO;
 	
 	/*************************/
 	/*** local attributes ****/
@@ -55,11 +53,11 @@ public class Application extends JFrame {
 
 	private final ConsolePanel consolePanel = new ConsolePanel();
 
-	private final AdsInfoPanel adsPanel = new AdsInfoPanel();
+	private final AdsInfoPanel adsInfoPanel = new AdsInfoPanel();
 
 	private final ScopePanel scopePanel = new ScopePanel();
 	
-	private final AxxaPanel axxaPanel = new AxxaPanel();
+	private final AxisPanel axisPanel = new AxisPanel();
 
 	/*************************/
 	/****** constructor ******/
@@ -67,13 +65,13 @@ public class Application extends JFrame {
 	
 	public Application() {
 		// global configuration
-		Logger.getGlobal().setLevel(LOG_LEVEL);
+	    AdsLogger.getLogger().setLevel(LOG_LEVEL);
 		
 		// window panel
 		windowPanel.setLayout(new CardLayout());
 		windowPanel.add(scopePanel, WINDOW_SCOPE);
-		windowPanel.add(adsPanel, WINDOW_ADS);
-		windowPanel.add(axxaPanel, WINDOW_AXXA);
+		windowPanel.add(adsInfoPanel, WINDOW_ADS_INFO);
+		windowPanel.add(axisPanel, WINDOW_AXIS);
 
 		// main panel
 		mainPanel.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -103,24 +101,24 @@ public class Application extends JFrame {
 		menuConsole.add(menuConsoleOff);
 
 		// menu window
-		JMenuItem menuScope = new JMenuItem("Scope");
+		JMenuItem menuScope = new JMenuItem(WINDOW_SCOPE);
 		menuScope.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				displayWindow(WINDOW_SCOPE);
 			}
 		});
 
-		JMenuItem menuAds = new JMenuItem("Ads");
+		JMenuItem menuAds = new JMenuItem(WINDOW_ADS_INFO);
 		menuAds.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
-				displayWindow(WINDOW_ADS);
+				displayWindow(WINDOW_ADS_INFO);
 			}
 		});
 
-		JMenuItem menuAxxa = new JMenuItem("Axxa");
+		JMenuItem menuAxxa = new JMenuItem(WINDOW_AXIS);
 		menuAxxa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
-				displayWindow(WINDOW_AXXA);
+				displayWindow(WINDOW_AXIS);
 			}
 		});
 		
@@ -135,8 +133,8 @@ public class Application extends JFrame {
 		mainMenu.add(menuConsole);
 
 		// load default
-		hideConsole();
-		displayWindow(WINDOW_SCOPE);
+		showConsole();
+		displayWindow(WINDOW_ADS_INFO);
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int framePositionX = screenSize.width / 2 - WIDTH_FRAME / 2;

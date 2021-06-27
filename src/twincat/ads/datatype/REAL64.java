@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.enums.AdsError;
-import twincat.ads.enums.DataType;
+import twincat.ads.constants.AdsError;
+import twincat.ads.constants.AdsDataType;
 import twincat.ads.wrapper.Variable;
 
 public class REAL64 extends Variable {
@@ -14,15 +14,15 @@ public class REAL64 extends Variable {
 	/*************************/
 
 	public REAL64(Ads ads, int symbolHandle) {
-		super(ads, DataType.REAL64.size, symbolHandle);
+		super(ads, AdsDataType.REAL64.size, symbolHandle);
 	}
 
 	public REAL64(Ads ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, DataType.REAL64.size, indexGroup, indexOffset);
+		super(ads, AdsDataType.REAL64.size, indexGroup, indexOffset);
 	}
 
 	public REAL64(Ads ads, String symbolName) throws AdsException {
-		super(ads, DataType.REAL64.size, ads.readHandleOfSymbolName(symbolName));
+		super(ads, AdsDataType.REAL64.size, ads.readHandleOfSymbolName(symbolName));
 	}
 
 	/*************************/
@@ -30,8 +30,8 @@ public class REAL64 extends Variable {
 	/*************************/
 
 	@Override
-	public DataType getDataType() {
-		return DataType.REAL64;
+	public AdsDataType getDataType() {
+		return AdsDataType.REAL64;
 	}
 
 	@Override
@@ -135,14 +135,14 @@ public class REAL64 extends Variable {
 	/*************************/
 
 	public static final double arrayToValue(byte[] data) {
-		if (data.length != DataType.REAL64.size) return 0;
+		if (data.length != AdsDataType.REAL64.size) return 0;
 		ByteBuffer byteBuffer = ByteBuffer.wrap(data);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		return byteBuffer.getDouble();
 	}
 
 	public static final byte[] valueToArray(double data) {
-		ByteBuffer byteBuffer = ByteBuffer.allocate(DataType.REAL64.size);
+		ByteBuffer byteBuffer = ByteBuffer.allocate(AdsDataType.REAL64.size);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		byteBuffer.putLong(Double.doubleToLongBits(data));
 		return byteBuffer.array();

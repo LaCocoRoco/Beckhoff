@@ -2,7 +2,7 @@ package twincat.ads.datatype;
 
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.enums.DataType;
+import twincat.ads.constants.AdsDataType;
 import twincat.ads.wrapper.Variable;
 
 public class STRING extends Variable {
@@ -17,7 +17,7 @@ public class STRING extends Variable {
 	/*************************/
 
 	public STRING(Ads ads, int symbolHandle) {
-		super(ads, DataType.STRING.size, symbolHandle);
+		super(ads, AdsDataType.STRING.size, symbolHandle);
 	}
 
 	public STRING(Ads ads, int symbolHandle,short dataSize) {
@@ -25,7 +25,7 @@ public class STRING extends Variable {
 	}
 
 	public STRING(Ads ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, DataType.STRING.size, indexGroup, indexOffset);
+		super(ads, AdsDataType.STRING.size, indexGroup, indexOffset);
 	}
 
 	public STRING(Ads ads, int indexGroup, int indexOffset, short dataSize) throws AdsException {
@@ -33,7 +33,7 @@ public class STRING extends Variable {
 	}
 	
 	public STRING(Ads ads, String symbolName) throws AdsException {
-		super(ads, DataType.STRING.size, ads.readHandleOfSymbolName(symbolName));
+		super(ads, AdsDataType.STRING.size, ads.readHandleOfSymbolName(symbolName));
 	}
 	
 	public STRING(Ads ads, String symbolName, short dataSize) throws AdsException {
@@ -45,8 +45,8 @@ public class STRING extends Variable {
 	/*************************/
 
 	@Override
-	public DataType getDataType() {
-		return DataType.STRING;
+	public AdsDataType getDataType() {
+		return AdsDataType.STRING;
 	}
 
 	@Override

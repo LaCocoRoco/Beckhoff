@@ -5,8 +5,8 @@ import java.nio.ByteOrder;
 import java.util.Arrays;
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.enums.AdsError;
-import twincat.ads.enums.DataType;
+import twincat.ads.constants.AdsError;
+import twincat.ads.constants.AdsDataType;
 import twincat.ads.wrapper.Variable;
 
 public class UINT32 extends Variable {
@@ -15,15 +15,15 @@ public class UINT32 extends Variable {
 	/*************************/
 
 	public UINT32(Ads ads, int symbolHandle) {
-		super(ads, DataType.UINT32.size, symbolHandle);
+		super(ads, AdsDataType.UINT32.size, symbolHandle);
 	}
 
 	public UINT32(Ads ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, DataType.UINT32.size, indexGroup, indexOffset);
+		super(ads, AdsDataType.UINT32.size, indexGroup, indexOffset);
 	}
 	
 	public UINT32(Ads ads, String symbolName) throws AdsException {
-		super(ads, DataType.UINT32.size, ads.readHandleOfSymbolName(symbolName));
+		super(ads, AdsDataType.UINT32.size, ads.readHandleOfSymbolName(symbolName));
 	}
 	
 	/*************************/
@@ -31,8 +31,8 @@ public class UINT32 extends Variable {
 	/*************************/
 
 	@Override
-	public DataType getDataType() {
-		return DataType.UINT32;
+	public AdsDataType getDataType() {
+		return AdsDataType.UINT32;
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class UINT32 extends Variable {
 	/*************************/
 
 	public static final long arrayToValue(byte[] data) {
-		if (data.length != DataType.UINT32.size) return 0;
+		if (data.length != AdsDataType.UINT32.size) return 0;
 		ByteBuffer byteBuffer = ByteBuffer.allocate(Long.BYTES);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		byteBuffer.put(data);
@@ -147,6 +147,6 @@ public class UINT32 extends Variable {
 		ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		byteBuffer.putLong(data);
-		return Arrays.copyOfRange(buffer, 0, DataType.UINT32.size);
+		return Arrays.copyOfRange(buffer, 0, AdsDataType.UINT32.size);
 	}
 }

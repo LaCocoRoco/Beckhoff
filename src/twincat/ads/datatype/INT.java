@@ -2,7 +2,7 @@ package twincat.ads.datatype;
 
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.enums.DataType;
+import twincat.ads.constants.AdsDataType;
 
 public class INT extends INT16 {
 	/*************************/
@@ -26,7 +26,7 @@ public class INT extends INT16 {
 	/*************************/
 	
 	@Override	
-	public DataType getDataType() {
-		return DataType.INT;
+	public AdsDataType getDataType() {
+		return AdsDataType.INT;
 	}
 }

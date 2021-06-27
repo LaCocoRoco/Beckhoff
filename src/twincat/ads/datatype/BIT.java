@@ -2,7 +2,7 @@ package twincat.ads.datatype;
 
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.enums.DataType;
+import twincat.ads.constants.AdsDataType;
 import twincat.ads.wrapper.Variable;
 
 public class BIT extends Variable {
@@ -11,15 +11,15 @@ public class BIT extends Variable {
 	/*************************/
 
 	public BIT(Ads ads, int symbolHandle) {
-		super(ads, DataType.BIT.size, symbolHandle);
+		super(ads, AdsDataType.BIT.size, symbolHandle);
 	}
 
 	public BIT(Ads ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, DataType.BIT.size, indexGroup, indexOffset);
+		super(ads, AdsDataType.BIT.size, indexGroup, indexOffset);
 	}
 	
 	public BIT(Ads ads, String symbolName) throws AdsException {
-		super(ads, DataType.BIT.size, ads.readHandleOfSymbolName(symbolName));
+		super(ads, AdsDataType.BIT.size, ads.readHandleOfSymbolName(symbolName));
 	}
 
 	/*************************/
@@ -27,8 +27,8 @@ public class BIT extends Variable {
 	/*************************/
 	
 	@Override	
-	public DataType getDataType() {
-		return DataType.BIT;
+	public AdsDataType getDataType() {
+		return AdsDataType.BIT;
 	}
 	
 	@Override
@@ -131,7 +131,7 @@ public class BIT extends Variable {
 	/*************************/
 	
 	public static final boolean arrayToValue(byte[] data) {
-		if (data.length != DataType.BIT.size) return false;
+		if (data.length != AdsDataType.BIT.size) return false;
 		return data[0] == 1 ? true : false;
 	}
 

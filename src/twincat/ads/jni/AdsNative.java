@@ -16,10 +16,10 @@ import twincat.ads.AdsDeviceInfo;
 import twincat.ads.AdsDeviceState;
 import twincat.ads.AdsException;
 import twincat.ads.AdsNotification;
+import twincat.ads.constants.AdsError;
+import twincat.ads.constants.AdsStatus;
 import twincat.ads.constants.AmsNetId;
-import twincat.ads.enums.AdsError;
-import twincat.ads.enums.AdsStatus;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.constants.AmsPort;
 
 public class AdsNative {
     /*************************/

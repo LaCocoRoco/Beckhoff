@@ -1,15 +1,19 @@
 package twincat.ads.junit;
 
+import java.util.logging.Logger;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
+import twincat.ads.AdsLogger;
 
 public class AdsAmsNetIdUnitTest {
     Ads ads = new Ads();
-
+    Logger logger = AdsLogger.getLogger();
+    
     @Before
     public void startAds() {
         ads.open();
@@ -18,12 +22,10 @@ public class AdsAmsNetIdUnitTest {
     @Test
     public void adsAmsNetIdUnitTest() {
         try {
-            String amsNetId = ads.readAmsNetId();
-            System.out.println(amsNetId);
+            logger.info(ads.readAmsNetId());
         } catch (AdsException e) {
-            System.out.println(e.getAdsErrorMessage());
+            logger.info(e.getAdsErrorMessage());
         }
-
     }
 
     @After

@@ -1,5 +1,7 @@
 package twincat.ads.junit;
 
+import java.util.logging.Logger;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,11 +9,13 @@ import org.junit.Test;
 import twincat.ads.Ads;
 import twincat.ads.AdsDeviceState;
 import twincat.ads.AdsException;
-import twincat.ads.enums.AdsStatus;
+import twincat.ads.AdsLogger;
+import twincat.ads.constants.AdsStatus;
 
 public class AdsDeviceStateUnitTest {
 	Ads ads = new Ads();
-
+	Logger logger = AdsLogger.getLogger();
+	
 	@Before
 	public void startAds() {
 		ads.open();
@@ -23,25 +27,28 @@ public class AdsDeviceStateUnitTest {
 			AdsDeviceState adsDeviceState = new AdsDeviceState();
 			
 			adsDeviceState = ads.readDeviceState();
-			
-			System.out.println(adsDeviceState.getAdsState());
-			System.out.println(adsDeviceState.getDeviceState());
+			logger.info("AdsState   : " + adsDeviceState.getAdsState());
+			logger.info("DeviceState: " + adsDeviceState.getDeviceState());
 			
 			switch(adsDeviceState.getAdsState()) {
 				case STOP:
 					adsDeviceState.setAdsState(AdsStatus.RUN);
+					break;
+					
 				case RUN:
 					adsDeviceState.setAdsState(AdsStatus.STOP);
-				default:
 					break;
+					
+				default:
+				    adsDeviceState.setAdsState(AdsStatus.INVALID);
+				    break;  
 			}
 
 			ads.writeDeviceState(adsDeviceState, null);
-			
-			System.out.println(adsDeviceState.getAdsState());
-			System.out.println(adsDeviceState.getDeviceState());		
+			logger.info("AdsState   : " + adsDeviceState.getAdsState());
+			logger.info("DeviceState: " + adsDeviceState.getDeviceState());		
 		} catch (AdsException e) {
-			System.out.println(e.getAdsErrorMessage());
+			logger.info(e.getAdsErrorMessage());
 		}
 	}
 

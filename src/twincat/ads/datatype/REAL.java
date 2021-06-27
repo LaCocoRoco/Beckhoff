@@ -2,7 +2,7 @@ package twincat.ads.datatype;
 
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.enums.DataType;
+import twincat.ads.constants.AdsDataType;
 
 public class REAL extends REAL32 {
 	/*************************/
@@ -26,7 +26,7 @@ public class REAL extends REAL32 {
 	/*************************/
 		
 	@Override	
-	public DataType getDataType() {
-		return DataType.REAL;
+	public AdsDataType getDataType() {
+		return AdsDataType.REAL;
 	}	
 }

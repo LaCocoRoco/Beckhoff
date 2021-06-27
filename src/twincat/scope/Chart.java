@@ -25,8 +25,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import com.sun.management.OperatingSystemMXBean;
+
+import twincat.ads.AdsLogger;
 
 public class Chart extends Observable {
 	/*************************/
@@ -134,7 +137,8 @@ public class Chart extends Observable {
 				updateGraphic();
 				updateObserver();
 			} catch (Exception e) {
-				e.printStackTrace();
+			    Logger logger = AdsLogger.getLogger();
+				logger.severe(e.getMessage());
 			}
 		}
 	};

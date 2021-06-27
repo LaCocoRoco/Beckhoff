@@ -1,15 +1,14 @@
 package twincat.app.components;
 
-import java.awt.CardLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
-
 import twincat.ads.Ads;
 
 public class ScopePanel extends JSplitPane {
@@ -35,8 +34,6 @@ public class ScopePanel extends JSplitPane {
     
     JSplitPane bottomPanel = new JSplitPane();
     
-    
-    
     JScrollPane leftPanel = new JScrollPane();
     
     JScrollPane rightPanel = new JScrollPane();
@@ -57,9 +54,15 @@ public class ScopePanel extends JSplitPane {
         this.addHierarchyListener(new HierarchyListener() {
             @Override
             public void hierarchyChanged(HierarchyEvent e) {
-                setDividerLocation(0.5);    // TODO : on resize
+                setDividerLocation(0.5);
             }
         });
+        this.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent componentEvent) {
+                setDividerLocation(0.5);
+            }
+        });
+        
         
         
         // top panel
@@ -79,7 +82,12 @@ public class ScopePanel extends JSplitPane {
         bottomPanel.addHierarchyListener(new HierarchyListener() {
             @Override
             public void hierarchyChanged(HierarchyEvent e) {
-                bottomPanel.setDividerLocation(0.5);    // TODO : on resize
+                bottomPanel.setDividerLocation(0.5);
+            }
+        });
+        bottomPanel.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent componentEvent) {
+                bottomPanel.setDividerLocation(0.5);
             }
         });
     }

@@ -1,6 +1,6 @@
 package twincat.ads;
 
-import twincat.ads.enums.AdsError;
+import twincat.ads.constants.AdsError;
 
 public class AdsException extends Exception {
 	/*************************/

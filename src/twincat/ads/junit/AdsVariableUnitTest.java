@@ -1,17 +1,21 @@
 package twincat.ads.junit;
 
+import java.util.logging.Logger;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.enums.DataType;
+import twincat.ads.AdsLogger;
+import twincat.ads.constants.AdsDataType;
 import twincat.ads.wrapper.Variable;
 
 public class AdsVariableUnitTest {
 	Ads ads = new Ads();
-
+    Logger logger = AdsLogger.getLogger();
+    
 	@Before
 	public void startAds() {
 		ads.open();
@@ -20,7 +24,7 @@ public class AdsVariableUnitTest {
 	@Test
 	public void bit() {
 		try {
-			String name = ".bit";
+			String name = ".junit_bit";
 			
 			boolean valueMin = false;
 			Variable variableMin;
@@ -29,7 +33,7 @@ public class AdsVariableUnitTest {
 			variableMin.read();
 			variableMin.close();
 			
-			assert DataType.BIT == variableMin.getDataType();
+			assert AdsDataType.BIT == variableMin.getDataType();
 			assert variableMin.toBoolean() == valueMin;
 			assert variableMin.toByte()    == (byte) (valueMin ? 1 : 0);
 			assert variableMin.toShort()   == (short) (valueMin ? 1 : 0);
@@ -45,7 +49,7 @@ public class AdsVariableUnitTest {
 			variableMax.read();
 			variableMax.close();
 			
-			assert DataType.BIT == variableMax.getDataType();
+			assert AdsDataType.BIT == variableMax.getDataType();
 			assert variableMax.toBoolean() == valueMax;
 			assert variableMax.toByte()    == (byte) (valueMax ? 1 : 0);
 			assert variableMax.toShort()   == (short) (valueMax ? 1 : 0);
@@ -55,14 +59,14 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) (valueMax ? 1 : 0);
 			assert variableMax.toString().equals(Boolean.toString(valueMax));	
 		} catch (AdsException e) {
-			System.out.println("BIT: " + e.getAdsErrorMessage());
+			logger.info("BIT: " + e.getAdsErrorMessage());
 		}
 	}
 
 	@Test
 	public void int8() {
 		try {
-			String name = ".int8";
+			String name = ".junit_int8";
 			
 			byte valueMin = -128;
 			Variable variableMin = ads.getVariableBySymbolName(name);
@@ -70,7 +74,7 @@ public class AdsVariableUnitTest {
 			variableMin.read();
 			variableMin.close();
 			
-			assert DataType.INT8 == variableMin.getDataType();
+			assert AdsDataType.INT8 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
 			assert variableMin.toByte()    == (byte) valueMin;
 			assert variableMin.toShort()   == (short) valueMin;
@@ -86,7 +90,7 @@ public class AdsVariableUnitTest {
 			variableMax.read();
 			variableMax.close();
 			
-			assert DataType.INT8 == variableMin.getDataType();
+			assert AdsDataType.INT8 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
 			assert variableMax.toByte()    == (byte) valueMax;
 			assert variableMax.toShort()   == (short) valueMax;
@@ -96,14 +100,14 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) valueMax;
 			assert variableMax.toString().equals(Byte.toString(valueMax));			
 		} catch (AdsException e) {
-			System.out.println("INT8: " + e.getAdsErrorMessage());
+			logger.info("INT8: " + e.getAdsErrorMessage());
 		}
 	}
 
 	@Test
 	public void int16() {
 		try {
-			String name = ".int16";
+			String name = ".junit_int16";
 			
 			int valueMin = -32768;
 			Variable variableMin = ads.getVariableBySymbolName(name);
@@ -111,7 +115,7 @@ public class AdsVariableUnitTest {
 			variableMin.read();
 			variableMin.close();
 			
-			assert DataType.INT16 == variableMin.getDataType();
+			assert AdsDataType.INT16 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
 			assert variableMin.toByte()    == (byte) valueMin;
 			assert variableMin.toShort()   == (short) valueMin;
@@ -127,7 +131,7 @@ public class AdsVariableUnitTest {
 			variableMax.read();
 			variableMax.close();
 			
-			assert DataType.INT16 == variableMin.getDataType();
+			assert AdsDataType.INT16 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
 			assert variableMax.toByte()    == (byte) valueMax;
 			assert variableMax.toShort()   == (short) valueMax;
@@ -137,14 +141,14 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) valueMax;
 			assert variableMax.toString().equals(Integer.toString(valueMax));			
 		} catch (AdsException e) {
-			System.out.println("INT16: " + e.getAdsErrorMessage());
+			logger.info("INT16: " + e.getAdsErrorMessage());
 		}
 	}
 
 	@Test
 	public void int32() {
 		try {
-			String name = ".int32";
+			String name = ".junit_int32";
 			
 			int valueMin = -2147483647;
 			Variable variableMin = ads.getVariableBySymbolName(name);
@@ -152,7 +156,7 @@ public class AdsVariableUnitTest {
 			variableMin.read();
 			variableMin.close();
 			
-			assert DataType.INT32 == variableMin.getDataType();
+			assert AdsDataType.INT32 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
 			assert variableMin.toByte()    == (byte) valueMin;
 			assert variableMin.toShort()   == (short) valueMin;
@@ -168,7 +172,7 @@ public class AdsVariableUnitTest {
 			variableMax.read();
 			variableMax.close();
 			
-			assert DataType.INT32 == variableMin.getDataType();
+			assert AdsDataType.INT32 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
 			assert variableMax.toByte()    == (byte) valueMax;
 			assert variableMax.toShort()   == (short) valueMax;
@@ -178,14 +182,14 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) valueMax;
 			assert variableMax.toString().equals(Integer.toString(valueMax));			
 		} catch (AdsException e) {
-			System.out.println("INT32: " + e.getAdsErrorMessage());
+			logger.info("INT32: " + e.getAdsErrorMessage());
 		}
 	}
 
 	@Test
 	public void uint8() {
 		try {
-			String name = ".uint8";
+			String name = ".junit_uint8";
 			
 			short valueMin = 0;
 			Variable variableMin = ads.getVariableBySymbolName(name);
@@ -193,7 +197,7 @@ public class AdsVariableUnitTest {
 			variableMin.read();
 			variableMin.close();
 			
-			assert DataType.UINT8 == variableMin.getDataType();
+			assert AdsDataType.UINT8 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
 			assert variableMin.toByte()    == (byte) valueMin;
 			assert variableMin.toShort()   == (short) valueMin;
@@ -209,7 +213,7 @@ public class AdsVariableUnitTest {
 			variableMax.read();
 			variableMax.close();
 			
-			assert DataType.UINT8 == variableMin.getDataType();
+			assert AdsDataType.UINT8 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
 			assert variableMax.toByte()    == (byte) valueMax;
 			assert variableMax.toShort()   == (short) valueMax;
@@ -219,14 +223,14 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) valueMax;
 			assert variableMax.toString().equals(Short.toString(valueMax));	
 		} catch (AdsException e) {
-			System.out.println("INT8: " + e.getAdsErrorMessage());
+			logger.info("INT8: " + e.getAdsErrorMessage());
 		}
 	}
 
 	@Test
 	public void uint16() {
 		try {
-			String name = ".uint16";
+			String name = ".junit_uint16";
 			
 			int valueMin = 0;
 			Variable variableMin = ads.getVariableBySymbolName(name);
@@ -234,7 +238,7 @@ public class AdsVariableUnitTest {
 			variableMin.read();
 			variableMin.close();
 			
-			assert DataType.UINT16 == variableMin.getDataType();
+			assert AdsDataType.UINT16 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
 			assert variableMin.toByte()    == (byte) valueMin;
 			assert variableMin.toShort()   == (short) valueMin;
@@ -250,7 +254,7 @@ public class AdsVariableUnitTest {
 			variableMax.read();
 			variableMax.close();
 			
-			assert DataType.UINT16 == variableMin.getDataType();
+			assert AdsDataType.UINT16 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
 			assert variableMax.toByte()    == (byte) valueMax;
 			assert variableMax.toShort()   == (short) valueMax;
@@ -260,14 +264,14 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) valueMax;
 			assert variableMax.toString().equals(Integer.toString(valueMax));		
 		} catch (AdsException e) {
-			System.out.println("UINT16: " + e.getAdsErrorMessage());
+			logger.info("UINT16: " + e.getAdsErrorMessage());
 		}
 	}
 
 	@Test
 	public void uint32() {
 		try {
-			String name = ".uint32";
+			String name = ".junit_uint32";
 			
 			long valueMin = 0;
 			Variable variableMin = ads.getVariableBySymbolName(name);
@@ -275,7 +279,7 @@ public class AdsVariableUnitTest {
 			variableMin.read();
 			variableMin.close();
 			
-			assert DataType.UINT32 == variableMin.getDataType();
+			assert AdsDataType.UINT32 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
 			assert variableMin.toByte()    == (byte) valueMin;
 			assert variableMin.toShort(  ) == (short) valueMin;
@@ -291,7 +295,7 @@ public class AdsVariableUnitTest {
 			variableMax.read();
 			variableMax.close();
 			
-			assert DataType.UINT32 == variableMin.getDataType();
+			assert AdsDataType.UINT32 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
 			assert variableMax.toByte()    == (byte) valueMax;
 			assert variableMax.toShort()   == (short) valueMax;
@@ -301,14 +305,14 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) valueMax;
 			assert variableMax.toString().equals(Long.toString(valueMax));
 		} catch (AdsException e) {
-			System.out.println("UINT32: " + e.getAdsErrorMessage());
+			logger.info("UINT32: " + e.getAdsErrorMessage());
 		}
 	}
 
 	@Test
 	public void real32() {
 		try {
-			String name = ".real32";
+			String name = ".junit_real32";
 			
 			float valueMin = (float) -3.402823E38;
 			Variable variableMin = ads.getVariableBySymbolName(name);
@@ -316,7 +320,7 @@ public class AdsVariableUnitTest {
 			variableMin.read();
 			variableMin.close();
 			
-			assert DataType.REAL32 == variableMin.getDataType();
+			assert AdsDataType.REAL32 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
 			assert variableMin.toByte()    == (byte) valueMin;
 			assert variableMin.toShort()   == (short) valueMin;
@@ -331,7 +335,7 @@ public class AdsVariableUnitTest {
 			variableMax.read();
 			variableMax.close();
 			
-			assert DataType.REAL32 == variableMin.getDataType();
+			assert AdsDataType.REAL32 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
 			assert variableMax.toByte()    == (byte) valueMax;
 			assert variableMax.toShort()   == (short) valueMax;
@@ -341,14 +345,14 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) valueMax;
 			assert variableMax.toString().equals(Float.toString(valueMax));	
 		} catch (AdsException e) {
-			System.out.println("REAL32: " + e.getAdsErrorMessage());
+			logger.info("REAL32: " + e.getAdsErrorMessage());
 		}
 	}
 
 	@Test
 	public void real64() {
 		try {
-			String name = ".real64";
+			String name = ".junit_real64";
 			
 			double valueMin = -1.79769313486231E307;
 			Variable variableMin = ads.getVariableBySymbolName(name);
@@ -356,7 +360,7 @@ public class AdsVariableUnitTest {
 			variableMin.read();
 			variableMin.close();
 			
-			assert DataType.REAL64 == variableMin.getDataType();
+			assert AdsDataType.REAL64 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
 			assert variableMin.toByte()    == (byte) valueMin;
 			assert variableMin.toShort()   == (short) valueMin;
@@ -372,7 +376,7 @@ public class AdsVariableUnitTest {
 			variableMax.read();
 			variableMax.close();
 			
-			assert DataType.REAL64 == variableMin.getDataType();
+			assert AdsDataType.REAL64 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
 			assert variableMax.toByte()    == (byte) valueMax;
 			assert variableMax.toShort()   == (short) valueMax;
@@ -382,14 +386,14 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) valueMax;
 			assert variableMax.toString().equals(Double.toString(valueMax));
 		} catch (AdsException e) {
-			System.out.println("REAL64: " + e.getAdsErrorMessage());
+			logger.info("REAL64: " + e.getAdsErrorMessage());
 		}
 	}
 
 	@Test
 	public void string() {
 		try {
-			String name = ".strng";
+			String name = ".junit_string";
 			
 			String value = "Hello Wold";
 			Variable variable = ads.getVariableBySymbolName(name);
@@ -397,7 +401,7 @@ public class AdsVariableUnitTest {
 			variable.read();
 			variable.close();
 			
-			assert DataType.STRING == variable.getDataType();
+			assert AdsDataType.STRING == variable.getDataType();
 			assert variable.toBoolean() == true;
 			assert variable.toByte()    == 1;
 			assert variable.toShort()   == 1;
@@ -407,7 +411,7 @@ public class AdsVariableUnitTest {
 			assert variable.toDouble()  == 1;
 			assert variable.toString().equals(value);
 		} catch (AdsException e) {
-			System.out.println("STRING: " + e.getAdsErrorMessage());
+			logger.info("STRING: " + e.getAdsErrorMessage());
 		}
 	}
 

@@ -3,6 +3,8 @@ package twincat.ads;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import twincat.ads.constants.AdsDataType;
+import twincat.ads.constants.AdsSymbolFlag;
 import twincat.ads.datatype.STRING;
 
 public class AdsSymbolInfo {
@@ -16,24 +18,24 @@ public class AdsSymbolInfo {
 	/*** global attributes ***/
 	/*************************/
 
-	private int infoLength = 0;
+	private int length = 0;
 
 	private int indexGroup = 0;
 
 	private int indexOffset = 0;
 
-	private int dataSize = 0;
+    private int dataSize = 0;
 
-	private int flags = 0;
-	
-	private int dataType = 0;
+	private AdsDataType dataType = AdsDataType.UNKNOWN;
 
-	private String name = new String();
+    private AdsSymbolFlag symbolFlag = AdsSymbolFlag.UNKNOWN;
+    
+	private String symbolName = new String();
 
 	private String type = new String();
 
 	private String comment = new String();
-
+ 
 	/*************************/
 	/****** constructor ******/
 	/*************************/
@@ -50,83 +52,83 @@ public class AdsSymbolInfo {
 	/**** setter & getter ****/
 	/*************************/
 
-	public int getInfoLength() {
-		return infoLength;
-	}
+    public int getLength() {
+        return length;
+    }
 
-	public void setInfoLength(int infoLength) {
-		this.infoLength = infoLength;
-	}
+    public void setLength(int length) {
+        this.length = length;
+    }
 
-	public int getIndexGroup() {
-		return indexGroup;
-	}
+    public int getIndexGroup() {
+        return indexGroup;
+    }
 
-	public void setIndexGroup(int indexGroup) {
-		this.indexGroup = indexGroup;
-	}
+    public void setIndexGroup(int indexGroup) {
+        this.indexGroup = indexGroup;
+    }
 
-	public int getIndexOffset() {
-		return indexOffset;
-	}
+    public int getIndexOffset() {
+        return indexOffset;
+    }
 
-	public void setIndexOffset(int indexOffset) {
-		this.indexOffset = indexOffset;
-	}
+    public void setIndexOffset(int indexOffset) {
+        this.indexOffset = indexOffset;
+    }
 
-	public int getDataSize() {
-		return dataSize;
-	}
+    public int getDataSize() {
+        return dataSize;
+    }
 
-	public void setDataSize(int dataSize) {
-		this.dataSize = dataSize;
-	}
+    public void setDataSize(int dataSize) {
+        this.dataSize = dataSize;
+    }
 
-	public int getDataType() {
-		return dataType;
-	}
+    public AdsDataType getDataType() {
+        return dataType;
+    }
 
-	public void setDataType(int dataType) {
-		this.dataType = dataType;
-	}
+    public void setDataType(AdsDataType dataType) {
+        this.dataType = dataType;
+    }
 
-	public int getFlags() {
-		return flags;
-	}
+    public AdsSymbolFlag getSymbolFlag() {
+        return symbolFlag;
+    }
 
-	public void setFlags(int flags) {
-		this.flags = flags;
-	}
+    public void setSymbolFlag(AdsSymbolFlag symbolFlag) {
+        this.symbolFlag = symbolFlag;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getSymbolName() {
+        return symbolName;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setSymbolName(String symbolName) {
+        this.symbolName = symbolName;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getComment() {
-		return comment;
-	}
+    public String getComment() {
+        return comment;
+    }
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
 	/*************************/
 	/******** private ********/
 	/*************************/
 
-	private void getAdsSymbolInfo(byte[] buffer, int index) {
+    private void getAdsSymbolInfo(byte[] buffer, int index) {
 		ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
@@ -134,21 +136,24 @@ public class AdsSymbolInfo {
 			byteBuffer.position(index);
 
 			if (byteBuffer.remaining() >= INFO_BUFFER_LENGTH) {
-				infoLength  = byteBuffer.getInt();
-				indexGroup  = byteBuffer.getInt();
-				indexOffset = byteBuffer.getInt();
-				dataSize    = byteBuffer.getInt();
-				dataType 	= byteBuffer.getInt();
-				flags       = byteBuffer.getInt();
-
-				int nameLength    = byteBuffer.getShort() + 1;
-				int typeLength    = byteBuffer.getShort() + 1;
-				int commentLength = byteBuffer.getShort() + 1;
-
+				length             = byteBuffer.getInt();
+				indexGroup         = byteBuffer.getInt();
+				indexOffset        = byteBuffer.getInt();
+				dataSize           = byteBuffer.getInt();
+				int dataType       = byteBuffer.getInt();
+				int symbolFlag     = byteBuffer.getShort();
+				@SuppressWarnings("unused")
+                int arrayDimension = byteBuffer.getShort();
+				int nameLength     = byteBuffer.getShort() + 1;
+				int typeLength     = byteBuffer.getShort() + 1;
+				int commentLength  = byteBuffer.getShort() + 1;
+                this.dataType      = AdsDataType.getByValue(dataType);
+                this.symbolFlag    = AdsSymbolFlag.getByValue(symbolFlag);
+				
 				if (byteBuffer.remaining() >= nameLength) {
-					byte[] nameBuffer = new byte[nameLength];
-					byteBuffer.get(nameBuffer, 0, nameLength);
-					name = STRING.arrayToValue(nameBuffer);
+					byte[] symbolNameBuffer = new byte[nameLength];
+					byteBuffer.get(symbolNameBuffer, 0, nameLength);
+					symbolName = STRING.arrayToValue(symbolNameBuffer);
 				}
 
 				if (byteBuffer.remaining() >= typeLength) {
