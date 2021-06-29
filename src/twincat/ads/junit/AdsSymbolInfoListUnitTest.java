@@ -1,39 +1,43 @@
 package twincat.ads.junit;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.AdsSymbolInfo;
+import twincat.ads.AdsLogger;
+import twincat.ads.container.AdsSymbolInfo;
 
 public class AdsSymbolInfoListUnitTest {
-	Ads ads = new Ads();
+    Ads ads = new Ads();
+    Logger logger = AdsLogger.getLogger();
 
-	@Before
-	public void startAds() {
-		ads.open();
-	}
+    @Before
+    public void startAds() {
+        ads.open();
+    }
 
-	@Test
-	public void adsSymbolTableUnitTest() {
-		try {
-			// get symbol info list
-			List<AdsSymbolInfo> symbolInfoList = ads.readSymbolInfoTable();
-			
-			// print symbol info name
-			for (AdsSymbolInfo symbolInfo : symbolInfoList) {
-				System.out.println(symbolInfo.getName());			
-			}
-		} catch (AdsException e) {
-			System.out.println(e.getAdsErrorMessage());
-		}
-	}
+    @Test
+    public void adsSymbolInfoListUnitTest() {
+        try {
+            List<AdsSymbolInfo> symbolInfoList = ads.readSymbolInfoList();
 
-	@After
-	public void stopAds() throws AdsException {
-		ads.close();
-	}
+            for (AdsSymbolInfo symbolInfo : symbolInfoList) {
+                logger.info("SymbolName    : " + symbolInfo.getSymbolName());
+                logger.info("SymbolDataType: " + symbolInfo.getDataType());
+                logger.info("SymbolType    : " + symbolInfo.getType());
+            }
+        } catch (AdsException e) {
+            logger.info(e.getAdsErrorMessage());
+        }
+    }
+
+    @After
+    public void stopAds() throws AdsException {
+        ads.close();
+    }
 }

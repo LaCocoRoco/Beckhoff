@@ -1,15 +1,20 @@
 package twincat.ads.junit;
 
+import java.util.logging.Logger;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.AdsLogger;
+import twincat.ads.constants.AmsPort;
 
 public class AdsAmsPortUnitTest {
 	Ads ads = new Ads();
-
+	Logger logger = AdsLogger.getLogger();
+	
 	@Before
 	public void startAds() {
 		ads.open();
@@ -21,9 +26,9 @@ public class AdsAmsPortUnitTest {
     		try {
     			ads.setAmsPort(amsPort);
     			ads.readDeviceInfo();
-    			System.out.println("OK : " + amsPort);
+    			logger.info("OK : " + amsPort);
     		} catch (AdsException e) {
-    			System.out.println("NOK: " + amsPort);
+    			logger.info("NOK: " + amsPort);
     		}
         }
 	}

@@ -1,15 +1,20 @@
 package twincat.ads.junit;
 
+import java.util.logging.Logger;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.AdsSymbolInfo;
+import twincat.ads.AdsLogger;
+import twincat.ads.container.AdsSymbolInfo;
 
 public class AdsSymbolInfoUnitTest {
 	Ads ads = new Ads();
-
+    Logger logger = AdsLogger.getLogger();
+    
 	@Before
 	public void startAds() {
 		ads.open();
@@ -17,27 +22,20 @@ public class AdsSymbolInfoUnitTest {
 
 	@Test
 	public void adsSymbolInfoUnitTest() {
-
 		try {		
-			// variable name
-			String symbolName = "MAIN.FB_CHANNEL_1";
-
-			// get symbol info
-			AdsSymbolInfo symbolInfo = ads.readSymbolInfoBySymbolName(symbolName);
+			AdsSymbolInfo symbolInfo = ads.readSymbolInfoBySymbolName(".junit_time");
 			
-			// print symbol info
-			System.out.println(symbolInfo.getInfoLength());
-			System.out.println(symbolInfo.getIndexGroup());
-			System.out.println(symbolInfo.getIndexOffset());
-			System.out.println(symbolInfo.getDataSize());
-			System.out.println(symbolInfo.getDataType());
-			System.out.println(symbolInfo.getFlags());
-			System.out.println(symbolInfo.getName());
-			System.out.println(symbolInfo.getType());
-			System.out.println(symbolInfo.getComment());
-			
+			logger.info("InfoLength : " + symbolInfo.getLength());
+			logger.info("IndexGroup : " + symbolInfo.getIndexGroup());
+			logger.info("IndexOffset: " + symbolInfo.getIndexOffset());
+			logger.info("DataSize   : " + symbolInfo.getDataSize());
+			logger.info("DataType   : " + symbolInfo.getDataType());
+			logger.info("SymbolFlag : " + symbolInfo.getSymbolFlag());
+			logger.info("SymbolName : " + symbolInfo.getSymbolName());
+			logger.info("Type       : " + symbolInfo.getType());
+			logger.info("Comment    : " + symbolInfo.getComment());
 		} catch (AdsException e) {
-			System.out.println(e.getAdsErrorMessage());
+			logger.info(e.getAdsErrorMessage());
 		}	
 	}
 	

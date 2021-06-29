@@ -5,8 +5,8 @@ import java.nio.ByteOrder;
 import java.util.Arrays;
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.enums.AdsError;
-import twincat.ads.enums.DataType;
+import twincat.ads.constants.AdsError;
+import twincat.ads.constants.AdsDataType;
 import twincat.ads.wrapper.Variable;
 
 public class UINT16 extends Variable {
@@ -15,15 +15,15 @@ public class UINT16 extends Variable {
 	/*************************/
 
 	public UINT16(Ads ads, int symbolHandle) {
-		super(ads, DataType.UINT16.size, symbolHandle);
+		super(ads, AdsDataType.UINT16.size, symbolHandle);
 	}
 
 	public UINT16(Ads ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, DataType.UINT16.size, indexGroup, indexOffset);
+		super(ads, AdsDataType.UINT16.size, indexGroup, indexOffset);
 	}
 	
 	public UINT16(Ads ads, String symbolName) throws AdsException {
-		super(ads, DataType.UINT16.size, ads.readHandleOfSymbolName(symbolName));
+		super(ads, AdsDataType.UINT16.size, ads.readHandleOfSymbolName(symbolName));
 	}
 	
 	/*************************/
@@ -31,8 +31,8 @@ public class UINT16 extends Variable {
 	/*************************/
 
 	@Override
-	public DataType getDataType() {
-		return DataType.UINT16;
+	public AdsDataType getDataType() {
+		return AdsDataType.UINT16;
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class UINT16 extends Variable {
 	/*************************/
 
 	public static final int arrayToValue(byte[] data) {
-		if (data.length != DataType.UINT16.size) return 0;
+		if (data.length != AdsDataType.UINT16.size) return 0;
 		ByteBuffer byteBuffer = ByteBuffer.allocate(Integer.BYTES);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		byteBuffer.put(data);
@@ -147,6 +147,6 @@ public class UINT16 extends Variable {
 		ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		byteBuffer.putInt(data);
-		return Arrays.copyOfRange(buffer, 0, DataType.UINT16.size);
+		return Arrays.copyOfRange(buffer, 0, AdsDataType.UINT16.size);
 	}
 }

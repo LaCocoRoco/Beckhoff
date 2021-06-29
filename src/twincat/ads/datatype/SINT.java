@@ -2,7 +2,7 @@ package twincat.ads.datatype;
 
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.enums.DataType;
+import twincat.ads.constants.AdsDataType;
 
 public class SINT extends INT8 {
 	/*************************/
@@ -26,7 +26,7 @@ public class SINT extends INT8 {
 	/*************************/
 		
 	@Override	
-	public DataType getDataType() {
-		return DataType.SINT;
+	public AdsDataType getDataType() {
+		return AdsDataType.SINT;
 	}	
 }

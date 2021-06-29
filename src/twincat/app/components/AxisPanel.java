@@ -5,14 +5,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-public class AxxaPanel extends JScrollPane {
+public class AxisPanel extends JScrollPane {
 	private static final long serialVersionUID = 1L;
 
 	/*************************/
 	/****** constructor ******/
 	/*************************/
 	
-	public AxxaPanel() {
+	public AxisPanel() {
 		JLabel AxxaLabel = new JLabel("Axxa Panel");
 		
 		JPanel containerPanel = new JPanel();

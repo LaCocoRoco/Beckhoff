@@ -1,8 +1,8 @@
 package twincat.scope;
 
+import twincat.ads.constants.AdsDataType;
 import twincat.ads.constants.AmsNetId;
-import twincat.ads.enums.AmsPort;
-import twincat.ads.enums.DataType;
+import twincat.ads.constants.AmsPort;
 
 public class Acquisition {
 	/*************************/
@@ -23,7 +23,7 @@ public class Acquisition {
 	
 	private AmsPort amsPort = AmsPort.PLC_RT1;
 
-	private DataType dataType = DataType.UNKNOWN;
+	private AdsDataType dataType = AdsDataType.UNKNOWN;
 
 	/*************************/
 	/**** setter & getter ****/
@@ -77,11 +77,11 @@ public class Acquisition {
 		this.amsPort = amsPort;
 	}
 
-	public DataType getDataType() {
+	public AdsDataType getDataType() {
 		return dataType;
 	}
 
-	public void setDataType(DataType dataType) {
+	public void setDataType(AdsDataType dataType) {
 		this.dataType = dataType;
 	}
 

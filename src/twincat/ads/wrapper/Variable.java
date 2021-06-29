@@ -1,13 +1,14 @@
 package twincat.ads.wrapper;
 
 import java.util.Observable;
+
 import twincat.ads.Ads;
 import twincat.ads.AdsCallback;
 import twincat.ads.AdsException;
 import twincat.ads.AdsNotification;
-import twincat.ads.constants.AdsIdxGrp;
-import twincat.ads.enums.AdsTransMode;
-import twincat.ads.enums.DataType;
+import twincat.ads.constants.AdsIndexGroup;
+import twincat.ads.constants.AdsTransmitMode;
+import twincat.ads.constants.AdsDataType;
 
 public abstract class Variable extends Observable implements AdsCallback {
 	/*************************/
@@ -121,7 +122,7 @@ public abstract class Variable extends Observable implements AdsCallback {
 	private void addNotificationByAddress(int intervall) throws AdsException {
 		AdsNotification adsNotification = new AdsNotification();
 		adsNotification.setDataLength(data.length);
-		adsNotification.setTransmissionMode(AdsTransMode.SERVERCYCLE);
+		adsNotification.setTransmissionMode(AdsTransmitMode.SERVER_CYCLE);
 		adsNotification.setCycleTime(intervall * AdsNotification.TIME_RATIO_NS_TO_MS);
 		
 		notification = ads.addDeviceNotification(indexGroup, indexOffset, adsNotification, this);	
@@ -130,10 +131,11 @@ public abstract class Variable extends Observable implements AdsCallback {
 	private void addNotificationBySymbol(int intervall) throws AdsException {
 		AdsNotification adsNotification = new AdsNotification();
 		adsNotification.setDataLength(data.length);
-		adsNotification.setTransmissionMode(AdsTransMode.SERVERCYCLE);
+		adsNotification.setTransmissionMode(AdsTransmitMode.SERVER_CYCLE);
 		adsNotification.setCycleTime(intervall * AdsNotification.TIME_RATIO_NS_TO_MS);
 		
-		notification = ads.addDeviceNotification(AdsIdxGrp.SYM_VALBYHND, symbolHandle, adsNotification, this);
+		long indexGroup = AdsIndexGroup.SYMBOL_VALUE_BY_HANDLE.value;
+		notification = ads.addDeviceNotification(indexGroup, symbolHandle, adsNotification, this);
 	}
 
 	private void removeNotification() throws AdsException {
@@ -170,7 +172,7 @@ public abstract class Variable extends Observable implements AdsCallback {
 
 	public abstract Variable write(String value) throws AdsException;
 
-	public abstract DataType getDataType();
+	public abstract AdsDataType getDataType();
 
 	public abstract boolean toBoolean();
 

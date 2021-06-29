@@ -14,6 +14,8 @@ import java.awt.Transparency;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.VolatileImage;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -25,8 +27,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import com.sun.management.OperatingSystemMXBean;
+
+import twincat.ads.AdsLogger;
 
 public class Chart extends Observable {
 	/*************************/
@@ -78,6 +83,8 @@ public class Chart extends Observable {
 	private long displayTime = 1000;
 
 	private VolatileImage image = Chart.createBitmaskVolatileImage(width, height);
+	
+	private final Logger logger = AdsLogger.getLogger();
 	
 	private final CopyOnWriteArrayList<Axis> axisList = new CopyOnWriteArrayList<Axis>();
 
@@ -134,7 +141,10 @@ public class Chart extends Observable {
 				updateGraphic();
 				updateObserver();
 			} catch (Exception e) {
-				e.printStackTrace();
+                StringWriter stringWriter = new StringWriter();
+                PrintWriter printWriter = new PrintWriter(stringWriter);
+                e.printStackTrace(printWriter);
+                logger.severe("Exception: " + stringWriter.toString());
 			}
 		}
 	};

@@ -1,4 +1,4 @@
-package twincat.ads.enums;
+package twincat.ads.constants;
 
 public enum AdsError {
 	/*************************/
@@ -132,20 +132,21 @@ public enum AdsError {
 	/*************************/
 	  
     public static final AdsError getByValue(int value) {
-        for (AdsError dataType : AdsError.values()) {
-            if (dataType.value == value) {
-            	return dataType;
+        for (AdsError adsError : AdsError.values()) {
+            if (adsError.value == value) {
+            	return adsError;
             }
         }
         
         return AdsError.UNKNOWN;
     }
 	
-	public static final AdsError getByString(String value) {
-		try {
-			return AdsError.valueOf(value);
-		} catch (IllegalArgumentException e) { 
-			return AdsError.UNKNOWN;
-		}
-	}
+    public static final AdsError getByString(String value) {
+        for (AdsError adsError : AdsError.values()) {
+            if (adsError.name().equalsIgnoreCase(value)) {
+                return adsError;
+            }
+        }
+        return AdsError.UNKNOWN;
+    } 
 }

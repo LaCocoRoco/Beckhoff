@@ -2,8 +2,8 @@ package twincat.ads.datatype;
 
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.enums.AdsError;
-import twincat.ads.enums.DataType;
+import twincat.ads.constants.AdsError;
+import twincat.ads.constants.AdsDataType;
 import twincat.ads.wrapper.Variable;
 
 public class INT8 extends Variable {
@@ -12,15 +12,15 @@ public class INT8 extends Variable {
 	/*************************/
 
 	public INT8(Ads ads, int symbolHandle) {
-		super(ads, DataType.INT8.size, symbolHandle);
+		super(ads, AdsDataType.INT8.size, symbolHandle);
 	}
 
 	public INT8(Ads ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, DataType.INT8.size, indexGroup, indexOffset);
+		super(ads, AdsDataType.INT8.size, indexGroup, indexOffset);
 	}
 	
 	public INT8(Ads ads, String symbolName) throws AdsException {
-		super(ads, DataType.INT8.size, ads.readHandleOfSymbolName(symbolName));
+		super(ads, AdsDataType.INT8.size, ads.readHandleOfSymbolName(symbolName));
 	}
 	
 	/*************************/
@@ -28,8 +28,8 @@ public class INT8 extends Variable {
 	/*************************/
 
 	@Override
-	public DataType getDataType() {
-		return DataType.INT8;
+	public AdsDataType getDataType() {
+		return AdsDataType.INT8;
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class INT8 extends Variable {
 	/*************************/
 
 	public static final byte arrayToValue(byte[] data) {
-		if (data.length != DataType.INT8.size) return 0;
+		if (data.length != AdsDataType.INT8.size) return 0;
 		return data[0];
 	}
 

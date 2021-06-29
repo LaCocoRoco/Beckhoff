@@ -1,6 +1,6 @@
 package twincat.ads;
 
-import twincat.ads.enums.AdsTransMode;
+import twincat.ads.constants.AdsTransmitMode;
 
 public class AdsNotification {
 	/*************************/
@@ -19,7 +19,7 @@ public class AdsNotification {
 	
 	private long cycleTime = 0;
 	
-	private AdsTransMode transmissionMode = AdsTransMode.UNKNOWN;
+	private AdsTransmitMode transmissionMode = AdsTransmitMode.UNKNOWN;
 	
 	/*************************/
 	/**** setter & getter ****/
@@ -49,11 +49,11 @@ public class AdsNotification {
 		this.cycleTime = cycleTime;
 	}
 
-	public AdsTransMode getTransmissionMode() {
+	public AdsTransmitMode getTransmissionMode() {
 		return transmissionMode;
 	}
 
-	public void setTransmissionMode(AdsTransMode transmissionMode) {
+	public void setTransmissionMode(AdsTransmitMode transmissionMode) {
 		this.transmissionMode = transmissionMode;
 	}
 }

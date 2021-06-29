@@ -1,6 +1,6 @@
-package twincat.ads.enums;
+package twincat.ads.constants;
 
-public enum DataType {
+public enum AdsDataType {
 	/*************************/
 	/** constant attributes **/
 	/*************************/
@@ -47,7 +47,7 @@ public enum DataType {
 	/****** constructor ******/
 	/*************************/
 	
-    private DataType(int value, int size) {
+    private AdsDataType(int value, int size) {
         this.value = value;
         this.size = size;
     }
@@ -56,21 +56,22 @@ public enum DataType {
 	/** public static final **/
 	/*************************/
 	  
-    public static final DataType getByValue(int value) {
-        for (DataType dataType : DataType.values()) {
+    public static final AdsDataType getByValue(int value) {
+        for (AdsDataType dataType : AdsDataType.values()) {
             if (dataType.value == value) {
             	return dataType;
             }
         }
         
-        return DataType.UNKNOWN;
+        return AdsDataType.UNKNOWN;
     } 
-	
-	public static final DataType getByString(String value) {
-		try {
-			return DataType.valueOf(value);
-		} catch (IllegalArgumentException e) { 
-			return DataType.UNKNOWN;
-		}
-	}
+
+    public static final AdsDataType getByString(String value) {
+        for (AdsDataType dataType : AdsDataType.values()) {
+            if (dataType.name().equalsIgnoreCase(value)) {
+                return dataType;
+            }
+        }
+        return AdsDataType.UNKNOWN;
+    }	
 }

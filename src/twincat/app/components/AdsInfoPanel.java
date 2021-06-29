@@ -41,7 +41,8 @@ public class AdsInfoPanel extends JScrollPane {
     		+ "netid address	\n"
     		+ "					\n"
     		+ "symbol list		\n"
-    		+ "symbol name		\n"
+    		+ "symbol list name \n"
+    		+ "symbol info name	\n"
     		+ "					\n"
     		+ "read name		\n"
     		+ "write name value	\n";
@@ -63,6 +64,7 @@ public class AdsInfoPanel extends JScrollPane {
     		+ "set net id					\n"
     		+ "								\n"
     		+ "get symbol list				\n"
+    		+ "get symbol list by name      \n"
     		+ "get symbol info by name		\n"
     		+ "								\n"
     		+ "read symbol value by name	\n"

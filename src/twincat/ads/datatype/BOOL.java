@@ -2,7 +2,7 @@ package twincat.ads.datatype;
 
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.enums.DataType;
+import twincat.ads.constants.AdsDataType;
 
 public class BOOL extends BIT {
 	/*************************/
@@ -26,7 +26,7 @@ public class BOOL extends BIT {
 	/*************************/
 		
 	@Override	
-	public DataType getDataType() {
-		return DataType.BOOL;
+	public AdsDataType getDataType() {
+		return AdsDataType.BOOL;
 	}	
 }

@@ -1,15 +1,20 @@
 package twincat.ads.junit;
 
+import java.util.logging.Logger;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import twincat.ads.Ads;
-import twincat.ads.AdsDeviceInfo;
 import twincat.ads.AdsException;
+import twincat.ads.AdsLogger;
+import twincat.ads.container.AdsDeviceInfo;
 
 public class AdsDeviceInfoUnitTest {
 	Ads ads = new Ads();
-
+	Logger logger = AdsLogger.getLogger();
+	
 	@Before
 	public void startAds() {
 		ads.open();
@@ -20,12 +25,12 @@ public class AdsDeviceInfoUnitTest {
 		try {
 			AdsDeviceInfo adsDeviceInfo = ads.readDeviceInfo();
 			
-			System.out.println(adsDeviceInfo.getDeviceName());
-			System.out.println(adsDeviceInfo.getMajorVersion());
-			System.out.println(adsDeviceInfo.getMinorVersion());
-			System.out.println(adsDeviceInfo.getBuildVersion());
+			logger.info("DeviceName  : " + adsDeviceInfo.getDeviceName());
+			logger.info("MajorVersion: " + adsDeviceInfo.getMajorVersion());
+			logger.info("MinorVersion: " + adsDeviceInfo.getMinorVersion());
+			logger.info("DeviceInfo  : " + adsDeviceInfo.getBuildVersion());
 		} catch (AdsException e) {
-			System.out.println(e.getAdsErrorMessage());
+			logger.info(e.getAdsErrorMessage());
 		}
 	}
 	

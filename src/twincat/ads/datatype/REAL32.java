@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.enums.AdsError;
-import twincat.ads.enums.DataType;
+import twincat.ads.constants.AdsError;
+import twincat.ads.constants.AdsDataType;
 import twincat.ads.wrapper.Variable;
 
 public class REAL32 extends Variable {
@@ -14,15 +14,15 @@ public class REAL32 extends Variable {
 	/*************************/
 
 	public REAL32(Ads ads, int symbolHandle) {
-		super(ads, DataType.REAL32.size, symbolHandle);
+		super(ads, AdsDataType.REAL32.size, symbolHandle);
 	}
 
 	public REAL32(Ads ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, DataType.REAL32.size, indexGroup, indexOffset);
+		super(ads, AdsDataType.REAL32.size, indexGroup, indexOffset);
 	}
 	
 	public REAL32(Ads ads, String symbolName) throws AdsException {
-		super(ads, DataType.REAL32.size, ads.readHandleOfSymbolName(symbolName));
+		super(ads, AdsDataType.REAL32.size, ads.readHandleOfSymbolName(symbolName));
 	}
 	
 	/*************************/
@@ -30,8 +30,8 @@ public class REAL32 extends Variable {
 	/*************************/
 
 	@Override
-	public DataType getDataType() {
-		return DataType.REAL32;
+	public AdsDataType getDataType() {
+		return AdsDataType.REAL32;
 	}
 
 	@Override
@@ -132,14 +132,14 @@ public class REAL32 extends Variable {
 	/*************************/
 
 	public static final float arrayToValue(byte[] data) {
-		if (data.length != DataType.REAL32.size) return 0;
+		if (data.length != AdsDataType.REAL32.size) return 0;
 		ByteBuffer byteBuffer = ByteBuffer.wrap(data);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		return byteBuffer.getFloat();
 	}
 
 	public static final byte[] valueToArray(float data) {
-		ByteBuffer byteBuffer = ByteBuffer.allocate(DataType.REAL32.size);
+		ByteBuffer byteBuffer = ByteBuffer.allocate(AdsDataType.REAL32.size);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		byteBuffer.putInt(Float.floatToRawIntBits(data));
 		return byteBuffer.array();
