@@ -8,15 +8,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import twincat.ads.Ads;
+import twincat.ads.AdsDataTypeInfo;
 import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
-<<<<<<< HEAD
-import twincat.ads.container.AdsSymbolInfo;
-=======
 import twincat.ads.AdsSymbolInfo;
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 
-public class AdsSymbolInfoListUnitTest {
+public class AdsSymbolTableUnitTest {
     Ads ads = new Ads();
     Logger logger = AdsLogger.getLogger();
 
@@ -25,20 +22,12 @@ public class AdsSymbolInfoListUnitTest {
         ads.open();
     }
 
+    @SuppressWarnings("unused")
     @Test
-<<<<<<< HEAD
-    public void adsSymbolInfoListUnitTest() {
-=======
-    public void adsSymbolInfoTableUnitTest() {
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
+    public void adsDataTypeInfoTableUnitTest() {
         try {
             List<AdsSymbolInfo> symbolInfoList = ads.readSymbolInfoList();
-
-            for (AdsSymbolInfo symbolInfo : symbolInfoList) {
-                logger.info("SymbolName    : " + symbolInfo.getSymbolName());
-                logger.info("SymbolDataType: " + symbolInfo.getDataType());
-                logger.info("SymbolType    : " + symbolInfo.getType());
-            }
+            List<AdsDataTypeInfo> dataTypeInfoList = ads.readDataTypeInfoList();
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
         }

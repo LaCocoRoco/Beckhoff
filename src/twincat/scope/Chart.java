@@ -141,10 +141,15 @@ public class Chart extends Observable {
 				updateGraphic();
 				updateObserver();
 			} catch (Exception e) {
+<<<<<<< HEAD
                 StringWriter stringWriter = new StringWriter();
                 PrintWriter printWriter = new PrintWriter(stringWriter);
                 e.printStackTrace(printWriter);
                 logger.severe("Exception: " + stringWriter.toString());
+=======
+			    Logger logger = AdsLogger.getLogger();
+				logger.severe(e.getMessage());
+>>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 			}
 		}
 	};

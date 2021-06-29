@@ -47,14 +47,21 @@ public enum AdsDataTypeFlag {
     /*************************/
       
     public static final AdsDataTypeFlag getByValue(int value) {
+<<<<<<< HEAD
         for (AdsDataTypeFlag dataTypeFlag : AdsDataTypeFlag.values()) {
             if (dataTypeFlag.value == value) {
                 return dataTypeFlag;
+=======
+        for (AdsDataTypeFlag dataType : AdsDataTypeFlag.values()) {
+            if (dataType.value == value) {
+                return dataType;
+>>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
             }
         }
         
         return AdsDataTypeFlag.UNKNOWN;
     } 
+<<<<<<< HEAD
    
     public static final AdsDataTypeFlag getByString(String value) {
         for (AdsDataTypeFlag dataTypeFlag : AdsDataTypeFlag.values()) {
@@ -64,4 +71,14 @@ public enum AdsDataTypeFlag {
         }
         return AdsDataTypeFlag.UNKNOWN;
     }   
+=======
+    
+    public static final AdsDataTypeFlag getByString(String value) {
+        try {
+            return AdsDataTypeFlag.valueOf(value);
+        } catch (IllegalArgumentException e) { 
+            return AdsDataTypeFlag.UNKNOWN;
+        }
+    }
+>>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 }
