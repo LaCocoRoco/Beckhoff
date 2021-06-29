@@ -12,13 +12,8 @@ import org.junit.Test;
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
-<<<<<<< HEAD
 import twincat.ads.constants.AdsIndexGroup;
 import twincat.ads.container.AdsUploadInfo;
-=======
-import twincat.ads.AdsUploadInfo;
-import twincat.ads.constants.AdsIndexGroup;
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 import twincat.ads.datatype.STRING;
 
 public class AdsExportUnitTest {

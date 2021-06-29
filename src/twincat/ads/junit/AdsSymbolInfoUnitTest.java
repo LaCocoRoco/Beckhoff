@@ -9,11 +9,7 @@ import org.junit.Test;
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
-<<<<<<< HEAD
 import twincat.ads.container.AdsSymbolInfo;
-=======
-import twincat.ads.AdsSymbolInfo;
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 
 public class AdsSymbolInfoUnitTest {
 	Ads ads = new Ads();
@@ -27,13 +23,7 @@ public class AdsSymbolInfoUnitTest {
 	@Test
 	public void adsSymbolInfoUnitTest() {
 		try {		
-<<<<<<< HEAD
 			AdsSymbolInfo symbolInfo = ads.readSymbolInfoBySymbolName(".junit_time");
-=======
-			String symbolName = ".junit_fb";
-
-			AdsSymbolInfo symbolInfo = ads.readSymbolInfoByName(symbolName);
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 			
 			logger.info("InfoLength : " + symbolInfo.getLength());
 			logger.info("IndexGroup : " + symbolInfo.getIndexGroup());

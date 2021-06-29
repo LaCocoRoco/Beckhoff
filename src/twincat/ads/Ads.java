@@ -8,14 +8,11 @@ import java.util.List;
 import twincat.ads.constants.AdsDataType;
 import twincat.ads.constants.AdsError;
 import twincat.ads.constants.AdsIndexGroup;
-<<<<<<< HEAD
 import twincat.ads.container.AdsDataTypeInfo;
 import twincat.ads.container.AdsDeviceInfo;
 import twincat.ads.container.AdsDeviceState;
 import twincat.ads.container.AdsSymbolInfo;
 import twincat.ads.container.AdsUploadInfo;
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 import twincat.ads.datatype.BIT;
 import twincat.ads.datatype.BOOL;
 import twincat.ads.datatype.BYTE;
@@ -132,11 +129,7 @@ public class Ads extends AdsNative {
         readWrite(AdsIndexGroup.SYMBOL_VALUE_BY_NAME.value, 0, readBuffer, writeBuffer);
     }
 
-<<<<<<< HEAD
     public AdsSymbolInfo readSymbolInfoBySymbolName(String symbolName) throws AdsException {
-=======
-    public AdsSymbolInfo readSymbolInfoByName(String symbolName) throws AdsException {
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
         byte[] writeBuffer = symbolName.getBytes();
         byte[] readBuffer = new byte[AdsIndexGroup.SYMBOL_INFO_BYNAME_EX.size];
         readWrite(AdsIndexGroup.SYMBOL_INFO_BYNAME_EX.value, 0, readBuffer, writeBuffer);
@@ -150,30 +143,14 @@ public class Ads extends AdsNative {
         return new AdsDataTypeInfo(readBuffer);
     }
 
-<<<<<<< HEAD
     public List<AdsDataTypeInfo> readDataTypeInfoList() throws AdsException {
         AdsUploadInfo uploadInfo = readUploadInfo();
 
-=======
-    public AdsUploadInfo readUploadInfo() throws AdsException {
-        byte[] uploadInfoBuffer = new byte[AdsIndexGroup.SYMBOL_UPLOAD_INFO_2.size];
-        read(AdsIndexGroup.SYMBOL_UPLOAD_INFO_2.value, 0, uploadInfoBuffer);
-        return new AdsUploadInfo(uploadInfoBuffer);
-    }
-
-    public List<AdsDataTypeInfo> readDataTypeInfoList() throws AdsException {
-        AdsUploadInfo uploadInfo = readUploadInfo();
-        
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
         byte[] readBufferDataTypeUpload = new byte[uploadInfo.getDataTypeLength()];
         read(AdsIndexGroup.SYMBOL_DATA_TYPE_UPLOAD.value, 0, readBufferDataTypeUpload);
         ByteBuffer dataTypeUploadByteBuffer = ByteBuffer.wrap(readBufferDataTypeUpload);
         dataTypeUploadByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
         List<AdsDataTypeInfo> dataTypeInfoList = new ArrayList<AdsDataTypeInfo>();
 
         int index = 0;
@@ -184,7 +161,6 @@ public class Ads extends AdsNative {
         }
 
         return dataTypeInfoList;
-<<<<<<< HEAD
     }
 
     public List<AdsSymbolInfo> readSymbolInfoList() throws AdsException {
@@ -265,64 +241,6 @@ public class Ads extends AdsNative {
                 return new STRING(this, idxGrp, idxOffs);
             default:
                 return null;
-=======
-    }
-    
-    public List<AdsSymbolInfo> readSymbolInfoList() throws AdsException {
-        AdsUploadInfo uploadInfo = readUploadInfo();
-
-        byte[] uploadBuffer = new byte[uploadInfo.getSymbolLength()];
-        read(AdsIndexGroup.SYMBOL_UPLOAD.value, 0, uploadBuffer);
-        ByteBuffer uploadByteBuffer = ByteBuffer.wrap(uploadBuffer);
-        uploadByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-
-        List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
-
-        int index = 0;
-        for (int i = 0; i < uploadInfo.getSymbolCount(); i++) {
-            AdsSymbolInfo symbolInfo = new AdsSymbolInfo(uploadBuffer, index);
-            symbolInfoList.add(symbolInfo);
-            index += symbolInfo.getLength();
-        }
-
-        return symbolInfoList;
-    }
-
-    public List<AdsSymbolInfo> readSymbolInfoOfArrayType(AdsSymbolInfo symbolInfo) throws AdsException {
-        List<String> indexList = getSymbolNameOfArrayTypeBySymbolInfo(symbolInfo);
-        List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
-        for (String index : indexList) {
-            symbolInfoList.add(readSymbolInfoByName(index));
-        }
-
-        return symbolInfoList;
-    }
-
-    public List<AdsSymbolInfo> readSymbolInfoOfBigType(AdsSymbolInfo symbolInfo) {
-
-        return null;
-    }
-
-    /*************************/
-    /******** private ********/
-    /*************************/
-
-    // TODO : move to class
-    private List<String> getSymbolNameOfArrayTypeBySymbolInfo(AdsSymbolInfo symbolInfo) {
-        String name = symbolInfo.getSymbolName();
-        String type = symbolInfo.getType();
-
-        int beg = type.indexOf("[");
-        int end = type.indexOf("]");
-
-        String[] data = type.substring(beg + 1, end).split(",");
-        List<Point> dimension = new ArrayList<Point>();
-        for (String position : data) {
-            String[] size = position.replace(" ", "").split("\\..");
-            int x = Integer.valueOf(size[0]);
-            int y = Integer.valueOf(size[1]);
-            dimension.add(new Point(x, y));
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
         }
     }
 
@@ -331,7 +249,6 @@ public class Ads extends AdsNative {
         AdsDataType dataType = symbolInfo.getDataType();
         short dataSize = (short) symbolInfo.getDataSize();
 
-<<<<<<< HEAD
         switch (dataType) {
             case BIT:
                 return new BIT(this, symbolName);
@@ -381,135 +298,4 @@ public class Ads extends AdsNative {
                 return null;
         }
     }
-=======
-        return dimensionalArrayToSymbolNameList(dimension, name, 0);
-    }
-    
-    // TODO : move to class
-    private List<String> dimensionalArrayToSymbolNameList(List<Point> dimension, String name, int index) {
-        List<String> data = new ArrayList<>();
-        Point range = dimension.get(index);
-        String end = index == 0 ? name + "[" : "";
-        for (int i = range.x; i <= range.y; i++) {
-            if (dimension.size() > index + 1) {
-                for (String r : dimensionalArrayToSymbolNameList(dimension, name, index + 1))
-                    data.add(end + Integer.toString(i) + "," + r);
-            } else {
-                data.add(end + Integer.toString(i) + "]");
-            }
-        }
-
-        return data;
-    }
-
-    /*************************/
-    /******** mapping ********/
-    /*************************/
-
-    public Variable getVariableByAddress(AdsDataType dataType, int idxGrp, int idxOffs) throws AdsException {
-        switch (dataType) {
-            case BIT:
-                return new BIT(this, idxGrp, idxOffs);
-            case BOOL:
-                return new BOOL(this, idxGrp, idxOffs);
-            case INT8:
-                return new INT8(this, idxGrp, idxOffs);
-            case SINT:
-                return new SINT(this, idxGrp, idxOffs);
-            case INT16:
-                return new INT16(this, idxGrp, idxOffs);
-            case INT:
-                return new INT(this, idxGrp, idxOffs);
-            case UINT8:
-                return new UINT8(this, idxGrp, idxOffs);
-            case USINT:
-                return new USINT(this, idxGrp, idxOffs);
-            case BYTE:
-                return new BYTE(this, idxGrp, idxOffs);
-            case UINT16:
-                return new UINT16(this, idxGrp, idxOffs);
-            case UINT:
-                return new UINT(this, idxGrp, idxOffs);
-            case WORD:
-                return new WORD(this, idxGrp, idxOffs);
-            case INT32:
-                return new INT32(this, idxGrp, idxOffs);
-            case DINT:
-                return new DINT(this, idxGrp, idxOffs);
-            case UINT32:
-                return new UINT32(this, idxGrp, idxOffs);
-            case UDINT:
-                return new UDINT(this, idxGrp, idxOffs);
-            case DWORD:
-                return new DWORD(this, idxGrp, idxOffs);
-            case REAL32:
-                return new REAL32(this, idxGrp, idxOffs);
-            case REAL:
-                return new REAL(this, idxGrp, idxOffs);
-            case REAL64:
-                return new REAL64(this, idxGrp, idxOffs);
-            case LREAL:
-                return new LREAL(this, idxGrp, idxOffs);
-            case STRING:
-                return new STRING(this, idxGrp, idxOffs);
-            default:
-                return null;
-        }
-    }
-
-    public Variable getVariableBySymbolName(String symbolName) throws AdsException {
-        AdsSymbolInfo symbolInfo = readSymbolInfoByName(symbolName);
-        AdsDataType dataType = symbolInfo.getDataType();
-        short dataSize = (short) symbolInfo.getDataSize();
-
-        switch (dataType) {
-            case BIT:
-                return new BIT(this, symbolName);
-            case BOOL:
-                return new BOOL(this, symbolName);
-            case INT8:
-                return new INT8(this, symbolName);
-            case SINT:
-                return new SINT(this, symbolName);
-            case INT16:
-                return new INT16(this, symbolName);
-            case INT:
-                return new INT(this, symbolName);
-            case UINT8:
-                return new UINT8(this, symbolName);
-            case USINT:
-                return new USINT(this, symbolName);
-            case BYTE:
-                return new BYTE(this, symbolName);
-            case UINT16:
-                return new UINT16(this, symbolName);
-            case UINT:
-                return new UINT(this, symbolName);
-            case WORD:
-                return new WORD(this, symbolName);
-            case INT32:
-                return new INT32(this, symbolName);
-            case DINT:
-                return new DINT(this, symbolName);
-            case UINT32:
-                return new UINT32(this, symbolName);
-            case UDINT:
-                return new UDINT(this, symbolName);
-            case DWORD:
-                return new DWORD(this, symbolName);
-            case REAL32:
-                return new REAL32(this, symbolName);
-            case REAL:
-                return new REAL(this, symbolName);
-            case REAL64:
-                return new REAL64(this, symbolName);
-            case LREAL:
-                return new LREAL(this, symbolName);
-            case STRING:
-                return new STRING(this, symbolName, dataSize);
-            default:
-                return null;
-        }
-    }
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 }

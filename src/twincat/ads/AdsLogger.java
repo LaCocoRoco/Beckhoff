@@ -1,15 +1,10 @@
 package twincat.ads;
 
-<<<<<<< HEAD
 import java.io.IOException;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
-=======
-import java.util.Date;
-import java.util.Enumeration;
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
@@ -20,7 +15,6 @@ import java.util.logging.StreamHandler;
 public final class AdsLogger {
     /*************************/
     /** constant attributes **/
-<<<<<<< HEAD
     /*************************/
 
     public static final String LOGGER_NAME = "AdsLogger";
@@ -37,24 +31,11 @@ public final class AdsLogger {
     /** public static final **/
     /*************************/
 
-=======
-    /*************************/     
-    
-    public static final String LOGGER_NAME = "AdsLogger";
-
-    public static final String LOGGER_FORMATTER = "[%1$tT] %2$s %n";
-    
-    /*************************/
-    /** public static final **/
-    /*************************/    
-    
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
     public static final Logger getLogger() {
         Enumeration<String> loggerNameList = LogManager.getLogManager().getLoggerNames();
 
         while (loggerNameList.hasMoreElements()) {
             String loggerName = loggerNameList.nextElement();
-<<<<<<< HEAD
 
             if (loggerName.equals(LOGGER_NAME)) {
                 return Logger.getLogger(LOGGER_NAME);
@@ -69,19 +50,6 @@ public final class AdsLogger {
 
         // logger formatter
         SimpleFormatter consoleFormatter = new SimpleFormatter() {
-=======
-            
-            if (loggerName.equals(LOGGER_NAME)) {
-                return Logger.getLogger(LOGGER_NAME);
-            }      
-        }
-
-        LogManager.getLogManager().reset();
-        Logger.getGlobal().setLevel(Level.OFF);
-        Logger logger = Logger.getLogger(LOGGER_NAME);
-
-        SimpleFormatter simpleFormatter = new SimpleFormatter() {
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
             @Override
             public synchronized String format(LogRecord logRecord) {
                 Date time = new Date(logRecord.getMillis());
@@ -90,19 +58,14 @@ public final class AdsLogger {
             }
         };
 
-<<<<<<< HEAD
         // console logger
         StreamHandler consoleHandler = new StreamHandler(System.out, consoleFormatter) {
-=======
-        StreamHandler streamHandler = new StreamHandler(System.out, simpleFormatter) {
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
             @Override
             public synchronized void publish(LogRecord record) {
                 super.publish(record);
                 super.flush();
             }
         };
-<<<<<<< HEAD
 
         logger.addHandler(consoleHandler);
 
@@ -136,12 +99,4 @@ public final class AdsLogger {
         return (SimpleFormatter) handlers[0].getFormatter();
     }
     
-=======
-        
-        logger.addHandler(streamHandler);
-        
-        return logger;
-    }
-
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 }

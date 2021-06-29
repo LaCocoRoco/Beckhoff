@@ -65,7 +65,6 @@ public enum AdsDataType {
         
         return AdsDataType.UNKNOWN;
     } 
-<<<<<<< HEAD:src/twincat/ads/constants/AdsDataType.java
 
     public static final AdsDataType getByString(String value) {
         for (AdsDataType dataType : AdsDataType.values()) {
@@ -75,14 +74,4 @@ public enum AdsDataType {
         }
         return AdsDataType.UNKNOWN;
     }	
-=======
-	
-	public static final AdsDataType getByString(String value) {
-		try {
-			return AdsDataType.valueOf(value);
-		} catch (IllegalArgumentException e) { 
-			return AdsDataType.UNKNOWN;
-		}
-	}
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4:src/twincat/ads/enums/DataType.java
 }

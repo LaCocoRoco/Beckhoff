@@ -1,9 +1,6 @@
 package twincat.test;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,12 +9,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-<<<<<<< HEAD
 import twincat.ads.AdsDataTypeInfo;
 import twincat.ads.constants.AdsDataType;
 
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 public class Backup {
 
     public String getTreePathSymbolName(TreePath treePath) {
@@ -158,7 +152,6 @@ public class Backup {
     } else  {
         symbolTable.add(symbolInfo); 
     }
-<<<<<<< HEAD
     
     /********************************/ 
     /********************************/
@@ -247,6 +240,4 @@ public class Backup {
 
         return dataTypeNameList;
     }
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 }

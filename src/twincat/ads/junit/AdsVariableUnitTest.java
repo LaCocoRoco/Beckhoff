@@ -59,11 +59,7 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) (valueMax ? 1 : 0);
 			assert variableMax.toString().equals(Boolean.toString(valueMax));	
 		} catch (AdsException e) {
-<<<<<<< HEAD
 			logger.info("BIT   : " + e.getAdsErrorMessage());
-=======
-			logger.info("BIT: " + e.getAdsErrorMessage());
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 		}
 	}
 
@@ -104,11 +100,7 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) valueMax;
 			assert variableMax.toString().equals(Byte.toString(valueMax));			
 		} catch (AdsException e) {
-<<<<<<< HEAD
 			logger.info("INT8  : " + e.getAdsErrorMessage());
-=======
-			logger.info("INT8: " + e.getAdsErrorMessage());
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 		}
 	}
 
@@ -149,11 +141,7 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) valueMax;
 			assert variableMax.toString().equals(Integer.toString(valueMax));			
 		} catch (AdsException e) {
-<<<<<<< HEAD
 			logger.info("INT16 : " + e.getAdsErrorMessage());
-=======
-			logger.info("INT16: " + e.getAdsErrorMessage());
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 		}
 	}
 
@@ -194,11 +182,7 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) valueMax;
 			assert variableMax.toString().equals(Integer.toString(valueMax));			
 		} catch (AdsException e) {
-<<<<<<< HEAD
 			logger.info("INT32 : " + e.getAdsErrorMessage());
-=======
-			logger.info("INT32: " + e.getAdsErrorMessage());
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 		}
 	}
 
@@ -239,11 +223,7 @@ public class AdsVariableUnitTest {
 			assert variableMax.toDouble()  == (double) valueMax;
 			assert variableMax.toString().equals(Short.toString(valueMax));	
 		} catch (AdsException e) {
-<<<<<<< HEAD
 			logger.info("INT8  : " + e.getAdsErrorMessage());
-=======
-			logger.info("INT8: " + e.getAdsErrorMessage());
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 		}
 	}
 

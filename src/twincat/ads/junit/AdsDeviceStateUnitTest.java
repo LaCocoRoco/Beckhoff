@@ -10,10 +10,7 @@ import twincat.ads.Ads;
 import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
 import twincat.ads.constants.AdsStatus;
-<<<<<<< HEAD
 import twincat.ads.container.AdsDeviceState;
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 
 public class AdsDeviceStateUnitTest {
 	Ads ads = new Ads();

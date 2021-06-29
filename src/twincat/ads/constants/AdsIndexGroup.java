@@ -66,15 +66,9 @@ public enum AdsIndexGroup {
     /*************************/
       
     public static final AdsIndexGroup getByValue(int value) {
-<<<<<<< HEAD
         for (AdsIndexGroup indexGroup : AdsIndexGroup.values()) {
             if (indexGroup.value == value) {
                 return indexGroup;
-=======
-        for (AdsIndexGroup dataType : AdsIndexGroup.values()) {
-            if (dataType.value == value) {
-                return dataType;
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
             }
         }
         
@@ -82,7 +76,6 @@ public enum AdsIndexGroup {
     }
     
     public static final AdsIndexGroup getByString(String value) {
-<<<<<<< HEAD
         for (AdsIndexGroup indexGroup : AdsIndexGroup.values()) {
             if (indexGroup.name().equalsIgnoreCase(value)) {
                 return indexGroup;
@@ -90,12 +83,4 @@ public enum AdsIndexGroup {
         }
         return AdsIndexGroup.UNKNOWN;
     } 
-=======
-        try {
-            return AdsIndexGroup.valueOf(value);
-        } catch (IllegalArgumentException e) { 
-            return AdsIndexGroup.UNKNOWN;
-        }
-    }
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 }

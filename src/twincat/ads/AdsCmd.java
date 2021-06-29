@@ -11,13 +11,10 @@ import java.util.logging.Logger;
 
 import twincat.ads.constants.AdsError;
 import twincat.ads.constants.AmsPort;
-<<<<<<< HEAD:src/twincat/ads/AdsCmd.java
 import twincat.ads.container.AdsDeviceInfo;
 import twincat.ads.container.AdsDeviceState;
 import twincat.ads.container.AdsSymbol;
 import twincat.ads.container.AdsSymbolInfo;
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4:src/twincat/app/AdsCmd.java
 import twincat.ads.wrapper.Variable;
 
 public class AdsCmd {
@@ -46,21 +43,14 @@ public class AdsCmd {
     private static final String PARAMETER_PING  = "ping";
 
     private static final String PARAMETER_LIST  = "list";
-<<<<<<< HEAD:src/twincat/ads/AdsCmd.java
     
     private static final String PARAMETER_INFO  = "info";
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4:src/twincat/app/AdsCmd.java
 
     private static final String PARAMETER_EMPTY = "empty";
 
     private static final String CMD_PATTERN     = "\\s+";
     
-<<<<<<< HEAD:src/twincat/ads/AdsCmd.java
     private static final int CMD_ADS_TIMEOUT    = 200;
-=======
-    private static final int CMD_ADS_TIMEOUT    = 1000;
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4:src/twincat/app/AdsCmd.java
     
     /*************************/
     /*** local attributes ****/
@@ -87,14 +77,10 @@ public class AdsCmd {
                 	try {
                 		cmdDataHandler(commando);
                 	} catch (Exception e) {
-<<<<<<< HEAD:src/twincat/ads/AdsCmd.java
                 	    StringWriter stringWriter = new StringWriter();
                 	    PrintWriter printWriter = new PrintWriter(stringWriter);
                 	    e.printStackTrace(printWriter);
                 		logger.severe("Exception: " + stringWriter.toString());
-=======
-                		logger.warning("Error: " + e.getMessage());
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4:src/twincat/app/AdsCmd.java
                 	} finally {
                 		scheduleTime = 0;
                 	}  
@@ -261,25 +247,6 @@ public class AdsCmd {
             ads.close();
         } catch (AdsException e) {
             logger.info("Error: " + e.getAdsErrorMessage());
-<<<<<<< HEAD:src/twincat/ads/AdsCmd.java
-=======
-        }
-    }
-
-    private void cmdAdsNetId(String parameter) {
-        switch (parameter) {
-            case PARAMETER_EMPTY:
-                cmdAdsNetIdGet();
-                break;
-
-            case PARAMETER_LOCAL:
-                cmdAdsNetIdLocal();
-                break;
-                
-            default:
-                cmdAdsNetIdSet(parameter);
-                break;
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4:src/twincat/app/AdsCmd.java
         }
     }
 
@@ -309,37 +276,10 @@ public class AdsCmd {
 
     private void cmdAdsNetIdSet(String par1) {
         try {
-<<<<<<< HEAD:src/twincat/ads/AdsCmd.java
             ads.setAmsNetId(par1);
             logger.info(par1);
         } catch (IllegalArgumentException e) {
             logger.info("Net Id does not match pattern");
-=======
-            ads.setAmsNetId(data);
-            logger.info(data);
-        } catch (IllegalArgumentException e) {
-            logger.info("Net Id does not match pattern");
-        }
-    }
-
-    private void cmdAmsPort(String parameter) {
-        switch (parameter) {
-            case PARAMETER_LIST:
-                cmdAmsPortList();
-                break;
-
-            case PARAMETER_PING:
-                cmdAmsPortPing();
-                break;
-
-            case PARAMETER_EMPTY:
-                cmdAmsPortGet();
-                break;
-
-            default:
-                cmdAmsPortSet(parameter);
-                break;
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4:src/twincat/app/AdsCmd.java
         }
     }
 
@@ -355,10 +295,7 @@ public class AdsCmd {
         try {
             ads.open();
             ads.setTimeout(CMD_ADS_TIMEOUT);
-<<<<<<< HEAD:src/twincat/ads/AdsCmd.java
             AmsPort cachPort = ads.getAmsPort();
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4:src/twincat/app/AdsCmd.java
             
             for (AmsPort amsPort : AmsPort.values()) {
                 if (!amsPort.equals(AmsPort.UNKNOWN)) {
@@ -394,11 +331,7 @@ public class AdsCmd {
 
     private void cmdAmsPortSet(String data) {
         AmsPort amsPort = AmsPort.getByString(data);
-<<<<<<< HEAD:src/twincat/ads/AdsCmd.java
 
-=======
-        
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4:src/twincat/app/AdsCmd.java
         if (!amsPort.equals(AmsPort.UNKNOWN)) {
             ads.setAmsPort(amsPort);
             logger.info(amsPort.toString());
@@ -409,7 +342,6 @@ public class AdsCmd {
         try {
             ads.open();
             ads.setTimeout(CMD_ADS_TIMEOUT);
-<<<<<<< HEAD:src/twincat/ads/AdsCmd.java
    
             AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads);
             
@@ -426,13 +358,6 @@ public class AdsCmd {
                 String type = String.format("%-8s", symbol.getType().toString());
                 logger.info("Type: " + type + "| Name: " + name);        
             } 
-=======
-            
-            List<AdsSymbolInfo> symbolInfoList = ads.readSymbolInfoList();
-            
-            for (AdsSymbolInfo symbolInfo : symbolInfoList)
-                logger.info(symbolInfo.getSymbolName());
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4:src/twincat/app/AdsCmd.java
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
         }
@@ -449,11 +374,7 @@ public class AdsCmd {
             ads.open();
             ads.setTimeout(CMD_ADS_TIMEOUT);
             
-<<<<<<< HEAD:src/twincat/ads/AdsCmd.java
             AdsSymbolInfo symbolInfo = ads.readSymbolInfoBySymbolName(symbolNanme);
-=======
-            AdsSymbolInfo symbolInfo = ads.readSymbolInfoByName(symbolNanme);
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4:src/twincat/app/AdsCmd.java
             logger.info("Name:        " + symbolInfo.getSymbolName());
             logger.info("DataType:    " + symbolInfo.getDataType());
             logger.info("DataSize:    " + symbolInfo.getDataSize());

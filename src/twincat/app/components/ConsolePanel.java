@@ -7,13 +7,8 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-<<<<<<< HEAD
-=======
-import java.util.Date;
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
 
 import javax.swing.JPanel;
@@ -23,10 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.text.BadLocationException;
-<<<<<<< HEAD
 
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 import twincat.ads.AdsCmd;
 import twincat.ads.AdsLogger;
 
@@ -48,13 +40,9 @@ public class ConsolePanel extends JPanel {
     /*************************/
 
     private String clipboard = new String();
-<<<<<<< HEAD
     
     private final Logger logger = AdsLogger.getLogger();
     
-=======
-
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
     /*************************/
     /****** constructor ******/
     /*************************/
@@ -66,20 +54,7 @@ public class ConsolePanel extends JPanel {
         textArea.setWrapStyleWord(false);
         textArea.setEditable(false);
         textArea.setFont(new Font(FONT_FAMILY, Font.PLAIN, FONT_SIZE));
-<<<<<<< HEAD
         
-=======
-
-        SimpleFormatter consoleFormatter = new SimpleFormatter() {
-            @Override
-            public synchronized String format(LogRecord logRecord) {
-                Date time = new Date(logRecord.getMillis());
-                String message = logRecord.getMessage();
-                return String.format(AdsLogger.LOGGER_FORMATTER, time, message);
-            }
-        };
-
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
         StreamHandler consoleHandler = new StreamHandler() {
             @Override
             public synchronized void publish(LogRecord record) {
@@ -97,15 +72,9 @@ public class ConsolePanel extends JPanel {
                 textArea.setCaretPosition(textArea.getDocument().getLength());
             }
         };
-<<<<<<< HEAD
         
         consoleHandler.setFormatter(AdsLogger.getFormatter());
 
-=======
-        consoleHandler.setFormatter(consoleFormatter);
-
-        Logger logger = AdsLogger.getLogger();
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
         logger.addHandler(consoleHandler);
 
         JScrollPane consolePanel = new JScrollPane(textArea);

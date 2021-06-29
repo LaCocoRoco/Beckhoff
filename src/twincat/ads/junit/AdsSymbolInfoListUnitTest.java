@@ -10,11 +10,7 @@ import org.junit.Test;
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
-<<<<<<< HEAD
 import twincat.ads.container.AdsSymbolInfo;
-=======
-import twincat.ads.AdsSymbolInfo;
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 
 public class AdsSymbolInfoListUnitTest {
     Ads ads = new Ads();
@@ -26,11 +22,7 @@ public class AdsSymbolInfoListUnitTest {
     }
 
     @Test
-<<<<<<< HEAD
     public void adsSymbolInfoListUnitTest() {
-=======
-    public void adsSymbolInfoTableUnitTest() {
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
         try {
             List<AdsSymbolInfo> symbolInfoList = ads.readSymbolInfoList();
 

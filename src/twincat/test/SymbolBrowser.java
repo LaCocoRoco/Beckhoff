@@ -14,24 +14,12 @@ import javax.swing.JTree;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
-<<<<<<< HEAD
 import javax.swing.tree.TreeNode;
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 import javax.swing.tree.TreePath;
 
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-<<<<<<< HEAD
 import twincat.ads.container.AdsSymbolInfo;
-=======
-import twincat.ads.AdsSymbolInfo;
-
-/* TODO : rework with ads symbol info
- *        add data to tree
- *        on click load info array if necessary
- */
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 
 public class SymbolBrowser extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -40,11 +28,7 @@ public class SymbolBrowser extends JFrame {
 		new SymbolBrowser();
 	}
 
-<<<<<<< HEAD
 	public DefaultMutableTreeNode addResourceToSymbolTree(DefaultMutableTreeNode rootNode, String value, AdsSymbolInfo symbol) {
-=======
-	public DefaultMutableTreeNode addResourceToSymbolTree(DefaultMutableTreeNode rootNode, String value) {
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 		for (int i = 0; i < rootNode.getChildCount(); i++) {
 			DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) rootNode.getChildAt(i);
 
@@ -56,10 +40,7 @@ public class SymbolBrowser extends JFrame {
 		}
 
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode(value);
-<<<<<<< HEAD
 		node.setUserObject(symbol);
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 		rootNode.add(node);
 		return node;
 	}
@@ -72,40 +53,13 @@ public class SymbolBrowser extends JFrame {
 
 			DefaultMutableTreeNode node = root;
 			for (String resource : resourceList) {
-<<<<<<< HEAD
 				node = addResourceToSymbolTree(node, resource, symbol);
-=======
-				node = addResourceToSymbolTree(node, resource);
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 			}
 		}
 
 		return root;
 	}
 
-<<<<<<< HEAD
-=======
-	
-	
-	
-	
-	
-    public DefaultMutableTreeNode getSymbolInfoTreeTable(List<AdsSymbolInfo> symbolInfoList) {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-
-        for (AdsSymbolInfo symbol : symbolInfoList) {
-            String[] resourceList = symbol.getSymbolName().split("\\.");
-
-            DefaultMutableTreeNode node = root;
-            for (String resource : resourceList) {
-                node = addResourceToSymbolTree(node, resource);
-            }
-        }
-
-        return root;
-    }
-	
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 	public SymbolBrowser() throws AdsException {
 		// create ads
 		Ads ads = new Ads();
@@ -114,17 +68,10 @@ public class SymbolBrowser extends JFrame {
 		ads.setAmsNetId(amsNetId);
 		
 		// get symbol table
-<<<<<<< HEAD
 		List<AdsSymbolInfo> symbolInfoList = ads.readSymbolInfoList();
 
 		// symbol table to tree
 		DefaultMutableTreeNode symbolTableTreeNode = createTreeNodeFromSymbolTable(amsNetId, symbolInfoList);
-=======
-		List<AdsSymbolInfo> symbolInfoTable = ads.readSymbolInfoList();
-
-		// symbol table to tree
-		DefaultMutableTreeNode symbolTableTreeNode = createTreeNodeFromSymbolTable(amsNetId, symbolInfoTable);
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 
 		// read tree element
 		JTree jTree = new JTree(symbolTableTreeNode);
@@ -136,14 +83,11 @@ public class SymbolBrowser extends JFrame {
 					int x = mouseEvent.getX();
 					int y = mouseEvent.getY();
 					TreePath treePath = jTree.getPathForLocation(x, y);
-<<<<<<< HEAD
 					TreeNode treeNode = (TreeNode) treePath.getLastPathComponent();
 					Object[] resourceList = treePath.getPath();
 					Object test = resourceList[0];
 					
 					System.out.println(resourceList[0]);
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 				}
 			}
 		});

@@ -9,10 +9,7 @@ import org.junit.Test;
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
-<<<<<<< HEAD
 import twincat.ads.container.AdsDeviceInfo;
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 
 public class AdsDeviceInfoUnitTest {
 	Ads ads = new Ads();

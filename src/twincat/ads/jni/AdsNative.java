@@ -18,11 +18,8 @@ import twincat.ads.constants.AdsError;
 import twincat.ads.constants.AdsStatus;
 import twincat.ads.constants.AmsNetId;
 import twincat.ads.constants.AmsPort;
-<<<<<<< HEAD
 import twincat.ads.container.AdsDeviceInfo;
 import twincat.ads.container.AdsDeviceState;
-=======
->>>>>>> 58a89527366fffdbf90d9364e05771af6ab1f1f4
 
 public class AdsNative {
     /*************************/

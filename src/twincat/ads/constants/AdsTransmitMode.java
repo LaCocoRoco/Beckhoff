@@ -31,20 +31,21 @@ public enum AdsTransmitMode {
 	/*************************/
 	  
     public static final AdsTransmitMode getByValue(int value) {
-        for (AdsTransmitMode dataType : AdsTransmitMode.values()) {
-            if (dataType.value == value) {
-            	return dataType;
+        for (AdsTransmitMode trasmitMode : AdsTransmitMode.values()) {
+            if (trasmitMode.value == value) {
+            	return trasmitMode;
             }
         }
         
         return AdsTransmitMode.UNKNOWN;
     } 
 	
-	public static final AdsTransmitMode getByString(String value) {
-		try {
-			return AdsTransmitMode.valueOf(value);
-		} catch (IllegalArgumentException e) { 
-			return AdsTransmitMode.UNKNOWN;
-		}
-	}
+    public static final AdsTransmitMode getByString(String value) {
+        for (AdsTransmitMode transmitMode : AdsTransmitMode.values()) {
+            if (transmitMode.name().equalsIgnoreCase(value)) {
+                return transmitMode;
+            }
+        }
+        return AdsTransmitMode.UNKNOWN;
+    } 
 }
