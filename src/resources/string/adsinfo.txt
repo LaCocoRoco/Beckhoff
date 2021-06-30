@@ -1,0 +1,21 @@
+Commands:           Description:
+
+ads                 get ads dll version
+info                get device info
+state               get ads state Info
+
+port                get ams port
+port list           get ams port list
+port ping           get ams port states
+port address        set ams port    by address
+
+netid               get net id
+netid local         set net id to local
+netid address       set net id
+
+symbol list         get symbol list
+symbol list name    get symbol list by name
+symbol info name    get symbol info by name
+
+read name           read symbol value by name
+write name value    write symbol value by name

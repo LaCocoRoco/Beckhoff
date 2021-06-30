@@ -12,6 +12,9 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
 
+// TODO : only reset when called from application
+// TODO : simple use of logger in test
+
 public final class AdsLogger {
     /*************************/
     /** constant attributes **/

@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="ScopeBuilder" basedir=".">
-  <property name="name.app"     value="ScopeApp"/>
-  <property name="name.lib"     value="ScopeLib"/>
+<project name="Beckhoff" basedir=".">
+  <property name="build.title"    value="Beckhoff"/>
+  <property name="build.name"     value="beckhoff"/>
+  <property name="build.version"  value="1.0"/>
+  <property name="build.class"    value="twincat.app.ScopeApp"/>
 
-  <property name="app.class"    value="twincat.app.${name.app}"/>
+  <property name="exclude"        value="**/junit/*.java"/>
 
-  <property name="exclude"      value="**/junit/*.java"/>
+  <property name="src.dir"        location="${basedir}/src"/>
+  <property name="src.dir.res"    location="${src.dir}/resources"/>
+  <property name="bin.dir"        location="${basedir}/bin"/>
+  <property name="bin.dir.res"    location="${bin.dir}/resources"/>
+  <property name="build.dir"      location="${basedir}/build"/>
+  <property name="lib.dir"        location="${basedir}/lib"/>
 
-  <property name="src.dir"      location="${basedir}/src"/>
-  <property name="src.dir.res"  location="${src.dir}/resources"/>
-  <property name="bin.dir"      location="${basedir}/bin"/>
-  <property name="bin.dir.res"  location="${bin.dir}/resources"/>
-  <property name="build.dir"    location="${basedir}/build"/>
-  <property name="lib.dir"      location="${basedir}/lib"/>
+  <tstamp>
+      <format property="build.day" pattern="dd.MM.yyyy-HH:mm:ss"  locale="de,DE" />
+  </tstamp>
 
   <path id="libs">
     <fileset dir="${lib.dir}" includes="*.jar"/>
   </path>
 
-  <target name="clean">
-    <delete dir="${bin.dir}"/>
+  <target name="delete">
     <delete dir="${bin.dir}"/>
   </target>
 
-  <target name="init" depends="clean">
+  <target name="mkdir" depends="delete">
     <mkdir dir="${bin.dir}"/>
-    <mkdir dir="${bin.dir.res}"/>
   </target>
 
-  <target name="copy" depends="init">
+  <target name="copy" depends="mkdir">
     <copy todir="${bin.dir.res}">
       <fileset dir="${src.dir.res}"/>
     </copy>
@@ -42,17 +44,14 @@
   </target>
   
   <target name="build" depends="compile">
-    <jar destfile="${build.dir}/${name.lib}.jar" basedir="${bin.dir}">
-      <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
-      <exclude name="${exclude}"/>
-    </jar>
-
-    <manifest file = "MANIFEST.MF">
-      <attribute name = "Main-Class"  value = "${app.class}"/>
-      <attribute name = "Class-Path"  value = "."/>
+    <manifest file="MANIFEST.MF">
+      <attribute name="Title"       value="${build.title}"/>
+      <attribute name="Version"     value="${build.version}"/>
+      <attribute name="Date"        value="${build.day}"/>
+      <attribute name="Main-Class"  value="${build.class}"/>
     </manifest>
 
-    <jar destfile="${build.dir}/${name.app}.jar" basedir="${bin.dir}" manifest="MANIFEST.MF">
+    <jar destfile="${build.dir}/${build.name}.${build.version}.jar" basedir="${bin.dir}" manifest="MANIFEST.MF">
       <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
       <exclude name="${exclude}"/>
     </jar>

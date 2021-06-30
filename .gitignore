@@ -6,10 +6,9 @@
 
 # folders
 /bin
-/twc
 /build
 /docs
-/exports
+/exp
 
 # project
 **AppLogg

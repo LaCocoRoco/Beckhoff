@@ -40,9 +40,7 @@ public class ConsolePanel extends JPanel {
     /*************************/
 
     private String clipboard = new String();
-    
-    private final Logger logger = AdsLogger.getLogger();
-    
+
     /*************************/
     /****** constructor ******/
     /*************************/
@@ -74,7 +72,8 @@ public class ConsolePanel extends JPanel {
         };
         
         consoleHandler.setFormatter(AdsLogger.getFormatter());
-
+        
+        Logger logger = AdsLogger.getLogger();
         logger.addHandler(consoleHandler);
 
         JScrollPane consolePanel = new JScrollPane(textArea);
