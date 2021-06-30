@@ -8,7 +8,10 @@ import javax.swing.border.EmptyBorder;
 public class ChartPanel extends JScrollPane {
     private static final long serialVersionUID = 1L;
 
-    
+    /*************************/
+    /****** constructor ******/
+    /*************************/
+
     public ChartPanel() {
         JLabel scopeLabel = new JLabel("Chart Panel");
         
@@ -19,6 +22,5 @@ public class ChartPanel extends JScrollPane {
         containerPanel.add(scopeLabel);
 
         this.setViewportView(containerPanel);
-    }
-    
+    } 
 }

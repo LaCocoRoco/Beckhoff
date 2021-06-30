@@ -7,9 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import twincat.ads.Ads;
+import twincat.ads.AdsDeviceInfo;
 import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
-import twincat.ads.container.AdsDeviceInfo;
 
 public class AdsDeviceInfoUnitTest {
 	Ads ads = new Ads();

@@ -7,10 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import twincat.ads.Ads;
+import twincat.ads.AdsDeviceState;
 import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
 import twincat.ads.constants.AdsStatus;
-import twincat.ads.container.AdsDeviceState;
 
 public class AdsDeviceStateUnitTest {
 	Ads ads = new Ads();

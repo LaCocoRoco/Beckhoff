@@ -24,7 +24,7 @@ public class AdsVariableReadUnitTest {
     public void adsSymbolInfoUnitTest() {
         try {       
             Variable variable;
-            variable = ads.getVariableBySymbolName(".JUINIT_P_BIG_ARRAY[0].ST_VALUE.I_VALUE");
+            variable = ads.getVariableBySymbolName(".JUNIT_ARRAY_COMPLEX[1,5].INTERNAL_PRIMITIVE");
             variable.read();
             variable.close();
             

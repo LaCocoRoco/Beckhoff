@@ -8,11 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import twincat.ads.Ads;
+import twincat.ads.AdsSymbolDataTypeInfo;
 import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
-import twincat.ads.container.AdsDataTypeInfo;
-import twincat.ads.container.AdsSymbol;
-import twincat.ads.container.AdsSymbolInfo;
+import twincat.ads.AdsSymbol;
+import twincat.ads.AdsSymbolInfo;
 
 public class AdsSymbolInfoNodeUnitTest {
     Ads ads = new Ads();
@@ -30,7 +30,7 @@ public class AdsSymbolInfoNodeUnitTest {
             AdsSymbolInfo symbolInfo = ads.readSymbolInfoBySymbolName(".ACTUALVELOCITY ");
 
             // read data type info list
-            List<AdsDataTypeInfo> dataTypeInfoList = ads.readDataTypeInfoList();
+            List<AdsSymbolDataTypeInfo> dataTypeInfoList = ads.readDataTypeInfoList();
 
             // get symbol node list
             List<AdsSymbol> symbolNodeList = symbolInfo.getSymbolList(dataTypeInfoList);

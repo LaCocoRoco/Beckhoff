@@ -19,7 +19,7 @@ import javax.swing.tree.TreePath;
 
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
-import twincat.ads.container.AdsSymbolInfo;
+import twincat.ads.AdsSymbolInfo;
 
 public class SymbolBrowser extends JFrame {
 	private static final long serialVersionUID = 1L;

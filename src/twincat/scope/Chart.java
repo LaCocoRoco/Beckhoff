@@ -502,7 +502,7 @@ public class Chart extends Observable {
 			}
 		}
 
-		boolean updateStatic = true;
+		boolean updateStatic = false;
 		boolean updateDynamic = false;
 		boolean updatePerformance = false;
 
@@ -847,9 +847,9 @@ public class Chart extends Observable {
 					graphics.drawString(errorText, debugPositionX + 340, debugPositionY);
 				}
 			}
-
-			graphics.dispose();
 		}
+		
+        graphics.dispose();
 
 		this.image = image;
 
@@ -859,20 +859,20 @@ public class Chart extends Observable {
 	private void reset() {
 		refresh = true;
 
-		cycleTime = 0;
-		deltaTime = 0;
-		deltaTime = 0;
-		currentTime = 0;
-		triggerTime = 0;
-		pauseTime = 0;
+		cycleTime     = 0;
+		deltaTime     = 0;
+		deltaTime     = 0;
+		currentTime   = 0;
+		triggerTime   = 0;
+		pauseTime     = 0;
 		referenceTime = 0;
 		
-		deltaTimeStamp = 0;
-		currentTimeStamp = 0;
-		triggerTimeStamp = 0;
-		pauseTimeStamp = 0;
-		startTimeStamp = 0;
-		recordTimeStamp = 0;
+		deltaTimeStamp     = 0;
+		currentTimeStamp   = 0;
+		triggerTimeStamp   = 0;
+		pauseTimeStamp     = 0;
+		startTimeStamp     = 0;
+		recordTimeStamp    = 0;
 		referenceTimeStamp = 0;
 		
 		chartError = "None";

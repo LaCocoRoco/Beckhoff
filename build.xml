@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="ScopeBuilder" basedir=".">
+  <property name="name.app"     value="ScopeApp"/>
+  <property name="name.lib"     value="ScopeLib"/>
+
+  <property name="app.class"    value="twincat.app.${name.app}"/>
+
+  <property name="exclude"      value="**/junit/*.java"/>
+
+  <property name="src.dir"      location="${basedir}/src"/>
+  <property name="src.dir.res"  location="${src.dir}/resources"/>
+  <property name="bin.dir"      location="${basedir}/bin"/>
+  <property name="bin.dir.res"  location="${bin.dir}/resources"/>
+  <property name="build.dir"    location="${basedir}/build"/>
+  <property name="lib.dir"      location="${basedir}/lib"/>
+
+  <path id="libs">
+    <fileset dir="${lib.dir}" includes="*.jar"/>
+  </path>
+
+  <target name="clean">
+    <delete dir="${bin.dir}"/>
+    <delete dir="${bin.dir}"/>
+  </target>
+
+  <target name="init" depends="clean">
+    <mkdir dir="${bin.dir}"/>
+    <mkdir dir="${bin.dir.res}"/>
+  </target>
+
+  <target name="copy" depends="init">
+    <copy todir="${bin.dir.res}">
+      <fileset dir="${src.dir.res}"/>
+    </copy>
+  </target>
+
+  <target name="compile" depends="copy">
+    <javac srcdir="${src.dir}" destdir="${bin.dir}" includeantruntime="false">
+      <classpath refid="libs"/>
+      <exclude name="${exclude}"/>
+    </javac>
+  </target>
+  
+  <target name="build" depends="compile">
+    <jar destfile="${build.dir}/${name.lib}.jar" basedir="${bin.dir}">
+      <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
+      <exclude name="${exclude}"/>
+    </jar>
+
+    <manifest file = "MANIFEST.MF">
+      <attribute name = "Main-Class"  value = "${app.class}"/>
+      <attribute name = "Class-Path"  value = "."/>
+    </manifest>
+
+    <jar destfile="${build.dir}/${name.app}.jar" basedir="${bin.dir}" manifest="MANIFEST.MF">
+      <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
+      <exclude name="${exclude}"/>
+    </jar>
+  </target>
+</project>

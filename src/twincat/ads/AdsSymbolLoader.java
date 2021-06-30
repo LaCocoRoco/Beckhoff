@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import twincat.ads.container.AdsDataTypeInfo;
-import twincat.ads.container.AdsSymbol;
-import twincat.ads.container.AdsSymbolInfo;
-
 public class AdsSymbolLoader {
     /*************************/
     /*** global attributes ***/
@@ -19,29 +15,31 @@ public class AdsSymbolLoader {
     /*** local attributes ***/
     /*************************/
 
-    private final List<AdsSymbolInfo> symbolInfoList;
+    private final Logger logger = AdsLogger.getLogger();
 
-    private final List<AdsDataTypeInfo> dataTypeInfoList;
+    private final List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
+
+    private final List<AdsSymbolDataTypeInfo> dataTypeInfoList = new ArrayList<AdsSymbolDataTypeInfo>();
  
     /*************************/
     /****** constructor ******/
     /*************************/
 
-    public AdsSymbolLoader(Ads ads) {
-        Logger logger = AdsLogger.getLogger();
-
-        List<AdsSymbolInfo> symbolInfoList = null;
-        List<AdsDataTypeInfo> dataTypeInfoList = null;
-  
+    public AdsSymbolLoader(Ads ads) {  
         try {
-            symbolInfoList = ads.readSymbolInfoList();
-            dataTypeInfoList = ads.readDataTypeInfoList();
+            ads.open();
+            symbolInfoList.addAll(ads.readSymbolInfoList());
+            dataTypeInfoList.addAll(ads.readDataTypeInfoList());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
         }
+
+        try {
+            ads.close();
+        } catch (AdsException e) {
+            logger.info(e.getAdsErrorMessage());
+        }      
         
-        this.dataTypeInfoList = dataTypeInfoList;
-        this.symbolInfoList = symbolInfoList;
         this.symbolTable = setSymbolTable();
     }  
 

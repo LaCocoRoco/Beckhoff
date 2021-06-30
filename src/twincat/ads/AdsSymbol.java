@@ -1,4 +1,4 @@
-package twincat.ads.container;
+package twincat.ads;
 
 import twincat.ads.constants.AdsDataType;
 

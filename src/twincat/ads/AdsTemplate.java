@@ -1,5 +1,7 @@
 package twincat.ads;
 
+// TODO : Rework Declaration
+
 public class AdsTemplate {
     /*************************/
     /** constant attributes **/

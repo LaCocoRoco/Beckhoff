@@ -1,4 +1,4 @@
-package twincat.ads.container;
+package twincat.ads;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -9,7 +9,7 @@ import twincat.ads.constants.AdsDataType;
 import twincat.ads.constants.AdsDataTypeFlag;
 import twincat.ads.datatype.STRING;
 
-public class AdsDataTypeInfo {
+public class AdsSymbolDataTypeInfo {
     /*************************/
     /** constant attributes **/
     /*************************/
@@ -42,18 +42,18 @@ public class AdsDataTypeInfo {
 
     private AdsDataTypeFlag dataTypeFlag = AdsDataTypeFlag.UNKNOWN;
 
-    private final List<AdsDataTypeInfo> subDataTypeInfoList = new ArrayList<AdsDataTypeInfo>();
+    private final List<AdsSymbolDataTypeInfo> subSymbolDataTypeInfoList = new ArrayList<AdsSymbolDataTypeInfo>();
 
     /*************************/
     /****** constructor ******/
     /*************************/
 
-    public AdsDataTypeInfo(byte[] buffer) {
-        getDataTypeInfo(buffer, 0);
+    public AdsSymbolDataTypeInfo(byte[] buffer) {
+        getSymbolDataTypeInfo(buffer, 0);
     }
 
-    public AdsDataTypeInfo(byte[] buffer, int index) {
-        getDataTypeInfo(buffer, index);
+    public AdsSymbolDataTypeInfo(byte[] buffer, int index) {
+        getSymbolDataTypeInfo(buffer, index);
     }
 
     /*************************/
@@ -148,8 +148,8 @@ public class AdsDataTypeInfo {
         this.dataTypeFlag = dataTypeFlag;
     }
 
-    public List<AdsDataTypeInfo> getSubDataTypeInfoList() {
-        return subDataTypeInfoList;
+    public List<AdsSymbolDataTypeInfo> getSubSymbolDataTypeInfoList() {
+        return subSymbolDataTypeInfoList;
     }
 
     /*************************/
@@ -157,7 +157,7 @@ public class AdsDataTypeInfo {
     /*************************/
 
     @SuppressWarnings("unused")
-    private void getDataTypeInfo(byte[] buffer, int index) {
+    private void getSymbolDataTypeInfo(byte[] buffer, int index) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
@@ -201,9 +201,9 @@ public class AdsDataTypeInfo {
 
                 int subItemIndex = byteBuffer.position();
                 for (int i = 0; i < subItemCount; i++) {
-                    AdsDataTypeInfo dataTypeInfo = new AdsDataTypeInfo(buffer, subItemIndex);
-                    subDataTypeInfoList.add(dataTypeInfo);
-                    subItemIndex += dataTypeInfo.getLength();
+                    AdsSymbolDataTypeInfo symbolDataTypeInfo = new AdsSymbolDataTypeInfo(buffer, subItemIndex);
+                    subSymbolDataTypeInfoList.add(symbolDataTypeInfo);
+                    subItemIndex += symbolDataTypeInfo.getLength();
                 }
             }
         }
@@ -213,7 +213,7 @@ public class AdsDataTypeInfo {
     /********* public ********/
     /*************************/
  
-    public List<AdsSymbol> getDataTypeSymbolList(List<AdsDataTypeInfo> dataTypeInfoList) {
+    public List<AdsSymbol> getDataTypeSymbolList(List<AdsSymbolDataTypeInfo> symbolDataTypeInfoList) {
         List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
 
         // parse type info
@@ -233,9 +233,9 @@ public class AdsDataTypeInfo {
 
             // get type symbol list from type info
             List<AdsSymbol> typeSymbolList = new ArrayList<AdsSymbol>();
-            for (AdsDataTypeInfo dataTypeInfo : dataTypeInfoList) {
-                if (typeInfo.getTypeName().equals(dataTypeInfo.getDataTypeName())) {
-                    typeSymbolList = dataTypeInfo.getDataTypeSymbolList(dataTypeInfoList);
+            for (AdsSymbolDataTypeInfo symbolDataTypeInfo : symbolDataTypeInfoList) {
+                if (typeInfo.getTypeName().equals(symbolDataTypeInfo.getDataTypeName())) {
+                    typeSymbolList = symbolDataTypeInfo.getDataTypeSymbolList(symbolDataTypeInfoList);
                     break;
                 }
             }
@@ -307,8 +307,8 @@ public class AdsDataTypeInfo {
 
         // collect sub symbol data
         List<AdsSymbol> subSymbolList = new ArrayList<AdsSymbol>();
-        for (AdsDataTypeInfo dataTypeInfo : subDataTypeInfoList) {
-            subSymbolList.addAll(dataTypeInfo.getDataTypeSymbolList(dataTypeInfoList));
+        for (AdsSymbolDataTypeInfo symbolDataTypeInfo : subSymbolDataTypeInfoList) {
+            subSymbolList.addAll(symbolDataTypeInfo.getDataTypeSymbolList(symbolDataTypeInfoList));
         }
    
         for (AdsSymbol subSymbol : subSymbolList) { 

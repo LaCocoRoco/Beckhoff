@@ -7,9 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import twincat.ads.Ads;
+import twincat.ads.AdsSymbolDataTypeInfo;
 import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
-import twincat.ads.container.AdsDataTypeInfo;
 
 public class AdsDataTypeInfoUnitTest {
     Ads ads = new Ads();
@@ -23,7 +23,7 @@ public class AdsDataTypeInfoUnitTest {
     @Test
     public void adsDataTypeInfoUnitTest() {
         try {
-            AdsDataTypeInfo dataTypeInfo = ads.readDataTypeInfoByDataTypeName("JUNIT_REAL64");  // fb_junit
+            AdsSymbolDataTypeInfo dataTypeInfo = ads.readDataTypeInfoByDataTypeName("JUNIT_REAL64");  // fb_junit
             
             printAdsDataTypeInfo(dataTypeInfo, true);
             
@@ -37,7 +37,7 @@ public class AdsDataTypeInfoUnitTest {
         ads.close();
     }
     
-    private void printAdsDataTypeInfo(AdsDataTypeInfo dataTypeInfo, boolean printSubData) {
+    private void printAdsDataTypeInfo(AdsSymbolDataTypeInfo dataTypeInfo, boolean printSubData) {
         logger.info("Length        : " + dataTypeInfo.getLength());
         logger.info("Version       : " + dataTypeInfo.getVersion());
         logger.info("HashValue     : " + dataTypeInfo.getHashValue());
@@ -49,11 +49,10 @@ public class AdsDataTypeInfoUnitTest {
         logger.info("DataTypeName  : " + dataTypeInfo.getDataTypeName());
         logger.info("TypeName      : " + dataTypeInfo.getType());
         logger.info("Comment       : " + dataTypeInfo.getComment());
-        logger.info("SubDataSize   : " + dataTypeInfo.getSubDataTypeInfoList().size());
         
         if (printSubData) {
             logger.info("##############:");
-            for (AdsDataTypeInfo subDataTypeInfo : dataTypeInfo.getSubDataTypeInfoList()) {
+            for (AdsSymbolDataTypeInfo subDataTypeInfo : dataTypeInfo.getSubSymbolDataTypeInfoList()) {
                 printAdsDataTypeInfo(subDataTypeInfo, printSubData);
             }
         }

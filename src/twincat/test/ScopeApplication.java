@@ -97,7 +97,7 @@ public class ScopeApplication {
 		acquisition1.setSymbolName("Main.lr_channel_1");
 		acquisition1.setDataType(AdsDataType.REAL64);
 		acquisition1.setAmsNetId(AmsNetId.LOCAL);
-		acquisition1.setAmsPort(AmsPort.PLC_RT1);
+		acquisition1.setAmsPort(AmsPort.TC2PLC1);
 		
 		// acquisition 2
 		Acquisition acquisition2 = new Acquisition();
@@ -106,7 +106,7 @@ public class ScopeApplication {
 		acquisition2.setSymbolName("Main.lr_channel_2");
 		acquisition2.setDataType(AdsDataType.REAL64);
 		acquisition2.setAmsNetId(AmsNetId.LOCAL);
-		acquisition2.setAmsPort(AmsPort.PLC_RT1);
+		acquisition2.setAmsPort(AmsPort.TC2PLC1);
 
 		// acquisition 3
 		Acquisition acquisition3 = new Acquisition();
@@ -115,7 +115,7 @@ public class ScopeApplication {
 		acquisition3.setSymbolName("Main.lr_channel_3");
 		acquisition3.setDataType(AdsDataType.REAL64);
 		acquisition3.setAmsNetId(AmsNetId.LOCAL);
-		acquisition3.setAmsPort(AmsPort.PLC_RT1);
+		acquisition3.setAmsPort(AmsPort.TC2PLC1);
 		
 		// acquisition 4
 		Acquisition acquisition4 = new Acquisition();
@@ -124,7 +124,7 @@ public class ScopeApplication {
 		acquisition4.setSymbolName("Main.lr_channel_4");
 		acquisition4.setDataType(AdsDataType.REAL64);
 		acquisition4.setAmsNetId(AmsNetId.LOCAL);
-		acquisition4.setAmsPort(AmsPort.PLC_RT1);
+		acquisition4.setAmsPort(AmsPort.TC2PLC1);
 		
 		// acquisition 5
 		Acquisition acquisition5 = new Acquisition();
@@ -133,7 +133,7 @@ public class ScopeApplication {
 		acquisition5.setSymbolName("Main.lr_channel_5");
 		acquisition5.setDataType(AdsDataType.REAL64);
 		acquisition5.setAmsNetId(AmsNetId.LOCAL);
-		acquisition5.setAmsPort(AmsPort.PLC_RT1);	
+		acquisition5.setAmsPort(AmsPort.TC2PLC1);	
 		
 		// acquisition 6
 		Acquisition acquisition6 = new Acquisition();
@@ -142,7 +142,7 @@ public class ScopeApplication {
 		acquisition6.setSymbolName("Main.lr_channel_6");
 		acquisition6.setDataType(AdsDataType.REAL64);
 		acquisition6.setAmsNetId(AmsNetId.LOCAL);
-		acquisition6.setAmsPort(AmsPort.PLC_RT1);	
+		acquisition6.setAmsPort(AmsPort.TC2PLC1);	
 		
 		// acquisition 7
 		Acquisition acquisition7 = new Acquisition();
@@ -151,7 +151,7 @@ public class ScopeApplication {
 		acquisition7.setSymbolName("Main.lr_channel_7");
 		acquisition7.setDataType(AdsDataType.REAL64);
 		acquisition7.setAmsNetId(AmsNetId.LOCAL);
-		acquisition7.setAmsPort(AmsPort.PLC_RT1);	
+		acquisition7.setAmsPort(AmsPort.TC2PLC1);	
 		
 		// acquisition 8
 		Acquisition acquisition8 = new Acquisition();
@@ -160,7 +160,7 @@ public class ScopeApplication {
 		acquisition8.setSymbolName("Main.lr_channel_8");
 		acquisition8.setDataType(AdsDataType.REAL64);
 		acquisition8.setAmsNetId(AmsNetId.LOCAL);
-		acquisition8.setAmsPort(AmsPort.PLC_RT1);	
+		acquisition8.setAmsPort(AmsPort.TC2PLC1);	
 														
 		// channel 1
 		Channel channel1 = new Channel(acquisition1);

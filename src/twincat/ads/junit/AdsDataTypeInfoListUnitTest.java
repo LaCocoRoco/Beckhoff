@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import twincat.ads.Ads;
+import twincat.ads.AdsSymbolDataTypeInfo;
 import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
-import twincat.ads.container.AdsDataTypeInfo;
 
 public class AdsDataTypeInfoListUnitTest {
     Ads ads = new Ads();
@@ -24,13 +24,12 @@ public class AdsDataTypeInfoListUnitTest {
     @Test
     public void adsDataTypeInfoListUnitTest() {
         try {
-            List<AdsDataTypeInfo> dataTypeInfoList = ads.readDataTypeInfoList();
+            List<AdsSymbolDataTypeInfo> dataTypeInfoList = ads.readDataTypeInfoList();
             
-            for (AdsDataTypeInfo dataTypeInfo : dataTypeInfoList) {
+            for (AdsSymbolDataTypeInfo dataTypeInfo : dataTypeInfoList) {
                 logger.info("DataTypeName    : " + dataTypeInfo.getDataTypeName());
                 logger.info("DataTypeDataType: " + dataTypeInfo.getDataType());
                 logger.info("DataTypeType    : " + dataTypeInfo.getType());
-                logger.info("SubDataTypeSize : " + dataTypeInfo.getSubDataTypeInfoList().size());
             }
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());

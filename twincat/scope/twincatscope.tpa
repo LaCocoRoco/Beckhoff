@@ -1,0 +1,2 @@
+<?xml version="1.0"?>
+<PlcGivenDataInfo><VarConfigAddresses><VarConfigAddress><Name>MAIN.di_set_pos</Name><Type>DINT</Type><IGroup>61488</IGroup><IOffset>0</IOffset><BitSize>32</BitSize><Properties><Property><Name>LinkedWith</Name><Value>TINC^NC-Task SAF^Achsen^Dummy^Dummy_Enc^Eingänge^Dummy_Enc_In^nInData1</Value></Property></Properties></VarConfigAddress></VarConfigAddresses></PlcGivenDataInfo>

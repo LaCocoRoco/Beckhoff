@@ -1,4 +1,4 @@
-package twincat.ads.container;
+package twincat.ads;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -194,14 +194,14 @@ public class AdsSymbolInfo {
     }
     
     // time consuming
-    public List<AdsSymbol> getSymbolList(List<AdsDataTypeInfo> dataTypeInfoList) {
+    public List<AdsSymbol> getSymbolList(List<AdsSymbolDataTypeInfo> symbolDataTypeInfoList) {
         List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
 
         // parse type info
         AdsTypeInfo typeInfo = new AdsTypeInfo(type);
         
-        // test
-        if (typeInfo.isPointer()) return symbolList;
+        // skip pointer
+        //if (typeInfo.isPointer()) return symbolList;
         
         // get named array list
         List<String> namedArrayList = new ArrayList<String>();
@@ -214,9 +214,9 @@ public class AdsSymbolInfo {
 
             // get type symbol list from type info
             List<AdsSymbol> typeNodeList = new ArrayList<AdsSymbol>();
-            for (AdsDataTypeInfo dataTypeInfo : dataTypeInfoList) {
-                if (typeInfo.getTypeName().equals(dataTypeInfo.getDataTypeName())) {
-                    typeNodeList = dataTypeInfo.getDataTypeSymbolList(dataTypeInfoList);
+            for (AdsSymbolDataTypeInfo symbolDataTypeInfo : symbolDataTypeInfoList) {
+                if (typeInfo.getTypeName().equals(symbolDataTypeInfo.getDataTypeName())) {
+                    typeNodeList = symbolDataTypeInfo.getDataTypeSymbolList(symbolDataTypeInfoList);
                     break;
                 }
             }

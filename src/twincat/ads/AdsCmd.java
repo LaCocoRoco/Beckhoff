@@ -11,10 +11,6 @@ import java.util.logging.Logger;
 
 import twincat.ads.constants.AdsError;
 import twincat.ads.constants.AmsPort;
-import twincat.ads.container.AdsDeviceInfo;
-import twincat.ads.container.AdsDeviceState;
-import twincat.ads.container.AdsSymbol;
-import twincat.ads.container.AdsSymbolInfo;
 import twincat.ads.wrapper.Variable;
 
 public class AdsCmd {
@@ -50,7 +46,7 @@ public class AdsCmd {
 
     private static final String CMD_PATTERN     = "\\s+";
     
-    private static final int CMD_ADS_TIMEOUT    = 200;
+    private static final int CMD_ADS_TIMEOUT    = 50;
     
     /*************************/
     /*** local attributes ****/
@@ -297,22 +293,24 @@ public class AdsCmd {
             ads.setTimeout(CMD_ADS_TIMEOUT);
             AmsPort cachPort = ads.getAmsPort();
             
+            int portCount = 0;
             for (AmsPort amsPort : AmsPort.values()) {
                 if (!amsPort.equals(AmsPort.UNKNOWN)) {
                     try {
                         ads.setAmsPort(amsPort);
                         ads.readDeviceInfo();
-                        logger.info("IO : " + amsPort);
+                        
+                        portCount++;
+                        logger.info(amsPort.toString());
                     } catch (AdsException e) {
                         if (e.getAdsError().equals(AdsError.ADS_ADSPORT_CLOSED)) {
                             logger.info(e.getAdsErrorMessage());
-                        } else {
-                            logger.info("NIO: " + amsPort);
                         }
                     }
                 }
             }
             
+            logger.info("Detected: " + portCount);
             ads.setAmsPort(cachPort);
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());

@@ -9,7 +9,7 @@ import org.junit.Test;
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
-import twincat.ads.container.AdsSymbolInfo;
+import twincat.ads.AdsSymbolInfo;
 
 public class AdsSymbolInfoUnitTest {
 	Ads ads = new Ads();

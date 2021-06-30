@@ -21,7 +21,7 @@ public class Acquisition {
 
 	private String amsNetId = AmsNetId.LOCAL;
 	
-	private AmsPort amsPort = AmsPort.PLC_RT1;
+	private AmsPort amsPort = AmsPort.TC2PLC1;
 
 	private AdsDataType dataType = AdsDataType.UNKNOWN;
 

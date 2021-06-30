@@ -8,11 +8,6 @@ import java.util.List;
 import twincat.ads.constants.AdsDataType;
 import twincat.ads.constants.AdsError;
 import twincat.ads.constants.AdsIndexGroup;
-import twincat.ads.container.AdsDataTypeInfo;
-import twincat.ads.container.AdsDeviceInfo;
-import twincat.ads.container.AdsDeviceState;
-import twincat.ads.container.AdsSymbolInfo;
-import twincat.ads.container.AdsUploadInfo;
 import twincat.ads.datatype.BIT;
 import twincat.ads.datatype.BOOL;
 import twincat.ads.datatype.BYTE;
@@ -136,14 +131,14 @@ public class Ads extends AdsNative {
         return new AdsSymbolInfo(readBuffer);
     }
 
-    public AdsDataTypeInfo readDataTypeInfoByDataTypeName(String dataTypeName) throws AdsException {
+    public AdsSymbolDataTypeInfo readDataTypeInfoByDataTypeName(String dataTypeName) throws AdsException {
         byte[] writeBuffer = STRING.valueToArray(dataTypeName);
         byte[] readBuffer = new byte[AdsIndexGroup.DATA_TYPE_INFO_BY_NAME_EX.size];
         readWrite(AdsIndexGroup.DATA_TYPE_INFO_BY_NAME_EX.value, 0, readBuffer, writeBuffer);
-        return new AdsDataTypeInfo(readBuffer);
+        return new AdsSymbolDataTypeInfo(readBuffer);
     }
 
-    public List<AdsDataTypeInfo> readDataTypeInfoList() throws AdsException {
+    public List<AdsSymbolDataTypeInfo> readDataTypeInfoList() throws AdsException {
         AdsUploadInfo uploadInfo = readUploadInfo();
 
         byte[] readBufferDataTypeUpload = new byte[uploadInfo.getDataTypeLength()];
@@ -151,11 +146,11 @@ public class Ads extends AdsNative {
         ByteBuffer dataTypeUploadByteBuffer = ByteBuffer.wrap(readBufferDataTypeUpload);
         dataTypeUploadByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
-        List<AdsDataTypeInfo> dataTypeInfoList = new ArrayList<AdsDataTypeInfo>();
+        List<AdsSymbolDataTypeInfo> dataTypeInfoList = new ArrayList<AdsSymbolDataTypeInfo>();
 
         int index = 0;
         for (int i = 0; i < uploadInfo.getDataTypeCount(); i++) {
-            AdsDataTypeInfo dataTypeInfo = new AdsDataTypeInfo(readBufferDataTypeUpload, index);
+            AdsSymbolDataTypeInfo dataTypeInfo = new AdsSymbolDataTypeInfo(readBufferDataTypeUpload, index);
             dataTypeInfoList.add(dataTypeInfo);
             index += dataTypeInfo.getLength();
         }

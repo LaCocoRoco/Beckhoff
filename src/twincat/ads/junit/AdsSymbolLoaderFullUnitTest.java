@@ -3,32 +3,23 @@ package twincat.ads.junit;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import twincat.ads.Ads;
-import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
+import twincat.ads.AdsSymbol;
 import twincat.ads.AdsSymbolLoader;
 import twincat.ads.constants.AdsDataType;
-import twincat.ads.container.AdsSymbol;
 
-public class AdsSymbolLoaderUnitTest {
+public class AdsSymbolLoaderFullUnitTest {
     Ads ads = new Ads();
     Logger logger = AdsLogger.getLogger();
 
-    @Before
-    public void startAds() {
-        ads.open();
-    }
-
     @Test
-    public void adsSymbolLoaderUnitTest() {
+    public void adsSymbolLoaderFullUnitTest() {
         AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads);
 
-        // load full symbol table
-        // WARNING: will crash with big project
+        // WARNING: crash with big projects
         for (AdsSymbol symbol : symbolLoader.getSymbolTable()) {
             if (symbol.getType().equals(AdsDataType.BIGTYPE)) {
                 List<AdsSymbol> bigSymbolList = symbolLoader.getSubNodesOfNode(symbol);
@@ -43,10 +34,5 @@ public class AdsSymbolLoaderUnitTest {
                 logger.info("Type: " + type + "| Name: " + name);             
             }
         }
-    }
-
-    @After
-    public void stopAds() throws AdsException {
-        ads.close();
     }
 }

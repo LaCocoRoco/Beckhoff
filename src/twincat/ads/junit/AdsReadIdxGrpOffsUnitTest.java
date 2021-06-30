@@ -1,6 +1,6 @@
 package twincat.ads.junit;
 
-import java.util.List;
+import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 
 import org.junit.After;
@@ -10,9 +10,9 @@ import org.junit.Test;
 import twincat.ads.Ads;
 import twincat.ads.AdsException;
 import twincat.ads.AdsLogger;
-import twincat.ads.AdsSymbolInfo;
+import twincat.ads.constants.AmsPort;
 
-public class AdsSymbolInfoListUnitTest {
+public class AdsReadIdxGrpOffsUnitTest {
     Ads ads = new Ads();
     Logger logger = AdsLogger.getLogger();
 
@@ -24,15 +24,19 @@ public class AdsSymbolInfoListUnitTest {
     @Test
     public void adsSymbolInfoListUnitTest() {
         try {
-            List<AdsSymbolInfo> symbolInfoList = ads.readSymbolInfoList();
-
-            for (AdsSymbolInfo symbolInfo : symbolInfoList) {
-                logger.info("SymbolName    : " + symbolInfo.getSymbolName());
-                logger.info("SymbolDataType: " + symbolInfo.getDataType());
-                logger.info("SymbolType    : " + symbolInfo.getType());
-            }
+            // read idx offs size
+            
+            ads.setAmsPort(AmsPort.TC2PLC1);
+            byte[] readBuffer = new byte[0xFFF];
+            ads.read(803, 0, readBuffer);
+            
+            String result = new String(readBuffer, "UTF-8");
+            logger.info(result);
+            
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
+        } catch (UnsupportedEncodingException e) {
+            logger.info(e.getMessage());
         }
     }
 
