@@ -4,11 +4,13 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import twincat.TwincatLogger;
+import twincat.Utilities;
 
 public class ScopeApp extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -27,15 +29,16 @@ public class ScopeApp extends JFrame {
     /*** local attributes ***/
     /*************************/
   
+    private final Logger logger = TwincatLogger.getSignedLogger();
+    
     private final ResourceBundle textBundle = ResourceBundle.getBundle("resources/string/text");
     
     /*************************/
     /****** constructor ******/
     /*************************/
 
-    public ScopeApp() {
-        TwincatLogger.resetLogger();
-        TwincatLogger.addFileLogger();
+    public ScopeApp(String[] args) {
+        parseArgs(args);
         
         ScopeFrame scopeFrame = new ScopeFrame();
         scopeFrame.mainMenuVisible(true);
@@ -43,10 +46,10 @@ public class ScopeApp extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int framePositionX = screenSize.width / 2 - WIDTH_FRAME / 2;
         int framePositionY = screenSize.height / 2 - HEIGHT_FRAME / 2;
-
-        this.setTitle(textBundle.getString("applicationName"));
-        this.setIconImage(new ImageIcon(getClass().getResource(APP_ICON_PATH)).getImage());
+        
         this.setContentPane(scopeFrame);
+        this.setTitle(textBundle.getString("applicationName"));
+        this.setIconImage(Utilities.getImageFromFilePath(APP_ICON_PATH));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setPreferredSize(new Dimension(WIDTH_FRAME, HEIGHT_FRAME));
         this.setBounds(framePositionX, framePositionY, WIDTH_FRAME, HEIGHT_FRAME);
@@ -55,6 +58,40 @@ public class ScopeApp extends JFrame {
     }
 
     /*************************/
+    /******** private ********/
+    /*************************/
+
+    private void parseArgs(String[] args)  {
+        for(String arg : args) {
+            switch(arg) {
+                case "log":
+                    TwincatLogger.addFileLogger(); 
+                    break;
+                
+                case "off":
+                    logger.setLevel(Level.OFF);
+                    break;
+
+                case "fine":
+                    logger.setLevel(Level.FINE);
+                    break; 
+                    
+                case "info":
+                    logger.setLevel(Level.INFO);
+                    break; 
+                    
+                case "warning":
+                    logger.setLevel(Level.WARNING);
+                    break;
+                    
+                case "severe":
+                    logger.setLevel(Level.SEVERE);
+                    break;
+            }
+        }
+    }
+    
+    /*************************/
     /** public static final **/
     /*************************/ 
     
@@ -62,7 +99,7 @@ public class ScopeApp extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    ScopeApp application = new ScopeApp();
+                    ScopeApp application = new ScopeApp(args);
                     application.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -5,7 +5,6 @@ import java.awt.Insets;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.border.EmptyBorder;
 
 import twincat.Utilities;
 
@@ -20,25 +19,25 @@ public class AdsPanel extends JScrollPane {
 
     private static final String FONT_FAMILY = "Consolas";
 
-    private static final String ADSINFO_PATH = "/resources/string/adsinfo.txt";
+    private static final String ADS_INFO_PATH = "/resources/string/ads_info.txt";
     
     /*************************/
     /****** constructor ******/
     /*************************/
 
     public AdsPanel() {
-        String instructionText = Utilities.readStringFromFile(ADSINFO_PATH);
+        String instructionText = Utilities.getStringFromFilePath(ADS_INFO_PATH);
 
         JTextArea instructionTextArea = new JTextArea(instructionText);
-        instructionTextArea.setAlignmentY(TOP_ALIGNMENT);
-        instructionTextArea.setAlignmentX(LEFT_ALIGNMENT);
+        instructionTextArea.setCaretPosition(0);
         instructionTextArea.setMargin(new Insets(5, 5, 5, 5));
+        instructionTextArea.setLineWrap(true);
+        instructionTextArea.setWrapStyleWord(false);
         instructionTextArea.setEditable(false);
         instructionTextArea.setFont(new Font(FONT_FAMILY, Font.PLAIN, FONT_SIZE));
-        
+
 		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		this.setBorder(new EmptyBorder(3, 3, 3, 3));
         this.setViewportView(instructionTextArea);
     }
 }

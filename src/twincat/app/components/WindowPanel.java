@@ -12,16 +12,14 @@ public class WindowPanel extends JPanel {
     /*************************/
 
     public enum Card {
-        SCOPE,
-        ADS,
-        AXIS
+        SCOPE, ADS, AXIS
     }
     
     /*************************/
     /*** local attributes ***/
     /*************************/
 
-    private final AdsPanel adsInfoPanel = new AdsPanel();
+    private final AdsPanel adsPanel = new AdsPanel();
 
     private final ScopePanel scopePanel = new ScopePanel();
 
@@ -34,7 +32,7 @@ public class WindowPanel extends JPanel {
     public WindowPanel() {
         this.setLayout(new CardLayout());
         this.add(scopePanel, Card.SCOPE.toString());
-        this.add(adsInfoPanel, Card.ADS.toString());
+        this.add(adsPanel, Card.ADS.toString());
         this.add(axisPanel, Card.AXIS.toString());
     }
 
@@ -42,8 +40,8 @@ public class WindowPanel extends JPanel {
     /********* public ********/
     /*************************/
    
-    public void displayWindow(String name) {
-        CardLayout windowLayout = (CardLayout) (this.getLayout());
-        windowLayout.show(this, name);
+    public void displayWindow(String card) {
+        CardLayout cardLayout = (CardLayout) (this.getLayout());
+        cardLayout.show(this, card);
     }    
 }

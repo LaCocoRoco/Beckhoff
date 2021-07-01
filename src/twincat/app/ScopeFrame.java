@@ -14,7 +14,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 
@@ -29,15 +28,15 @@ public class ScopeFrame extends JPanel {
     /** constant attributes **/
     /*************************/
 
-    private static final int DIVIDER_SIZE_OPEN = 3;
-    
-    private static final int DIVIDER_SIZE_CLOSED = 0;
-    
-    private static final double DIVIDER_LOCATION = 0.7;
+    private static final int DIVIDER_SIZE = 5;
+   
+    private static final int DIVIDER_LOCATION = 150;
   
     /*************************/
     /*** local attributes ****/
     /*************************/
+    
+    private final Logger logger = TwincatLogger.getLogger();
     
     private final ResourceBundle textBundle = ResourceBundle.getBundle("resources/string/text");
     
@@ -64,48 +63,26 @@ public class ScopeFrame extends JPanel {
     /*************************/
 
     public ScopeFrame() {
-        final Logger logger = TwincatLogger.getLogger();
-        System.out.println("Third");
-        
-        // TODO : overlap problem
-        JScrollPane overlapPanel = new JScrollPane();
-        overlapPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        overlapPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        overlapPanel.setViewportView(windowPanel);
+        logger.setLevel(TwincatLogger.LOGGER_DEFAULT_LEVEL);
 
-        // content panel
-        contentPanel.setLeftComponent(overlapPanel);
+        contentPanel.setLeftComponent(windowPanel);
         contentPanel.setRightComponent(consolePanel);
         contentPanel.setOrientation(JSplitPane.VERTICAL_SPLIT);
         contentPanel.setContinuousLayout(true);
         contentPanel.setOneTouchExpandable(false);
         contentPanel.setBorder(new EmptyBorder(3, 3, 3, 3));
-        
-        contentPanel.getRightComponent().setVisible(false);
-        contentPanel.getLeftComponent().setVisible(true);
-        contentPanel.setDividerSize(DIVIDER_SIZE_CLOSED);
 
         menuItemConsoleOn.setText(textBundle.getString("menuItemConsoleOn"));
         menuItemConsoleOn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                contentPanel.getRightComponent().setVisible(true);
-                contentPanel.getLeftComponent().setVisible(true);
-                contentPanel.setDividerSize(DIVIDER_SIZE_OPEN);
-                contentPanel.setDividerLocation(DIVIDER_LOCATION);
-                contentPanel.addComponentListener(new ComponentAdapter() {
-                    public void componentResized(ComponentEvent componentEvent) {
-                        contentPanel.setDividerLocation(DIVIDER_LOCATION);
-                    }
-                });
+                consoleShow();
             }
         });
 
         menuItemConsoleOff.setText(textBundle.getString("menuItemConsoleOff"));
         menuItemConsoleOff.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                contentPanel.getRightComponent().setVisible(false);
-                contentPanel.getLeftComponent().setVisible(true);
-                contentPanel.setDividerSize(DIVIDER_SIZE_CLOSED);
+                consoleHide();
             }
         });
 
@@ -142,6 +119,8 @@ public class ScopeFrame extends JPanel {
         mainMenu.add(menuWindow);
         mainMenu.add(menuConsole);
 
+        consoleShow();
+        
         this.setLayout(new BorderLayout());
         this.add(mainMenu, BorderLayout.PAGE_START);
         this.add(contentPanel);
@@ -196,4 +175,28 @@ public class ScopeFrame extends JPanel {
         menuItemAxis.setMargin(new Insets(0, 0, 0, 0));
         menuItemAxis.setPressedIcon(null);
     }
+    
+    /*************************/
+    /******** private ********/
+    /*************************/
+
+    private void consoleShow() {
+        int dividerLocation = contentPanel.getHeight() - DIVIDER_LOCATION;
+        contentPanel.setDividerLocation(dividerLocation);
+        contentPanel.getRightComponent().setVisible(true);
+        contentPanel.getLeftComponent().setVisible(true);
+        contentPanel.setDividerSize(DIVIDER_SIZE);
+        contentPanel.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent componentEvent) {
+                int dividerLocation = contentPanel.getHeight() - DIVIDER_LOCATION;
+                contentPanel.setDividerLocation(dividerLocation);
+            }
+        });
+    }
+    
+    private void consoleHide() {
+        contentPanel.getRightComponent().setVisible(false);
+        contentPanel.getLeftComponent().setVisible(true);
+        contentPanel.setDividerSize(0);
+    }   
 }

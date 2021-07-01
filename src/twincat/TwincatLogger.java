@@ -16,13 +16,17 @@ public final class TwincatLogger {
     /** constant attributes **/
     /*************************/
 
+    public static final Level LOGGER_DEFAULT_LEVEL = Level.INFO;   
+    
+    /*************************/
+    /** constant attributes **/
+    /*************************/
+
     public static final String LOGGER_NAME = "TwincatLogger";
 
     public static final String LOGGER_FORMATTER = "[%1$tT] %2$s %n";
 
     public static final String LOGGER_FILE_NAME = "AppLogg.txt";
-
-    private static final Level LOGGER_DEFAULT_LEVEL = Level.INFO;
 
     /*************************/
     /** public static final **/
@@ -69,14 +73,7 @@ public final class TwincatLogger {
 
         try {
             SimpleFormatter twincatFormatter = TwincatLogger.getFormatter();
-            FileHandler fileHandler = new FileHandler(LOGGER_FILE_NAME, true) {
-                @Override
-                public synchronized void publish(LogRecord record) {
-                    // TODO : delete (use global level)
-                    super.publish(record);
-                }
-            };
-
+            FileHandler fileHandler = new FileHandler(LOGGER_FILE_NAME, true);
             fileHandler.setFormatter(twincatFormatter);
             logger.addHandler(fileHandler);
         } catch (SecurityException e) {
@@ -87,11 +84,9 @@ public final class TwincatLogger {
     }
 
     public static final Logger getLogger() {
-        System.out.println("First");
         return Logger.getLogger(LOGGER_NAME);
     }
 
-    // package wide initialization
     public static final Logger getSignedLogger() {
         Enumeration<String> loggerNameList = LogManager.getLogManager().getLoggerNames();
 
@@ -104,8 +99,6 @@ public final class TwincatLogger {
             }
         }
 
-        System.out.println("Second");
-        
         // reset logger
         LogManager.getLogManager().reset();
         Logger.getGlobal().setLevel(Level.OFF);
