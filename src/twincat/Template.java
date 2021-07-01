@@ -1,6 +1,6 @@
-package twincat.ads;
+package twincat;
 
-public class AdsTemplate {
+public class Template {
     /*************************/
     /** constant attributes **/
     /*************************/

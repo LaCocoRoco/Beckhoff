@@ -29,8 +29,8 @@ import java.util.logging.Logger;
 
 import com.sun.management.OperatingSystemMXBean;
 
-import twincat.ads.AdsLogger;
-import twincat.utilities.Utilities;
+import twincat.TwincatLogger;
+import twincat.Utilities;
 
 public class Chart extends Observable {
 	/*************************/
@@ -138,7 +138,7 @@ public class Chart extends Observable {
 				updateGraphic();
 				updateObserver();
 			} catch (Exception e) {
-			    Logger logger = AdsLogger.getLogger();
+			    Logger logger = TwincatLogger.getSignedLogger();
                 logger.severe(Utilities.exceptionToString(e));
 			}
 		}

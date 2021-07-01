@@ -9,6 +9,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import twincat.TwincatLogger;
 import twincat.ads.constants.AdsError;
 import twincat.ads.constants.AmsPort;
 import twincat.ads.wrapper.Variable;
@@ -56,13 +57,15 @@ public class AdsCmd {
 
     private final Ads ads = new Ads();
 
-    private final Logger logger = AdsLogger.getLogger();
+    private final Logger logger = TwincatLogger.getSignedLogger();
 
     /*************************/
     /********* public ********/
     /*************************/
 
     public void send(String commando) {
+        logger.info("> " + commando);
+        
         if (scheduleTime == 0) {
             scheduleTime = System.currentTimeMillis();
 

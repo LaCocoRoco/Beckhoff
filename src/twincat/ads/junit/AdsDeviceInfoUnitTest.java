@@ -6,14 +6,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import twincat.TwincatLogger;
 import twincat.ads.Ads;
 import twincat.ads.AdsDeviceInfo;
 import twincat.ads.AdsException;
-import twincat.ads.AdsLogger;
 
 public class AdsDeviceInfoUnitTest {
 	Ads ads = new Ads();
-	Logger logger = AdsLogger.getLogger();
+	Logger logger = TwincatLogger.getSignedLogger();
 	
 	@Before
 	public void startAds() {
@@ -21,7 +21,7 @@ public class AdsDeviceInfoUnitTest {
 	}
 
 	@Test
-	public void adsDeviceInfoUnitTest() {
+	public void adsDeviceInfoUnitTest() {   
 		try {
 			AdsDeviceInfo adsDeviceInfo = ads.readDeviceInfo();
 			

@@ -19,8 +19,8 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.text.BadLocationException;
 
+import twincat.TwincatLogger;
 import twincat.ads.AdsCmd;
-import twincat.ads.AdsLogger;
 
 public class ConsolePanel extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -71,9 +71,9 @@ public class ConsolePanel extends JPanel {
             }
         };
         
-        consoleHandler.setFormatter(AdsLogger.getFormatter());
+        consoleHandler.setFormatter(TwincatLogger.getFormatter());
         
-        Logger logger = AdsLogger.getLogger();
+        Logger logger = TwincatLogger.getSignedLogger();
         logger.addHandler(consoleHandler);
 
         JScrollPane consolePanel = new JScrollPane(textArea);
@@ -96,7 +96,6 @@ public class ConsolePanel extends JPanel {
 
                     if (!input.isEmpty()) {
                         clipboard = input;
-                        logger.info("> " + input);
                         adsCmd.send(input);
                     }
                 }

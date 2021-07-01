@@ -7,14 +7,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import twincat.TwincatLogger;
 import twincat.ads.Ads;
 import twincat.ads.AdsSymbolDataTypeInfo;
 import twincat.ads.AdsException;
-import twincat.ads.AdsLogger;
 
 public class AdsDataTypeInfoListUnitTest {
     Ads ads = new Ads();
-    Logger logger = AdsLogger.getLogger();
+    Logger logger = TwincatLogger.getSignedLogger();
 
     @Before
     public void startAds() {

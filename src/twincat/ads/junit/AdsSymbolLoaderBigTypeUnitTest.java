@@ -5,14 +5,14 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 
+import twincat.TwincatLogger;
 import twincat.ads.Ads;
-import twincat.ads.AdsLogger;
 import twincat.ads.AdsSymbol;
 import twincat.ads.AdsSymbolLoader;
 
 public class AdsSymbolLoaderBigTypeUnitTest {
     Ads ads = new Ads();
-    Logger logger = AdsLogger.getLogger();
+    Logger logger = TwincatLogger.getSignedLogger();
 
     @Test
     public void adsSymbolLoaderUnitTest() {

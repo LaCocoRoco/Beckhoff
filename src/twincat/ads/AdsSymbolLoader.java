@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import twincat.TwincatLogger;
+
 public class AdsSymbolLoader {
     /*************************/
     /*** global attributes ***/
@@ -15,7 +17,7 @@ public class AdsSymbolLoader {
     /*** local attributes ***/
     /*************************/
 
-    private final Logger logger = AdsLogger.getLogger();
+    private final Logger logger = TwincatLogger.getSignedLogger();
 
     private final List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
 

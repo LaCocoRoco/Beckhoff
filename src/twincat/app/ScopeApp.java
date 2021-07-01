@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import twincat.TwincatLogger;
+
 public class ScopeApp extends JFrame {
     private static final long serialVersionUID = 1L;
 
@@ -24,7 +26,7 @@ public class ScopeApp extends JFrame {
     /*************************/
     /*** local attributes ***/
     /*************************/
-
+  
     private final ResourceBundle textBundle = ResourceBundle.getBundle("resources/string/text");
     
     /*************************/
@@ -32,6 +34,9 @@ public class ScopeApp extends JFrame {
     /*************************/
 
     public ScopeApp() {
+        TwincatLogger.resetLogger();
+        TwincatLogger.addFileLogger();
+        
         ScopeFrame scopeFrame = new ScopeFrame();
         scopeFrame.mainMenuVisible(true);
         

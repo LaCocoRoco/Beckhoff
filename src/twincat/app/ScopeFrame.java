@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -17,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 
+import twincat.TwincatLogger;
 import twincat.app.components.ConsolePanel;
 import twincat.app.components.WindowPanel;
 
@@ -62,6 +64,9 @@ public class ScopeFrame extends JPanel {
     /*************************/
 
     public ScopeFrame() {
+        final Logger logger = TwincatLogger.getLogger();
+        System.out.println("Third");
+        
         // TODO : overlap problem
         JScrollPane overlapPanel = new JScrollPane();
         overlapPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

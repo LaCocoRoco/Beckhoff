@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="Beckhoff" basedir=".">
   <property name="build.title"    value="Beckhoff"/>
+  <property name="build.author"   value="Deiring Andreas"/>
   <property name="build.name"     value="beckhoff"/>
   <property name="build.version"  value="1.0"/>
   <property name="build.class"    value="twincat.app.ScopeApp"/>
@@ -15,7 +16,8 @@
   <property name="lib.dir"        location="${basedir}/lib"/>
 
   <tstamp>
-      <format property="build.day" pattern="dd.MM.yyyy-HH:mm:ss"  locale="de,DE" />
+      <format property="build.day"  pattern="dd.MM.yyyy"  locale="de,DE" />
+      <format property="build.time" pattern="HH:mm:ss"    locale="de,DE" />
   </tstamp>
 
   <path id="libs">
@@ -46,8 +48,11 @@
   <target name="build" depends="compile">
     <manifest file="MANIFEST.MF">
       <attribute name="Title"       value="${build.title}"/>
+      <attribute name="Author"      value="${build.author}"/>
       <attribute name="Version"     value="${build.version}"/>
+      <attribute name="Build"       value="${build.number}"/>
       <attribute name="Date"        value="${build.day}"/>
+      <attribute name="Time"        value="${build.time}"/>
       <attribute name="Main-Class"  value="${build.class}"/>
     </manifest>
 

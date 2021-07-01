@@ -1,25 +1,29 @@
 package twincat.ads.junit;
 
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import org.junit.Test;
 
+import twincat.TwincatLogger;
 import twincat.ads.AdsCmd;
 
 public class AdsCmdUnitTest {
+    AdsCmd adsCmd = new AdsCmd();
+    Logger logger = TwincatLogger.getSignedLogger();   
+    
     @Test
     public void adsAmsPortUnitTest() {
-        AdsCmd adsCmd = new AdsCmd();
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         
         while (running) {
-            System.out.println("Enter Command:");
+            logger.info("Enter Command (Enter \"E\" to exit)");
             String command = scanner.nextLine();
             
-            if (command.equals("exit")) running = false;
+            if (command.equals("E")) running = false;
 
-            adsCmd.send(command);     
+            adsCmd.send(command);  
         }
         
         scanner.close();
