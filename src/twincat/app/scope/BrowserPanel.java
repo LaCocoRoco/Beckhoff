@@ -1,10 +1,10 @@
-package twincat.app.components;
+package twincat.app.scope;
 
 import java.awt.CardLayout;
 
 import javax.swing.JPanel;
 
-public class WindowPanel extends JPanel {
+public class BrowserPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*************************/
@@ -12,36 +12,33 @@ public class WindowPanel extends JPanel {
     /*************************/
 
     public enum Card {
-        SCOPE, ADS, AXIS
-    }
+        TREE, TARGET
+    } 
+
+    /*************************/
+    /*** local attributes ****/
+    /*************************/
+
+    private final TreePanel treePanel = new TreePanel();
     
-    /*************************/
-    /*** local attributes ***/
-    /*************************/
-
-    private final AdsPanel adsPanel = new AdsPanel();
-
-    private final ScopePanel scopePanel = new ScopePanel();
-
-    private final AxisPanel axisPanel = new AxisPanel();
+    private final TargetPanel targetPanel = new TargetPanel();
 
     /*************************/
     /****** constructor ******/
     /*************************/
 
-    public WindowPanel() {
+    public BrowserPanel() {
         this.setLayout(new CardLayout());
-        this.add(scopePanel, Card.SCOPE.toString());
-        this.add(adsPanel, Card.ADS.toString());
-        this.add(axisPanel, Card.AXIS.toString());
+        this.add(treePanel, Card.TREE.toString());
+        this.add(targetPanel, Card.TARGET.toString());
     }
 
     /*************************/
     /********* public ********/
     /*************************/
    
-    public void displayWindow(String card) {
+    public void setCard(Card card) {
         CardLayout cardLayout = (CardLayout) (this.getLayout());
-        cardLayout.show(this, card);
-    }    
+        cardLayout.show(this, card.toString());
+    }
 }

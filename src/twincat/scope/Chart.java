@@ -131,14 +131,14 @@ public class Chart extends Observable {
 
 	private ScheduledFuture<?> schedule = null;
 
-	private Runnable task = new Runnable() {
+	private final Runnable task = new Runnable() {
 		public void run() {
 			try {
 				updateTiming();
 				updateGraphic();
 				updateObserver();
 			} catch (Exception e) {
-			    Logger logger = TwincatLogger.getSignedLogger();
+			    Logger logger = TwincatLogger.getLogger();
                 logger.severe(Utilities.exceptionToString(e));
 			}
 		}
@@ -476,8 +476,6 @@ public class Chart extends Observable {
 	}
 
 	private void updateGraphic() {
-		// TODO : copy to local ?
-		
 		long graphicTime = System.currentTimeMillis();
 
 		Iterator<Axis> axisIterator = null;

@@ -1,4 +1,4 @@
-package twincat.app.components;
+package twincat.app.scope;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,6 +21,7 @@ import javax.swing.text.BadLocationException;
 
 import twincat.TwincatLogger;
 import twincat.ads.AdsCmd;
+import twincat.app.constants.Resources;
 
 public class ConsolePanel extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -30,10 +31,6 @@ public class ConsolePanel extends JPanel {
     /*************************/
 
     private static final int MAX_LINE_COUNT = 2000;
-
-    private static final int FONT_SIZE = 12;
-
-    private static final String FONT_FAMILY = "Consolas";
 
     /*************************/
     /*** local attributes ****/
@@ -51,8 +48,8 @@ public class ConsolePanel extends JPanel {
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(false);
         textArea.setEditable(false);
-        textArea.setFont(new Font(FONT_FAMILY, Font.PLAIN, FONT_SIZE));
-        
+        textArea.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, 12));
+
         StreamHandler consoleHandler = new StreamHandler() {
             @Override
             public synchronized void publish(LogRecord record) {
@@ -61,16 +58,14 @@ public class ConsolePanel extends JPanel {
                         int lineEndOffset = textArea.getLineEndOffset(0);
                         textArea.replaceRange(new String(), 0, lineEndOffset);
                     }
-                } catch (BadLocationException e) {
-                    // empty
-                }
+                } catch (BadLocationException e) {}
 
                 String message = getFormatter().format(record);
                 textArea.append(message);
                 textArea.setCaretPosition(textArea.getDocument().getLength());
             }
         };
-        
+
         consoleHandler.setFormatter(TwincatLogger.getFormatter());
         
         Logger logger = TwincatLogger.getSignedLogger();
@@ -86,7 +81,7 @@ public class ConsolePanel extends JPanel {
         JTextField consoleInput = new JTextField();
         consoleInput.setMargin(new Insets(2, 2, 2, 2));
         consoleInput.setAlignmentX(Component.LEFT_ALIGNMENT);
-        consoleInput.setFont(new Font(FONT_FAMILY, Font.BOLD, FONT_SIZE));
+        consoleInput.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, 12));
         consoleInput.addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -106,14 +101,10 @@ public class ConsolePanel extends JPanel {
             }
 
             @Override
-            public void keyTyped(KeyEvent e) {
-                // empty
-            }
+            public void keyTyped(KeyEvent e) {}
 
             @Override
-            public void keyReleased(KeyEvent e) {
-                // empty
-            }
+            public void keyReleased(KeyEvent e) {}
         });
 
         consoleInput.addAncestorListener(new AncestorListener() {
@@ -123,14 +114,10 @@ public class ConsolePanel extends JPanel {
             }
 
             @Override
-            public void ancestorRemoved(AncestorEvent event) {
-                // empty
-            }
+            public void ancestorRemoved(AncestorEvent event) {}
 
             @Override
-            public void ancestorMoved(AncestorEvent event) {
-                // empty
-            }
+            public void ancestorMoved(AncestorEvent event) {}
         });
 
         this.setLayout(new BorderLayout());

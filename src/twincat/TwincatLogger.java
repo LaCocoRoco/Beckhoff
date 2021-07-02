@@ -53,7 +53,7 @@ public final class TwincatLogger {
         return consoleFormatter;
     }
 
-    public static final void addConsoleLogger() {
+    private static final void addConsoleLogger() {
         Logger logger = TwincatLogger.getLogger();
 
         SimpleFormatter consoleFormatter = TwincatLogger.getFormatter();

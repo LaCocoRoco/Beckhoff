@@ -1,4 +1,4 @@
-package twincat.app.components;
+package twincat.app.scope;
 
 import java.awt.CardLayout;
 
@@ -37,7 +37,7 @@ public class ScopePanel extends JPanel{
     /********* public ********/
     /*************************/
    
-    public void displayScope(String card) {
+    public void setCard(String card) {
         CardLayout cardLayout = (CardLayout) (this.getLayout());
         cardLayout.show(this, card);
     }

@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 
 import twincat.TwincatLogger;
 import twincat.Utilities;
+import twincat.app.constants.Resources;
 
 public class ScopeApp extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -21,17 +22,15 @@ public class ScopeApp extends JFrame {
 
     private static final int WIDTH_FRAME = 800;
 
-    private static final int HEIGHT_FRAME = 600;
+    private static final int HEIGHT_FRAME = 800;
 
-    private static final String APP_ICON_PATH = "/resources/images/app.png";
-    
     /*************************/
     /*** local attributes ***/
     /*************************/
   
     private final Logger logger = TwincatLogger.getSignedLogger();
     
-    private final ResourceBundle textBundle = ResourceBundle.getBundle("resources/string/text");
+    private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
     
     /*************************/
     /****** constructor ******/
@@ -48,8 +47,8 @@ public class ScopeApp extends JFrame {
         int framePositionY = screenSize.height / 2 - HEIGHT_FRAME / 2;
         
         this.setContentPane(scopeFrame);
-        this.setTitle(textBundle.getString("applicationName"));
-        this.setIconImage(Utilities.getImageFromFilePath(APP_ICON_PATH));
+        this.setTitle(languageBundle.getString("applicationName"));
+        this.setIconImage(Utilities.getImageFromFilePath(Resources.PATH_ICON_APP));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setPreferredSize(new Dimension(WIDTH_FRAME, HEIGHT_FRAME));
         this.setBounds(framePositionX, framePositionY, WIDTH_FRAME, HEIGHT_FRAME);
@@ -99,8 +98,7 @@ public class ScopeApp extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    ScopeApp application = new ScopeApp(args);
-                    application.setVisible(true);
+                    new ScopeApp(args);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

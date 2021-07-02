@@ -73,7 +73,7 @@ public class Channel extends Observable implements Observer {
 
 	private ScheduledFuture<?> schedule = null;
 
-	private Runnable task = new Runnable() {
+	private final Runnable task = new Runnable() {
 		public void run() {
 			watchdog();
 		}
