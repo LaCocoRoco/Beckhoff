@@ -1,10 +1,12 @@
-package twincat;
+package twincat.app.scope;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
 
 import javax.swing.JTextArea;
+
+import twincat.Utilities;
 
 public class LoremIpsum extends JTextArea {
     private static final long serialVersionUID = 1L;
@@ -14,6 +16,8 @@ public class LoremIpsum extends JTextArea {
     /*************************/
 
     private static final String LOREM_IPSUM_PATH = "/resources/string/lorem_ipsum.txt";
+
+    private static final int FONT_SIZE = 12;
     
     /*************************/
     /****** constructor ******/
@@ -27,7 +31,7 @@ public class LoremIpsum extends JTextArea {
         this.setLineWrap(true);
         this.setWrapStyleWord(false);
         this.setEditable(false);
-        this.setFont(new Font("Consolas", Font.PLAIN, 12));
+        this.setFont(new Font("Consolas", Font.PLAIN, FONT_SIZE));
         this.setColumns(1);
     }   
 }

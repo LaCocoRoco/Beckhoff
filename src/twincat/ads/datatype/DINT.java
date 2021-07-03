@@ -1,6 +1,6 @@
 package twincat.ads.datatype;
 
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.constants.AdsDataType;
 
@@ -9,15 +9,15 @@ public class DINT extends INT32 {
 	/****** constructor ******/
 	/*************************/
 
-	public DINT(Ads ads, int symbolHandle) {
+	public DINT(AdsClient ads, int symbolHandle) {
 		super(ads, symbolHandle);
 	}
 
-	public DINT(Ads ads, int indexGroup, int indexOffset) throws AdsException {
+	public DINT(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
 		super(ads, indexGroup, indexOffset);
 	}
 	
-	public DINT(Ads ads, String symbolName) throws AdsException {
+	public DINT(AdsClient ads, String symbolName) throws AdsException {
 		super(ads, symbolName);
 	}
 		

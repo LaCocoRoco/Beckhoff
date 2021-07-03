@@ -2,7 +2,7 @@ package twincat.ads.wrapper;
 
 import java.util.Observable;
 
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsCallback;
 import twincat.ads.AdsException;
 import twincat.ads.AdsNotification;
@@ -29,7 +29,7 @@ public abstract class Variable extends Observable implements AdsCallback {
 	
 	private int indexOffset = 0;
 
-	private final Ads ads;
+	private final AdsClient ads;
 
 	protected final byte[] data;
 	
@@ -37,13 +37,13 @@ public abstract class Variable extends Observable implements AdsCallback {
 	/****** constructor ******/
 	/*************************/
 
-	public Variable(Ads ads, int dataSize, int symbolHandle) {
+	public Variable(AdsClient ads, int dataSize, int symbolHandle) {
 		this.ads = ads;
 		this.data = new byte[dataSize];
 		this.symbolHandle = symbolHandle;
 	}
 
-	public Variable(Ads ads, int dataSize, int indexGroup, int indexOffset) {
+	public Variable(AdsClient ads, int dataSize, int indexGroup, int indexOffset) {
 		this.ads = ads;
 		this.data = new byte[dataSize];
 		this.indexGroup = indexGroup;

@@ -10,38 +10,40 @@ import org.junit.Before;
 import org.junit.Test;
 
 import twincat.TwincatLogger;
-import twincat.ads.Ads;
+import twincat.Utilities;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.AdsUploadInfo;
-import twincat.ads.constants.AdsIndexGroup;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
 
 public class AdsExportUnitTest {
-    Ads ads = new Ads();
-    Logger logger = TwincatLogger.getSignedLogger();
+    private final AdsClient ads = new AdsClient();
+    private final Logger logger = TwincatLogger.getSignedLogger();
     
+    private final String netId      = AmsNetId.LOCAL;
+    private final AmsPort amsPort   = AmsPort.SYSTEMSERVICE;
+    private final int readSize      = 256;
+    private final int indexGroup    = 702;
+    private final int indexOffset   = 0;
+
     @Before
     public void startAds() {
         ads.open();
+        ads.setAmsNetId(netId);
+        ads.setAmsPort(amsPort);
     }
 
     @Test
     public void adsExportUnitTest() {
         try {
             String uploadDir = System.getProperty("user.dir") + "/exp/";
-            AdsUploadInfo uploadInfo = ads.readUploadInfo();
-
-            byte[] readBufferUpload = new byte[uploadInfo.getSymbolLength()];
-            ads.read(AdsIndexGroup.SYMBOL_UPLOAD.value, 0, readBufferUpload);
-            Files.write(Paths.get(uploadDir + "BUFFER_UPLOAD.txt"), readBufferUpload);
-            
-            byte[] readBufferDataTypeUpload = new byte[uploadInfo.getDataTypeLength()];
-            ads.read(AdsIndexGroup.SYMBOL_DATA_TYPE_UPLOAD.value, 0, readBufferDataTypeUpload);
-            Files.write(Paths.get(uploadDir + "BUFFER_DATA_TYPE_UPLOAD.txt"), readBufferDataTypeUpload);
-
+            byte[] readBufferUpload = new byte[readSize];
+            ads.read(indexGroup, indexOffset, readBufferUpload);
+            Files.write(Paths.get(uploadDir + "EXPORT.txt"), readBufferUpload);
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info(Utilities.exceptionToString(e));
         }
     }
 

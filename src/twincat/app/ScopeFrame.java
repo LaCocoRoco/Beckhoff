@@ -20,8 +20,8 @@ import javax.swing.border.EmptyBorder;
 
 import twincat.TwincatLogger;
 import twincat.app.constants.Resources;
-import twincat.app.scope.ConsolePanel;
-import twincat.app.scope.WindowPanel;
+import twincat.app.scope.PanelConsole;
+import twincat.app.scope.PanelWindow;
 
 public class ScopeFrame extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -32,7 +32,7 @@ public class ScopeFrame extends JPanel {
 
     private static final int DIVIDER_SIZE = 5;
    
-    private static final int DIVIDER_LOCATION = 150;
+    private static final double DIVIDER_LOCATION = 0.8;
 
     /*************************/
     /*** local attributes ****/
@@ -46,17 +46,17 @@ public class ScopeFrame extends JPanel {
     
     private final JSplitPane contentPanel = new JSplitPane();
 
-    private final ConsolePanel consolePanel = new ConsolePanel();
+    private final PanelConsole consolePanel = new PanelConsole();
 
-    private final WindowPanel windowPanel = new WindowPanel();
+    private final PanelWindow windowPanel = new PanelWindow();
     
     private final JMenuItem menuItemFileNew = new JMenuItem();   
     
     private final JMenuItem menuItemFileOpen = new JMenuItem();
 
-    private final JMenuItem menuItemConsoleOn = new JMenuItem();
+    private final JMenuItem menuItemConsole = new JMenuItem();
     
-    private final JMenuItem menuItemConsoleOff = new JMenuItem();
+    private final JMenuItem menuItemSettings = new JMenuItem();
     
     private final JMenuItem menuItemWindowScope = new JMenuItem();
     
@@ -79,57 +79,68 @@ public class ScopeFrame extends JPanel {
         menuItemWindowScope.setText(languageBundle.getString(Resources.TEXT_WINDOW_SCOPE));
         menuItemWindowScope.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                windowPanel.setCard(WindowPanel.Card.SCOPE);
+                windowPanel.setCard(PanelWindow.Card.SCOPE);
             }
         });
 
         menuItemWindowAds.setText(languageBundle.getString(Resources.TEXT_WINDOW_ADS));
         menuItemWindowAds.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                windowPanel.setCard(WindowPanel.Card.ADS);
+                windowPanel.setCard(PanelWindow.Card.ADS);
             }
         });
 
         menuItemWindowAxis.setText(languageBundle.getString(Resources.TEXT_WINDOW_AXIS));
         menuItemWindowAxis.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                windowPanel.setCard(WindowPanel.Card.AXIS);
+                windowPanel.setCard(PanelWindow.Card.AXIS);
             }
         });
 
-        menuItemConsoleOn.setText(languageBundle.getString(Resources.TEXT_CONSOLE_ON));
-        menuItemConsoleOn.addActionListener(new ActionListener() {
+        menuItemSettings.setText(languageBundle.getString(Resources.TEXT_EXTRAS_SETTINGS));
+        menuItemSettings.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                consoleShow();
+                windowPanel.setCard(PanelWindow.Card.SETTINGS);
             }
         });
 
-        menuItemConsoleOff.setText(languageBundle.getString(Resources.TEXT_CONSOLE_OFF));
-        menuItemConsoleOff.addActionListener(new ActionListener() {
+        menuItemConsole.setText(languageBundle.getString(Resources.TEXT_EXTRAS_CONSOLE));
+        menuItemConsole.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                consoleHide();
+                consoleToggle();
             }
         });
 
         menuItemFileNew.setText(languageBundle.getString(Resources.TEXT_FILE_NEW));
+        menuItemFileNew.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+               // TODO 
+            }
+        });
+        
         menuItemFileOpen.setText(languageBundle.getString(Resources.TEXT_FILE_OPEN));
-
-        JMenu menuFile = new JMenu(languageBundle.getString(Resources.TEXT_FILE_OPEN));
+        menuItemFileOpen.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                // TODO
+            }
+        });
+        
+        JMenu menuFile = new JMenu(languageBundle.getString(Resources.TEXT_FILE));
         menuFile.add(menuItemFileNew);
         menuFile.add(menuItemFileOpen);   
  
         JMenu menuWindow = new JMenu(languageBundle.getString(Resources.TEXT_WINDOW));
         menuWindow.add(menuItemWindowScope);
         menuWindow.add(menuItemWindowAxis);
-        menuWindow.add(menuItemWindowAds);
         
-        JMenu menuConsole = new JMenu(languageBundle.getString(Resources.TEXT_CONSOLE));
-        menuConsole.add(menuItemConsoleOn);
-        menuConsole.add(menuItemConsoleOff);
+        JMenu menuExtras = new JMenu(languageBundle.getString(Resources.TEXT_EXTRAS));
+        menuExtras.add(menuItemSettings);
+        menuExtras.add(menuItemConsole);
+        menuExtras.add(menuItemWindowAds);
 
         mainMenu.add(menuFile);
         mainMenu.add(menuWindow);
-        mainMenu.add(menuConsole);
+        mainMenu.add(menuExtras);
 
         consoleHide();
         
@@ -155,21 +166,21 @@ public class ScopeFrame extends JPanel {
     }
 
     public void minifyMenuItems() {
-        menuItemConsoleOn.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        menuItemConsoleOn.setHorizontalAlignment(JMenuItem.LEFT);
-        menuItemConsoleOn.setHorizontalTextPosition(JMenuItem.LEFT);
-        menuItemConsoleOn.setIcon(null);
-        menuItemConsoleOn.setIconTextGap(0);
-        menuItemConsoleOn.setMargin(new Insets(0, 0, 0, 0));
-        menuItemConsoleOn.setPressedIcon(null);
+        menuItemConsole.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        menuItemConsole.setHorizontalAlignment(JMenuItem.LEFT);
+        menuItemConsole.setHorizontalTextPosition(JMenuItem.LEFT);
+        menuItemConsole.setIcon(null);
+        menuItemConsole.setIconTextGap(0);
+        menuItemConsole.setMargin(new Insets(0, 0, 0, 0));
+        menuItemConsole.setPressedIcon(null);
         
-        menuItemConsoleOff.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        menuItemConsoleOff.setHorizontalAlignment(JMenuItem.LEFT);
-        menuItemConsoleOff.setHorizontalTextPosition(JMenuItem.LEFT);
-        menuItemConsoleOff.setIcon(null);
-        menuItemConsoleOff.setIconTextGap(0);
-        menuItemConsoleOff.setMargin(new Insets(0, 0, 0, 0));
-        menuItemConsoleOff.setPressedIcon(null);
+        menuItemSettings.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        menuItemSettings.setHorizontalAlignment(JMenuItem.LEFT);
+        menuItemSettings.setHorizontalTextPosition(JMenuItem.LEFT);
+        menuItemSettings.setIcon(null);
+        menuItemSettings.setIconTextGap(0);
+        menuItemSettings.setMargin(new Insets(0, 0, 0, 0));
+        menuItemSettings.setPressedIcon(null);
     
         menuItemWindowScope.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         menuItemWindowScope.setHorizontalAlignment(JMenuItem.LEFT);
@@ -200,16 +211,22 @@ public class ScopeFrame extends JPanel {
     /******** private ********/
     /*************************/
 
+    private void consoleToggle() {
+        if (contentPanel.getDividerSize() != 0) {
+            consoleHide();
+        } else {
+            consoleShow();
+        }
+    }
+    
     private void consoleShow() {
-        int dividerLocation = contentPanel.getHeight() - DIVIDER_LOCATION;
-        contentPanel.setDividerLocation(dividerLocation);
+        contentPanel.setDividerLocation(DIVIDER_LOCATION);
         contentPanel.getRightComponent().setVisible(true);
         contentPanel.getLeftComponent().setVisible(true);
         contentPanel.setDividerSize(DIVIDER_SIZE);
         contentPanel.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
-                int dividerLocation = contentPanel.getHeight() - DIVIDER_LOCATION;
-                contentPanel.setDividerLocation(dividerLocation);
+                contentPanel.setDividerLocation(DIVIDER_LOCATION);
             }
         });
     }

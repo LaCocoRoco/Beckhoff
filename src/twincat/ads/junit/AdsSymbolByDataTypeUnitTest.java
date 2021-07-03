@@ -8,33 +8,34 @@ import org.junit.Before;
 import org.junit.Test;
 
 import twincat.TwincatLogger;
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsSymbolDataTypeInfo;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
 import twincat.ads.AdsException;
 import twincat.ads.AdsSymbol;
 
-public class AdsDataTypeInfoNodeUnitTest {
-    Ads ads = new Ads();
-    Logger logger = TwincatLogger.getSignedLogger();
+public class AdsSymbolByDataTypeUnitTest {
+    private final AdsClient ads = new AdsClient();
+    private final Logger logger = TwincatLogger.getSignedLogger();
+    
+    private final String dataTypeName = "junit_st";
     
     @Before
     public void startAds() {
         ads.open();
+        ads.setAmsNetId(AmsNetId.LOCAL);
+        ads.setAmsPort(AmsPort.TC2PLC1);
     }
 
     @Test
     public void adsDataTypeInfoTableUnitTest() {
         try {
-            // data type info from data type
-            AdsSymbolDataTypeInfo dataTypeInfo = ads.readDataTypeInfoByDataTypeName("fb_getTime_stiwa");
+            AdsSymbolDataTypeInfo dataTypeInfo = ads.readDataTypeInfoByDataTypeName(dataTypeName);
             
-            // read data type info list
             List<AdsSymbolDataTypeInfo> dataTypeInfoList = ads.readDataTypeInfoList();
-            
-            // get data type node list
             List<AdsSymbol> dataTypeNodeList = dataTypeInfo.getDataTypeSymbolList(dataTypeInfoList);
-            
-            // print node data
+
             for (AdsSymbol node : dataTypeNodeList) {
                 logger.info("Type: " + node.getType() + "\tName: " + node.getName());        
             }

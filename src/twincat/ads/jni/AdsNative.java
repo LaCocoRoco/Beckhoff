@@ -1,6 +1,7 @@
 package twincat.ads.jni;
 
 import java.lang.reflect.Field;
+import java.util.logging.Logger;
 
 import de.beckhoff.jni.JNIByteBuffer;
 import de.beckhoff.jni.JNILong;
@@ -11,6 +12,8 @@ import de.beckhoff.jni.tcads.AdsNotificationAttrib;
 import de.beckhoff.jni.tcads.AdsState;
 import de.beckhoff.jni.tcads.AdsVersion;
 import de.beckhoff.jni.tcads.AmsAddr;
+import twincat.TwincatLogger;
+import twincat.Utilities;
 import twincat.ads.AdsCallback;
 import twincat.ads.AdsDeviceInfo;
 import twincat.ads.AdsDeviceState;
@@ -18,6 +21,7 @@ import twincat.ads.AdsException;
 import twincat.ads.AdsNotification;
 import twincat.ads.constants.AdsError;
 import twincat.ads.constants.AdsStatus;
+import twincat.ads.constants.AmsNetId;
 import twincat.ads.constants.AmsPort;
 
 public class AdsNative {
@@ -37,14 +41,18 @@ public class AdsNative {
 
     private final AmsAddr amsAddress = new AmsAddr();
 
+    private final Logger logger = TwincatLogger.getSignedLogger();
+    
     /*************************/
     /****** constructor ******/
     /*************************/
 
     public AdsNative() {
+        // load java library path
         String javaLibraryPath = System.getProperty("java.library.path");
         StringBuilder stringBuilder = new StringBuilder(javaLibraryPath);
 
+        // add ads library
         if (System.getProperty("os.arch").contains("x86")) {
             if (!stringBuilder.toString().contains(ADS_TO_JAVA_X86)) {
                 stringBuilder.insert(0, ADS_TO_JAVA_X86);
@@ -55,15 +63,26 @@ public class AdsNative {
             }
         }
 
+        // set new library path
         System.setProperty("java.library.path", stringBuilder.toString());
 
         try {
+            // force system library reload
             Field sysPathsField = ClassLoader.class.getDeclaredField("sys_paths");
             sysPathsField.setAccessible(true);
             sysPathsField.set(null, null);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-
+            logger.severe(Utilities.exceptionToString(e));
         }
+        
+        try {
+            // check ads status
+            AdsCallDllFunction.adsGetDllVersion();
+            setAmsNetId(AmsNetId.LOCAL);
+            setAmsPort(AmsPort.TC2PLC1);
+        } catch (UnsatisfiedLinkError e) {
+            logger.severe(Utilities.exceptionToString(e));   
+        }   
     }
 
     /*************************/
@@ -75,9 +94,7 @@ public class AdsNative {
     }
 
     public void setAmsPort(AmsPort amsPort) {
-
         amsAddress.setPort(amsPort.value);
-
     }
 
     public String getAmsNetId() {
@@ -85,9 +102,7 @@ public class AdsNative {
     }
 
     public void setAmsNetId(String amsNetId) {
-
         amsAddress.setNetIdStringEx(amsNetId);
-
     }
 
     /*************************/

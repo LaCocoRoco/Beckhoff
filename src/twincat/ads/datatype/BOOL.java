@@ -1,6 +1,6 @@
 package twincat.ads.datatype;
 
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.constants.AdsDataType;
 
@@ -9,15 +9,15 @@ public class BOOL extends BIT {
 	/****** constructor ******/
 	/*************************/
 
-	public BOOL(Ads ads, int symbolHandle) {
+	public BOOL(AdsClient ads, int symbolHandle) {
 		super(ads, symbolHandle);
 	}
 
-	public BOOL(Ads ads, int indexGroup, int indexOffset) throws AdsException {
+	public BOOL(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
 		super(ads, indexGroup, indexOffset);
 	}
 	
-	public BOOL(Ads ads, String symbolName) throws AdsException {
+	public BOOL(AdsClient ads, String symbolName) throws AdsException {
 		super(ads, symbolName);
 	}
 

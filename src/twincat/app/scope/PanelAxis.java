@@ -2,16 +2,14 @@ package twincat.app.scope;
 
 import javax.swing.JScrollPane;
 
-import twincat.LoremIpsum;
-
-public class AxisPanel extends JScrollPane {
+public class PanelAxis extends JScrollPane {
 	private static final long serialVersionUID = 1L;
 
 	/*************************/
 	/****** constructor ******/
 	/*************************/
-	
-	public AxisPanel() {
+
+	public PanelAxis() {
 		this.setViewportView(new LoremIpsum());
 	}
 }

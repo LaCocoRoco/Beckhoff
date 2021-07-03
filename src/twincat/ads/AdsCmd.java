@@ -2,6 +2,7 @@ package twincat.ads;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -43,8 +44,6 @@ public class AdsCmd {
     
     private static final String PARAMETER_INFO  = "info";
 
-    private static final String PARAMETER_EMPTY = "empty";
-
     private static final String CMD_PATTERN     = "\\s+";
     
     private static final int CMD_ADS_TIMEOUT    = 50;
@@ -55,7 +54,7 @@ public class AdsCmd {
 
     private long scheduleTime = 0;
 
-    private final Ads ads = new Ads();
+    private final AdsClient ads = new AdsClient();
 
     private final Logger logger = TwincatLogger.getSignedLogger();
 
@@ -74,7 +73,7 @@ public class AdsCmd {
             Runnable task = new Runnable() {
                 public void run() {
                 	try {
-                		cmdDataHandler(commando);
+                		cmdParser(commando);
                 	} catch (Exception e) {
                 	    StringWriter stringWriter = new StringWriter();
                 	    PrintWriter printWriter = new PrintWriter(stringWriter);
@@ -97,99 +96,128 @@ public class AdsCmd {
     /******** private ********/
     /*************************/
 
-    private void cmdDataHandler(String instruction) {
+    private void cmdParser(String instruction) {
         String[] data = instruction.split(AdsCmd.CMD_PATTERN);
 
         switch (data.length) {
             case 1:
-                cmdInstructionHandler(data[0], PARAMETER_EMPTY, PARAMETER_EMPTY);
+                cmdHandler(data[0]);
                 break;
 
             case 2:
-                cmdInstructionHandler(data[0], data[1], PARAMETER_EMPTY);
+                cmdHandler(data[0], data[1]);
                 break;
 
             case 3:
-                cmdInstructionHandler(data[0], data[1], data[2]);
+                cmdHandler(data[0], data[1], data[2]);
+                break;
+                
+            case 4:
+                cmdHandler(data[0], data[1], data[2], data[3]);
                 break;
         }
     }
 
-    private void cmdInstructionHandler(String par1, String par2, String par3) {
+    private void cmdHandler(String par1) {
         switch (par1) {
             case COMMAND_ADS:
-                cmdAdsVersion();
+                cmdAds();
                 break;
 
             case COMMAND_INFO:
-                cmdAdsDeviceInfo();
+                cmdInfo();
                 break;
 
             case COMMAND_STATE:
-                cmdAddsDeviceState();
+                cmdState();
                 break;
 
             case COMMAND_NET_ID:
-                cmdAdsNetId(par2);
+                cmdNetId();
                 break;
 
             case COMMAND_PORT:
-                cmdAmsPort(par2);
+                cmdPort();
+                break;
+        }
+    }   
+
+    private void cmdHandler(String par1, String par2) {
+        switch (par1) {
+            case COMMAND_PORT:
+                cmdPort(par2);
+                break;
+
+            case COMMAND_NET_ID:
+                cmdNetId(par2);
                 break;
 
             case COMMAND_SYMBOL:
-                cmdSymbol(par2, par3);
+                cmdSymbol(par2);
                 break;
 
             case COMMAND_READ:
                 cmdRead(par2);
                 break;
+        }
+    }      
+
+    private void cmdHandler(String par1, String par2, String par3) {
+        switch (par1) {
+            case COMMAND_SYMBOL:
+                cmdSymbol(par2, par3);
+                break;
 
             case COMMAND_WRITE:
                 cmdWrite(par2, par3);
                 break;
-
-            default:
+        }
+    }      
+      
+    private void cmdHandler(String par1, String par2, String par3, String par4) {
+        switch (par1) {
+            case COMMAND_READ:
+                cmdRead(par2, par3, par4);
                 break;
         }
-    }
-
-    private void cmdAdsNetId(String par1) {
+    }      
+    
+    private void cmdNetId(String par1) {
         switch (par1) {
-            case PARAMETER_EMPTY:
-                cmdAdsNetIdGet();
-                break;
-
             case PARAMETER_LOCAL:
-                cmdAdsNetIdLocal();
+                cmdNetIdLocal();
                 break;
                 
             default:
-                cmdAdsNetIdSet(par1);
+                cmdNetIdAddress(par1);
                 break;
         }
     }
-
-    private void cmdAmsPort(String par1) {
+   
+    private void cmdPort(String par1) {
         switch (par1) {
             case PARAMETER_LIST:
-                cmdAmsPortList();
+                cmdPortList();
                 break;
 
             case PARAMETER_PING:
-                cmdAmsPortPing();
-                break;
-
-            case PARAMETER_EMPTY:
-                cmdAmsPortGet();
+                cmdPortPing();
                 break;
 
             default:
-                cmdAmsPortSet(par1);
+                cmdPortValue(par1);
                 break;
         }
     }
-
+    
+    private void cmdSymbol(String par1) {
+        switch (par1) {
+            default:
+                cmdSymbolList();
+                break;
+        }
+    }   
+    
     private void cmdSymbol(String par1, String par2) {
         switch (par1) {
             case PARAMETER_LIST:
@@ -199,17 +227,14 @@ public class AdsCmd {
             case PARAMETER_INFO:
                 cmdSymbolInfo(par2);
                 break;
-   
-            default:
-                break;
         }
     }
 
-    private void cmdAdsVersion() {
+    private void cmdAds() {
         logger.info("Version: " + ads.getVersion());
     }
 
-    private void cmdAdsDeviceInfo() {
+    private void cmdInfo() {
         try {
             ads.open();
             ads.setTimeout(CMD_ADS_TIMEOUT);
@@ -220,17 +245,17 @@ public class AdsCmd {
             logger.info("Major: " + deviceInfo.getMajorVersion());
             logger.info("Minor: " + deviceInfo.getMinorVersion());
         } catch (AdsException e) {
-            logger.info("Error: " + e.getAdsErrorMessage());
+            logger.info(e.getAdsErrorMessage());
         }
 
         try {
             ads.close();
         } catch (AdsException e) {
-            logger.info("Error: " + e.getAdsErrorMessage());
+            logger.info(e.getAdsErrorMessage());
         }
     }
 
-    private void cmdAddsDeviceState() {
+    private void cmdState() {
         try {
             ads.open();
             ads.setTimeout(CMD_ADS_TIMEOUT);
@@ -245,16 +270,18 @@ public class AdsCmd {
         try {
             ads.close();
         } catch (AdsException e) {
-            logger.info("Error: " + e.getAdsErrorMessage());
+            logger.info(e.getAdsErrorMessage());
         }
     }
 
-    private void cmdAdsNetIdGet() {
+    
+    
+    private void cmdNetId() {
         String amsNetId = ads.getAmsNetId();
         logger.info(amsNetId);
     }
     
-    private void cmdAdsNetIdLocal() {
+    private void cmdNetIdLocal() {
         try {
             ads.open();
             ads.setTimeout(CMD_ADS_TIMEOUT);
@@ -269,20 +296,24 @@ public class AdsCmd {
         try {
             ads.close();
         } catch (AdsException e) {
-            logger.info("Error: " + e.getAdsErrorMessage());
+            logger.info(e.getAdsErrorMessage());
         }
     }
 
-    private void cmdAdsNetIdSet(String par1) {
+    private void cmdNetIdAddress(String par1) {
         try {
             ads.setAmsNetId(par1);
             logger.info(par1);
         } catch (IllegalArgumentException e) {
-            logger.info("Net Id does not match pattern");
+            logger.info("AmsNetId Wrong Pattern");
         }
     }
 
-    private void cmdAmsPortList() {
+    private void cmdPort() {
+        logger.info(ads.getAmsPort().toString());
+    }
+  
+    private void cmdPortList() {
         for (AmsPort amsPort : AmsPort.values()) {
             if (!amsPort.equals(AmsPort.UNKNOWN)) {
                 logger.info(amsPort.toString());
@@ -290,7 +321,7 @@ public class AdsCmd {
         }
     }
 
-    private void cmdAmsPortPing() {
+    private void cmdPortPing() {
         try {
             ads.open();
             ads.setTimeout(CMD_ADS_TIMEOUT);
@@ -322,37 +353,38 @@ public class AdsCmd {
         try {
             ads.close();
         } catch (AdsException e) {
-            logger.info("Error: " + e.getAdsErrorMessage());
+            logger.info(e.getAdsErrorMessage());
         }
     }
 
-    private void cmdAmsPortGet() {
-        logger.info(ads.getAmsPort().toString());
-    }
+    private void cmdPortValue(String value) {
+        AmsPort amsPort = AmsPort.getByString(value);
 
-    private void cmdAmsPortSet(String data) {
-        AmsPort amsPort = AmsPort.getByString(data);
-
+        if (!amsPort.equals(AmsPort.UNKNOWN)) {
+            ads.setAmsPort(amsPort);
+            logger.info(amsPort.toString());
+            return;
+        }
+        
+        try  {
+            amsPort = AmsPort.getByValue(Integer.parseInt(value));
+        } catch(NumberFormatException e) {}    
+        
         if (!amsPort.equals(AmsPort.UNKNOWN)) {
             ads.setAmsPort(amsPort);
             logger.info(amsPort.toString());
         }
     }
 
-    private void cmdSymbolList(String par1) {
-        try {
-            ads.open();
+    private void cmdSymbolList() {
+        try {      
             ads.setTimeout(CMD_ADS_TIMEOUT);
-   
-            AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads);
             
+            AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads);   
             List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
+            
 
-            if (par1.equals(PARAMETER_EMPTY)) {
-                symbolList.addAll(symbolLoader.getSymbolTable());
-            } else {
-                symbolList.addAll(symbolLoader.getSymbolBySymbolName(par1));
-            }
+            symbolList.addAll(symbolLoader.getSymbolTable());
             
             for (AdsSymbol symbol : symbolList) {
                 String name = symbol.getName();
@@ -361,12 +393,25 @@ public class AdsCmd {
             } 
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
-        }
-
-        try {
-            ads.close();
+        }    
+    }
+    
+    private void cmdSymbolList(String symbolName) {
+        try {      
+            ads.setTimeout(CMD_ADS_TIMEOUT);
+            
+            AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads);   
+            List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
+            
+            symbolList.addAll(symbolLoader.getSymbolBySymbolName(symbolName));
+            
+            for (AdsSymbol symbol : symbolList) {
+                String name = symbol.getName();
+                String type = String.format("%-8s", symbol.getType().toString());
+                logger.info("Type: " + type + "| Name: " + name);        
+            } 
         } catch (AdsException e) {
-            logger.info("Error: " + e.getAdsErrorMessage());
+            logger.info(e.getAdsErrorMessage());
         }
     }
 
@@ -383,9 +428,6 @@ public class AdsCmd {
             logger.info("IndexOffset: " + symbolInfo.getIndexOffset());
             logger.info("Flags:       " + symbolInfo.getSymbolFlag());
             logger.info("Comment:     " + symbolInfo.getComment());
-            
-            Variable variable = ads.getVariableBySymbolName(symbolInfo.getSymbolName());
-            logger.info("Value:       " + variable.read().toString());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
         }
@@ -393,7 +435,7 @@ public class AdsCmd {
         try {
             ads.close();
         } catch (AdsException e) {
-            logger.info("Error: " + e.getAdsErrorMessage());
+            logger.info(e.getAdsErrorMessage());
         }
     }
 
@@ -404,7 +446,7 @@ public class AdsCmd {
             
             Variable variable = ads.getVariableBySymbolName(symbolName);
             
-            logger.info(variable.read().toString());
+            if (variable != null) logger.info(variable.read().toString());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
         }
@@ -412,10 +454,36 @@ public class AdsCmd {
         try {
             ads.close();
         } catch (AdsException e) {
-            logger.info("Error: " + e.getAdsErrorMessage());
+            logger.info(e.getAdsErrorMessage());
         }
     }
 
+    private void cmdRead(String idxGrp, String idxOffs, String size) {
+        try {
+            ads.open();
+            ads.setTimeout(CMD_ADS_TIMEOUT);
+            
+            try  {
+                byte[] readBuffer = new byte[Integer.parseInt(size)];
+                ads.read(Integer.parseInt(idxGrp), Integer.parseInt(idxOffs), readBuffer);
+                
+                logger.info(new String(readBuffer, "UTF-8"));
+            } catch (NumberFormatException e) {
+                logger.info("NumberFormatException");
+            } catch (UnsupportedEncodingException e) {
+                logger.info("UnsupportedEncodingException");
+            }
+        } catch (AdsException e) {
+            logger.info(e.getAdsErrorMessage());
+        }
+
+        try {
+            ads.close();
+        } catch (AdsException e) {
+            logger.info(e.getAdsErrorMessage());
+        } 
+    }
+ 
     private void cmdWrite(String symbolName, String value) {
         try {
             ads.open();
@@ -423,7 +491,7 @@ public class AdsCmd {
             
             Variable variable = ads.getVariableBySymbolName(symbolName);
             
-            logger.info(variable.write(value).read().toString());
+            if (variable != null) logger.info(variable.write(value).read().toString());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
         }
@@ -431,7 +499,7 @@ public class AdsCmd {
         try {
             ads.close();
         } catch (AdsException e) {
-            logger.info("Error: " + e.getAdsErrorMessage());
+            logger.info(e.getAdsErrorMessage());
         }
     }
 }

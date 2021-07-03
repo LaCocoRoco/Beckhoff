@@ -1,6 +1,6 @@
 package twincat.ads.datatype;
 
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.constants.AdsDataType;
 import twincat.ads.wrapper.Variable;
@@ -10,15 +10,15 @@ public class BIT extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public BIT(Ads ads, int symbolHandle) {
+	public BIT(AdsClient ads, int symbolHandle) {
 		super(ads, AdsDataType.BIT.size, symbolHandle);
 	}
 
-	public BIT(Ads ads, int indexGroup, int indexOffset) throws AdsException {
+	public BIT(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
 		super(ads, AdsDataType.BIT.size, indexGroup, indexOffset);
 	}
 	
-	public BIT(Ads ads, String symbolName) throws AdsException {
+	public BIT(AdsClient ads, String symbolName) throws AdsException {
 		super(ads, AdsDataType.BIT.size, ads.readHandleOfSymbolName(symbolName));
 	}
 

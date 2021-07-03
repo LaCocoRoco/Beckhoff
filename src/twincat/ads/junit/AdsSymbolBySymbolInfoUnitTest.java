@@ -8,36 +8,37 @@ import org.junit.Before;
 import org.junit.Test;
 
 import twincat.TwincatLogger;
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsSymbolDataTypeInfo;
 import twincat.ads.AdsException;
 import twincat.ads.AdsSymbol;
 import twincat.ads.AdsSymbolInfo;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
 
-public class AdsSymbolInfoNodeUnitTest {
-    Ads ads = new Ads();
-    Logger logger = TwincatLogger.getSignedLogger();
+public class AdsSymbolBySymbolInfoUnitTest {
+    private final AdsClient ads = new AdsClient();
+    private final Logger logger = TwincatLogger.getSignedLogger();
 
+    private final String symbolName = ".junit_array_complex";
+    
     @Before
     public void startAds() {
         ads.open();
+        ads.setAmsNetId(AmsNetId.LOCAL);
+        ads.setAmsPort(AmsPort.TC2PLC1);
     }
 
     @Test
     public void adsSymbolInfoNodeUnitTest() {
         try {
-            // symbol info from symbol name
-            AdsSymbolInfo symbolInfo = ads.readSymbolInfoBySymbolName(".ACTUALVELOCITY ");
+            AdsSymbolInfo symbolInfo = ads.readSymbolInfoBySymbolName(symbolName);
 
-            // read data type info list
             List<AdsSymbolDataTypeInfo> dataTypeInfoList = ads.readDataTypeInfoList();
+            List<AdsSymbol> symbolList = symbolInfo.getSymbolList(dataTypeInfoList);
 
-            // get symbol node list
-            List<AdsSymbol> symbolNodeList = symbolInfo.getSymbolList(dataTypeInfoList);
-
-            // print node data
-            for (AdsSymbol node : symbolNodeList) {
-                logger.info("Type: " + node.getType() + "\tName: " + node.getName());
+            for (AdsSymbol symbol : symbolList) {
+                logger.info("Type: " + symbol.getType() + "\tName: " + symbol.getName());
             }
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());

@@ -3,6 +3,9 @@ package twincat.test;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Box;
@@ -17,9 +20,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
+import twincat.ads.AdsSymbol;
 import twincat.ads.AdsSymbolInfo;
+import twincat.ads.AdsSymbolLoader;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
 
 public class SymbolBrowser extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -60,21 +67,97 @@ public class SymbolBrowser extends JFrame {
 		return root;
 	}
 
+	/**************************/
+	/**************************/
+	
+	/*
+	 * 1  (BIGT) MAIN.L_SIZE_ENTRY.ARRDATA
+	 * -> is leaf and big, add
+	 * 2. (PRIM) MAIN.L_SIZE_ENTRY.ARRDATA.ARRDATA[1768]
+	 * 3. (BIGT) .MIB_IF_TYPE_TOKENRING
+	 * -> is leaf and big, add
+	 * 4. (PRIM) .MIB_IF_TYPE_TOKENRING.E_MIB_IF_TYPE
+	 *
+	 * 1. add whole list
+	 * 2. if part exist it will be added
+	 * 3. only add if is leaf and big
+	 * 
+	 * 1. MAIN.L_FB_UNIT
+	 * 2. MAIN.L_FB_UNIT.INTERNAL_STRUCTURE_ARRAY[1].ST_VALUE.M
+	 * 
+	 * 
+	 */
+	
+	
+	
+	
+	
+	
+    private DefaultMutableTreeNode symbolToNodeList(List<AdsSymbol> symbolList) {
+        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
+    
+        for (AdsSymbol symbol : symbolList) {
+            
+            List<String> symbolNameList = Arrays.asList(symbol.getName().split("\\."));
+            Iterator<String> symbolNameIterator = symbolNameList.iterator();
+            
+            for (int i = 0; i < rootNode.getChildCount(); i++) {
+
+                
+                
+                
+            }
+            
+            
+            
+            
+            
+            DefaultMutableTreeNode symbolRootNode = null;
+    
+            
+     
+            
+            
+            // TODO
+            DefaultMutableTreeNode node = null;
+     
+         }
+
+         return rootNode;
+     }
+	
+	
+	
+	
+	
+	
 	public SymbolBrowser() throws AdsException {
 		// create ads
-		Ads ads = new Ads();
-		ads.open();
-		String amsNetId = ads.readAmsNetId();
-		ads.setAmsNetId(amsNetId);
-		
-		// get symbol table
-		List<AdsSymbolInfo> symbolInfoList = ads.readSymbolInfoList();
+		AdsClient ads = new AdsClient();
+		ads.setAmsPort(AmsPort.TC2PLC1);
+		ads.setAmsNetId(AmsNetId.LOCAL);
 
-		// symbol table to tree
-		DefaultMutableTreeNode symbolTableTreeNode = createTreeNodeFromSymbolTable(amsNetId, symbolInfoList);
+		// get symbol list
+		AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads);
+		List<AdsSymbol> symbolList = symbolLoader.getSymbolTable();
+
+		// get symbol only from name
+		String symbolName = ".junit_array_small"; // MAIN.L_FB_UNIT
+		List<AdsSymbol> symbolNameList = symbolLoader.getSymbolBySymbolName(symbolName);
+		
+		// get node list
+		DefaultMutableTreeNode rootNode = symbolToNodeList(symbolNameList);
+
+		
+		
+        // get root
+	    ads.open();
+	    String rootName = "LOCAL: " + ads.readAmsNetId();
+	    ads.close();
+
 
 		// read tree element
-		JTree jTree = new JTree(symbolTableTreeNode);
+		JTree jTree = new JTree(rootNode);
 		jTree.setBorder(new EmptyBorder(10, 10, 10, 10));
 		jTree.setScrollsOnExpand(false);
 		jTree.addMouseListener(new MouseAdapter() {
@@ -82,6 +165,7 @@ public class SymbolBrowser extends JFrame {
 				if (mouseEvent.getClickCount() == 2) {
 					int x = mouseEvent.getX();
 					int y = mouseEvent.getY();
+					
 					TreePath treePath = jTree.getPathForLocation(x, y);
 					TreeNode treeNode = (TreeNode) treePath.getLastPathComponent();
 					Object[] resourceList = treePath.getPath();

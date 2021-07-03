@@ -3,7 +3,7 @@ package twincat.ads.datatype;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.constants.AdsError;
 import twincat.ads.constants.AdsDataType;
@@ -14,15 +14,15 @@ public class UINT32 extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public UINT32(Ads ads, int symbolHandle) {
+	public UINT32(AdsClient ads, int symbolHandle) {
 		super(ads, AdsDataType.UINT32.size, symbolHandle);
 	}
 
-	public UINT32(Ads ads, int indexGroup, int indexOffset) throws AdsException {
+	public UINT32(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
 		super(ads, AdsDataType.UINT32.size, indexGroup, indexOffset);
 	}
 	
-	public UINT32(Ads ads, String symbolName) throws AdsException {
+	public UINT32(AdsClient ads, String symbolName) throws AdsException {
 		super(ads, AdsDataType.UINT32.size, ads.readHandleOfSymbolName(symbolName));
 	}
 	
@@ -124,7 +124,7 @@ public class UINT32 extends Variable {
 			long data = Long.parseLong(value);
 			super.write(UINT32.valueToArray(data));
 		} catch(NumberFormatException e) {
-			throw new AdsException(AdsError.ADS_WRITE_PARSE_ERROR);
+			throw new AdsException(AdsError.VARIABLE_WRITE_PARSE_ERROR);
 		}
 		return this;
 	}

@@ -8,17 +8,21 @@ import org.junit.Before;
 import org.junit.Test;
 
 import twincat.TwincatLogger;
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsSymbolDataTypeInfo;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
 import twincat.ads.AdsException;
 
 public class AdsDataTypeInfoListUnitTest {
-    Ads ads = new Ads();
-    Logger logger = TwincatLogger.getSignedLogger();
+    private final AdsClient ads = new AdsClient();
+    private final Logger logger = TwincatLogger.getSignedLogger();
 
     @Before
     public void startAds() {
         ads.open();
+        ads.setAmsNetId(AmsNetId.LOCAL);
+        ads.setAmsPort(AmsPort.TC2PLC1);
     }
 
     @Test

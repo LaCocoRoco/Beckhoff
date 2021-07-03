@@ -1,6 +1,6 @@
 package twincat.ads.datatype;
 
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.constants.AdsDataType;
 import twincat.ads.wrapper.Variable;
@@ -16,27 +16,27 @@ public class STRING extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public STRING(Ads ads, int symbolHandle) {
+	public STRING(AdsClient ads, int symbolHandle) {
 		super(ads, AdsDataType.STRING.size, symbolHandle);
 	}
 
-	public STRING(Ads ads, int symbolHandle,short dataSize) {
+	public STRING(AdsClient ads, int symbolHandle,short dataSize) {
 		super(ads, dataSize, symbolHandle);
 	}
 
-	public STRING(Ads ads, int indexGroup, int indexOffset) throws AdsException {
+	public STRING(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
 		super(ads, AdsDataType.STRING.size, indexGroup, indexOffset);
 	}
 
-	public STRING(Ads ads, int indexGroup, int indexOffset, short dataSize) throws AdsException {
+	public STRING(AdsClient ads, int indexGroup, int indexOffset, short dataSize) throws AdsException {
 		super(ads, dataSize, indexGroup, indexOffset);
 	}
 	
-	public STRING(Ads ads, String symbolName) throws AdsException {
+	public STRING(AdsClient ads, String symbolName) throws AdsException {
 		super(ads, AdsDataType.STRING.size, ads.readHandleOfSymbolName(symbolName));
 	}
 	
-	public STRING(Ads ads, String symbolName, short dataSize) throws AdsException {
+	public STRING(AdsClient ads, String symbolName, short dataSize) throws AdsException {
 		super(ads, dataSize, ads.readHandleOfSymbolName(symbolName));
 	}
 		

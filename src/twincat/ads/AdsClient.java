@@ -33,7 +33,7 @@ import twincat.ads.datatype.WORD;
 import twincat.ads.jni.AdsNative;
 import twincat.ads.wrapper.Variable;
 
-public class Ads extends AdsNative {
+public class AdsClient extends AdsNative {
     /*************************/
     /*** ads implementation **/
     /*************************/
@@ -95,6 +95,12 @@ public class Ads extends AdsNative {
     /********* public ********/
     /*************************/
 
+    public String readLocalHostName() throws AdsException {
+        byte[] readBuffer = new byte[AdsIndexGroup.SYSTEM_IP_HOST_NAME.size];
+        read(AdsIndexGroup.SYSTEM_IP_HOST_NAME.value, 0, readBuffer);
+        return STRING.arrayToValue(readBuffer);
+    }
+    
     public void readBySymbolHandle(int symbolHandle, byte[] readBuffer) throws AdsException {
         if (symbolHandle != 0) {
             read(AdsIndexGroup.SYMBOL_VALUE_BY_HANDLE.value, symbolHandle, readBuffer);
@@ -123,7 +129,7 @@ public class Ads extends AdsNative {
         byte[] writeBuffer = STRING.valueToArray(symbolName);
         readWrite(AdsIndexGroup.SYMBOL_VALUE_BY_NAME.value, 0, readBuffer, writeBuffer);
     }
-
+ 
     public AdsSymbolInfo readSymbolInfoBySymbolName(String symbolName) throws AdsException {
         byte[] writeBuffer = symbolName.getBytes();
         byte[] readBuffer = new byte[AdsIndexGroup.SYMBOL_INFO_BYNAME_EX.size];
@@ -190,52 +196,29 @@ public class Ads extends AdsNative {
 
     public Variable getVariableByAddress(AdsDataType dataType, int idxGrp, int idxOffs) throws AdsException {
         switch (dataType) {
-            case BIT:
-                return new BIT(this, idxGrp, idxOffs);
-            case BOOL:
-                return new BOOL(this, idxGrp, idxOffs);
-            case INT8:
-                return new INT8(this, idxGrp, idxOffs);
-            case SINT:
-                return new SINT(this, idxGrp, idxOffs);
-            case INT16:
-                return new INT16(this, idxGrp, idxOffs);
-            case INT:
-                return new INT(this, idxGrp, idxOffs);
-            case UINT8:
-                return new UINT8(this, idxGrp, idxOffs);
-            case USINT:
-                return new USINT(this, idxGrp, idxOffs);
-            case BYTE:
-                return new BYTE(this, idxGrp, idxOffs);
-            case UINT16:
-                return new UINT16(this, idxGrp, idxOffs);
-            case UINT:
-                return new UINT(this, idxGrp, idxOffs);
-            case WORD:
-                return new WORD(this, idxGrp, idxOffs);
-            case INT32:
-                return new INT32(this, idxGrp, idxOffs);
-            case DINT:
-                return new DINT(this, idxGrp, idxOffs);
-            case UINT32:
-                return new UINT32(this, idxGrp, idxOffs);
-            case UDINT:
-                return new UDINT(this, idxGrp, idxOffs);
-            case DWORD:
-                return new DWORD(this, idxGrp, idxOffs);
-            case REAL32:
-                return new REAL32(this, idxGrp, idxOffs);
-            case REAL:
-                return new REAL(this, idxGrp, idxOffs);
-            case REAL64:
-                return new REAL64(this, idxGrp, idxOffs);
-            case LREAL:
-                return new LREAL(this, idxGrp, idxOffs);
-            case STRING:
-                return new STRING(this, idxGrp, idxOffs);
-            default:
-                return null;
+            case BIT:       return new BIT(this, idxGrp, idxOffs);
+            case BOOL:      return new BOOL(this, idxGrp, idxOffs);
+            case INT8:      return new INT8(this, idxGrp, idxOffs);
+            case SINT:      return new SINT(this, idxGrp, idxOffs);
+            case INT16:     return new INT16(this, idxGrp, idxOffs);
+            case INT:       return new INT(this, idxGrp, idxOffs);
+            case UINT8:     return new UINT8(this, idxGrp, idxOffs);
+            case USINT:     return new USINT(this, idxGrp, idxOffs);
+            case BYTE:      return new BYTE(this, idxGrp, idxOffs);
+            case UINT16:    return new UINT16(this, idxGrp, idxOffs);
+            case UINT:      return new UINT(this, idxGrp, idxOffs);
+            case WORD:      return new WORD(this, idxGrp, idxOffs);
+            case INT32:     return new INT32(this, idxGrp, idxOffs);
+            case DINT:      return new DINT(this, idxGrp, idxOffs);
+            case UINT32:    return new UINT32(this, idxGrp, idxOffs);
+            case UDINT:     return new UDINT(this, idxGrp, idxOffs);
+            case DWORD:     return new DWORD(this, idxGrp, idxOffs);
+            case REAL32:    return new REAL32(this, idxGrp, idxOffs);
+            case REAL:      return new REAL(this, idxGrp, idxOffs);
+            case REAL64:    return new REAL64(this, idxGrp, idxOffs);
+            case LREAL:     return new LREAL(this, idxGrp, idxOffs);
+            case STRING:    return new STRING(this, idxGrp, idxOffs);
+            default:        return null;
         }
     }
 
@@ -245,52 +228,29 @@ public class Ads extends AdsNative {
         short dataSize = (short) symbolInfo.getDataSize();
 
         switch (dataType) {
-            case BIT:
-                return new BIT(this, symbolName);
-            case BOOL:
-                return new BOOL(this, symbolName);
-            case INT8:
-                return new INT8(this, symbolName);
-            case SINT:
-                return new SINT(this, symbolName);
-            case INT16:
-                return new INT16(this, symbolName);
-            case INT:
-                return new INT(this, symbolName);
-            case UINT8:
-                return new UINT8(this, symbolName);
-            case USINT:
-                return new USINT(this, symbolName);
-            case BYTE:
-                return new BYTE(this, symbolName);
-            case UINT16:
-                return new UINT16(this, symbolName);
-            case UINT:
-                return new UINT(this, symbolName);
-            case WORD:
-                return new WORD(this, symbolName);
-            case INT32:
-                return new INT32(this, symbolName);
-            case DINT:
-                return new DINT(this, symbolName);
-            case UINT32:
-                return new UINT32(this, symbolName);
-            case UDINT:
-                return new UDINT(this, symbolName);
-            case DWORD:
-                return new DWORD(this, symbolName);
-            case REAL32:
-                return new REAL32(this, symbolName);
-            case REAL:
-                return new REAL(this, symbolName);
-            case REAL64:
-                return new REAL64(this, symbolName);
-            case LREAL:
-                return new LREAL(this, symbolName);
-            case STRING:
-                return new STRING(this, symbolName, dataSize);
-            default:
-                return null;
+            case BIT:       return new BIT(this, symbolName);
+            case BOOL:      return new BOOL(this, symbolName);
+            case INT8:      return new INT8(this, symbolName);
+            case SINT:      return new SINT(this, symbolName);
+            case INT16:     return new INT16(this, symbolName);
+            case INT:       return new INT(this, symbolName);
+            case UINT8:     return new UINT8(this, symbolName);
+            case USINT:     return new USINT(this, symbolName);
+            case BYTE:      return new BYTE(this, symbolName);
+            case UINT16:    return new UINT16(this, symbolName);
+            case UINT:      return new UINT(this, symbolName);
+            case WORD:      return new WORD(this, symbolName);
+            case INT32:     return new INT32(this, symbolName);
+            case DINT:      return new DINT(this, symbolName);
+            case UINT32:    return new UINT32(this, symbolName);
+            case UDINT:     return new UDINT(this, symbolName);
+            case DWORD:     return new DWORD(this, symbolName);
+            case REAL32:    return new REAL32(this, symbolName);
+            case REAL:      return new REAL(this, symbolName);
+            case REAL64:    return new REAL64(this, symbolName);
+            case LREAL:     return new LREAL(this, symbolName);
+            case STRING:    return new STRING(this, symbolName, dataSize);
+            default:        return null;
         }
     }
 }

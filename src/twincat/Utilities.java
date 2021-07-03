@@ -27,7 +27,7 @@ public class Utilities {
         return bufferReader.lines().collect(Collectors.joining(lineSeperator));
     }
 
-    public static final String exceptionToString(Exception e) {
+    public static final String exceptionToString(Throwable e) {
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
         e.printStackTrace(printWriter);

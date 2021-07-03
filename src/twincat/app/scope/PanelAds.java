@@ -9,14 +9,14 @@ import javax.swing.JTextArea;
 import twincat.Utilities;
 import twincat.app.constants.Resources;
 
-public class AdsPanel extends JScrollPane {
+public class PanelAds extends JScrollPane {
     private static final long serialVersionUID = 1L;
 
     /*************************/
     /****** constructor ******/
     /*************************/
 
-    public AdsPanel() {
+    public PanelAds() {
         String instructionText = Utilities.getStringFromFilePath(Resources.PATH_TEXT_ADS_INFO);
 
         JTextArea instructionTextArea = new JTextArea(instructionText);
@@ -25,10 +25,8 @@ public class AdsPanel extends JScrollPane {
         instructionTextArea.setLineWrap(true);
         instructionTextArea.setWrapStyleWord(false);
         instructionTextArea.setEditable(false);
-        instructionTextArea.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, 12));
+        instructionTextArea.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
 
-		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         this.setViewportView(instructionTextArea);
     }
 }

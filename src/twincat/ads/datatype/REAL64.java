@@ -2,7 +2,7 @@ package twincat.ads.datatype;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.constants.AdsError;
 import twincat.ads.constants.AdsDataType;
@@ -13,15 +13,15 @@ public class REAL64 extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public REAL64(Ads ads, int symbolHandle) {
+	public REAL64(AdsClient ads, int symbolHandle) {
 		super(ads, AdsDataType.REAL64.size, symbolHandle);
 	}
 
-	public REAL64(Ads ads, int indexGroup, int indexOffset) throws AdsException {
+	public REAL64(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
 		super(ads, AdsDataType.REAL64.size, indexGroup, indexOffset);
 	}
 
-	public REAL64(Ads ads, String symbolName) throws AdsException {
+	public REAL64(AdsClient ads, String symbolName) throws AdsException {
 		super(ads, AdsDataType.REAL64.size, ads.readHandleOfSymbolName(symbolName));
 	}
 
@@ -125,7 +125,7 @@ public class REAL64 extends Variable {
 			double data = Double.parseDouble(value);
 			super.write(REAL64.valueToArray(data));
 		} catch(NumberFormatException e) {
-			throw new AdsException(AdsError.ADS_WRITE_PARSE_ERROR);
+			throw new AdsException(AdsError.VARIABLE_WRITE_PARSE_ERROR);
 		}
 		return this;
 	}

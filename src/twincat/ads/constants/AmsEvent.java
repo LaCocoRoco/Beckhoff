@@ -5,10 +5,10 @@ public enum AmsEvent {
     /** constant attributes **/
     /*************************/
     
-    ROUTERSTOP    (0x0000),
-    ROUTERSTART   (0x0001),
-    ROUTERREMOVED (0x0002),
-    UNKNOWN       (0xFFFF); 
+    ROUTER_STOP     (0x0000),
+    ROUTER_START    (0x0001),
+    ROUTERRE_MOVED  (0x0002),
+    UNKNOWN         (0xFFFF); 
     
     /*************************/
     /*** global attributes ***/

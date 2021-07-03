@@ -1,6 +1,6 @@
 package twincat.ads.datatype;
 
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.constants.AdsError;
 import twincat.ads.constants.AdsDataType;
@@ -11,15 +11,15 @@ public class INT8 extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public INT8(Ads ads, int symbolHandle) {
+	public INT8(AdsClient ads, int symbolHandle) {
 		super(ads, AdsDataType.INT8.size, symbolHandle);
 	}
 
-	public INT8(Ads ads, int indexGroup, int indexOffset) throws AdsException {
+	public INT8(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
 		super(ads, AdsDataType.INT8.size, indexGroup, indexOffset);
 	}
 	
-	public INT8(Ads ads, String symbolName) throws AdsException {
+	public INT8(AdsClient ads, String symbolName) throws AdsException {
 		super(ads, AdsDataType.INT8.size, ads.readHandleOfSymbolName(symbolName));
 	}
 	
@@ -121,7 +121,7 @@ public class INT8 extends Variable {
 			byte data = Byte.parseByte(value);
 			super.write(INT8.valueToArray(data));
 		} catch(NumberFormatException e) {
-			throw new AdsException(AdsError.ADS_WRITE_PARSE_ERROR);
+			throw new AdsException(AdsError.VARIABLE_WRITE_PARSE_ERROR);
 		}
 		return this;
 	}

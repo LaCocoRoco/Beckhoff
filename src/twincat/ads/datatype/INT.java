@@ -1,6 +1,6 @@
 package twincat.ads.datatype;
 
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.constants.AdsDataType;
 
@@ -9,15 +9,15 @@ public class INT extends INT16 {
 	/****** constructor ******/
 	/*************************/
 
-	public INT(Ads ads, int symbolHandle) {
+	public INT(AdsClient ads, int symbolHandle) {
 		super(ads, symbolHandle);
 	}
 
-	public INT(Ads ads, int indexGroup, int indexOffset) throws AdsException {
+	public INT(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
 		super(ads, indexGroup, indexOffset);
 	}
 	
-	public INT(Ads ads, String symbolName) throws AdsException {
+	public INT(AdsClient ads, String symbolName) throws AdsException {
 		super(ads, symbolName);
 	}
 				

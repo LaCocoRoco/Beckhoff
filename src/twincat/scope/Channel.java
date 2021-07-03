@@ -8,7 +8,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import twincat.ads.Ads;
+import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.wrapper.Variable;
 
@@ -67,7 +67,7 @@ public class Channel extends Observable implements Observer {
 
 	private long watchdogTimeout = 0;
 
-	private Ads ads = new Ads();
+	private AdsClient ads = new AdsClient();
 	
 	private Variable variable = null;
 

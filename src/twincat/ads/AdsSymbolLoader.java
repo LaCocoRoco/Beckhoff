@@ -27,7 +27,7 @@ public class AdsSymbolLoader {
     /****** constructor ******/
     /*************************/
 
-    public AdsSymbolLoader(Ads ads) {  
+    public AdsSymbolLoader(AdsClient ads) {  
         try {
             ads.open();
             symbolInfoList.addAll(ads.readSymbolInfoList());
@@ -57,7 +57,7 @@ public class AdsSymbolLoader {
     /********* public ********/
     /*************************/
 
-    public List<AdsSymbol> getSubNodesOfNode(AdsSymbol symbol) {
+    public List<AdsSymbol> getSubSymbolOfSymbol(AdsSymbol symbol) {
         List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
         
         for (AdsSymbolInfo symbolInfo : symbolInfoList) {

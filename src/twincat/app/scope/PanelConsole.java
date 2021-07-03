@@ -23,7 +23,7 @@ import twincat.TwincatLogger;
 import twincat.ads.AdsCmd;
 import twincat.app.constants.Resources;
 
-public class ConsolePanel extends JPanel {
+public class PanelConsole extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*************************/
@@ -42,13 +42,13 @@ public class ConsolePanel extends JPanel {
     /****** constructor ******/
     /*************************/
 
-    public ConsolePanel() {
+    public PanelConsole() {
         JTextArea textArea = new JTextArea();
         textArea.setMargin(new Insets(5, 5, 5, 5));
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(false);
         textArea.setEditable(false);
-        textArea.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, 12));
+        textArea.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
 
         StreamHandler consoleHandler = new StreamHandler() {
             @Override
@@ -81,7 +81,7 @@ public class ConsolePanel extends JPanel {
         JTextField consoleInput = new JTextField();
         consoleInput.setMargin(new Insets(2, 2, 2, 2));
         consoleInput.setAlignmentX(Component.LEFT_ALIGNMENT);
-        consoleInput.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, 12));
+        consoleInput.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
         consoleInput.addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {

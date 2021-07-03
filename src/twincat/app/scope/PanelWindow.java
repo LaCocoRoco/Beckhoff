@@ -4,7 +4,7 @@ import java.awt.CardLayout;
 
 import javax.swing.JPanel;
 
-public class BrowserPanel extends JPanel {
+public class PanelWindow extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*************************/
@@ -12,25 +12,31 @@ public class BrowserPanel extends JPanel {
     /*************************/
 
     public enum Card {
-        TREE, TARGET
-    } 
-
-    /*************************/
-    /*** local attributes ****/
-    /*************************/
-
-    private final TreePanel treePanel = new TreePanel();
+        SCOPE, ADS, AXIS, SETTINGS
+    }
     
-    private final TargetPanel targetPanel = new TargetPanel();
+    /*************************/
+    /*** local attributes ***/
+    /*************************/
+
+    private final PanelAds adsPanel = new PanelAds();
+
+    private final PanelScope scopePanel = new PanelScope();
+
+    private final PanelAxis axisPanel = new PanelAxis();
+    
+    private final PanelSettings settingsPanel = new PanelSettings();
 
     /*************************/
     /****** constructor ******/
     /*************************/
 
-    public BrowserPanel() {
+    public PanelWindow() {
         this.setLayout(new CardLayout());
-        this.add(treePanel, Card.TREE.toString());
-        this.add(targetPanel, Card.TARGET.toString());
+        this.add(scopePanel, Card.SCOPE.toString());
+        this.add(adsPanel, Card.ADS.toString());
+        this.add(axisPanel, Card.AXIS.toString());
+        this.add(settingsPanel, Card.SETTINGS.toString());
     }
 
     /*************************/
@@ -40,5 +46,5 @@ public class BrowserPanel extends JPanel {
     public void setCard(Card card) {
         CardLayout cardLayout = (CardLayout) (this.getLayout());
         cardLayout.show(this, card.toString());
-    }
+    }    
 }
