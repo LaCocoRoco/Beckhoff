@@ -13,6 +13,7 @@ import twincat.TwincatLogger;
 import twincat.Utilities;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
+import twincat.ads.constants.AdsIndexGroup;
 import twincat.ads.constants.AmsNetId;
 import twincat.ads.constants.AmsPort;
 
@@ -21,21 +22,22 @@ public class AdsExportUnitTest {
     private final Logger logger = TwincatLogger.getSignedLogger();
     
     private final String netId      = AmsNetId.LOCAL;
-    private final AmsPort amsPort   = AmsPort.SYSTEMSERVICE;
-    private final int readSize      = 256;
-    private final int indexGroup    = 702;
+    private final AmsPort amsPort   = AmsPort.NCSAF;
+    private final int readSize      = AdsIndexGroup.SYMBOL_UPLOAD.size;
+    private final int indexGroup    = AdsIndexGroup.SYMBOL_UPLOAD.value;
     private final int indexOffset   = 0;
 
     @Before
     public void startAds() {
         ads.open();
-        ads.setAmsNetId(netId);
-        ads.setAmsPort(amsPort);
     }
 
     @Test
     public void adsExportUnitTest() {
         try {
+            ads.setAmsNetId(netId);
+            ads.setAmsPort(amsPort);
+            
             String uploadDir = System.getProperty("user.dir") + "/exp/";
             byte[] readBufferUpload = new byte[readSize];
             ads.read(indexGroup, indexOffset, readBufferUpload);

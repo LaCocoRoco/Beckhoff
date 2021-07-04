@@ -40,7 +40,7 @@ public class ScopeApp extends JFrame {
         parseArgs(args);
         
         ScopeFrame scopeFrame = new ScopeFrame();
-        scopeFrame.mainMenuVisible(true);
+        scopeFrame.setScopeMenuVisible(true);
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int framePositionX = screenSize.width / 2 - WIDTH_FRAME / 2;

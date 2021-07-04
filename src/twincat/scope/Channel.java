@@ -247,11 +247,11 @@ public class Channel extends Observable implements Observer {
 		if (!notificationStarted) {
 			notificationStarted = true;
 			
-			ads.setAmsNetId(acquisition.getAmsNetId());
-			ads.setAmsPort(acquisition.getAmsPort());
-			ads.open();
-			
 			try {
+			    ads.open();
+	            ads.setAmsNetId(acquisition.getAmsNetId());
+	            ads.setAmsPort(acquisition.getAmsPort());
+			    
 				if (acquisition.isSymbolBased()) {
 					variable = ads.getVariableBySymbolName(acquisition.getSymbolName());
 					variable.addObserver(this);

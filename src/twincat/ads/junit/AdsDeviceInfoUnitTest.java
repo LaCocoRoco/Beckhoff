@@ -20,13 +20,14 @@ public class AdsDeviceInfoUnitTest {
 	@Before
 	public void startAds() {
 		ads.open();
-        ads.setAmsNetId(AmsNetId.LOCAL);
-        ads.setAmsPort(AmsPort.TC2PLC1);
 	}
 
 	@Test
 	public void adsDeviceInfoUnitTest() {   
 		try {
+	        ads.setAmsNetId(AmsNetId.LOCAL);
+	        ads.setAmsPort(AmsPort.TC2PLC1);
+		    
 			AdsDeviceInfo adsDeviceInfo = ads.readDeviceInfo();
 			
 			logger.info("DeviceName  : " + adsDeviceInfo.getDeviceName());

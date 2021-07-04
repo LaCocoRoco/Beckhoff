@@ -19,7 +19,7 @@ public class AdsVariableUnitTest {
     private final Logger logger = TwincatLogger.getSignedLogger();
 
 	@Before
-	public void startAds() {
+	public void startAds() throws AdsException {
 		ads.open();
         ads.setAmsNetId(AmsNetId.LOCAL);
         ads.setAmsPort(AmsPort.TC2PLC1);

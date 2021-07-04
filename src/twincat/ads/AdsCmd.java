@@ -306,6 +306,8 @@ public class AdsCmd {
             logger.info(par1);
         } catch (IllegalArgumentException e) {
             logger.info("AmsNetId Wrong Pattern");
+        } catch (AdsException e) {
+            logger.info(e.getAdsErrorMessage());
         }
     }
 
@@ -379,10 +381,9 @@ public class AdsCmd {
     private void cmdSymbolList() {
         try {      
             ads.setTimeout(CMD_ADS_TIMEOUT);
-            
-            AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads);   
+
+            AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads.getAmsNetId(), ads.getAmsPort());   
             List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
-            
 
             symbolList.addAll(symbolLoader.getSymbolTable());
             
@@ -400,7 +401,7 @@ public class AdsCmd {
         try {      
             ads.setTimeout(CMD_ADS_TIMEOUT);
             
-            AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads);   
+            AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads.getAmsNetId(), ads.getAmsPort());   
             List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
             
             symbolList.addAll(symbolLoader.getSymbolBySymbolName(symbolName));

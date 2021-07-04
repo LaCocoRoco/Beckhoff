@@ -21,13 +21,14 @@ public class AdsSymbolInfoListUnitTest {
     @Before
     public void startAds() {
         ads.open();
-        ads.setAmsNetId(AmsNetId.LOCAL);
-        ads.setAmsPort(AmsPort.TC2PLC1);
     }
 
     @Test
     public void adsSymbolInfoListUnitTest() {
         try {
+            ads.setAmsNetId(AmsNetId.LOCAL);
+            ads.setAmsPort(AmsPort.TC2PLC1);
+            
             List<AdsSymbolInfo> symbolInfoList = ads.readSymbolInfoList();
 
             for (AdsSymbolInfo symbolInfo : symbolInfoList) {

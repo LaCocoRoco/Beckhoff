@@ -15,25 +15,26 @@ import twincat.ads.constants.AmsPort;
 public class AdsLocalHostNameUnitTest {
     private final AdsClient ads = new AdsClient();
     private final Logger logger = TwincatLogger.getSignedLogger();
-	
-	@Before
-	public void startAds() {
-		ads.open();
-		ads.setAmsNetId(AmsNetId.LOCAL);
-		ads.setAmsPort(AmsPort.SYSTEMSERVICE);
-	}
 
-	@Test
-	public void adsDeviceInfoUnitTest() {   
-		try {
-		    logger.info(ads.readLocalHostName());
-		} catch (AdsException e) {
-			logger.info(e.getAdsErrorMessage());
-		}
-	}
-	
-	@After
-	public void stopAds() throws AdsException {
-		ads.close();
-	}
+    @Before
+    public void startAds() {
+        ads.open();
+    }
+
+    @Test
+    public void adsDeviceInfoUnitTest() {
+        try {
+            ads.setAmsNetId(AmsNetId.LOCAL);
+            ads.setAmsPort(AmsPort.TC2PLC1);
+
+            logger.info(ads.readLocalHostName());
+        } catch (AdsException e) {
+            logger.info(e.getAdsErrorMessage());
+        }
+    }
+
+    @After
+    public void stopAds() throws AdsException {
+        ads.close();
+    }
 }

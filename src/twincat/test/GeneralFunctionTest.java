@@ -7,6 +7,6 @@ public class GeneralFunctionTest {
     }
 
     public GeneralFunctionTest() {
-        
+
     }
 }

@@ -22,14 +22,14 @@ public class AdsDataTypeInfoUnitTest {
     @Before
     public void startAds() {
         ads.open();
-        ads.setAmsNetId(AmsNetId.LOCAL);
-        ads.setAmsPort(AmsPort.TC2PLC1);
     }
 
     @Test
     public void adsSymbolBySymbolInfoUnitTest() {
-        
         try {
+            ads.setAmsNetId(AmsNetId.LOCAL);
+            ads.setAmsPort(AmsPort.TC2PLC1);
+            
             AdsSymbolDataTypeInfo dataTypeInfo = ads.readDataTypeInfoByDataTypeName(dataTypeName);
             
             printAdsDataTypeInfo(dataTypeInfo, true);

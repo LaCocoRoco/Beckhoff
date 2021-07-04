@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import twincat.TwincatLogger;
+import twincat.ads.constants.AmsPort;
 
 public class AdsSymbolLoader {
     /*************************/
@@ -17,6 +18,8 @@ public class AdsSymbolLoader {
     /*** local attributes ***/
     /*************************/
 
+    private final AdsClient ads = new AdsClient();
+    
     private final Logger logger = TwincatLogger.getSignedLogger();
 
     private final List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
@@ -27,9 +30,12 @@ public class AdsSymbolLoader {
     /****** constructor ******/
     /*************************/
 
-    public AdsSymbolLoader(AdsClient ads) {  
+    public AdsSymbolLoader(String amsNetId, AmsPort amsPort) { 
         try {
             ads.open();
+            ads.setAmsNetId(amsNetId);
+            ads.setAmsPort(amsPort);
+            
             symbolInfoList.addAll(ads.readSymbolInfoList());
             dataTypeInfoList.addAll(ads.readDataTypeInfoList());
         } catch (AdsException e) {

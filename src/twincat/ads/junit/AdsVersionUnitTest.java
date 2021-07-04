@@ -19,13 +19,19 @@ public class AdsVersionUnitTest {
 	@Before
 	public void startAds() {
 		ads.open();
-        ads.setAmsNetId(AmsNetId.LOCAL);
-        ads.setAmsPort(AmsPort.TC2PLC1);
+
 	}
 
 	@Test
 	public void adsSymbolInfoUnitTest() {	
-		logger.info("AdsVersion: " + ads.getVersion());
+        try {
+            ads.setAmsNetId(AmsNetId.LOCAL);
+            ads.setAmsPort(AmsPort.TC2PLC1);
+            
+            logger.info("AdsVersion: " + ads.getVersion());
+        } catch (AdsException e) {
+            logger.info(e.getAdsErrorMessage());
+        }
 	}
 	
 	@After

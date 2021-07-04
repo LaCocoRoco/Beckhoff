@@ -11,43 +11,71 @@ public class PanelProperties extends JPanel {
     /** constant attributes **/
     /*************************/
 
-    public enum Card {
-        TRIGGER_GROUP, TRIGGER_CHANNEL,
-        CHART, AXIS, CHANNEL, TARGET
+    public static enum Card {
+        EMPTY, TRIGGER_GROUP, TRIGGER_CHANNEL,
+        CHART, AXIS, CHANNEL, ACQUISITION
     }
-        
-    private final PropertiesTriggerGroup triggerGroupProperties = new PropertiesTriggerGroup();
     
-    private final PropertiesTriggerChannel riggerChannelProperties = new PropertiesTriggerChannel();
+    /*************************/
+    /*** global attributes ***/
+    /*************************/
     
-    private final PropertiesChart chartProperties = new PropertiesChart();
+    private Card card = Card.EMPTY;  
+
+    private final PanelControl panelControl;
+
+    /*************************/
+    /*** local attributes ***/
+    /*************************/   
+
+    private final PropertiesTriggerGroup propertiesTriggerGroup = new PropertiesTriggerGroup();
     
-    private final PropertiesAxis axisProperties = new PropertiesAxis();
+    private final PropertiesTriggerChannel propertiesTriggerChannel = new PropertiesTriggerChannel();
     
-    private final PropertiesChannel channelProperties = new PropertiesChannel();
+    private final PropertiesChart propertiesChart = new PropertiesChart();
     
-    private final PropertiesAcquisition acquisitionProperties = new PropertiesAcquisition();
+    private final PropertiesAxis propertiesAxis = new PropertiesAxis();
+    
+    private final PropertiesChannel propertiesChannel = new PropertiesChannel();
+    
+    private final PropertiesAcquisition propertiesAcquisition = new PropertiesAcquisition();
 
     /*************************/
     /****** constructor ******/
     /*************************/
 
-    public PanelProperties() {
+    public PanelProperties(PanelControl panelControl) {
+        this.panelControl = panelControl;
+        
         this.setLayout(new CardLayout());
-        this.add(triggerGroupProperties, Card.TRIGGER_GROUP.toString());
-        this.add(riggerChannelProperties, Card.TRIGGER_CHANNEL.toString());
-        this.add(chartProperties, Card.CHART.toString());
-        this.add(axisProperties, Card.AXIS.toString());
-        this.add(channelProperties, Card.CHANNEL.toString());
-        this.add(acquisitionProperties, Card.TARGET.toString());
+        this.add(new JPanel(), Card.EMPTY.toString());
+        this.add(propertiesTriggerGroup, Card.TRIGGER_GROUP.toString());
+        this.add(propertiesTriggerChannel, Card.TRIGGER_CHANNEL.toString());
+        this.add(propertiesChart, Card.CHART.toString());
+        this.add(propertiesAxis, Card.AXIS.toString());
+        this.add(propertiesChannel, Card.CHANNEL.toString());
+        this.add(propertiesAcquisition, Card.ACQUISITION.toString());
+    }
+
+    /*************************/
+    /**** setter & getter ****/
+    /*************************/
+    
+    public PanelControl getPanelControl() {
+        return panelControl;
     }
 
     /*************************/
     /********* public ********/
     /*************************/
-   
+
+    public Card getCard() {
+        return card;
+    }
+
     public void setCard(Card card) {
         CardLayout cardLayout = (CardLayout) (this.getLayout());
         cardLayout.show(this, card.toString());
+        this.card = card;        
     }
 }

@@ -19,19 +19,18 @@ public class AdsAmsPortUnitTest {
 	@Before
 	public void startAds() {
 		ads.open();
-        ads.setAmsNetId(AmsNetId.LOCAL);
-        ads.setAmsPort(AmsPort.TC2PLC1);
 	}
 	
 	@Test
-	public void adsAmsPortUnitTest() {
+	public void adsAmsPortUnitTest() {	    
         for (AmsPort amsPort : AmsPort.values()) {
     		try {
+    	        ads.setAmsNetId(AmsNetId.LOCAL);
     			ads.setAmsPort(amsPort);
     			ads.readDeviceInfo();
     			logger.info("OK : " + amsPort);
     		} catch (AdsException e) {
-    			logger.info("NOK: " + amsPort);
+    			
     		}
         }
 	}

@@ -5,8 +5,6 @@ import java.awt.ComponentOrientation;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,24 +13,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.border.EmptyBorder;
 
 import twincat.TwincatLogger;
 import twincat.app.constants.Resources;
-import twincat.app.scope.PanelConsole;
+import twincat.app.scope.PanelContent;
 import twincat.app.scope.PanelWindow;
 
 public class ScopeFrame extends JPanel {
     private static final long serialVersionUID = 1L;
-    
-    /*************************/
-    /** constant attributes **/
-    /*************************/
-
-    private static final int DIVIDER_SIZE = 5;
-   
-    private static final double DIVIDER_LOCATION = 0.8;
 
     /*************************/
     /*** local attributes ****/
@@ -42,14 +30,10 @@ public class ScopeFrame extends JPanel {
     
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
     
-    private final JMenuBar mainMenu = new JMenuBar();
+    private final JMenuBar scopeMenu = new JMenuBar();
     
-    private final JSplitPane contentPanel = new JSplitPane();
+    private final PanelContent panelContent = new PanelContent();
 
-    private final PanelConsole consolePanel = new PanelConsole();
-
-    private final PanelWindow windowPanel = new PanelWindow();
-    
     private final JMenuItem menuItemFileNew = new JMenuItem();   
     
     private final JMenuItem menuItemFileOpen = new JMenuItem();
@@ -69,45 +53,40 @@ public class ScopeFrame extends JPanel {
     /*************************/
 
     public ScopeFrame() {
-        contentPanel.setLeftComponent(windowPanel);
-        contentPanel.setRightComponent(consolePanel);
-        contentPanel.setOrientation(JSplitPane.VERTICAL_SPLIT);
-        contentPanel.setContinuousLayout(true);
-        contentPanel.setOneTouchExpandable(false);
-        contentPanel.setBorder(new EmptyBorder(3, 3, 3, 3));
-
+        PanelWindow panelWindow = panelContent.getPanelWindow();
+        
         menuItemWindowScope.setText(languageBundle.getString(Resources.TEXT_WINDOW_SCOPE));
         menuItemWindowScope.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                windowPanel.setCard(PanelWindow.Card.SCOPE);
+                panelWindow.setCard(PanelWindow.Card.SCOPE);
             }
         });
 
         menuItemWindowAds.setText(languageBundle.getString(Resources.TEXT_WINDOW_ADS));
         menuItemWindowAds.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                windowPanel.setCard(PanelWindow.Card.ADS);
+                panelWindow.setCard(PanelWindow.Card.ADS);
             }
         });
 
         menuItemWindowAxis.setText(languageBundle.getString(Resources.TEXT_WINDOW_AXIS));
         menuItemWindowAxis.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                windowPanel.setCard(PanelWindow.Card.AXIS);
+                panelWindow.setCard(PanelWindow.Card.AXIS);
             }
         });
 
         menuItemSettings.setText(languageBundle.getString(Resources.TEXT_EXTRAS_SETTINGS));
         menuItemSettings.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                windowPanel.setCard(PanelWindow.Card.SETTINGS);
+                panelWindow.setCard(PanelWindow.Card.SETTINGS);
             }
         });
 
         menuItemConsole.setText(languageBundle.getString(Resources.TEXT_EXTRAS_CONSOLE));
         menuItemConsole.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                consoleToggle();
+                panelContent.consoleToggle();
             }
         });
 
@@ -138,15 +117,15 @@ public class ScopeFrame extends JPanel {
         menuExtras.add(menuItemConsole);
         menuExtras.add(menuItemWindowAds);
 
-        mainMenu.add(menuFile);
-        mainMenu.add(menuWindow);
-        mainMenu.add(menuExtras);
+        scopeMenu.add(menuFile);
+        scopeMenu.add(menuWindow);
+        scopeMenu.add(menuExtras);
 
-        consoleHide();
+        panelContent.consoleHide();
         
         this.setLayout(new BorderLayout());
-        this.add(mainMenu, BorderLayout.PAGE_START);
-        this.add(contentPanel);
+        this.add(scopeMenu, BorderLayout.PAGE_START);
+        this.add(panelContent, BorderLayout.CENTER);
     }
 
     /*************************/
@@ -161,8 +140,8 @@ public class ScopeFrame extends JPanel {
         logger.setLevel(loggerLevel);
     }
   
-    public void mainMenuVisible(boolean flag) {
-        mainMenu.setVisible(flag);
+    public void setScopeMenuVisible(boolean flag) {
+        scopeMenu.setVisible(flag);
     }
 
     public void minifyMenuItems() {
@@ -206,34 +185,4 @@ public class ScopeFrame extends JPanel {
         menuItemWindowAxis.setMargin(new Insets(0, 0, 0, 0));
         menuItemWindowAxis.setPressedIcon(null);
     }
-    
-    /*************************/
-    /******** private ********/
-    /*************************/
-
-    private void consoleToggle() {
-        if (contentPanel.getDividerSize() != 0) {
-            consoleHide();
-        } else {
-            consoleShow();
-        }
-    }
-    
-    private void consoleShow() {
-        contentPanel.setDividerLocation(DIVIDER_LOCATION);
-        contentPanel.getRightComponent().setVisible(true);
-        contentPanel.getLeftComponent().setVisible(true);
-        contentPanel.setDividerSize(DIVIDER_SIZE);
-        contentPanel.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent componentEvent) {
-                contentPanel.setDividerLocation(DIVIDER_LOCATION);
-            }
-        });
-    }
-    
-    private void consoleHide() {
-        contentPanel.getRightComponent().setVisible(false);
-        contentPanel.getLeftComponent().setVisible(true);
-        contentPanel.setDividerSize(0);
-    }   
 }

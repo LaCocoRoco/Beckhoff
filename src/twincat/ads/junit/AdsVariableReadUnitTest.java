@@ -22,13 +22,14 @@ public class AdsVariableReadUnitTest {
     @Before
     public void startAds() {
         ads.open();
-        ads.setAmsNetId(AmsNetId.LOCAL);
-        ads.setAmsPort(AmsPort.TC2PLC1);
     }
 
     @Test
     public void adsSymbolInfoUnitTest() {
         try {       
+            ads.setAmsNetId(AmsNetId.LOCAL);
+            ads.setAmsPort(AmsPort.TC2PLC1);
+            
             Variable variable;
             variable = ads.getVariableBySymbolName(symbolName);
             variable.read();

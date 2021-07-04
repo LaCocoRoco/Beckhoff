@@ -11,21 +11,23 @@ public class PanelWindow extends JPanel {
     /** constant attributes **/
     /*************************/
 
-    public enum Card {
+    public static enum Card {
         SCOPE, ADS, AXIS, SETTINGS
     }
-    
+
     /*************************/
-    /*** local attributes ***/
+    /*** global attributes ***/
     /*************************/
-
-    private final PanelAds adsPanel = new PanelAds();
-
-    private final PanelScope scopePanel = new PanelScope();
-
-    private final PanelAxis axisPanel = new PanelAxis();
     
-    private final PanelSettings settingsPanel = new PanelSettings();
+    private Card card = Card.SCOPE;
+
+    private final PanelAds panelAds = new PanelAds();
+
+    private final PanelScope panelScope = new PanelScope();
+
+    private final PanelAxis panelAxis = new PanelAxis();
+    
+    private final PanelSettings panelSettings = new PanelSettings();
 
     /*************************/
     /****** constructor ******/
@@ -33,18 +35,43 @@ public class PanelWindow extends JPanel {
 
     public PanelWindow() {
         this.setLayout(new CardLayout());
-        this.add(scopePanel, Card.SCOPE.toString());
-        this.add(adsPanel, Card.ADS.toString());
-        this.add(axisPanel, Card.AXIS.toString());
-        this.add(settingsPanel, Card.SETTINGS.toString());
+        this.add(panelScope, Card.SCOPE.toString());
+        this.add(panelAds, Card.ADS.toString());
+        this.add(panelAxis, Card.AXIS.toString());
+        this.add(panelSettings, Card.SETTINGS.toString());
+    }
+
+    /*************************/
+    /**** setter & getter ****/
+    /*************************/
+
+    public PanelAds getPanelAds() {
+        return panelAds;
+    }
+
+    public PanelScope getPanelScope() {
+        return panelScope;
+    }
+
+    public PanelAxis getPanelAxis() {
+        return panelAxis;
+    }
+
+    public PanelSettings getPanelSettings() {
+        return panelSettings;
     }
 
     /*************************/
     /********* public ********/
     /*************************/
-   
+    
+    public Card getCard() {
+        return card;
+    }
+
     public void setCard(Card card) {
         CardLayout cardLayout = (CardLayout) (this.getLayout());
         cardLayout.show(this, card.toString());
-    }    
+        this.card = card;
+    }  
 }

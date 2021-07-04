@@ -48,7 +48,7 @@ public class PanelConsole extends JPanel {
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(false);
         textArea.setEditable(false);
-        textArea.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
+        textArea.setFont(new Font(Resources.DEFAULT_FONT_MONO, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
 
         StreamHandler consoleHandler = new StreamHandler() {
             @Override
@@ -81,7 +81,7 @@ public class PanelConsole extends JPanel {
         JTextField consoleInput = new JTextField();
         consoleInput.setMargin(new Insets(2, 2, 2, 2));
         consoleInput.setAlignmentX(Component.LEFT_ALIGNMENT);
-        consoleInput.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
+        consoleInput.setFont(new Font(Resources.DEFAULT_FONT_MONO, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
         consoleInput.addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {

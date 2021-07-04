@@ -21,7 +21,6 @@ import twincat.ads.AdsException;
 import twincat.ads.AdsNotification;
 import twincat.ads.constants.AdsError;
 import twincat.ads.constants.AdsStatus;
-import twincat.ads.constants.AmsNetId;
 import twincat.ads.constants.AmsPort;
 
 public class AdsNative {
@@ -41,8 +40,6 @@ public class AdsNative {
 
     private final AmsAddr amsAddress = new AmsAddr();
 
-    private final Logger logger = TwincatLogger.getSignedLogger();
-    
     /*************************/
     /****** constructor ******/
     /*************************/
@@ -71,18 +68,11 @@ public class AdsNative {
             Field sysPathsField = ClassLoader.class.getDeclaredField("sys_paths");
             sysPathsField.setAccessible(true);
             sysPathsField.set(null, null);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+            AdsCallDllFunction.adsGetDllVersion();
+        } catch (NoSuchFieldException | IllegalAccessException | UnsatisfiedLinkError e) {
+            Logger logger = TwincatLogger.getSignedLogger();
             logger.severe(Utilities.exceptionToString(e));
         }
-        
-        try {
-            // check ads status
-            AdsCallDllFunction.adsGetDllVersion();
-            setAmsNetId(AmsNetId.LOCAL);
-            setAmsPort(AmsPort.TC2PLC1);
-        } catch (UnsatisfiedLinkError e) {
-            logger.severe(Utilities.exceptionToString(e));   
-        }   
     }
 
     /*************************/
@@ -101,8 +91,12 @@ public class AdsNative {
         return amsAddress.getNetIdString();
     }
 
-    public void setAmsNetId(String amsNetId) {
-        amsAddress.setNetIdStringEx(amsNetId);
+    public void setAmsNetId(String amsNetId) throws AdsException {
+        try {
+            amsAddress.setNetIdStringEx(amsNetId);
+        } catch (IllegalArgumentException e) {
+            throw new AdsException(AdsError.ADS_INV_AMS_NET_ID);
+        }
     }
 
     /*************************/

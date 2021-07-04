@@ -24,13 +24,14 @@ public class AdsSymbolByDataTypeUnitTest {
     @Before
     public void startAds() {
         ads.open();
-        ads.setAmsNetId(AmsNetId.LOCAL);
-        ads.setAmsPort(AmsPort.TC2PLC1);
     }
 
     @Test
     public void adsDataTypeInfoTableUnitTest() {
         try {
+            ads.setAmsNetId(AmsNetId.LOCAL);
+            ads.setAmsPort(AmsPort.TC2PLC1);
+            
             AdsSymbolDataTypeInfo dataTypeInfo = ads.readDataTypeInfoByDataTypeName(dataTypeName);
             
             List<AdsSymbolDataTypeInfo> dataTypeInfoList = ads.readDataTypeInfoList();

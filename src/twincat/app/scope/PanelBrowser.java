@@ -23,37 +23,73 @@ public class PanelBrowser extends JPanel {
     /*** local attributes ****/
     /*************************/
 
-    private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);  
-        
+    private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
+
     /*************************/
     /****** constructor ******/
     /*************************/
 
-    public PanelBrowser() {
+    public PanelBrowser(PanelTree panelTree) {
         JScrollPane browserPanel = new JScrollPane();
         browserPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
-        browserPanel.setBorder(BorderFactory.createEmptyBorder()); 
+        browserPanel.setBorder(BorderFactory.createEmptyBorder());
         browserPanel.setViewportView(new LoremIpsum());
-        
+
+        // TODO : tree build
+        // build from scope list
+
+        // TODO : tree navigation
+        // on select (scope example):
+        // set local reference (delete & add)
+        // show properties panel
+
         JButton browserButtonAddScope = new JButton();
         browserButtonAddScope.setToolTipText(languageBundle.getString(Resources.TEXT_BROWSER_ADD_SCOPE));
         browserButtonAddScope.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_SCOPE)));
         browserButtonAddScope.setFocusable(false);
+        browserButtonAddScope.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // add scope to scope list (reference)
+                // add scope to tree node (reference)
+            }
+        });
 
         JButton browserButtonAddChart = new JButton();
         browserButtonAddChart.setToolTipText(languageBundle.getString(Resources.TEXT_BROWSER_ADD_CHART));
         browserButtonAddChart.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CHART)));
         browserButtonAddChart.setFocusable(false);
-  
+        browserButtonAddChart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // add chart to to scope list (reference)
+                // refresh tree view
+            }
+        });
+
         JButton browserButtonAddAxis = new JButton();
         browserButtonAddAxis.setToolTipText(languageBundle.getString(Resources.TEXT_BROWSER_ADD_AXIS));
         browserButtonAddAxis.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_AXIS)));
         browserButtonAddAxis.setFocusable(false);
-        
+        browserButtonAddAxis.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // add axis to to scope list (reference)
+                // refresh tree view
+            }
+        });
+
         JButton browserButtonAddChannel = new JButton();
         browserButtonAddChannel.setToolTipText(languageBundle.getString(Resources.TEXT_BROWSER_ADD_CHANNEL));
         browserButtonAddChannel.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CHANNEL)));
         browserButtonAddChannel.setFocusable(false);
+        browserButtonAddChannel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // add channel to scope list (reference)
+                // refresh tree view
+            }
+        });
 
         JButton browserButtonSearch = new JButton();
         browserButtonSearch.setToolTipText(languageBundle.getString(Resources.TEXT_BROWSER_SEARCH));
@@ -62,15 +98,22 @@ public class PanelBrowser extends JPanel {
         browserButtonSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO
+                panelTree.getPanelControl().displaySearch();
             }
-        });     
-        
+        });
+
         JButton browserButtonDelete = new JButton();
         browserButtonDelete.setToolTipText(languageBundle.getString(Resources.TEXT_BROWSER_DELETE));
         browserButtonDelete.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_DELETE)));
         browserButtonDelete.setFocusable(false);
- 
+        browserButtonSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // delete selected element from scope
+                // refresh tree view
+            }
+        });
+
         JToolBar browserToolBar = new JToolBar();
         browserToolBar.setFloatable(false);
         browserToolBar.setRollover(false);
@@ -90,6 +133,6 @@ public class PanelBrowser extends JPanel {
         this.setLayout(new BorderLayout());
         this.add(browserPanel, BorderLayout.CENTER);
         this.add(browserToolBar, BorderLayout.PAGE_START);
-        this.setBorder(BorderFactory.createEmptyBorder()); 
+        this.setBorder(BorderFactory.createEmptyBorder());
     }
 }

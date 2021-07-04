@@ -25,13 +25,14 @@ public class AdsSymbolBySymbolInfoUnitTest {
     @Before
     public void startAds() {
         ads.open();
-        ads.setAmsNetId(AmsNetId.LOCAL);
-        ads.setAmsPort(AmsPort.TC2PLC1);
     }
 
     @Test
     public void adsSymbolInfoNodeUnitTest() {
         try {
+            ads.setAmsNetId(AmsNetId.LOCAL);
+            ads.setAmsPort(AmsPort.TC2PLC1);
+            
             AdsSymbolInfo symbolInfo = ads.readSymbolInfoBySymbolName(symbolName);
 
             List<AdsSymbolDataTypeInfo> dataTypeInfoList = ads.readDataTypeInfoList();

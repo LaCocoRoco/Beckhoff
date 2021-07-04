@@ -1,18 +1,20 @@
 package twincat.app.constants;
 
 public class Resources {
-    
-    public static final int DEFAULT_DIVIDER_SIZE = 6;
-    
-    public static final int DEFAULT_SCROLLBAR_WIDTH = 23;
-    
-    public static final String DEFAULT_FONT = "Consolas";
 
+    public static final String DEFAULT_FONT_MONO = "Consolas";
+
+    public static final String DEFAULT_FONT = "Dialog";
+    
     public static final int DEFAULT_FONT_SIZE_SMALL = 12;
     
     public static final int DEFAULT_FONT_SIZE_NORMAL = 15;
     
     public static final int DEFAULT_FONT_SIZE_BIG = 18;
+    
+    public static final int DEFAULT_DIVIDER_SIZE = 6;
+    
+    public static final int DEFAULT_SCROLLBAR_WIDTH = 23;
     
     
     public static final String PATH_LANGUAGE = "resources/string/language";
@@ -26,6 +28,7 @@ public class Resources {
     
     public static final String PATH_ICON_PAUSE = "/resources/images/pause.png";
      
+    public static final String PATH_ICON_STOP = "/resources/images/stop.png";
     
     public static final String PATH_ICON_SCOPE = "/resources/images/scope.png";
     
@@ -39,10 +42,16 @@ public class Resources {
     
     public static final String PATH_ICON_SEARCH = "/resources/images/search.png";
     
+    public static final String PATH_ICON_FOLDER_OPEN = "/resources/images/folder_open.png";
+    
+    public static final String PATH_ICON_FOLDER_CLOSED = "/resources/images/folder_closed.png";
+    
     
     public static final String TEXT_CHART_PLAY = "chartPlay";
     
     public static final String TEXT_CHART_PAUSE = "chartPause";
+    
+    public static final String TEXT_CHART_STOP = "chartStop";
     
     
     public static final String TEXT_BROWSER_ADD_SCOPE = "treeAddScope";
@@ -57,6 +66,15 @@ public class Resources {
     
     public static final String TEXT_BROWSER_DELETE = "treeDelete";
             
+    
+    public static final String TEXT_SEARCH_APPLY = "searchApply";
+    
+    public static final String TEXT_SEARCH_ALL_NET_IDS = "searchAllNetId";
+    
+    public static final String TEXT_SEARCH_ALL_PORTS = "searchAllPorts";
+    
+    public static final String TEXT_SEARCH_HINT = "searchHint";
+    
     
     public static final String TEXT_WINDOW = "window";
            

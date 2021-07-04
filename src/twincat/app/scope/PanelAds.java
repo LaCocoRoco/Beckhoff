@@ -25,7 +25,7 @@ public class PanelAds extends JScrollPane {
         instructionTextArea.setLineWrap(true);
         instructionTextArea.setWrapStyleWord(false);
         instructionTextArea.setEditable(false);
-        instructionTextArea.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        instructionTextArea.setFont(new Font(Resources.DEFAULT_FONT_MONO, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
 
         this.setViewportView(instructionTextArea);
     }
