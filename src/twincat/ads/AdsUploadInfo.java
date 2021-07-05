@@ -30,18 +30,12 @@ public class AdsUploadInfo {
     /****** constructor ******/
     /*************************/
 
+    public AdsUploadInfo() {
+        /* empty */
+    }
+   
     public AdsUploadInfo(byte[] buffer) {
-        ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
-        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        
-        if (byteBuffer.remaining() >= INFO_BUFFER_LENGTH) {
-            symbolCount    = byteBuffer.getInt();
-            symbolLength   = byteBuffer.getInt();
-            dataTypeCount  = byteBuffer.getInt();
-            dataTypeLength = byteBuffer.getInt();
-            extraCount     = byteBuffer.getInt();
-            extraLength    = byteBuffer.getInt();
-        }
+        parseUploadInfo(buffer);
     }
 
     /*************************/
@@ -94,5 +88,23 @@ public class AdsUploadInfo {
 
     public void setExtraLength(int extraLength) {
         this.extraLength = extraLength;
+    }
+    
+    /*************************/
+    /********* public ********/
+    /*************************/
+   
+    public void parseUploadInfo(byte[] buffer) {
+        ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
+        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        
+        if (byteBuffer.remaining() >= INFO_BUFFER_LENGTH) {
+            symbolCount    = byteBuffer.getInt();
+            symbolLength   = byteBuffer.getInt();
+            dataTypeCount  = byteBuffer.getInt();
+            dataTypeLength = byteBuffer.getInt();
+            extraCount     = byteBuffer.getInt();
+            extraLength    = byteBuffer.getInt();
+        }
     }
 }

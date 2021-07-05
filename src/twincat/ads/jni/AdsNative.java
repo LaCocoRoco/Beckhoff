@@ -1,7 +1,6 @@
 package twincat.ads.jni;
 
 import java.lang.reflect.Field;
-import java.util.logging.Logger;
 
 import de.beckhoff.jni.JNIByteBuffer;
 import de.beckhoff.jni.JNILong;
@@ -12,16 +11,14 @@ import de.beckhoff.jni.tcads.AdsNotificationAttrib;
 import de.beckhoff.jni.tcads.AdsState;
 import de.beckhoff.jni.tcads.AdsVersion;
 import de.beckhoff.jni.tcads.AmsAddr;
-import twincat.TwincatLogger;
-import twincat.Utilities;
 import twincat.ads.AdsCallback;
 import twincat.ads.AdsDeviceInfo;
 import twincat.ads.AdsDeviceState;
 import twincat.ads.AdsException;
 import twincat.ads.AdsNotification;
-import twincat.ads.constants.AdsError;
-import twincat.ads.constants.AdsStatus;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.enums.AdsError;
+import twincat.ads.enums.AdsStatus;
+import twincat.ads.enums.AmsPort;
 
 public class AdsNative {
     /*************************/
@@ -36,9 +33,9 @@ public class AdsNative {
     /*** local attributes ***/
     /*************************/
 
-    private long adsPort = 0;
+    protected long adsPort = 0;
 
-    private final AmsAddr amsAddress = new AmsAddr();
+    protected final AmsAddr amsAddress = new AmsAddr();
 
     /*************************/
     /****** constructor ******/
@@ -69,10 +66,7 @@ public class AdsNative {
             sysPathsField.setAccessible(true);
             sysPathsField.set(null, null);
             AdsCallDllFunction.adsGetDllVersion();
-        } catch (NoSuchFieldException | IllegalAccessException | UnsatisfiedLinkError e) {
-            Logger logger = TwincatLogger.getSignedLogger();
-            logger.severe(Utilities.exceptionToString(e));
-        }
+        } catch (NoSuchFieldException | IllegalAccessException | UnsatisfiedLinkError e) {}
     }
 
     /*************************/
@@ -109,13 +103,9 @@ public class AdsNative {
         }
     }
 
-    protected void adsClosePort() throws AdsException {
-        if (adsPort != 0) {
-            adsPort = 0;
-
-            long errorCode = AdsCallDllFunction.adsPortClose();
-            if (errorCode != 0) throw new AdsException(errorCode);
-        } else throw new AdsException(AdsError.ADS_ADSPORT_CLOSED);
+    protected void adsClosePort() {
+        adsPort = 0;
+        AdsCallDllFunction.adsPortClose();
     }
 
     protected String adsGetLocalAddress() throws AdsException {

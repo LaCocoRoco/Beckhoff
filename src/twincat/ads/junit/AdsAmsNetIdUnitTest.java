@@ -9,8 +9,8 @@ import org.junit.Test;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.constants.AmsNetId;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.AmsNetId;
+import twincat.ads.enums.AmsPort;
 
 public class AdsAmsNetIdUnitTest {
     private final AdsClient ads = new AdsClient();
@@ -27,7 +27,7 @@ public class AdsAmsNetIdUnitTest {
             ads.setAmsNetId(AmsNetId.LOCAL);
             ads.setAmsPort(AmsPort.TC2PLC1);
             
-            logger.info(ads.readAmsNetId());
+            logger.info(ads.readLocalAmsNetId());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
         }

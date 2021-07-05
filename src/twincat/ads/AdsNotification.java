@@ -1,6 +1,6 @@
 package twincat.ads;
 
-import twincat.ads.constants.AdsTransmitMode;
+import twincat.ads.enums.AdsTransmitMode;
 
 public class AdsNotification {
 	/*************************/

@@ -5,9 +5,6 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-import twincat.ads.constants.AdsDataType;
-import twincat.ads.constants.AdsError;
-import twincat.ads.constants.AdsIndexGroup;
 import twincat.ads.datatype.BIT;
 import twincat.ads.datatype.BOOL;
 import twincat.ads.datatype.BYTE;
@@ -30,10 +27,29 @@ import twincat.ads.datatype.UINT32;
 import twincat.ads.datatype.UINT8;
 import twincat.ads.datatype.USINT;
 import twincat.ads.datatype.WORD;
+import twincat.ads.enums.AdsDataType;
+import twincat.ads.enums.AdsError;
+import twincat.ads.enums.AdsIndexGroup;
+import twincat.ads.enums.AmsPort;
 import twincat.ads.jni.AdsNative;
 import twincat.ads.wrapper.Variable;
 
 public class AdsClient extends AdsNative {
+    /*************************/
+    /** constant attributes **/
+    /*************************/
+
+    public static final int DEFAULT_TIMEOUT = 1000;
+    
+    /*************************/
+    /****** constructor ******/
+    /*************************/
+
+    public AdsClient() {
+        super.amsAddress.setNetIdStringEx(AmsNetId.LOCAL);
+        super.amsAddress.setPort(AmsPort.SYSTEMSERVICE.value);
+    }
+
     /*************************/
     /*** ads implementation **/
     /*************************/
@@ -42,7 +58,7 @@ public class AdsClient extends AdsNative {
         super.adsOpenPort();
     }
 
-    public void close() throws AdsException {
+    public void close() {
         super.adsClosePort();
     }
 
@@ -54,7 +70,7 @@ public class AdsClient extends AdsNative {
         return super.adsReadVersion();
     }
 
-    public String readAmsNetId() throws AdsException {
+    public String readLocalAmsNetId() throws AdsException {
         return super.adsGetLocalAddress();
     }
 
@@ -190,6 +206,27 @@ public class AdsClient extends AdsNative {
         return new AdsUploadInfo(uploadInfoBuffer);
     }
 
+    public List<AdsRoute> readRouteEntrys() throws AdsException {     
+        List<AdsRoute> routeList = new ArrayList<AdsRoute>();
+
+        for (int i = 0; i < AdsIndexGroup.SYSTEM_ENUM_REMOTE.size; i++) {
+            try {
+                byte[] routeEntryBuffer = new byte[AdsIndexGroup.SYSTEM_ENUM_REMOTE.size];
+                read(AdsIndexGroup.SYSTEM_ENUM_REMOTE.value, i, routeEntryBuffer);
+                AdsRoute route = new AdsRoute(routeEntryBuffer);
+                routeList.add(route);
+            } catch (AdsException e) {
+                if (e.getAdsError().equals(AdsError.ADS_NOMORE_NOT_HDL)) {
+                    break;
+                } else {
+                    throw new AdsException(e.getAdsError());
+                }   
+            }  
+        }
+
+        return routeList;
+    }
+    
     /*************************/
     /******** mapping ********/
     /*************************/

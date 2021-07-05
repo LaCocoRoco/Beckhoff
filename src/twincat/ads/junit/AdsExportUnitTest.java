@@ -13,19 +13,19 @@ import twincat.TwincatLogger;
 import twincat.Utilities;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.constants.AdsIndexGroup;
-import twincat.ads.constants.AmsNetId;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.AmsNetId;
+import twincat.ads.enums.AdsIndexGroup;
+import twincat.ads.enums.AmsPort;
 
 public class AdsExportUnitTest {
     private final AdsClient ads = new AdsClient();
     private final Logger logger = TwincatLogger.getSignedLogger();
     
-    private final String netId      = AmsNetId.LOCAL;
-    private final AmsPort amsPort   = AmsPort.NCSAF;
-    private final int readSize      = AdsIndexGroup.SYMBOL_UPLOAD.size;
-    private final int indexGroup    = AdsIndexGroup.SYMBOL_UPLOAD.value;
-    private final int indexOffset   = 0;
+    private final String netId    = AmsNetId.LOCAL;
+    private final AmsPort amsPort = AmsPort.SYSTEMSERVICE;
+    private final int readSize    = AdsIndexGroup.SYSTEM_ENUM_REMOTE.size;
+    private final int indexGroup  = AdsIndexGroup.SYSTEM_ENUM_REMOTE.value;
+    private final int indexOffset = 0;
 
     @Before
     public void startAds() {
@@ -38,10 +38,10 @@ public class AdsExportUnitTest {
             ads.setAmsNetId(netId);
             ads.setAmsPort(amsPort);
             
-            String uploadDir = System.getProperty("user.dir") + "/exp/";
-            byte[] readBufferUpload = new byte[readSize];
-            ads.read(indexGroup, indexOffset, readBufferUpload);
-            Files.write(Paths.get(uploadDir + "EXPORT.txt"), readBufferUpload);
+            String exportDir = System.getProperty("user.dir") + "/exp/";
+            byte[] readBuffer = new byte[readSize];
+            ads.read(indexGroup, indexOffset, readBuffer);
+            Files.write(Paths.get(exportDir + "data.txt"), readBuffer);
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
         } catch (IOException e) {

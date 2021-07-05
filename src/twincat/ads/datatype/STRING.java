@@ -2,7 +2,7 @@ package twincat.ads.datatype;
 
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.constants.AdsDataType;
+import twincat.ads.enums.AdsDataType;
 import twincat.ads.wrapper.Variable;
 
 public class STRING extends Variable {

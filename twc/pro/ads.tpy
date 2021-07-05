@@ -2,9 +2,9 @@
 <!--This file is created by the TCatPlcCtrl automatically. Manually changes will be overwritten!-->
 <PlcProjectInfo xmlns:p="http://www.beckhoff.com/2002/01/TcPlcProjectDesc">
 	<ProjectInfo>
-		<Path>C:\Workspace\Eclipse\Beckhoff\twincat\pro\ads.pro</Path>
+		<Path>C:\Workspace\Eclipse\Beckhoff\twc\pro\ads.pro</Path>
 		<IsLibrary>false</IsLibrary>
-		<ChangeDate>2021-07-04T19:30:32</ChangeDate>
+		<ChangeDate>2021-07-05T12:54:09</ChangeDate>
 		<Library>
 			<Name>TcBase.lib</Name>
 			<Path>C:\TWINCAT\PLC\LIB\TcBase.lib</Path>
@@ -2663,6 +2663,86 @@
 			<BitSize>16</BitSize>
 		</DataType>
 		<DataType>
+			<Name Decoration="100CFCF2" IsDefinedInLibrary="1" Library="C:\TWINCAT\PLC\LIB\TcSystem.lib">ADSREAD</Name>
+			<BitSize>1016</BitSize>
+			<SubItem>
+				<Name IsDefinedInLibrary="1" Library="C:\TWINCAT\PLC\LIB\TcSystem.lib">fbAdsRead</Name>
+				<Type Decoration="1013863E">FW_AdsRead</Type>
+				<BitSize>592</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Input" IsDefinedInLibrary="1" Library="C:\TWINCAT\PLC\LIB\TcSystem.lib">NETID</Name>
+				<Type Decoration="40000018">STRING(23)</Type>
+				<BitSize>192</BitSize>
+				<BitOffs>592</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Input" IsDefinedInLibrary="1" Library="C:\TWINCAT\PLC\LIB\TcSystem.lib">PORT</Name>
+				<Type>UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>784</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Input" IsDefinedInLibrary="1" Library="C:\TWINCAT\PLC\LIB\TcSystem.lib">IDXGRP</Name>
+				<Type>UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>800</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Input" IsDefinedInLibrary="1" Library="C:\TWINCAT\PLC\LIB\TcSystem.lib">IDXOFFS</Name>
+				<Type>UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>832</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Input" IsDefinedInLibrary="1" Library="C:\TWINCAT\PLC\LIB\TcSystem.lib">LEN</Name>
+				<Type>UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>864</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Input" IsDefinedInLibrary="1" Library="C:\TWINCAT\PLC\LIB\TcSystem.lib">DESTADDR</Name>
+				<Type>DWORD</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>896</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Input" IsDefinedInLibrary="1" Library="C:\TWINCAT\PLC\LIB\TcSystem.lib">READ</Name>
+				<Type>BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>928</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Input" IsDefinedInLibrary="1" Library="C:\TWINCAT\PLC\LIB\TcSystem.lib">TMOUT</Name>
+				<Type>TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>936</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Output" IsDefinedInLibrary="1" Library="C:\TWINCAT\PLC\LIB\TcSystem.lib">BUSY</Name>
+				<Type>BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>968</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Output" IsDefinedInLibrary="1" Library="C:\TWINCAT\PLC\LIB\TcSystem.lib">ERR</Name>
+				<Type>BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>976</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Output" IsDefinedInLibrary="1" Library="C:\TWINCAT\PLC\LIB\TcSystem.lib">ERRID</Name>
+				<Type>UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>984</BitOffs>
+			</SubItem>
+			<FbInfo>
+				<CodeIndex>124</CodeIndex>
+				<InitIndex>125</InitIndex>
+			</FbInfo>
+		</DataType>
+		<DataType>
 			<Name Decoration="2001014A">ARRAY [0..5] OF BYTE</Name>
 			<Type>BYTE</Type>
 			<BitSize>48</BitSize>
@@ -4849,6 +4929,116 @@
 					<Name>A_Reset</Name>
 					<CodeIndex>352</CodeIndex>
 				</ActionInfo>
+			</FbInfo>
+		</DataType>
+		<DataType>
+			<Name Decoration="100EB89F" IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">FB_EnumRouteEntry</Name>
+			<BitSize>19288</BitSize>
+			<SubItem>
+				<Name IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">fbAdsRead</Name>
+				<Type Decoration="100CFCF2">ADSREAD</Type>
+				<BitSize>1016</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">fbTrigger</Name>
+				<Type Decoration="1003051C">R_TRIG</Type>
+				<BitSize>24</BitSize>
+				<BitOffs>1016</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">state</Name>
+				<Type>BYTE</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>1040</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">index</Name>
+				<Type>UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1048</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">dataEntry</Name>
+				<Type Decoration="1002B19C">ST_AmsRouteSystemEntry</Type>
+				<BitSize>16736</BitSize>
+				<BitOffs>1080</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Input" IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">sNetID</Name>
+				<Type Decoration="40000018">STRING(23)</Type>
+				<Comment>
+					<![CDATA[TwinCAT network address (ams net id )]]>
+				</Comment>
+				<BitSize>192</BitSize>
+				<BitOffs>17816</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Input" IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">eCmd</Name>
+				<Type Decoration="300003EF">E_EnumCmdType</Type>
+				<Comment>
+					<![CDATA[Enumerator navigation command]]>
+				</Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>18008</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Input" IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">bExecute</Name>
+				<Type>BOOL</Type>
+				<Comment>
+					<![CDATA[Rising edge starts function block execution]]>
+				</Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>18024</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Input" IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">tTimeout</Name>
+				<Type>TIME</Type>
+				<Comment>
+					<![CDATA[Max fb execution time]]>
+				</Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>18032</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Output" IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">bBusy</Name>
+				<Type>BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>18064</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Output" IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">bError</Name>
+				<Type>BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>18072</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Output" IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">nErrID</Name>
+				<Type>UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>18080</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Output" IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">bEOE</Name>
+				<Type>BOOL</Type>
+				<Comment>
+					<![CDATA[End of enumeration. This value is TRUE after the first read that attempts to read next non existing entry.]]>
+				</Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>18112</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name FbParameter="Output" IsDefinedInLibrary="1" Library="C:\TwinCAT\Plc\Lib\TcUtilities.lib">stRoute</Name>
+				<Type Decoration="100614ED">ST_AmsRouteEntry</Type>
+				<Comment>
+					<![CDATA[Structure with route parameters]]>
+				</Comment>
+				<BitSize>1168</BitSize>
+				<BitOffs>18120</BitOffs>
+			</SubItem>
+			<FbInfo>
+				<CodeIndex>359</CodeIndex>
+				<InitIndex>360</InitIndex>
 			</FbInfo>
 		</DataType>
 		<DataType>
@@ -12009,11 +12199,14 @@
 	</Functions>
 	<Programs>
 		<Program>
-			<Name Decoration="1006D131" Crc32="2051411835" LastChange="2021-07-03T19:56:56">main</Name>
+			<Name Decoration="1007FDC4" Crc32="3204479515" LastChange="2021-07-05T12:54:08">main</Name>
 			<PrgInfo>
 				<CodeIndex>51</CodeIndex>
 				<Symbol>
 					<Name>main.l_fb_unit</Name>
+				</Symbol>
+				<Symbol>
+					<Name>main.l_struct</Name>
 				</Symbol>
 				<Symbol>
 					<Name>main.l_ams_port</Name>
@@ -12032,6 +12225,24 @@
 				</Symbol>
 			</PrgInfo>
 		</Program>
+		<Program>
+			<Name Decoration="10041AAC" Crc32="1123162229" LastChange="2021-07-05T12:38:55">p_enum_route_entries</Name>
+			<PrgInfo>
+				<CodeIndex>719</CodeIndex>
+				<Symbol>
+					<Name>p_enum_route_entries.fbEnum</Name>
+				</Symbol>
+				<Symbol>
+					<Name>p_enum_route_entries.bEnum</Name>
+				</Symbol>
+				<Symbol>
+					<Name>p_enum_route_entries.nState</Name>
+				</Symbol>
+				<Symbol>
+					<Name>p_enum_route_entries.sInfo</Name>
+				</Symbol>
+			</PrgInfo>
+		</Program>
 	</Programs>
 	<Symbols>
 		<Symbol>
@@ -12040,6 +12251,13 @@
 			<IGroup>16448</IGroup>
 			<IOffset>1502</IOffset>
 			<BitSize>624</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name TaskPrio="1">main.l_struct</Name>
+			<Type Decoration="100614ED">ST_AmsRouteEntry</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>27906</IOffset>
+			<BitSize>1168</BitSize>
 		</Symbol>
 		<Symbol>
 			<Name>main.l_ams_port</Name>
@@ -12063,7 +12281,7 @@
 			<BitSize>32</BitSize>
 		</Symbol>
 		<Symbol>
-			<Name TaskPrio="1">main.l_read_type</Name>
+			<Name>main.l_read_type</Name>
 			<Type Decoration="1002B19C">ST_AmsRouteSystemEntry</Type>
 			<IGroup>16448</IGroup>
 			<IOffset>28162</IOffset>
@@ -12075,6 +12293,34 @@
 			<IGroup>16448</IGroup>
 			<IOffset>27902</IOffset>
 			<BitSize>32</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name TaskPrio="1">p_enum_route_entries.fbEnum</Name>
+			<Type Decoration="100EB89F">FB_EnumRouteEntry</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>30254</IOffset>
+			<BitSize>19288</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name TaskPrio="1">p_enum_route_entries.bEnum</Name>
+			<Type>BOOL</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>2837</IOffset>
+			<BitSize>8</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name TaskPrio="1">p_enum_route_entries.nState</Name>
+			<Type>BYTE</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>2838</IOffset>
+			<BitSize>8</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name TaskPrio="1">p_enum_route_entries.sInfo</Name>
+			<Type Decoration="40000100">STRING(255)</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>27374</IOffset>
+			<BitSize>2048</BitSize>
 		</Symbol>
 		<Symbol>
 			<Name Constant="1">.junit_c</Name>
@@ -12795,7 +13041,7 @@
 			<BitSize>32</BitSize>
 		</Symbol>
 		<Symbol>
-			<Name Constant="1" IsDefinedInLibrary="1">.ADSLOG_MSGTYPE_HINT</Name>
+			<Name Constant="1" IsDefinedInLibrary="1" TaskPrio="1">.ADSLOG_MSGTYPE_HINT</Name>
 			<Type>DWORD</Type>
 			<IGroup>16448</IGroup>
 			<IOffset>2230</IOffset>
@@ -12809,14 +13055,14 @@
 			<BitSize>32</BitSize>
 		</Symbol>
 		<Symbol>
-			<Name Constant="1" IsDefinedInLibrary="1">.ADSLOG_MSGTYPE_ERROR</Name>
+			<Name Constant="1" IsDefinedInLibrary="1" TaskPrio="1">.ADSLOG_MSGTYPE_ERROR</Name>
 			<Type>DWORD</Type>
 			<IGroup>16448</IGroup>
 			<IOffset>2238</IOffset>
 			<BitSize>32</BitSize>
 		</Symbol>
 		<Symbol>
-			<Name Constant="1" IsDefinedInLibrary="1">.ADSLOG_MSGTYPE_LOG</Name>
+			<Name Constant="1" IsDefinedInLibrary="1" TaskPrio="1">.ADSLOG_MSGTYPE_LOG</Name>
 			<Type>DWORD</Type>
 			<IGroup>16448</IGroup>
 			<IOffset>2242</IOffset>
@@ -13922,7 +14168,7 @@
 			<BitSize>8</BitSize>
 		</Symbol>
 		<Symbol>
-			<Name Constant="1" IsDefinedInLibrary="1">.EMPTY_ROUTE_ENTRY</Name>
+			<Name Constant="1" IsDefinedInLibrary="1" TaskPrio="1">.EMPTY_ROUTE_ENTRY</Name>
 			<Type Decoration="100614ED">ST_AmsRouteEntry</Type>
 			<Comment>
 				<![CDATA[System Service file functions]]>
@@ -13942,7 +14188,7 @@
 			<BitSize>80</BitSize>
 		</Symbol>
 		<Symbol>
-			<Name Constant="1" IsDefinedInLibrary="1">.FORMAT_HEXASC_CODES</Name>
+			<Name Constant="1" IsDefinedInLibrary="1" TaskPrio="1">.FORMAT_HEXASC_CODES</Name>
 			<Type Decoration="20020156">ARRAY [0..1, 0..15] OF BYTE</Type>
 			<Comment>
 				<![CDATA[ASCII to decimal and decimal digits to ASCII codes]]>

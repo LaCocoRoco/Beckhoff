@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import twincat.TwincatLogger;
-import twincat.ads.constants.AdsError;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.enums.AdsError;
+import twincat.ads.enums.AmsPort;
 import twincat.ads.wrapper.Variable;
 
 public class AdsCmd {
@@ -37,7 +37,7 @@ public class AdsCmd {
     private static final String COMMAND_PORT    = "port";
 
     private static final String PARAMETER_LOCAL = "local";
-    
+
     private static final String PARAMETER_PING  = "ping";
 
     private static final String PARAMETER_LIST  = "list";
@@ -46,7 +46,7 @@ public class AdsCmd {
 
     private static final String CMD_PATTERN     = "\\s+";
     
-    private static final int CMD_ADS_TIMEOUT    = 50;
+    private static final int CMD_ADS_TIMEOUT    = 10;
     
     /*************************/
     /*** local attributes ****/
@@ -188,6 +188,10 @@ public class AdsCmd {
                 cmdNetIdLocal();
                 break;
                 
+            case PARAMETER_LIST:
+                cmdNetIdList();
+                break;
+                
             default:
                 cmdNetIdAddress(par1);
                 break;
@@ -246,12 +250,8 @@ public class AdsCmd {
             logger.info("Minor: " + deviceInfo.getMinorVersion());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
-        }
-
-        try {
+        } finally {
             ads.close();
-        } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
         }
     }
 
@@ -265,12 +265,8 @@ public class AdsCmd {
             logger.info("DeviceState: " + deviceState.getDeviceState());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
-        }
-        
-        try {
+        } finally {
             ads.close();
-        } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
         }
     }
 
@@ -286,20 +282,50 @@ public class AdsCmd {
             ads.open();
             ads.setTimeout(CMD_ADS_TIMEOUT);
             
-            String amsNetId = ads.readAmsNetId();
+            String amsNetId = ads.readLocalAmsNetId();
             ads.setAmsNetId(amsNetId);
             logger.info(amsNetId);
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
-        }
-        
-        try {
+        } finally {
             ads.close();
-        } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
         }
     }
 
+    private void cmdNetIdList() {
+        try {
+            ads.open();
+            ads.setTimeout(CMD_ADS_TIMEOUT);
+            
+            String amsNetId = ads.readLocalAmsNetId();
+            String hostName = ads.readLocalHostName();
+    
+            AdsRoute localRoute = new AdsRoute();
+            localRoute.setAmsNetId(amsNetId);
+            localRoute.setHostName(hostName);
+            
+            List<AdsRoute> remoteRouteList = ads.readRouteEntrys();
+            
+            List<AdsRoute> routeList = new ArrayList<AdsRoute>();
+            routeList.add(localRoute);
+            routeList.addAll(remoteRouteList);
+            
+            for (AdsRoute route : routeList) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("AmsNetId: ");
+                stringBuilder.append(route.getAmsNetId());
+                stringBuilder.append("\t| ");
+                stringBuilder.append("HostName: ");
+                stringBuilder.append(route.getHostName());
+                logger.info(stringBuilder.toString());      
+            }
+        } catch (AdsException e) {
+            logger.info(e.getAdsErrorMessage());
+        } finally {
+            ads.close();
+        }
+    } 
+    
     private void cmdNetIdAddress(String par1) {
         try {
             ads.setAmsNetId(par1);
@@ -327,6 +353,7 @@ public class AdsCmd {
         try {
             ads.open();
             ads.setTimeout(CMD_ADS_TIMEOUT);
+            
             AmsPort cachPort = ads.getAmsPort();
             
             int portCount = 0;
@@ -350,12 +377,8 @@ public class AdsCmd {
             ads.setAmsPort(cachPort);
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
-        }
-        
-        try {
+        } finally {
             ads.close();
-        } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
         }
     }
 
@@ -382,7 +405,7 @@ public class AdsCmd {
         try {      
             ads.setTimeout(CMD_ADS_TIMEOUT);
 
-            AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads.getAmsNetId(), ads.getAmsPort());   
+            AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads);   
             List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
 
             symbolList.addAll(symbolLoader.getSymbolTable());
@@ -401,7 +424,7 @@ public class AdsCmd {
         try {      
             ads.setTimeout(CMD_ADS_TIMEOUT);
             
-            AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads.getAmsNetId(), ads.getAmsPort());   
+            AdsSymbolLoader symbolLoader = new AdsSymbolLoader(ads);   
             List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
             
             symbolList.addAll(symbolLoader.getSymbolBySymbolName(symbolName));
@@ -431,12 +454,8 @@ public class AdsCmd {
             logger.info("Comment:     " + symbolInfo.getComment());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
-        }
-
-        try {
+        } finally {
             ads.close();
-        } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
         }
     }
 
@@ -450,12 +469,8 @@ public class AdsCmd {
             if (variable != null) logger.info(variable.read().toString());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
-        }
-
-        try {
+        } finally {
             ads.close();
-        } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
         }
     }
 
@@ -476,13 +491,9 @@ public class AdsCmd {
             }
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
-        }
-
-        try {
+        } finally {
             ads.close();
-        } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
-        } 
+        }
     }
  
     private void cmdWrite(String symbolName, String value) {
@@ -495,12 +506,8 @@ public class AdsCmd {
             if (variable != null) logger.info(variable.write(value).read().toString());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
-        }
-
-        try {
+        } finally {
             ads.close();
-        } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
         }
     }
 }

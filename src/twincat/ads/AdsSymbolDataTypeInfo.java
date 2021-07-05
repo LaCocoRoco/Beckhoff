@@ -5,16 +5,18 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-import twincat.ads.constants.AdsDataType;
-import twincat.ads.constants.AdsDataTypeFlag;
 import twincat.ads.datatype.STRING;
+import twincat.ads.enums.AdsDataType;
+import twincat.ads.enums.AdsDataTypeFlag;
+
+// TODO : add constructor to parse
 
 public class AdsSymbolDataTypeInfo {
     /*************************/
     /** constant attributes **/
     /*************************/
 
-    private static final int INFO_BUFFER_LENGTH = 38;
+    private static final int INFO_DATA_LENGTH = 44;
 
     /*************************/
     /*** global attributes ***/
@@ -48,12 +50,16 @@ public class AdsSymbolDataTypeInfo {
     /****** constructor ******/
     /*************************/
 
+    public AdsSymbolDataTypeInfo() {
+        /* empty */
+    }
+   
     public AdsSymbolDataTypeInfo(byte[] buffer) {
-        getSymbolDataTypeInfo(buffer, 0);
+        parseSymbolDataTypeInfo(buffer, 0);
     }
 
     public AdsSymbolDataTypeInfo(byte[] buffer, int index) {
-        getSymbolDataTypeInfo(buffer, index);
+        parseSymbolDataTypeInfo(buffer, index);
     }
 
     /*************************/
@@ -153,18 +159,18 @@ public class AdsSymbolDataTypeInfo {
     }
 
     /*************************/
-    /******** private ********/
+    /********* public ********/
     /*************************/
-
+ 
     @SuppressWarnings("unused")
-    private void getSymbolDataTypeInfo(byte[] buffer, int index) {
+    public void parseSymbolDataTypeInfo(byte[] buffer, int index) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
         if (byteBuffer.remaining() >= index) {
             byteBuffer.position(index);
 
-            if (byteBuffer.remaining() >= INFO_BUFFER_LENGTH) {
+            if (byteBuffer.remaining() >= INFO_DATA_LENGTH) {
                 length = byteBuffer.getInt();
                 version = byteBuffer.getInt();
                 hashValue = byteBuffer.getInt();
@@ -182,21 +188,21 @@ public class AdsSymbolDataTypeInfo {
                 this.dataTypeFlag = AdsDataTypeFlag.getByValue(dataTypeFlag);
 
                 if (byteBuffer.remaining() >= nameLength) {
-                    byte[] symbolNameBuffer = new byte[nameLength];
-                    byteBuffer.get(symbolNameBuffer, 0, nameLength);
-                    dataTypeName = STRING.arrayToValue(symbolNameBuffer);
+                    byte[] readBuffer = new byte[nameLength];
+                    byteBuffer.get(readBuffer, 0, nameLength);
+                    dataTypeName = STRING.arrayToValue(readBuffer);
                 }
 
                 if (byteBuffer.remaining() >= typeLength) {
-                    byte[] typeBuffer = new byte[typeLength];
-                    byteBuffer.get(typeBuffer, 0, typeLength);
-                    type = STRING.arrayToValue(typeBuffer);
+                    byte[] readBuffer = new byte[typeLength];
+                    byteBuffer.get(readBuffer, 0, typeLength);
+                    type = STRING.arrayToValue(readBuffer);
                 }
 
                 if (byteBuffer.remaining() >= commentLength) {
-                    byte[] commentBuffer = new byte[commentLength];
-                    byteBuffer.get(commentBuffer, 0, commentLength);
-                    comment = STRING.arrayToValue(commentBuffer);
+                    byte[] readBuffer = new byte[commentLength];
+                    byteBuffer.get(readBuffer, 0, commentLength);
+                    comment = STRING.arrayToValue(readBuffer);
                 }
 
                 int subItemIndex = byteBuffer.position();
@@ -209,10 +215,6 @@ public class AdsSymbolDataTypeInfo {
         }
     }
 
-    /*************************/
-    /********* public ********/
-    /*************************/
- 
     public List<AdsSymbol> getDataTypeSymbolList(List<AdsSymbolDataTypeInfo> symbolDataTypeInfoList) {
         List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
 

@@ -13,8 +13,8 @@ import twincat.ads.AdsSymbolDataTypeInfo;
 import twincat.ads.AdsException;
 import twincat.ads.AdsSymbol;
 import twincat.ads.AdsSymbolInfo;
-import twincat.ads.constants.AmsNetId;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.AmsNetId;
+import twincat.ads.enums.AmsPort;
 
 public class AdsSymbolBySymbolInfoUnitTest {
     private final AdsClient ads = new AdsClient();

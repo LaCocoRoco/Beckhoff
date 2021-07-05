@@ -1,23 +1,24 @@
-Commands:               Description:
+Commands:                   Description:
 
-ads                     get ads dll version
-info                    get device info
-state                   get ads state Info
+ads                         get ads dll version
+info                        get device info
+state                       get ads state Info
 
-netid                   get net id
-netid local             set net id to local
-netid address           set net id
+netid                       get net id
+netid list                  get net id list
+netid local                 set net id to local
+netid ADDRESS               set net id
 
-port                    get ams port
-port list               get ams port list
-port ping               get ams port states
-port VALUE              set ams port by value
+port                        get ams port
+port list                   get ams port list
+port ping                   get ams port states
+port VALUE                  set ams port by value
 
-symbol list             get symbol info list
-symbol list name        get symbol info list by symbol name
-symbol info name        get symbol info by symbol name
+symbol list                 get symbol info list
+symbol list NAME            get symbol info list by symbol name
+symbol info NAME            get symbol info by symbol name
 
-read name               get value by symbol name
-read idxgrp offs size   get size of bytes by idxgrp offset
+read NAME                  get value by symbol name
+read IDXGRP OFFS SIZE      get size of bytes by idxgrp offset
 
-write name value        set symbol value by name
+write NAME VALUE           set symbol value by name

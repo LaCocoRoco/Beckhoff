@@ -10,8 +10,8 @@ import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsDeviceInfo;
 import twincat.ads.AdsException;
-import twincat.ads.constants.AmsNetId;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.AmsNetId;
+import twincat.ads.enums.AmsPort;
 
 public class AdsDeviceInfoUnitTest {
     private final AdsClient ads = new AdsClient();

@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO : add constructor to parse
+
 public class AdsTypeInfo {
     /*************************/
     /** constant attributes **/

@@ -1,32 +1,15 @@
 package twincat.test;
 
-import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 
-import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.AdsSymbol;
 import twincat.ads.AdsSymbolInfo;
-import twincat.ads.AdsSymbolLoader;
-import twincat.ads.constants.AmsNetId;
-import twincat.ads.constants.AmsPort;
 
 public class SymbolBrowser extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -87,11 +70,7 @@ public class SymbolBrowser extends JFrame {
 	 * 
 	 * 
 	 */
-	
-	
-	
-	
-	
+
 	
     private DefaultMutableTreeNode symbolToNodeList(List<AdsSymbol> symbolList) {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
@@ -102,22 +81,12 @@ public class SymbolBrowser extends JFrame {
             Iterator<String> symbolNameIterator = symbolNameList.iterator();
             
             for (int i = 0; i < rootNode.getChildCount(); i++) {
-
-                
-                
-                
+    
             }
-            
-            
-            
-            
+
             
             DefaultMutableTreeNode symbolRootNode = null;
     
-            
-     
-            
-            
             // TODO
             DefaultMutableTreeNode node = null;
      
@@ -127,11 +96,10 @@ public class SymbolBrowser extends JFrame {
      }
 	
 	
-	
-	
-	
-	
+
 	public SymbolBrowser() throws AdsException {
+	    /*
+	    
 		// create ads
 		AdsClient ads = new AdsClient();
 		ads.setAmsPort(AmsPort.TC2PLC1);
@@ -191,5 +159,6 @@ public class SymbolBrowser extends JFrame {
 		this.setMinimumSize(new Dimension(500, 500));
 		this.pack();
 		this.setVisible(true);
+		*/
 	}
 }

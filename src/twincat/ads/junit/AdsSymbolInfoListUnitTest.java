@@ -11,8 +11,8 @@ import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.AdsSymbolInfo;
-import twincat.ads.constants.AmsNetId;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.AmsNetId;
+import twincat.ads.enums.AmsPort;
 
 public class AdsSymbolInfoListUnitTest {
     private final AdsClient ads = new AdsClient();

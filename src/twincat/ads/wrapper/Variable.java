@@ -6,9 +6,9 @@ import twincat.ads.AdsClient;
 import twincat.ads.AdsCallback;
 import twincat.ads.AdsException;
 import twincat.ads.AdsNotification;
-import twincat.ads.constants.AdsIndexGroup;
-import twincat.ads.constants.AdsTransmitMode;
-import twincat.ads.constants.AdsDataType;
+import twincat.ads.enums.AdsDataType;
+import twincat.ads.enums.AdsIndexGroup;
+import twincat.ads.enums.AdsTransmitMode;
 
 public abstract class Variable extends Observable implements AdsCallback {
 	/*************************/

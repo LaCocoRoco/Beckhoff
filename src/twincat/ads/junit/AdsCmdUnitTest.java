@@ -17,10 +17,11 @@ public class AdsCmdUnitTest {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         
+        logger.info("Enter Command (\"e\" to exit)");
+        
         while (running) {
-            logger.info("Enter Command (Enter \"E\" to exit)");
-            String command = scanner.nextLine();
             
+            String command = scanner.nextLine();
             if (command.equals("E")) running = false;
 
             adsCmd.send(command);  

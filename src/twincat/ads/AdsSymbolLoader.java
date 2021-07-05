@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import twincat.TwincatLogger;
-import twincat.ads.constants.AmsPort;
 
 public class AdsSymbolLoader {
     /*************************/
     /*** global attributes ***/
     /*************************/
+
+    private final AdsClient ads;
 
     private final List<AdsSymbol> symbolTable;
  
@@ -18,8 +19,6 @@ public class AdsSymbolLoader {
     /*** local attributes ***/
     /*************************/
 
-    private final AdsClient ads = new AdsClient();
-    
     private final Logger logger = TwincatLogger.getSignedLogger();
 
     private final List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
@@ -30,23 +29,20 @@ public class AdsSymbolLoader {
     /****** constructor ******/
     /*************************/
 
-    public AdsSymbolLoader(String amsNetId, AmsPort amsPort) { 
+    public AdsSymbolLoader(AdsClient ads) { 
+        this.ads = ads;
+        
         try {
             ads.open();
-            ads.setAmsNetId(amsNetId);
-            ads.setAmsPort(amsPort);
-            
+            ads.setTimeout(AdsClient.DEFAULT_TIMEOUT);
+
             symbolInfoList.addAll(ads.readSymbolInfoList());
             dataTypeInfoList.addAll(ads.readDataTypeInfoList());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
-        }
-
-        try {
+        } finally {
             ads.close();
-        } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
-        }      
+        }   
         
         this.symbolTable = setSymbolTable();
     }  
@@ -54,6 +50,10 @@ public class AdsSymbolLoader {
     /*************************/
     /**** setter & getter ****/
     /*************************/
+    
+    public AdsClient getAds() {
+        return ads;
+    }
 
     public List<AdsSymbol> getSymbolTable() {
         return symbolTable;

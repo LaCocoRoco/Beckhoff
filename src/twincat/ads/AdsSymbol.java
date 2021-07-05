@@ -1,6 +1,6 @@
 package twincat.ads;
 
-import twincat.ads.constants.AdsDataType;
+import twincat.ads.enums.AdsDataType;
 
 public class AdsSymbol {
     /*************************/

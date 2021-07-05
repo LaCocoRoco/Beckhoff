@@ -10,9 +10,9 @@
 
   <property name="src.dir"        location="${basedir}/src"/>
   <property name="src.dir.res"    location="${src.dir}/resources"/>
-  <property name="bin.dir"        location="${basedir}/bin"/>
-  <property name="bin.dir.res"    location="${bin.dir}/resources"/>
   <property name="build.dir"      location="${basedir}/build"/>
+  <property name="bin.dir"        location="${basedir}/build/bin"/>
+  <property name="bin.dir.res"    location="${bin.dir}/resources"/>
   <property name="lib.dir"        location="${basedir}/lib"/>
 
   <tstamp>
@@ -24,11 +24,7 @@
     <fileset dir="${lib.dir}" includes="*.jar"/>
   </path>
 
-  <target name="delete">
-    <delete dir="${bin.dir}"/>
-  </target>
-
-  <target name="mkdir" depends="delete">
+  <target name="mkdir">
     <mkdir dir="${bin.dir}"/>
   </target>
 
@@ -61,4 +57,10 @@
       <exclude name="${exclude}"/>
     </jar>
   </target>
+
+
+  <target name="clean" depends="build">
+    <delete dir="${bin.dir}"/>
+  </target>
+
 </project>

@@ -1,8 +1,8 @@
 package twincat.scope;
 
-import twincat.ads.constants.AdsDataType;
-import twincat.ads.constants.AmsNetId;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.AmsNetId;
+import twincat.ads.enums.AdsDataType;
+import twincat.ads.enums.AmsPort;
 
 public class Acquisition {
 	/*************************/

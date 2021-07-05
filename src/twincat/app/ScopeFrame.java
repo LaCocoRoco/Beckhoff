@@ -16,8 +16,8 @@ import javax.swing.JPanel;
 
 import twincat.TwincatLogger;
 import twincat.app.constants.Resources;
-import twincat.app.scope.PanelContent;
-import twincat.app.scope.PanelWindow;
+import twincat.app.panel.PanelContent;
+import twincat.app.panel.PanelWindow;
 
 public class ScopeFrame extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -145,6 +145,22 @@ public class ScopeFrame extends JPanel {
     }
 
     public void minifyMenuItems() {
+        menuItemFileNew.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        menuItemFileNew.setHorizontalAlignment(JMenuItem.LEFT);
+        menuItemFileNew.setHorizontalTextPosition(JMenuItem.LEFT);
+        menuItemFileNew.setIcon(null);
+        menuItemFileNew.setIconTextGap(0);
+        menuItemFileNew.setMargin(new Insets(0, 0, 0, 0));
+        menuItemFileNew.setPressedIcon(null);
+        
+        menuItemFileOpen.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        menuItemFileOpen.setHorizontalAlignment(JMenuItem.LEFT);
+        menuItemFileOpen.setHorizontalTextPosition(JMenuItem.LEFT);
+        menuItemFileOpen.setIcon(null);
+        menuItemFileOpen.setIconTextGap(0);
+        menuItemFileOpen.setMargin(new Insets(0, 0, 0, 0));
+        menuItemFileOpen.setPressedIcon(null);
+        
         menuItemConsole.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         menuItemConsole.setHorizontalAlignment(JMenuItem.LEFT);
         menuItemConsole.setHorizontalTextPosition(JMenuItem.LEFT);

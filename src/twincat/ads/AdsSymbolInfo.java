@@ -5,16 +5,16 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-import twincat.ads.constants.AdsDataType;
-import twincat.ads.constants.AdsSymbolFlag;
 import twincat.ads.datatype.STRING;
+import twincat.ads.enums.AdsDataType;
+import twincat.ads.enums.AdsSymbolFlag;
 
 public class AdsSymbolInfo {
     /*************************/
     /** constant attributes **/
     /*************************/
 
-    private static final int INFO_BUFFER_LENGTH = 30;
+    private static final int INFO_DATA_LENGTH = 30;
 
     /*************************/
     /*** global attributes ***/
@@ -42,12 +42,16 @@ public class AdsSymbolInfo {
     /****** constructor ******/
     /*************************/
 
+    public AdsSymbolInfo() {
+        /* empty */
+    }
+    
     public AdsSymbolInfo(byte[] buffer) {
-        getAdsSymbolInfo(buffer, 0);
+        parseSymbolInfo(buffer, 0);
     }
 
     public AdsSymbolInfo(byte[] buffer, int index) {
-        getAdsSymbolInfo(buffer, index);
+        parseSymbolInfo(buffer, index);
     }
 
     /*************************/
@@ -125,20 +129,20 @@ public class AdsSymbolInfo {
     public void setType(String type) {
         this.type = type;
     }
-
+    
     /*************************/
-    /******** private ********/
+    /********* public ********/
     /*************************/
 
     @SuppressWarnings("unused")
-    private void getAdsSymbolInfo(byte[] buffer, int index) {
+    public void parseSymbolInfo(byte[] buffer, int index) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
         if (byteBuffer.remaining() >= index) {
             byteBuffer.position(index);
 
-            if (byteBuffer.remaining() >= INFO_BUFFER_LENGTH) {
+            if (byteBuffer.remaining() >= INFO_DATA_LENGTH) {
                 length = byteBuffer.getInt();
                 indexGroup = byteBuffer.getInt();
                 indexOffset = byteBuffer.getInt();
@@ -153,29 +157,25 @@ public class AdsSymbolInfo {
                 this.symbolFlag = AdsSymbolFlag.getByValue(symbolFlag);
 
                 if (byteBuffer.remaining() >= nameLength) {
-                    byte[] symbolNameBuffer = new byte[nameLength];
-                    byteBuffer.get(symbolNameBuffer, 0, nameLength);
-                    symbolName = STRING.arrayToValue(symbolNameBuffer);
+                    byte[] readBuffer = new byte[nameLength];
+                    byteBuffer.get(readBuffer, 0, nameLength);
+                    symbolName = STRING.arrayToValue(readBuffer);
                 }
 
                 if (byteBuffer.remaining() >= typeLength) {
-                    byte[] typeBuffer = new byte[typeLength];
-                    byteBuffer.get(typeBuffer, 0, typeLength);
-                    type = STRING.arrayToValue(typeBuffer);                     
+                    byte[] readBuffer = new byte[typeLength];
+                    byteBuffer.get(readBuffer, 0, typeLength);
+                    type = STRING.arrayToValue(readBuffer);                     
                 }
 
                 if (byteBuffer.remaining() >= commentLength) {
-                    byte[] commentBuffer = new byte[commentLength];
-                    byteBuffer.get(commentBuffer, 0, commentLength);
-                    comment = STRING.arrayToValue(commentBuffer);
+                    byte[] readBuffer = new byte[commentLength];
+                    byteBuffer.get(readBuffer, 0, commentLength);
+                    comment = STRING.arrayToValue(readBuffer);
                 }
             }
         }
     }
-
-    /*************************/
-    /********* public ********/
-    /*************************/
 
     public List<AdsSymbol> toSymbol() {
         List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
@@ -201,7 +201,7 @@ public class AdsSymbolInfo {
         AdsTypeInfo typeInfo = new AdsTypeInfo(type);
         
         // skip pointer
-        //if (typeInfo.isPointer()) return symbolList;
+        if (typeInfo.isPointer()) return symbolList;
         
         // get named array list
         List<String> namedArrayList = new ArrayList<String>();

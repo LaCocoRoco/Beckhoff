@@ -29,29 +29,3 @@
     /*************************/
     /** public static final **/
     /*************************/ 
-
-    private constant attributes
-
-    public constant attributes
-
-    global attributes
-
-    global attributes final
-
-    local attributes
-
-    local attributes final
-
-    constructor
-
-    getter & setter defaults
-
-    getter & setter modified
-
-    private function 
-
-    public function 
-
-    private static final
-
-    public static final
