@@ -17,29 +17,29 @@ import twincat.ads.AmsNetId;
 import twincat.ads.enums.AmsPort;
 
 public class AdsSymbolBySymbolInfoUnitTest {
-    private final AdsClient ads = new AdsClient();
+    private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getSignedLogger();
 
     private final String symbolName = ".junit_array_complex";
     
     @Before
     public void startAds() {
-        ads.open();
+        adsClient.open();
     }
 
     @Test
     public void adsSymbolInfoNodeUnitTest() {
         try {
-            ads.setAmsNetId(AmsNetId.LOCAL);
-            ads.setAmsPort(AmsPort.TC2PLC1);
+            adsClient.setAmsNetId(AmsNetId.LOCAL);
+            adsClient.setAmsPort(AmsPort.TC2PLC1);
             
-            AdsSymbolInfo symbolInfo = ads.readSymbolInfoBySymbolName(symbolName);
+            AdsSymbolInfo symbolInfo = adsClient.readSymbolInfoBySymbolName(symbolName);
 
-            List<AdsSymbolDataTypeInfo> dataTypeInfoList = ads.readDataTypeInfoList();
+            List<AdsSymbolDataTypeInfo> dataTypeInfoList = adsClient.readDataTypeInfoList();
             List<AdsSymbol> symbolList = symbolInfo.getSymbolList(dataTypeInfoList);
 
             for (AdsSymbol symbol : symbolList) {
-                logger.info("Type: " + symbol.getType() + "\tName: " + symbol.getName());
+                logger.info("Type: " + symbol.getDataType() + "\tName: " + symbol.getName());
             }
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
@@ -48,6 +48,6 @@ public class AdsSymbolBySymbolInfoUnitTest {
 
     @After
     public void stopAds() throws AdsException {
-        ads.close();
+        adsClient.close();
     }
 }

@@ -67,7 +67,7 @@ public class Channel extends Observable implements Observer {
 
 	private long watchdogTimeout = 0;
 
-	private AdsClient ads = new AdsClient();
+	private AdsClient adsClient = new AdsClient();
 	
 	private Variable variable = null;
 
@@ -248,16 +248,16 @@ public class Channel extends Observable implements Observer {
 			notificationStarted = true;
 			
 			try {
-			    ads.open();
-	            ads.setAmsNetId(acquisition.getAmsNetId());
-	            ads.setAmsPort(acquisition.getAmsPort());
+			    adsClient.open();
+	            adsClient.setAmsNetId(acquisition.getAmsNetId());
+	            adsClient.setAmsPort(acquisition.getAmsPort());
 			    
 				if (acquisition.isSymbolBased()) {
-					variable = ads.getVariableBySymbolName(acquisition.getSymbolName());
+					variable = adsClient.getVariableBySymbolName(acquisition.getSymbolName());
 					variable.addObserver(this);
 					variable.addNotification(acquisition.getTaskTime());
 				} else {
-					variable = ads.getVariableByAddress(acquisition.getDataType(),
+					variable = adsClient.getVariableByAddress(acquisition.getDataType(),
 							acquisition.getIndexGroup(), acquisition.getIndexOffset());
 					variable.addObserver(this);
 					variable.addNotification(acquisition.getTaskTime());

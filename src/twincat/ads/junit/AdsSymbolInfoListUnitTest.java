@@ -15,21 +15,21 @@ import twincat.ads.AmsNetId;
 import twincat.ads.enums.AmsPort;
 
 public class AdsSymbolInfoListUnitTest {
-    private final AdsClient ads = new AdsClient();
+    private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getSignedLogger();
 
     @Before
     public void startAds() {
-        ads.open();
+        adsClient.open();
     }
 
     @Test
     public void adsSymbolInfoListUnitTest() {
         try {
-            ads.setAmsNetId(AmsNetId.LOCAL);
-            ads.setAmsPort(AmsPort.TC2PLC1);
+            adsClient.setAmsNetId(AmsNetId.LOCAL);
+            adsClient.setAmsPort(AmsPort.TC2PLC1);
             
-            List<AdsSymbolInfo> symbolInfoList = ads.readSymbolInfoList();
+            List<AdsSymbolInfo> symbolInfoList = adsClient.readSymbolInfoList();
 
             for (AdsSymbolInfo symbolInfo : symbolInfoList) {
                 logger.info("SymbolName    : " + symbolInfo.getSymbolName());
@@ -43,6 +43,6 @@ public class AdsSymbolInfoListUnitTest {
 
     @After
     public void stopAds() throws AdsException {
-        ads.close();
+        adsClient.close();
     }
 }

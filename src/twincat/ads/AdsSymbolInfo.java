@@ -177,20 +177,17 @@ public class AdsSymbolInfo {
         }
     }
 
-    public List<AdsSymbol> toSymbol() {
-        List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
-
-        // parse type info
+    public AdsSymbol toSymbol() {
+        // redeclare arrays as big type
         AdsTypeInfo typeInfo = new AdsTypeInfo(type);
-        AdsDataType dataType = typeInfo.isArray() ? AdsDataType.BIGTYPE :this.dataType;
+        AdsDataType dataType = typeInfo.isArray() ? AdsDataType.BIGTYPE : this.dataType;
         
         // set symbol 
         AdsSymbol symbol = new AdsSymbol();
         symbol.setName(symbolName);
-        symbol.setType(dataType);
-        symbolList.add(symbol);
+        symbol.setDataType(dataType);
 
-        return symbolList;
+        return symbol;
     }
     
     // time consuming
@@ -200,7 +197,7 @@ public class AdsSymbolInfo {
         // parse type info
         AdsTypeInfo typeInfo = new AdsTypeInfo(type);
         
-        // skip pointer
+        // dismiss pointer
         if (typeInfo.isPointer()) return symbolList;
         
         // get named array list
@@ -215,7 +212,7 @@ public class AdsSymbolInfo {
             // get type symbol list from type info
             List<AdsSymbol> typeNodeList = new ArrayList<AdsSymbol>();
             for (AdsSymbolDataTypeInfo symbolDataTypeInfo : symbolDataTypeInfoList) {
-                if (typeInfo.getTypeName().equals(symbolDataTypeInfo.getDataTypeName())) {
+                if (typeInfo.getType().equals(symbolDataTypeInfo.getDataTypeName())) {
                     typeNodeList = symbolDataTypeInfo.getDataTypeSymbolList(symbolDataTypeInfoList);
                     break;
                 }
@@ -228,14 +225,14 @@ public class AdsSymbolInfo {
                         // add symbol
                         AdsSymbol symbol = new AdsSymbol();
                         symbol.setName(symbolName + namedArray + "." + typeNode.getName());
-                        symbol.setType(typeNode.getType());
+                        symbol.setDataType(typeNode.getDataType());
                         symbolList.add(symbol);
                     }
                 } else {
                     // add symbol
                     AdsSymbol symbol = new AdsSymbol();
                     symbol.setName(symbolName + "." + typeNode.getName());
-                    symbol.setType(typeNode.getType());
+                    symbol.setDataType(typeNode.getDataType());
                     symbolList.add(symbol);
                 }
             }
@@ -249,14 +246,14 @@ public class AdsSymbolInfo {
                     // add symbol
                     AdsSymbol symbol = new AdsSymbol();
                     symbol.setName(symbolName + namedArray);
-                    symbol.setType(dataType);
+                    symbol.setDataType(dataType);
                     symbolList.add(symbol);
                 }
             } else {
                 // add symbol
                 AdsSymbol symbol = new AdsSymbol();
                 symbol.setName(symbolName);
-                symbol.setType(dataType);
+                symbol.setDataType(dataType);
                 symbolList.add(symbol);
             }
         }

@@ -9,16 +9,16 @@ public class USINT extends UINT8 {
 	/****** constructor ******/
 	/*************************/
 
-	public USINT(AdsClient ads, int symbolHandle) {
-		super(ads, symbolHandle);
+	public USINT(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, symbolHandle);
 	}
 
-	public USINT(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, indexGroup, indexOffset);
+	public USINT(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, indexGroup, indexOffset);
 	}
 	
-	public USINT(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, symbolName);
+	public USINT(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, symbolName);
 	}
 		
 	/*************************/

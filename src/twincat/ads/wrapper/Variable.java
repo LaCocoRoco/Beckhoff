@@ -29,7 +29,7 @@ public abstract class Variable extends Observable implements AdsCallback {
 	
 	private int indexOffset = 0;
 
-	private final AdsClient ads;
+	private final AdsClient adsClient;
 
 	protected final byte[] data;
 	
@@ -37,14 +37,14 @@ public abstract class Variable extends Observable implements AdsCallback {
 	/****** constructor ******/
 	/*************************/
 
-	public Variable(AdsClient ads, int dataSize, int symbolHandle) {
-		this.ads = ads;
+	public Variable(AdsClient adsClient, int dataSize, int symbolHandle) {
+		this.adsClient = adsClient;
 		this.data = new byte[dataSize];
 		this.symbolHandle = symbolHandle;
 	}
 
-	public Variable(AdsClient ads, int dataSize, int indexGroup, int indexOffset) {
-		this.ads = ads;
+	public Variable(AdsClient adsClient, int dataSize, int indexGroup, int indexOffset) {
+		this.adsClient = adsClient;
 		this.data = new byte[dataSize];
 		this.indexGroup = indexGroup;
 		this.indexOffset = indexOffset;
@@ -104,19 +104,19 @@ public abstract class Variable extends Observable implements AdsCallback {
 	/*************************/
 
 	private void readByAddress() throws AdsException {
-		ads.read(indexGroup, indexOffset, data);		
+		adsClient.read(indexGroup, indexOffset, data);		
 	}
 	
 	private void readBySymbol() throws AdsException {
-		ads.readBySymbolHandle(symbolHandle, data);
+		adsClient.readBySymbolHandle(symbolHandle, data);
 	}
 	
 	private void writeByAddress(byte[] data) throws AdsException {
-		ads.write(indexGroup, indexOffset, data);			
+		adsClient.write(indexGroup, indexOffset, data);			
 	}
 	
 	private void writeBySymbole(byte[] data) throws AdsException  {
-		ads.writeBySymbolHandle(symbolHandle, data);	
+		adsClient.writeBySymbolHandle(symbolHandle, data);	
 	}
 
 	private void addNotificationByAddress(int intervall) throws AdsException {
@@ -125,7 +125,7 @@ public abstract class Variable extends Observable implements AdsCallback {
 		adsNotification.setTransmissionMode(AdsTransmitMode.SERVER_CYCLE);
 		adsNotification.setCycleTime(intervall * AdsNotification.TIME_RATIO_NS_TO_MS);
 		
-		notification = ads.addDeviceNotification(indexGroup, indexOffset, adsNotification, this);	
+		notification = adsClient.addDeviceNotification(indexGroup, indexOffset, adsNotification, this);	
 	}
 
 	private void addNotificationBySymbol(int intervall) throws AdsException {
@@ -135,19 +135,19 @@ public abstract class Variable extends Observable implements AdsCallback {
 		adsNotification.setCycleTime(intervall * AdsNotification.TIME_RATIO_NS_TO_MS);
 		
 		long indexGroup = AdsIndexGroup.SYMBOL_VALUE_BY_HANDLE.value;
-		notification = ads.addDeviceNotification(indexGroup, symbolHandle, adsNotification, this);
+		notification = adsClient.addDeviceNotification(indexGroup, symbolHandle, adsNotification, this);
 	}
 
 	private void removeNotification() throws AdsException {
 		if (notification != 0) {
-			ads.deleteDeviceNotification(notification, this);
+			adsClient.deleteDeviceNotification(notification, this);
 			notification = 0;
 		}
 	}
 
 	private void removeHandle() throws AdsException {
 		if (symbolHandle != 0) {
-			ads.writeReleaseSymbolHandle(symbolHandle);
+			adsClient.writeReleaseSymbolHandle(symbolHandle);
 			symbolHandle = 0;
 		}
 	}

@@ -9,16 +9,16 @@ public class LREAL extends REAL64 {
 	/****** constructor ******/
 	/*************************/
 
-	public LREAL(AdsClient ads, int symbolHandle) {
-		super(ads, symbolHandle);
+	public LREAL(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, symbolHandle);
 	}
 
-	public LREAL(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, indexGroup, indexOffset);
+	public LREAL(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, indexGroup, indexOffset);
 	}
 	
-	public LREAL(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, symbolName);
+	public LREAL(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, symbolName);
 	}
 		
 	/*************************/

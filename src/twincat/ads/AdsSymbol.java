@@ -9,7 +9,7 @@ public class AdsSymbol {
 
     private String name = new String();
  
-    private AdsDataType type = AdsDataType.UNKNOWN;
+    private AdsDataType dataType = AdsDataType.UNKNOWN;
 
     /*************************/
     /**** setter & getter ****/
@@ -23,11 +23,11 @@ public class AdsSymbol {
         this.name = name;
     }
  
-    public AdsDataType getType() {
-        return type;
+    public AdsDataType getDataType() {
+        return dataType;
     }
 
-    public void setType(AdsDataType type) {
-        this.type = type;
+    public void setDataType(AdsDataType dataType) {
+        this.dataType = dataType;
     }
 }

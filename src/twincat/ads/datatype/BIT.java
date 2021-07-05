@@ -10,16 +10,16 @@ public class BIT extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public BIT(AdsClient ads, int symbolHandle) {
-		super(ads, AdsDataType.BIT.size, symbolHandle);
+	public BIT(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, AdsDataType.BIT.size, symbolHandle);
 	}
 
-	public BIT(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, AdsDataType.BIT.size, indexGroup, indexOffset);
+	public BIT(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, AdsDataType.BIT.size, indexGroup, indexOffset);
 	}
 	
-	public BIT(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, AdsDataType.BIT.size, ads.readHandleOfSymbolName(symbolName));
+	public BIT(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, AdsDataType.BIT.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 
 	/*************************/

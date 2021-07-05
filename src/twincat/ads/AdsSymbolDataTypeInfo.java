@@ -9,8 +9,6 @@ import twincat.ads.datatype.STRING;
 import twincat.ads.enums.AdsDataType;
 import twincat.ads.enums.AdsDataTypeFlag;
 
-// TODO : add constructor to parse
-
 public class AdsSymbolDataTypeInfo {
     /*************************/
     /** constant attributes **/
@@ -221,7 +219,7 @@ public class AdsSymbolDataTypeInfo {
         // parse type info
         AdsTypeInfo typeInfo = new AdsTypeInfo(type);
 
-        // test
+        // dismiss pointer
         if (typeInfo.isPointer()) return symbolList;
         
         // get named array list
@@ -236,7 +234,7 @@ public class AdsSymbolDataTypeInfo {
             // get type symbol list from type info
             List<AdsSymbol> typeSymbolList = new ArrayList<AdsSymbol>();
             for (AdsSymbolDataTypeInfo symbolDataTypeInfo : symbolDataTypeInfoList) {
-                if (typeInfo.getTypeName().equals(symbolDataTypeInfo.getDataTypeName())) {
+                if (typeInfo.getType().equals(symbolDataTypeInfo.getDataTypeName())) {
                     typeSymbolList = symbolDataTypeInfo.getDataTypeSymbolList(symbolDataTypeInfoList);
                     break;
                 }
@@ -251,14 +249,14 @@ public class AdsSymbolDataTypeInfo {
                             // add symbol
                             AdsSymbol symbol = new AdsSymbol();
                             symbol.setName(namedArray + typeSymbol.getName());
-                            symbol.setType(typeSymbol.getType());
+                            symbol.setDataType(typeSymbol.getDataType());
                             symbolList.add(symbol);
                         }
                     } else {
                         // add symbol
                         AdsSymbol symbol = new AdsSymbol();
                         symbol.setName(typeSymbol.getName());
-                        symbol.setType(typeSymbol.getType());
+                        symbol.setDataType(typeSymbol.getDataType());
                         symbolList.add(symbol);
                     }
                 }
@@ -273,14 +271,14 @@ public class AdsSymbolDataTypeInfo {
                             // add symbol
                             AdsSymbol symbol = new AdsSymbol();
                             symbol.setName(dataTypeName + namedArray + "." + typeSymbol.getName());
-                            symbol.setType(typeSymbol.getType());
+                            symbol.setDataType(typeSymbol.getDataType());
                             symbolList.add(symbol);
                         }
                     } else {
                         // add symbol
                         AdsSymbol symbol = new AdsSymbol();
                         symbol.setName(dataTypeName + "." + typeSymbol.getName());
-                        symbol.setType(typeSymbol.getType());
+                        symbol.setDataType(typeSymbol.getDataType());
                         symbolList.add(symbol);
                     }
                 }
@@ -295,14 +293,14 @@ public class AdsSymbolDataTypeInfo {
                     // add symbol
                     AdsSymbol symbol = new AdsSymbol();
                     symbol.setName(dataTypeName + namedArray);
-                    symbol.setType(dataType);
+                    symbol.setDataType(dataType);
                     symbolList.add(symbol);
                 }
             } else {
                 // add symbol
                 AdsSymbol symbol = new AdsSymbol();
                 symbol.setName(dataTypeName);
-                symbol.setType(dataType);
+                symbol.setDataType(dataType);
                 symbolList.add(symbol);
             }
         }
@@ -317,7 +315,7 @@ public class AdsSymbolDataTypeInfo {
             // add symbol
             AdsSymbol symbol = new AdsSymbol();
             symbol.setName(subSymbol.getName());
-            symbol.setType(subSymbol.getType());
+            symbol.setDataType(subSymbol.getDataType());
             symbolList.add(symbol);
         }
 

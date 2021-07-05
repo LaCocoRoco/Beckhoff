@@ -9,16 +9,16 @@ public class DWORD extends UINT32 {
 	/****** constructor ******/
 	/*************************/
 
-	public DWORD(AdsClient ads, int symbolHandle) {
-		super(ads, symbolHandle);
+	public DWORD(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, symbolHandle);
 	}
 
-	public DWORD(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, indexGroup, indexOffset);
+	public DWORD(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, indexGroup, indexOffset);
 	}
 	
-	public DWORD(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, symbolName);
+	public DWORD(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, symbolName);
 	}
 			
 	/*************************/

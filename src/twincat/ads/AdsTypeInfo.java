@@ -4,8 +4,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO : add constructor to parse
-
 public class AdsTypeInfo {
     /*************************/
     /** constant attributes **/
@@ -21,9 +19,16 @@ public class AdsTypeInfo {
     /*** global attributes ***/
     /*************************/
     
-    private final boolean pointer;
+    private boolean pointer;
 
-    private final String typeName;
+    private String type;
+
+    /*************************/
+    /*** local attributes ****/
+    /*************************/
+   
+    // TODO : point array to string array
+    // TODO : get type array ?
     
     private final List<Point> typeArray = new ArrayList<Point>();
 
@@ -31,7 +36,47 @@ public class AdsTypeInfo {
     /****** constructor ******/
     /*************************/
 
+    public AdsTypeInfo() {
+        /* empty */
+    }
+    
     public AdsTypeInfo(String type) {
+        parseType(type);  
+    }
+    
+    /*************************/
+    /**** setter & getter ****/
+    /*************************/
+
+    public boolean isPointer() {
+        return pointer;
+    }
+
+    public void setPointer(boolean pointer) {
+        this.pointer = pointer;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /*************************/
+    /********* public ********/
+    /*************************/
+
+    public boolean isArray() {
+        return typeArray.isEmpty() ? false : true;
+    }
+    
+    public List<String> getNamedTypeArray() {
+        return typeArrayToNamedList(typeArray, 0);
+    }
+    
+    public void parseType(String type) {
         pointer = type.contains(POINTER_PATTERN) ? true : false;
 
         if (type.contains(ARRAY_PATTERN_BEG)) {
@@ -47,6 +92,7 @@ public class AdsTypeInfo {
                     int end  = Integer.valueOf(size[1]);
                     typeArray.add(new Point(beg, end));
                 } catch (NumberFormatException e) {
+                    // index is variable
                     typeArray.clear();
                     break;
                 }
@@ -56,35 +102,7 @@ public class AdsTypeInfo {
             type = type.substring(begIndex, type.length());
         }
         
-        this.typeName = type;   
-    }
-    
-    /*************************/
-    /**** setter & getter ****/
-    /*************************/
-    
-    public boolean isPointer() {
-        return pointer;
-    }
-
-    public List<Point> getTypeArray() {
-        return typeArray;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    /*************************/
-    /********* public ********/
-    /*************************/
-
-    public boolean isArray() {
-        return typeArray.isEmpty() ? false : true;
-    }
-    
-    public List<String> getNamedTypeArray() {
-        return typeArrayToNamedList(typeArray, 0);
+        this.type = type;   
     }
     
     /*************************/

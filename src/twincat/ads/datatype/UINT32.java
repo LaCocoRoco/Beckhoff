@@ -14,16 +14,16 @@ public class UINT32 extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public UINT32(AdsClient ads, int symbolHandle) {
-		super(ads, AdsDataType.UINT32.size, symbolHandle);
+	public UINT32(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, AdsDataType.UINT32.size, symbolHandle);
 	}
 
-	public UINT32(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, AdsDataType.UINT32.size, indexGroup, indexOffset);
+	public UINT32(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, AdsDataType.UINT32.size, indexGroup, indexOffset);
 	}
 	
-	public UINT32(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, AdsDataType.UINT32.size, ads.readHandleOfSymbolName(symbolName));
+	public UINT32(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, AdsDataType.UINT32.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
 	/*************************/

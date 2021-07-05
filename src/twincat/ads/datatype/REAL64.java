@@ -13,16 +13,16 @@ public class REAL64 extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public REAL64(AdsClient ads, int symbolHandle) {
-		super(ads, AdsDataType.REAL64.size, symbolHandle);
+	public REAL64(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, AdsDataType.REAL64.size, symbolHandle);
 	}
 
-	public REAL64(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, AdsDataType.REAL64.size, indexGroup, indexOffset);
+	public REAL64(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, AdsDataType.REAL64.size, indexGroup, indexOffset);
 	}
 
-	public REAL64(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, AdsDataType.REAL64.size, ads.readHandleOfSymbolName(symbolName));
+	public REAL64(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, AdsDataType.REAL64.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 
 	/*************************/

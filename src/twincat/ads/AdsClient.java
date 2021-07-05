@@ -163,36 +163,36 @@ public class AdsClient extends AdsNative {
     public List<AdsSymbolDataTypeInfo> readDataTypeInfoList() throws AdsException {
         AdsUploadInfo uploadInfo = readUploadInfo();
 
-        byte[] readBufferDataTypeUpload = new byte[uploadInfo.getDataTypeLength()];
-        read(AdsIndexGroup.SYMBOL_DATA_TYPE_UPLOAD.value, 0, readBufferDataTypeUpload);
-        ByteBuffer dataTypeUploadByteBuffer = ByteBuffer.wrap(readBufferDataTypeUpload);
-        dataTypeUploadByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        byte[] readBuffer = new byte[uploadInfo.getDataTypeLength()];
+        read(AdsIndexGroup.SYMBOL_DATA_TYPE_UPLOAD.value, 0, readBuffer);
+        ByteBuffer readByteBuffer = ByteBuffer.wrap(readBuffer);
+        readByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
-        List<AdsSymbolDataTypeInfo> dataTypeInfoList = new ArrayList<AdsSymbolDataTypeInfo>();
+        List<AdsSymbolDataTypeInfo> symbolDataTypeInfoList = new ArrayList<AdsSymbolDataTypeInfo>();
 
         int index = 0;
         for (int i = 0; i < uploadInfo.getDataTypeCount(); i++) {
-            AdsSymbolDataTypeInfo dataTypeInfo = new AdsSymbolDataTypeInfo(readBufferDataTypeUpload, index);
-            dataTypeInfoList.add(dataTypeInfo);
-            index += dataTypeInfo.getLength();
+            AdsSymbolDataTypeInfo symbolDataTypeInfo = new AdsSymbolDataTypeInfo(readBuffer, index);
+            symbolDataTypeInfoList.add(new AdsSymbolDataTypeInfo(readBuffer, index));
+            index += symbolDataTypeInfo.getLength();
         }
 
-        return dataTypeInfoList;
+        return symbolDataTypeInfoList;
     }
 
     public List<AdsSymbolInfo> readSymbolInfoList() throws AdsException {
         AdsUploadInfo uploadInfo = readUploadInfo();
 
-        byte[] uploadBuffer = new byte[uploadInfo.getSymbolLength()];
-        read(AdsIndexGroup.SYMBOL_UPLOAD.value, 0, uploadBuffer);
-        ByteBuffer uploadByteBuffer = ByteBuffer.wrap(uploadBuffer);
-        uploadByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        byte[] readBuffer = new byte[uploadInfo.getSymbolLength()];
+        read(AdsIndexGroup.SYMBOL_UPLOAD.value, 0, readBuffer);
+        ByteBuffer readByteBuffer = ByteBuffer.wrap(readBuffer);
+        readByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
         List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
 
         int index = 0;
         for (int i = 0; i < uploadInfo.getSymbolCount(); i++) {
-            AdsSymbolInfo symbolInfo = new AdsSymbolInfo(uploadBuffer, index);
+            AdsSymbolInfo symbolInfo = new AdsSymbolInfo(readBuffer, index);
             symbolInfoList.add(symbolInfo);
             index += symbolInfo.getLength();
         }
@@ -201,9 +201,9 @@ public class AdsClient extends AdsNative {
     }
 
     public AdsUploadInfo readUploadInfo() throws AdsException {
-        byte[] uploadInfoBuffer = new byte[AdsIndexGroup.SYMBOL_UPLOAD_INFO_2.size];
-        read(AdsIndexGroup.SYMBOL_UPLOAD_INFO_2.value, 0, uploadInfoBuffer);
-        return new AdsUploadInfo(uploadInfoBuffer);
+        byte[] readBuffer = new byte[AdsIndexGroup.SYMBOL_UPLOAD_INFO_2.size];
+        read(AdsIndexGroup.SYMBOL_UPLOAD_INFO_2.value, 0, readBuffer);
+        return new AdsUploadInfo(readBuffer);
     }
 
     public List<AdsRoute> readRouteEntrys() throws AdsException {     
@@ -211,9 +211,9 @@ public class AdsClient extends AdsNative {
 
         for (int i = 0; i < AdsIndexGroup.SYSTEM_ENUM_REMOTE.size; i++) {
             try {
-                byte[] routeEntryBuffer = new byte[AdsIndexGroup.SYSTEM_ENUM_REMOTE.size];
-                read(AdsIndexGroup.SYSTEM_ENUM_REMOTE.value, i, routeEntryBuffer);
-                AdsRoute route = new AdsRoute(routeEntryBuffer);
+                byte[] readBuffer = new byte[AdsIndexGroup.SYSTEM_ENUM_REMOTE.size];
+                read(AdsIndexGroup.SYSTEM_ENUM_REMOTE.value, i, readBuffer);
+                AdsRoute route = new AdsRoute(readBuffer);
                 routeList.add(route);
             } catch (AdsException e) {
                 if (e.getAdsError().equals(AdsError.ADS_NOMORE_NOT_HDL)) {
@@ -225,6 +225,10 @@ public class AdsClient extends AdsNative {
         }
 
         return routeList;
+    }
+    
+    public AdsSymbolLoader getSymbolLoader() {
+        return new AdsSymbolLoader(this);
     }
     
     /*************************/

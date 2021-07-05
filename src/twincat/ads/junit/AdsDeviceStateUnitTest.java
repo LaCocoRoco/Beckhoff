@@ -15,43 +15,43 @@ import twincat.ads.enums.AdsStatus;
 import twincat.ads.enums.AmsPort;
 
 public class AdsDeviceStateUnitTest {
-    private final AdsClient ads = new AdsClient();
+    private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getSignedLogger();
 	
 	@Before
 	public void startAds() {
-		ads.open();
+		adsClient.open();
 	}
 
 	@Test
 	public void adsDeviceStateUnitTest() {
 		try {
-	        ads.setAmsNetId(AmsNetId.LOCAL);
-	        ads.setAmsPort(AmsPort.TC2PLC1);
+	        adsClient.setAmsNetId(AmsNetId.LOCAL);
+	        adsClient.setAmsPort(AmsPort.TC2PLC1);
 		    
-			AdsDeviceState adsDeviceState = new AdsDeviceState();
+			AdsDeviceState deviceState = new AdsDeviceState();
 			
-			adsDeviceState = ads.readDeviceState();
-			logger.info("AdsState   : " + adsDeviceState.getAdsState());
-			logger.info("DeviceState: " + adsDeviceState.getDeviceState());
+			deviceState = adsClient.readDeviceState();
+			logger.info("AdsState   : " + deviceState.getAdsState());
+			logger.info("DeviceState: " + deviceState.getDevState());
 			
-			switch(adsDeviceState.getAdsState()) {
+			switch(deviceState.getAdsState()) {
 				case STOP:
-					adsDeviceState.setAdsState(AdsStatus.RUN);
+					deviceState.setAdsState(AdsStatus.RUN);
 					break;
 					
 				case RUN:
-					adsDeviceState.setAdsState(AdsStatus.STOP);
+					deviceState.setAdsState(AdsStatus.STOP);
 					break;
 					
 				default:
-				    adsDeviceState.setAdsState(AdsStatus.INVALID);
+				    deviceState.setAdsState(AdsStatus.INVALID);
 				    break;  
 			}
 
-			ads.writeDeviceState(adsDeviceState, null);
-			logger.info("AdsState   : " + adsDeviceState.getAdsState());
-			logger.info("DeviceState: " + adsDeviceState.getDeviceState());		
+			adsClient.writeDeviceState(deviceState, null);
+			logger.info("AdsState   : " + deviceState.getAdsState());
+			logger.info("DeviceState: " + deviceState.getDevState());		
 		} catch (AdsException e) {
 			logger.info(e.getAdsErrorMessage());
 		}
@@ -59,6 +59,6 @@ public class AdsDeviceStateUnitTest {
 
 	@After
 	public void stopAds() throws AdsException {
-		ads.close();
+		adsClient.close();
 	}
 }

@@ -11,9 +11,9 @@ public class AdsSymbolLoader {
     /*** global attributes ***/
     /*************************/
 
-    private final AdsClient ads;
+    private final AdsClient adsClient = new AdsClient();
 
-    private final List<AdsSymbol> symbolTable;
+    private final List<AdsSymbol> symbols = new ArrayList<AdsSymbol>();
  
     /*************************/
     /*** local attributes ***/
@@ -29,22 +29,25 @@ public class AdsSymbolLoader {
     /****** constructor ******/
     /*************************/
 
-    public AdsSymbolLoader(AdsClient ads) { 
-        this.ads = ads;
-        
+    public AdsSymbolLoader(AdsClient adsClient) { 
         try {
-            ads.open();
-            ads.setTimeout(AdsClient.DEFAULT_TIMEOUT);
+            this.adsClient.open();
+            this.adsClient.setAmsNetId(adsClient.getAmsNetId());
+            this.adsClient.setAmsPort(adsClient.getAmsPort());
+            this.adsClient.setTimeout(AdsClient.DEFAULT_TIMEOUT);
 
-            symbolInfoList.addAll(ads.readSymbolInfoList());
-            dataTypeInfoList.addAll(ads.readDataTypeInfoList());
+            symbolInfoList.addAll(this.adsClient.readSymbolInfoList());
+            dataTypeInfoList.addAll(this.adsClient.readDataTypeInfoList());
+             
+            for (AdsSymbolInfo symbolInfo : symbolInfoList) {
+                symbols.add(symbolInfo.toSymbol());
+            }
+            
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
         } finally {
-            ads.close();
+            this.adsClient.close();
         }   
-        
-        this.symbolTable = setSymbolTable();
     }  
 
     /*************************/
@@ -52,18 +55,18 @@ public class AdsSymbolLoader {
     /*************************/
     
     public AdsClient getAds() {
-        return ads;
+        return adsClient;
     }
 
-    public List<AdsSymbol> getSymbolTable() {
-        return symbolTable;
+    public List<AdsSymbol> getSymbols() {
+        return symbols;
     }
   
     /*************************/
     /********* public ********/
     /*************************/
 
-    public List<AdsSymbol> getSubSymbolOfSymbol(AdsSymbol symbol) {
+    public List<AdsSymbol> getSymbolsOfBigType(AdsSymbol symbol) {
         List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
         
         for (AdsSymbolInfo symbolInfo : symbolInfoList) {
@@ -75,7 +78,7 @@ public class AdsSymbolLoader {
         return symbolList;
     }
     
-    public List<AdsSymbol> getSymbolBySymbolName(String symbolName) {
+    public List<AdsSymbol> getSymbolsBySymbolName(String symbolName) {
         List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
         
         for (AdsSymbolInfo symbolInfo : symbolInfoList) {
@@ -85,19 +88,5 @@ public class AdsSymbolLoader {
         }
         
         return symbolList;
-    }
-
-    /*************************/
-    /******** private ********/
-    /*************************/
-
-    private List<AdsSymbol> setSymbolTable()  {
-        List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
-        
-        for (AdsSymbolInfo symbolInfo : symbolInfoList) {
-            symbolList.addAll(symbolInfo.toSymbol());
-        }
-        
-        return symbolList;   
     }
 }

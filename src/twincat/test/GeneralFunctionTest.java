@@ -23,61 +23,50 @@ public class GeneralFunctionTest {
         doSomething();
     }
 
-    // TODO : 
-    
     private final Logger logger = TwincatLogger.getSignedLogger();
     
     private void doSomething() {
-        AdsClient ads = new AdsClient();
-        AdsRoute localRoute = new AdsRoute();
+        AdsClient adsClient = new AdsClient();
+        
         List<AdsRoute> routeList = new ArrayList<AdsRoute>();
         List<AdsSymbolLoader> symbolLoaderList = new ArrayList<AdsSymbolLoader>();
         
         try {
-            ads.open();
-            ads.setAmsNetId(AmsNetId.LOCAL);
-            ads.setAmsPort(AmsPort.SYSTEMSERVICE);
+            adsClient.open();
+            adsClient.setAmsNetId(AmsNetId.LOCAL);
+            adsClient.setAmsPort(AmsPort.SYSTEMSERVICE);
             
-            localRoute.setAmsNetId(ads.readLocalAmsNetId());
-            localRoute.setHostName(ads.readLocalHostName());
+            AdsRoute localRoute = new AdsRoute();
+            localRoute.setAmsNetId(adsClient.readLocalAmsNetId());
+            localRoute.setHostName(adsClient.readLocalHostName());
 
             routeList.add(localRoute);
-            routeList.addAll(ads.readRouteEntrys());
+            routeList.addAll(adsClient.readRouteEntrys());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
         } finally {
-            ads.close();
+            adsClient.close();
         }
 
         logger.info("Generate Symbol Loader");
-        
-        
         
         for (AdsRoute route : routeList) {
             for (AmsPort amsPort : AmsPort.values()) {
                 
                 try {
                     // is symbol data available
-                    ads.open();
-                    ads.setTimeout(10);
-                    ads.setAmsNetId(route.getAmsNetId());
-                    ads.setAmsPort(amsPort);
-                    ads.readUploadInfo();
-                    
-                    // initialize symbol loader
-                    AdsClient adsRouterClient = new AdsClient();
-                    adsRouterClient.setAmsNetId(ads.getAmsNetId());
-                    adsRouterClient.setAmsPort(ads.getAmsPort());
-                    
-                    AdsSymbolLoader symbolLoader = new AdsSymbolLoader(adsRouterClient);
-                    symbolLoaderList.add(symbolLoader);
-                    
-                    logger.info("Stop : " + ads.getAmsPort());
+                    adsClient.open();
+                    adsClient.setTimeout(10);
+                    adsClient.setAmsNetId(route.getAmsNetId());
+                    adsClient.setAmsPort(amsPort);
+                    adsClient.readUploadInfo();
 
+                    symbolLoaderList.add(adsClient.getSymbolLoader());
+                    logger.info("Stop : " + adsClient.getAmsPort());
                 } catch (AdsException e) {
                     /* ignore ads error */
                 } finally {
-                    ads.close();     
+                    adsClient.close();     
                 }
             }
         } 
@@ -90,14 +79,8 @@ public class GeneralFunctionTest {
             logger.info("AmsNetId: " + symbolLoader.getAds().getAmsNetId());
             logger.info("AmsPort : " + symbolLoader.getAds().getAmsPort());
             
-            List<AdsSymbol> symbolList = symbolLoader.getSymbolTable();
+            List<AdsSymbol> symbolList = symbolLoader.getSymbols();
             logger.info("SymbolListSize: " + symbolList.size());
-            
-            /*
-            for (AdsSymbol symbol : symbolList) {
-              
-            }
-            */
         }
         
     }

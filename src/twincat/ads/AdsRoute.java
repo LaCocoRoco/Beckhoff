@@ -67,7 +67,7 @@ public class AdsRoute {
     }
   
     /*************************/
-    /******** private ********/
+    /********* public ********/
     /*************************/
 
     public void parseRoute(byte[] buffer) {

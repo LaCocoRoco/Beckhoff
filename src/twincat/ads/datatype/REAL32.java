@@ -13,16 +13,16 @@ public class REAL32 extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public REAL32(AdsClient ads, int symbolHandle) {
-		super(ads, AdsDataType.REAL32.size, symbolHandle);
+	public REAL32(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, AdsDataType.REAL32.size, symbolHandle);
 	}
 
-	public REAL32(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, AdsDataType.REAL32.size, indexGroup, indexOffset);
+	public REAL32(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, AdsDataType.REAL32.size, indexGroup, indexOffset);
 	}
 	
-	public REAL32(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, AdsDataType.REAL32.size, ads.readHandleOfSymbolName(symbolName));
+	public REAL32(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, AdsDataType.REAL32.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
 	/*************************/

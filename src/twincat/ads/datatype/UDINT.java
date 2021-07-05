@@ -9,16 +9,16 @@ public class UDINT extends UINT32 {
 	/****** constructor ******/
 	/*************************/
 
-	public UDINT(AdsClient ads, int symbolHandle) {
-		super(ads, symbolHandle);
+	public UDINT(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, symbolHandle);
 	}
 
-	public UDINT(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, indexGroup, indexOffset);
+	public UDINT(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, indexGroup, indexOffset);
 	}
 	
-	public UDINT(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, symbolName);
+	public UDINT(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, symbolName);
 	}
 		
 	/*************************/

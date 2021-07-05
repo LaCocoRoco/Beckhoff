@@ -18,7 +18,7 @@ import twincat.ads.enums.AdsIndexGroup;
 import twincat.ads.enums.AmsPort;
 
 public class AdsExportUnitTest {
-    private final AdsClient ads = new AdsClient();
+    private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getSignedLogger();
     
     private final String netId    = AmsNetId.LOCAL;
@@ -29,18 +29,18 @@ public class AdsExportUnitTest {
 
     @Before
     public void startAds() {
-        ads.open();
+        adsClient.open();
     }
 
     @Test
     public void adsExportUnitTest() {
         try {
-            ads.setAmsNetId(netId);
-            ads.setAmsPort(amsPort);
+            adsClient.setAmsNetId(netId);
+            adsClient.setAmsPort(amsPort);
             
             String exportDir = System.getProperty("user.dir") + "/exp/";
             byte[] readBuffer = new byte[readSize];
-            ads.read(indexGroup, indexOffset, readBuffer);
+            adsClient.read(indexGroup, indexOffset, readBuffer);
             Files.write(Paths.get(exportDir + "data.txt"), readBuffer);
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
@@ -51,6 +51,6 @@ public class AdsExportUnitTest {
 
     @After
     public void stopAds() throws AdsException {
-        ads.close();
+        adsClient.close();
     }
 }

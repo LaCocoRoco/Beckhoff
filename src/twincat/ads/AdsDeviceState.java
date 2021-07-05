@@ -9,7 +9,7 @@ public class AdsDeviceState {
 	
 	private AdsStatus adsState = AdsStatus.UNKNOWN;
 	
-	private AdsStatus deviceState = AdsStatus.UNKNOWN;
+	private AdsStatus devState = AdsStatus.UNKNOWN;
 
 	/*************************/
 	/**** setter & getter ****/
@@ -23,11 +23,11 @@ public class AdsDeviceState {
 		this.adsState = adsState;
 	}
 
-	public AdsStatus getDeviceState() {
-		return deviceState;
+	public AdsStatus getDevState() {
+		return devState;
 	}
 
-	public void setDeviceState(AdsStatus deviceState) {
-		this.deviceState = deviceState;
+	public void setDevState(AdsStatus devState) {
+		this.devState = devState;
 	}	
 }

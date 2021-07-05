@@ -15,14 +15,14 @@ import twincat.ads.enums.AmsPort;
 import twincat.ads.wrapper.Variable;
 
 public class AdsVariableUnitTest {
-    private final AdsClient ads = new AdsClient();
+    private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getSignedLogger();
 
 	@Before
 	public void startAds() throws AdsException {
-		ads.open();
-        ads.setAmsNetId(AmsNetId.LOCAL);
-        ads.setAmsPort(AmsPort.TC2PLC1);
+		adsClient.open();
+        adsClient.setAmsNetId(AmsNetId.LOCAL);
+        adsClient.setAmsPort(AmsPort.TC2PLC1);
 	}
 
 	@Test
@@ -31,11 +31,8 @@ public class AdsVariableUnitTest {
 			String name = ".junit_bit";
 			
 			boolean valueMin = false;
-			Variable variableMin;
-			variableMin = ads.getVariableBySymbolName(name);
-			variableMin.write(valueMin);
-			variableMin.read();
-			variableMin.close();
+			Variable variableMin = adsClient.getVariableBySymbolName(name);
+			variableMin.write(valueMin).read().close();
 			
 			assert AdsDataType.BIT == variableMin.getDataType();
 			assert variableMin.toBoolean() == valueMin;
@@ -48,10 +45,8 @@ public class AdsVariableUnitTest {
 			assert variableMin.toString().equals(Boolean.toString(valueMin));
 
 			boolean valueMax = true;
-			Variable variableMax = ads.getVariableBySymbolName(name);
-			variableMax.write(true);
-			variableMax.read();
-			variableMax.close();
+			Variable variableMax = adsClient.getVariableBySymbolName(name);
+			variableMax.write(true).read().close();
 			
 			assert AdsDataType.BIT == variableMax.getDataType();
 			assert variableMax.toBoolean() == valueMax;
@@ -73,10 +68,8 @@ public class AdsVariableUnitTest {
 			String name = ".junit_int8";
 			
 			byte valueMin = -128;
-			Variable variableMin = ads.getVariableBySymbolName(name);
-			variableMin.write(valueMin);
-			variableMin.read();
-			variableMin.close();
+			Variable variableMin = adsClient.getVariableBySymbolName(name);
+			variableMin.write(valueMin).read().close();
 			
 			assert AdsDataType.INT8 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
@@ -89,10 +82,8 @@ public class AdsVariableUnitTest {
 			assert variableMin.toString().equals(Byte.toString(valueMin));
 
 			byte valueMax = 127;
-			Variable variableMax = ads.getVariableBySymbolName(name);
-			variableMax.write(valueMax);
-			variableMax.read();
-			variableMax.close();
+			Variable variableMax = adsClient.getVariableBySymbolName(name);
+			variableMax.write(valueMax).read().close();
 			
 			assert AdsDataType.INT8 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
@@ -114,10 +105,8 @@ public class AdsVariableUnitTest {
 			String name = ".junit_int16";
 			
 			int valueMin = -32768;
-			Variable variableMin = ads.getVariableBySymbolName(name);
-			variableMin.write(valueMin);
-			variableMin.read();
-			variableMin.close();
+			Variable variableMin = adsClient.getVariableBySymbolName(name);
+			variableMin.write(valueMin).read().close();
 			
 			assert AdsDataType.INT16 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
@@ -130,10 +119,8 @@ public class AdsVariableUnitTest {
 			assert variableMin.toString().equals(Integer.toString(valueMin));
 
 			int valueMax = 32767;
-			Variable variableMax = ads.getVariableBySymbolName(name);
-			variableMax.write(valueMax);
-			variableMax.read();
-			variableMax.close();
+			Variable variableMax = adsClient.getVariableBySymbolName(name);
+			variableMax.write(valueMax).read().close();
 			
 			assert AdsDataType.INT16 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
@@ -155,10 +142,8 @@ public class AdsVariableUnitTest {
 			String name = ".junit_int32";
 			
 			int valueMin = -2147483647;
-			Variable variableMin = ads.getVariableBySymbolName(name);
-			variableMin.write(valueMin);
-			variableMin.read();
-			variableMin.close();
+			Variable variableMin = adsClient.getVariableBySymbolName(name);
+			variableMin.write(valueMin).read().close();
 			
 			assert AdsDataType.INT32 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
@@ -171,10 +156,8 @@ public class AdsVariableUnitTest {
 			assert variableMin.toString().equals(Integer.toString(valueMin));
 
 			int valueMax = 2147483647;
-			Variable variableMax = ads.getVariableBySymbolName(name);
-			variableMax.write(valueMax);
-			variableMax.read();
-			variableMax.close();
+			Variable variableMax = adsClient.getVariableBySymbolName(name);
+			variableMax.write(valueMax).read().close();
 			
 			assert AdsDataType.INT32 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
@@ -196,10 +179,8 @@ public class AdsVariableUnitTest {
 			String name = ".junit_uint8";
 			
 			short valueMin = 0;
-			Variable variableMin = ads.getVariableBySymbolName(name);
-			variableMin.write(valueMin);
-			variableMin.read();
-			variableMin.close();
+			Variable variableMin = adsClient.getVariableBySymbolName(name);
+			variableMin.write(valueMin).read().close();
 			
 			assert AdsDataType.UINT8 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
@@ -212,10 +193,8 @@ public class AdsVariableUnitTest {
 			assert variableMin.toString().equals(Short.toString(valueMin));
 
 			short valueMax = 255;
-			Variable variableMax = ads.getVariableBySymbolName(name);
-			variableMax.write(valueMax);
-			variableMax.read();
-			variableMax.close();
+			Variable variableMax = adsClient.getVariableBySymbolName(name);
+			variableMax.write(valueMax).read().close();
 			
 			assert AdsDataType.UINT8 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
@@ -237,10 +216,8 @@ public class AdsVariableUnitTest {
 			String name = ".junit_uint16";
 			
 			int valueMin = 0;
-			Variable variableMin = ads.getVariableBySymbolName(name);
-			variableMin.write(valueMin);
-			variableMin.read();
-			variableMin.close();
+			Variable variableMin = adsClient.getVariableBySymbolName(name);
+			variableMin.write(valueMin).read().close();
 			
 			assert AdsDataType.UINT16 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
@@ -253,10 +230,8 @@ public class AdsVariableUnitTest {
 			assert variableMin.toString().equals(Integer.toString(valueMin));
 
 			int valueMax = 65535;
-			Variable variableMax = ads.getVariableBySymbolName(name);
-			variableMax.write(valueMax);
-			variableMax.read();
-			variableMax.close();
+			Variable variableMax = adsClient.getVariableBySymbolName(name);
+			variableMax.write(valueMax).read().close();
 			
 			assert AdsDataType.UINT16 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
@@ -278,10 +253,8 @@ public class AdsVariableUnitTest {
 			String name = ".junit_uint32";
 			
 			long valueMin = 0;
-			Variable variableMin = ads.getVariableBySymbolName(name);
-			variableMin.write(valueMin);
-			variableMin.read();
-			variableMin.close();
+			Variable variableMin = adsClient.getVariableBySymbolName(name);
+			variableMin.write(valueMin).read().close();
 			
 			assert AdsDataType.UINT32 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
@@ -294,10 +267,8 @@ public class AdsVariableUnitTest {
 			assert variableMin.toString().equals(Long.toString(valueMin));
 		
 			long valueMax = 4294967295L;
-			Variable variableMax = ads.getVariableBySymbolName(name);
-			variableMax.write(valueMax);
-			variableMax.read();
-			variableMax.close();
+			Variable variableMax = adsClient.getVariableBySymbolName(name);
+			variableMax.write(valueMax).read().close();
 			
 			assert AdsDataType.UINT32 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
@@ -319,10 +290,8 @@ public class AdsVariableUnitTest {
 			String name = ".junit_real32";
 			
 			float valueMin = (float) -3.402823E38;
-			Variable variableMin = ads.getVariableBySymbolName(name);
-			variableMin.write(valueMin);
-			variableMin.read();
-			variableMin.close();
+			Variable variableMin = adsClient.getVariableBySymbolName(name);
+			variableMin.write(valueMin).read().close();
 			
 			assert AdsDataType.REAL32 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
@@ -334,10 +303,8 @@ public class AdsVariableUnitTest {
 			assert variableMin.toDouble()  == (double) valueMin;
 			
 			float valueMax = (float) 3.402823E38;
-			Variable variableMax = ads.getVariableBySymbolName(name);
-			variableMax.write(valueMax);
-			variableMax.read();
-			variableMax.close();
+			Variable variableMax = adsClient.getVariableBySymbolName(name);
+			variableMax.write(valueMax).read().close();
 			
 			assert AdsDataType.REAL32 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
@@ -359,10 +326,8 @@ public class AdsVariableUnitTest {
 			String name = ".junit_real64";
 			
 			double valueMin = -1.79769313486231E307;
-			Variable variableMin = ads.getVariableBySymbolName(name);
-			variableMin.write(valueMin);
-			variableMin.read();
-			variableMin.close();
+			Variable variableMin = adsClient.getVariableBySymbolName(name);
+			variableMin.write(valueMin).read().close();
 			
 			assert AdsDataType.REAL64 == variableMin.getDataType();
 			assert variableMin.toBoolean() == false;
@@ -375,10 +340,8 @@ public class AdsVariableUnitTest {
 			assert variableMin.toString().equals(Double.toString(valueMin));
 
 			double valueMax = 1.79769313486231E307;
-			Variable variableMax = ads.getVariableBySymbolName(name);
-			variableMax.write(valueMax);
-			variableMax.read();
-			variableMax.close();
+			Variable variableMax = adsClient.getVariableBySymbolName(name);
+			variableMax.write(valueMax).read().close();
 			
 			assert AdsDataType.REAL64 == variableMin.getDataType();
 			assert variableMax.toBoolean() == true;
@@ -400,10 +363,8 @@ public class AdsVariableUnitTest {
 			String name = ".junit_string";
 			
 			String value = "Hello Wold";
-			Variable variable = ads.getVariableBySymbolName(name);
-			variable.write(value);
-			variable.read();
-			variable.close();
+			Variable variable = adsClient.getVariableBySymbolName(name);
+			variable.write(value).read().close();
 			
 			assert AdsDataType.STRING == variable.getDataType();
 			assert variable.toBoolean() == true;
@@ -421,6 +382,6 @@ public class AdsVariableUnitTest {
 
 	@After
 	public void stopAds() throws AdsException {
-		ads.close();
+		adsClient.close();
 	}
 }

@@ -9,16 +9,16 @@ public class WORD extends UINT16 {
 	/****** constructor ******/
 	/*************************/
 
-	public WORD(AdsClient ads, int symbolHandle) {
-		super(ads, symbolHandle);
+	public WORD(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, symbolHandle);
 	}
 
-	public WORD(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, indexGroup, indexOffset);
+	public WORD(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, indexGroup, indexOffset);
 	}
 	
-	public WORD(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, symbolName);
+	public WORD(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, symbolName);
 	}
 		
 	/*************************/

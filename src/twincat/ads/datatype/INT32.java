@@ -13,16 +13,16 @@ public class INT32 extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public INT32(AdsClient ads, int symbolHandle) {
-		super(ads, AdsDataType.INT32.size, symbolHandle);
+	public INT32(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, AdsDataType.INT32.size, symbolHandle);
 	}
 
-	public INT32(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, AdsDataType.INT32.size, indexGroup, indexOffset);
+	public INT32(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, AdsDataType.INT32.size, indexGroup, indexOffset);
 	}
 	
-	public INT32(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, AdsDataType.INT32.size, ads.readHandleOfSymbolName(symbolName));
+	public INT32(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, AdsDataType.INT32.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
 	/*************************/

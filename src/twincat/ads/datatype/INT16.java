@@ -13,16 +13,16 @@ public class INT16 extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public INT16(AdsClient ads, int symbolHandle) {
-		super(ads, AdsDataType.INT16.size, symbolHandle);
+	public INT16(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, AdsDataType.INT16.size, symbolHandle);
 	}
 
-	public INT16(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, AdsDataType.INT16.size, indexGroup, indexOffset);
+	public INT16(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, AdsDataType.INT16.size, indexGroup, indexOffset);
 	}
 	
-	public INT16(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, AdsDataType.INT16.size, ads.readHandleOfSymbolName(symbolName));
+	public INT16(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, AdsDataType.INT16.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
 	/*************************/

@@ -11,16 +11,16 @@ public class INT8 extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public INT8(AdsClient ads, int symbolHandle) {
-		super(ads, AdsDataType.INT8.size, symbolHandle);
+	public INT8(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, AdsDataType.INT8.size, symbolHandle);
 	}
 
-	public INT8(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, AdsDataType.INT8.size, indexGroup, indexOffset);
+	public INT8(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, AdsDataType.INT8.size, indexGroup, indexOffset);
 	}
 	
-	public INT8(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, AdsDataType.INT8.size, ads.readHandleOfSymbolName(symbolName));
+	public INT8(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, AdsDataType.INT8.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
 	/*************************/

@@ -14,23 +14,23 @@ import twincat.ads.AmsNetId;
 import twincat.ads.enums.AmsPort;
 
 public class AdsSymbolInfoUnitTest {
-    private final AdsClient ads = new AdsClient();
+    private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getSignedLogger();
 
     private final String symbolName = ".junit_time";
 
     @Before
     public void startAds() {
-        ads.open();
+        adsClient.open();
     }
 
     @Test
     public void adsSymbolInfoUnitTest() {
         try {
-            ads.setAmsNetId(AmsNetId.LOCAL);
-            ads.setAmsPort(AmsPort.TC2PLC1);
+            adsClient.setAmsNetId(AmsNetId.LOCAL);
+            adsClient.setAmsPort(AmsPort.TC2PLC1);
 
-            AdsSymbolInfo symbolInfo = ads.readSymbolInfoBySymbolName(symbolName);
+            AdsSymbolInfo symbolInfo = adsClient.readSymbolInfoBySymbolName(symbolName);
 
             logger.info("InfoLength : " + symbolInfo.getLength());
             logger.info("IndexGroup : " + symbolInfo.getIndexGroup());
@@ -48,6 +48,6 @@ public class AdsSymbolInfoUnitTest {
 
     @After
     public void stopAds() throws AdsException {
-        ads.close();
+        adsClient.close();
     }
 }

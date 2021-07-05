@@ -16,28 +16,28 @@ public class STRING extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public STRING(AdsClient ads, int symbolHandle) {
-		super(ads, AdsDataType.STRING.size, symbolHandle);
+	public STRING(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, AdsDataType.STRING.size, symbolHandle);
 	}
 
-	public STRING(AdsClient ads, int symbolHandle,short dataSize) {
-		super(ads, dataSize, symbolHandle);
+	public STRING(AdsClient adsClient, int symbolHandle,short dataSize) {
+		super(adsClient, dataSize, symbolHandle);
 	}
 
-	public STRING(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, AdsDataType.STRING.size, indexGroup, indexOffset);
+	public STRING(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, AdsDataType.STRING.size, indexGroup, indexOffset);
 	}
 
-	public STRING(AdsClient ads, int indexGroup, int indexOffset, short dataSize) throws AdsException {
-		super(ads, dataSize, indexGroup, indexOffset);
+	public STRING(AdsClient adsClient, int indexGroup, int indexOffset, short dataSize) throws AdsException {
+		super(adsClient, dataSize, indexGroup, indexOffset);
 	}
 	
-	public STRING(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, AdsDataType.STRING.size, ads.readHandleOfSymbolName(symbolName));
+	public STRING(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, AdsDataType.STRING.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
-	public STRING(AdsClient ads, String symbolName, short dataSize) throws AdsException {
-		super(ads, dataSize, ads.readHandleOfSymbolName(symbolName));
+	public STRING(AdsClient adsClient, String symbolName, short dataSize) throws AdsException {
+		super(adsClient, dataSize, adsClient.readHandleOfSymbolName(symbolName));
 	}
 		
 	/*************************/

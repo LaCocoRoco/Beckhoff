@@ -9,16 +9,16 @@ public class BOOL extends BIT {
 	/****** constructor ******/
 	/*************************/
 
-	public BOOL(AdsClient ads, int symbolHandle) {
-		super(ads, symbolHandle);
+	public BOOL(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, symbolHandle);
 	}
 
-	public BOOL(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, indexGroup, indexOffset);
+	public BOOL(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, indexGroup, indexOffset);
 	}
 	
-	public BOOL(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, symbolName);
+	public BOOL(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, symbolName);
 	}
 
 	/*************************/

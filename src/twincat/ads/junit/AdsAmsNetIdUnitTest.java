@@ -13,21 +13,21 @@ import twincat.ads.AmsNetId;
 import twincat.ads.enums.AmsPort;
 
 public class AdsAmsNetIdUnitTest {
-    private final AdsClient ads = new AdsClient();
+    private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getSignedLogger();
      
     @Before
     public void startAds() {
-        ads.open();
+        adsClient.open();
     }
     
     @Test
     public void adsAmsNetIdUnitTest() {  
         try {
-            ads.setAmsNetId(AmsNetId.LOCAL);
-            ads.setAmsPort(AmsPort.TC2PLC1);
+            adsClient.setAmsNetId(AmsNetId.LOCAL);
+            adsClient.setAmsPort(AmsPort.TC2PLC1);
             
-            logger.info(ads.readLocalAmsNetId());
+            logger.info(adsClient.readLocalAmsNetId());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
         }
@@ -35,6 +35,6 @@ public class AdsAmsNetIdUnitTest {
 
     @After
     public void stopAds() throws AdsException {
-        ads.close();
+        adsClient.close();
     }
 }

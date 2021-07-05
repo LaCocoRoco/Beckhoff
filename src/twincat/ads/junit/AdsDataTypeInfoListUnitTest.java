@@ -15,21 +15,21 @@ import twincat.ads.enums.AmsPort;
 import twincat.ads.AdsException;
 
 public class AdsDataTypeInfoListUnitTest {
-    private final AdsClient ads = new AdsClient();
+    private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getSignedLogger();
 
     @Before
     public void startAds() {
-        ads.open();
+        adsClient.open();
     }
 
     @Test
     public void adsDataTypeInfoListUnitTest() {
         try {
-            ads.setAmsNetId(AmsNetId.LOCAL);
-            ads.setAmsPort(AmsPort.TC2PLC1);
+            adsClient.setAmsNetId(AmsNetId.LOCAL);
+            adsClient.setAmsPort(AmsPort.TC2PLC1);
             
-            List<AdsSymbolDataTypeInfo> dataTypeInfoList = ads.readDataTypeInfoList();
+            List<AdsSymbolDataTypeInfo> dataTypeInfoList = adsClient.readDataTypeInfoList();
             
             for (AdsSymbolDataTypeInfo dataTypeInfo : dataTypeInfoList) {
                 logger.info("DataTypeName    : " + dataTypeInfo.getDataTypeName());
@@ -43,6 +43,6 @@ public class AdsDataTypeInfoListUnitTest {
 
     @After
     public void stopAds() throws AdsException {
-        ads.close();
+        adsClient.close();
     }
 }

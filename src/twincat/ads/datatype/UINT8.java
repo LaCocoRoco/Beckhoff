@@ -14,16 +14,16 @@ public class UINT8 extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public UINT8(AdsClient ads, int symbolHandle) {
-		super(ads, AdsDataType.UINT8.size, symbolHandle);
+	public UINT8(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, AdsDataType.UINT8.size, symbolHandle);
 	}
 
-	public UINT8(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, AdsDataType.UINT8.size, indexGroup, indexOffset);
+	public UINT8(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, AdsDataType.UINT8.size, indexGroup, indexOffset);
 	}
 	
-	public UINT8(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, AdsDataType.UINT8.size, ads.readHandleOfSymbolName(symbolName));
+	public UINT8(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, AdsDataType.UINT8.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
 	/*************************/

@@ -14,16 +14,16 @@ public class UINT16 extends Variable {
 	/****** constructor ******/
 	/*************************/
 
-	public UINT16(AdsClient ads, int symbolHandle) {
-		super(ads, AdsDataType.UINT16.size, symbolHandle);
+	public UINT16(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, AdsDataType.UINT16.size, symbolHandle);
 	}
 
-	public UINT16(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, AdsDataType.UINT16.size, indexGroup, indexOffset);
+	public UINT16(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, AdsDataType.UINT16.size, indexGroup, indexOffset);
 	}
 	
-	public UINT16(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, AdsDataType.UINT16.size, ads.readHandleOfSymbolName(symbolName));
+	public UINT16(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, AdsDataType.UINT16.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
 	/*************************/

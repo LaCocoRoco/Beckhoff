@@ -138,36 +138,36 @@ public class AdsNative {
 
     protected AdsDeviceInfo adsReadDeviceInfo() throws AdsException {
         if (adsPort != 0) {
-            AdsDevName adsDevName = new AdsDevName();
-            AdsVersion adsVersion = new AdsVersion();
+            AdsDevName devName = new AdsDevName();
+            AdsVersion version = new AdsVersion();
 
-            long errorCode = AdsCallDllFunction.adsSyncReadDeviceInfoReq(amsAddress, adsDevName, adsVersion);
+            long errorCode = AdsCallDllFunction.adsSyncReadDeviceInfoReq(amsAddress, devName, version);
             if (errorCode != 0) throw new AdsException(errorCode);
 
-            AdsDeviceInfo adsDeviceInfo = new AdsDeviceInfo();
-            adsDeviceInfo.setDeviceName(adsDevName.getDevName());
-            adsDeviceInfo.setMinorVersion(adsVersion.getVersion());
-            adsDeviceInfo.setMajorVersion(adsVersion.getRevision());
-            adsDeviceInfo.setBuildVersion(adsVersion.getBuild());
+            AdsDeviceInfo deviceInfo = new AdsDeviceInfo();
+            deviceInfo.setDeviceName(devName.getDevName());
+            deviceInfo.setMinorVersion(version.getVersion());
+            deviceInfo.setMajorVersion(version.getRevision());
+            deviceInfo.setBuildVersion(version.getBuild());
 
-            return adsDeviceInfo;
+            return deviceInfo;
         } else throw new AdsException(AdsError.ADS_ADSPORT_CLOSED);
     }
 
     protected AdsDeviceState adsReadState() throws AdsException {
         if (adsPort != 0) {
             AdsState adsState = new AdsState();
-            AdsState deviceState = new AdsState();
+            AdsState devState = new AdsState();
 
-            long errorCode = AdsCallDllFunction.adsSyncReadStateReq(amsAddress, adsState, deviceState);
+            long errorCode = AdsCallDllFunction.adsSyncReadStateReq(amsAddress, adsState, devState);
 
-            AdsDeviceState adsDeviceState = new AdsDeviceState();
-            adsDeviceState.setAdsState(AdsStatus.getByValue(adsState.getState()));
-            adsDeviceState.setDeviceState(AdsStatus.getByValue(deviceState.getState()));
+            AdsDeviceState deviceState = new AdsDeviceState();
+            deviceState.setAdsState(AdsStatus.getByValue(adsState.getState()));
+            deviceState.setDevState(AdsStatus.getByValue(devState.getState()));
 
             if (errorCode != 0) throw new AdsException(errorCode);
 
-            return adsDeviceState;
+            return deviceState;
         } else throw new AdsException(AdsError.ADS_ADSPORT_CLOSED);
     }
 
@@ -177,7 +177,7 @@ public class AdsNative {
             int jniWriteBufferLength = jniWriteBuffer.getUsedBytesCount();
 
             int adsState = adsDeviceState.getAdsState().value;
-            int deviceState = adsDeviceState.getDeviceState().value;
+            int deviceState = adsDeviceState.getDevState().value;
 
             long errorCode = AdsCallDllFunction.adsSyncWriteControlReq(amsAddress,
                     adsState, deviceState, jniWriteBufferLength, jniWriteBuffer);

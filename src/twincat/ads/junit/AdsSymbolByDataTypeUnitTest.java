@@ -16,29 +16,29 @@ import twincat.ads.AdsException;
 import twincat.ads.AdsSymbol;
 
 public class AdsSymbolByDataTypeUnitTest {
-    private final AdsClient ads = new AdsClient();
+    private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getSignedLogger();
     
     private final String dataTypeName = "junit_st";
     
     @Before
     public void startAds() {
-        ads.open();
+        adsClient.open();
     }
 
     @Test
     public void adsDataTypeInfoTableUnitTest() {
         try {
-            ads.setAmsNetId(AmsNetId.LOCAL);
-            ads.setAmsPort(AmsPort.TC2PLC1);
+            adsClient.setAmsNetId(AmsNetId.LOCAL);
+            adsClient.setAmsPort(AmsPort.TC2PLC1);
             
-            AdsSymbolDataTypeInfo dataTypeInfo = ads.readDataTypeInfoByDataTypeName(dataTypeName);
+            AdsSymbolDataTypeInfo dataTypeInfo = adsClient.readDataTypeInfoByDataTypeName(dataTypeName);
             
-            List<AdsSymbolDataTypeInfo> dataTypeInfoList = ads.readDataTypeInfoList();
+            List<AdsSymbolDataTypeInfo> dataTypeInfoList = adsClient.readDataTypeInfoList();
             List<AdsSymbol> dataTypeNodeList = dataTypeInfo.getDataTypeSymbolList(dataTypeInfoList);
 
             for (AdsSymbol node : dataTypeNodeList) {
-                logger.info("Type: " + node.getType() + "\tName: " + node.getName());        
+                logger.info("Type: " + node.getDataType() + "\tName: " + node.getName());        
             }
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
@@ -47,7 +47,7 @@ public class AdsSymbolByDataTypeUnitTest {
 
     @After
     public void stopAds() throws AdsException {
-        ads.close();
+        adsClient.close();
     } 
     
 }

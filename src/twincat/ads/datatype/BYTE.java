@@ -9,16 +9,16 @@ public class BYTE extends UINT8 {
 	/****** constructor ******/
 	/*************************/
 
-	public BYTE(AdsClient ads, int symbolHandle) {
-		super(ads, symbolHandle);
+	public BYTE(AdsClient adsClient, int symbolHandle) {
+		super(adsClient, symbolHandle);
 	}
 
-	public BYTE(AdsClient ads, int indexGroup, int indexOffset) throws AdsException {
-		super(ads, indexGroup, indexOffset);
+	public BYTE(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
+		super(adsClient, indexGroup, indexOffset);
 	}
 	
-	public BYTE(AdsClient ads, String symbolName) throws AdsException {
-		super(ads, symbolName);
+	public BYTE(AdsClient adsClient, String symbolName) throws AdsException {
+		super(adsClient, symbolName);
 	}
 	
 	/*************************/
