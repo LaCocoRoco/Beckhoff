@@ -34,6 +34,8 @@ public class AdsSymbolInfo {
 
     private String type = new String();
 
+    private AdsTypeInfo typeInfo = new AdsTypeInfo();
+
     private AdsDataType dataType = AdsDataType.UNKNOWN;
 
     private AdsSymbolFlag symbolFlag = AdsSymbolFlag.UNKNOWN;
@@ -47,7 +49,7 @@ public class AdsSymbolInfo {
     }
     
     public AdsSymbolInfo(byte[] buffer) {
-        parseSymbolInfo(buffer, 0);
+        parseSymbolInfo(buffer);
     }
 
     public AdsSymbolInfo(byte[] buffer, int index) {
@@ -89,6 +91,22 @@ public class AdsSymbolInfo {
     public void setDataSize(int dataSize) {
         this.dataSize = dataSize;
     }
+    
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public AdsTypeInfo getTypeInfo() {
+        return typeInfo;
+    }
+
+    public void setTypeInfo(AdsTypeInfo typeInfo) {
+        this.typeInfo = typeInfo;
+    }
 
     public AdsDataType getDataType() {
         return dataType;
@@ -121,20 +139,15 @@ public class AdsSymbolInfo {
     public void setComment(String comment) {
         this.comment = comment;
     }
-    
-    public String getType() {
-        return type;
-    }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-    
     /*************************/
     /********* public ********/
     /*************************/
 
-    @SuppressWarnings("unused")
+    public void parseSymbolInfo(byte[] buffer) {
+        parseSymbolInfo(buffer, 0);
+    }
+
     public void parseSymbolInfo(byte[] buffer, int index) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -149,6 +162,7 @@ public class AdsSymbolInfo {
                 dataSize = byteBuffer.getInt();
                 int dataType = byteBuffer.getInt();
                 int symbolFlag = byteBuffer.getShort();
+                @SuppressWarnings("unused")
                 int arrayDimension = byteBuffer.getShort();
                 int nameLength = byteBuffer.getShort() + 1;
                 int typeLength = byteBuffer.getShort() + 1;
@@ -165,7 +179,8 @@ public class AdsSymbolInfo {
                 if (byteBuffer.remaining() >= typeLength) {
                     byte[] readBuffer = new byte[typeLength];
                     byteBuffer.get(readBuffer, 0, typeLength);
-                    type = STRING.arrayToValue(readBuffer);                     
+                    type = STRING.arrayToValue(readBuffer); 
+                    typeInfo.parseType(type);
                 }
 
                 if (byteBuffer.remaining() >= commentLength) {
@@ -177,87 +192,62 @@ public class AdsSymbolInfo {
         }
     }
 
-    public AdsSymbol toSymbol() {
-        // redeclare arrays as big type
-        AdsTypeInfo typeInfo = new AdsTypeInfo(type);
-        AdsDataType dataType = typeInfo.isArray() ? AdsDataType.BIGTYPE : this.dataType;
-        
-        // set symbol 
-        AdsSymbol symbol = new AdsSymbol();
-        symbol.setName(symbolName);
-        symbol.setDataType(dataType);
+    public List<AdsSymbolInfo> getSymbolInfoList(List<AdsSymbolDataTypeInfo> symbolDataTypeInfoList) {
+        List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
 
-        return symbol;
-    }
-    
-    // time consuming
-    public List<AdsSymbol> getSymbolList(List<AdsSymbolDataTypeInfo> symbolDataTypeInfoList) {
-        List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
-
-        // parse type info
-        AdsTypeInfo typeInfo = new AdsTypeInfo(type);
-        
         // dismiss pointer
-        if (typeInfo.isPointer()) return symbolList;
-        
-        // get named array list
-        List<String> namedArrayList = new ArrayList<String>();
-        if (!typeInfo.getTypeArray().isEmpty()) {
-            namedArrayList.addAll(typeInfo.getNamedTypeArray());
-        }
+        if (typeInfo.isPointer()) return symbolInfoList;
 
         // is complex data type
         if (dataType.equals(AdsDataType.BIGTYPE)) {
 
-            // get type symbol list from type info
-            List<AdsSymbol> typeNodeList = new ArrayList<AdsSymbol>();
+            // get symbol info list of data type info list from type info type
+            List<AdsSymbolInfo> dataTypeSymbolInfoList = new ArrayList<AdsSymbolInfo>();
             for (AdsSymbolDataTypeInfo symbolDataTypeInfo : symbolDataTypeInfoList) {
                 if (typeInfo.getType().equals(symbolDataTypeInfo.getDataTypeName())) {
-                    typeNodeList = symbolDataTypeInfo.getDataTypeSymbolList(symbolDataTypeInfoList);
+                    dataTypeSymbolInfoList = symbolDataTypeInfo.getSymbolInfoList(symbolDataTypeInfoList);
                     break;
                 }
             }
 
-            for (AdsSymbol typeNode : typeNodeList) {
-                if (!namedArrayList.isEmpty()) {
-                    // add array
-                    for (String namedArray : namedArrayList) {
-                        // add symbol
-                        AdsSymbol symbol = new AdsSymbol();
-                        symbol.setName(symbolName + namedArray + "." + typeNode.getName());
-                        symbol.setDataType(typeNode.getDataType());
-                        symbolList.add(symbol);
+            for (AdsSymbolInfo dataTypeSymbolInfo : dataTypeSymbolInfoList) {
+                if (!typeInfo.getArray().isEmpty()) {
+                    // add symbol info and array type info
+                    for (String typeInfoArray : typeInfo.getArray()) {
+                        AdsSymbolInfo symbolInfo = new AdsSymbolInfo();
+                        symbolInfo.setSymbolName(symbolName + typeInfoArray + "." + dataTypeSymbolInfo.getSymbolName());
+                        symbolInfo.setDataType(dataTypeSymbolInfo.getDataType());
+                        symbolInfoList.add(symbolInfo);
                     }
                 } else {
-                    // add symbol
-                    AdsSymbol symbol = new AdsSymbol();
-                    symbol.setName(symbolName + "." + typeNode.getName());
-                    symbol.setDataType(typeNode.getDataType());
-                    symbolList.add(symbol);
+                    // add symbol info
+                    AdsSymbolInfo symbolInfo = new AdsSymbolInfo();
+                    symbolInfo.setSymbolName(symbolName + "." +dataTypeSymbolInfo.getSymbolName());
+                    symbolInfo.setDataType(dataTypeSymbolInfo.getDataType());
+                    symbolInfoList.add(symbolInfo);
                 }
             }
         }
 
-        // is primitive data type
+        // is simple data type
         if (!dataType.equals(AdsDataType.BIGTYPE)) {
-            if (!namedArrayList.isEmpty()) {       
-                // add array
-                for (String namedArray : namedArrayList) {
-                    // add symbol
-                    AdsSymbol symbol = new AdsSymbol();
-                    symbol.setName(symbolName + namedArray);
-                    symbol.setDataType(dataType);
-                    symbolList.add(symbol);
+            if (!typeInfo.getArray().isEmpty()) {       
+                // add symbol info and array type info
+                for (String typeInfoArray : typeInfo.getArray()) {
+                    AdsSymbolInfo symbolInfo = new AdsSymbolInfo();
+                    symbolInfo.setSymbolName(symbolName + typeInfoArray);
+                    symbolInfo.setDataType(dataType);
+                    symbolInfoList.add(symbolInfo);
                 }
             } else {
-                // add symbol
-                AdsSymbol symbol = new AdsSymbol();
-                symbol.setName(symbolName);
-                symbol.setDataType(dataType);
-                symbolList.add(symbol);
+                // add symbol info
+                AdsSymbolInfo symbolInfo = new AdsSymbolInfo();
+                symbolInfo.setSymbolName(symbolName);
+                symbolInfo.setDataType(dataType);
+                symbolInfoList.add(symbolInfo);
             }
         }
 
-        return symbolList;
+        return symbolInfoList;
     }
 }

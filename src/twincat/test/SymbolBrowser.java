@@ -71,7 +71,7 @@ public class SymbolBrowser extends JFrame {
 	 * 
 	 */
 
-	
+	/*
     private DefaultMutableTreeNode symbolToNodeList(List<AdsSymbol> symbolList) {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
     
@@ -94,6 +94,7 @@ public class SymbolBrowser extends JFrame {
 
          return rootNode;
      }
+     */
 	
 	
 

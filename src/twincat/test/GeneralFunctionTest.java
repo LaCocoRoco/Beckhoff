@@ -8,9 +8,9 @@ import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.AdsRoute;
-import twincat.ads.AdsSymbol;
 import twincat.ads.AdsSymbolLoader;
 import twincat.ads.AmsNetId;
+import twincat.ads.AdsRouteHandler;
 import twincat.ads.enums.AmsPort;
 
 public class GeneralFunctionTest {
@@ -29,12 +29,12 @@ public class GeneralFunctionTest {
         AdsClient adsClient = new AdsClient();
         
         List<AdsRoute> routeList = new ArrayList<AdsRoute>();
-        List<AdsSymbolLoader> symbolLoaderList = new ArrayList<AdsSymbolLoader>();
         
         try {
             adsClient.open();
             adsClient.setAmsNetId(AmsNetId.LOCAL);
             adsClient.setAmsPort(AmsPort.SYSTEMSERVICE);
+            adsClient.setTimeout(AdsClient.DEFAULT_TIMEOUT);
             
             AdsRoute localRoute = new AdsRoute();
             localRoute.setAmsNetId(adsClient.readLocalAmsNetId());
@@ -48,39 +48,53 @@ public class GeneralFunctionTest {
             adsClient.close();
         }
 
-        logger.info("Generate Symbol Loader");
+
+        List<AdsRouteHandler> routeSymbolHandlerList = new ArrayList<AdsRouteHandler>(); 
         
         for (AdsRoute route : routeList) {
+            List<AdsSymbolLoader> symbolLoaderList = new ArrayList<AdsSymbolLoader>(); 
             for (AmsPort amsPort : AmsPort.values()) {
                 
                 try {
-                    // is symbol data available
                     adsClient.open();
                     adsClient.setTimeout(10);
                     adsClient.setAmsNetId(route.getAmsNetId());
                     adsClient.setAmsPort(amsPort);
                     adsClient.readUploadInfo();
 
-                    symbolLoaderList.add(adsClient.getSymbolLoader());
-                    logger.info("Stop : " + adsClient.getAmsPort());
+                    // ams port holds symbol data
+                    AdsSymbolLoader symbolLoader = adsClient.getSymbolLoader();
+                    symbolLoaderList.add(symbolLoader);
                 } catch (AdsException e) {
-                    /* ignore ads error */
+                    // skip port
                 } finally {
                     adsClient.close();     
                 }
             }
+            
+            if (!symbolLoaderList.isEmpty()) {
+                AdsRouteHandler routeSymbolHandler = new AdsRouteHandler(route); 
+                routeSymbolHandler.getSymbolLoaderList().addAll(symbolLoaderList); 
+                routeSymbolHandlerList.add(routeSymbolHandler);
+            }
         } 
         
-        
- 
-        logger.info("######");
-        
-        for (AdsSymbolLoader symbolLoader : symbolLoaderList) {
-            logger.info("AmsNetId: " + symbolLoader.getAds().getAmsNetId());
-            logger.info("AmsPort : " + symbolLoader.getAds().getAmsPort());
-            
-            List<AdsSymbol> symbolList = symbolLoader.getSymbols();
-            logger.info("SymbolListSize: " + symbolList.size());
+        for (AdsRouteHandler routeSymbolHandler : routeSymbolHandlerList) {
+            String hostName = routeSymbolHandler.getRoute().getHostName();
+
+            for (AdsSymbolLoader symbolLoader : routeSymbolHandler.getSymbolLoaderList()) {
+                String amsNetId = symbolLoader.getAds().getAmsNetId();
+                AmsPort amsPort = symbolLoader.getAds().getAmsPort();
+                int symbolListSize = symbolLoader.getSymbolList().size();
+                
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("HostName: " + String.format("%-10s", hostName) + " | ");
+                stringBuilder.append("AmsNetId: " + String.format("%-10s", amsNetId) + " | ");
+                stringBuilder.append("AmsPort: " + String.format("%-10s", amsPort) + " | ");
+                stringBuilder.append("SymbolListSize: " + String.format("%-10s", symbolListSize));
+                
+                logger.info(stringBuilder.toString());
+            }
         }
         
     }

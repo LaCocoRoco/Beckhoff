@@ -14,7 +14,8 @@ port list                   get ams port list
 port ping                   get ams port states
 port VALUE                  set ams port by value
 
-symbol list                 get symbol info list
+symbol list                 get symbol list of netid port
+symbol list all             get symbol list of all netids and ports
 symbol list NAME            get symbol info list by symbol name
 symbol info NAME            get symbol info by symbol name
 

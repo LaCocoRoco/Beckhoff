@@ -226,9 +226,18 @@ public class AdsClient extends AdsNative {
 
         return routeList;
     }
+
+    // TODO : throw | uses inside ads client
+    // probably only
     
     public AdsSymbolLoader getSymbolLoader() {
         return new AdsSymbolLoader(this);
+    }
+    
+    // TODO : throw | uses outside ads client
+    
+    public AdsRouteSymbolLoader readRouteSymbolLoader() {
+        return new AdsRouteSymbolLoader(this);
     }
     
     /*************************/

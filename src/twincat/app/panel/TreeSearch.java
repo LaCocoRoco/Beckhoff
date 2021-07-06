@@ -185,9 +185,4 @@ public class TreeSearch extends JPanel {
         this.add(applyToolBar, BorderLayout.PAGE_END);
         this.setBorder(BorderFactory.createEmptyBorder());
     }
-    
-    /*************************/
-    /******** private ********/
-    /*************************/
-
 }

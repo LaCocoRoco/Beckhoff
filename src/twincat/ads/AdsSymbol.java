@@ -1,33 +1,60 @@
 package twincat.ads;
 
+import java.util.List;
+
 import twincat.ads.enums.AdsDataType;
+import twincat.ads.enums.AmsPort;
 
 public class AdsSymbol {
     /*************************/
-    /*** global attributes ***/
+    /*** local attributes ****/
     /*************************/
 
-    private String name = new String();
- 
-    private AdsDataType dataType = AdsDataType.UNKNOWN;
+    private final AdsSymbolInfo symbolInfo;
+
+    private final AdsSymbolLoader symbolLoader;
 
     /*************************/
-    /**** setter & getter ****/
+    /****** constructor ******/
     /*************************/
 
+    public AdsSymbol(AdsSymbolInfo symbolInfo, AdsSymbolLoader symbolLoader) {
+        this.symbolInfo = symbolInfo;
+        this.symbolLoader = symbolLoader;
+    }
+
+    /*************************/
+    /********* public ********/
+    /*************************/
+    
+    @Override
+    public String toString() {
+        String[] nameList = symbolInfo.getSymbolName().split(".");
+        return nameList.length != 0 ? nameList[nameList.length - 1] : "";
+    }
+    
     public String getName() {
-        return name;
+        return symbolInfo.getSymbolName();
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
- 
     public AdsDataType getDataType() {
-        return dataType;
+        boolean isArray = !symbolInfo.getTypeInfo().getArray().isEmpty();
+        return isArray ? AdsDataType.BIGTYPE : symbolInfo.getDataType();
     }
 
-    public void setDataType(AdsDataType dataType) {
-        this.dataType = dataType;
+    public String getAmsNetId() {
+        return symbolLoader.getAds().getAmsNetId();
     }
+    
+    public AmsPort getAmsPort() {
+        return symbolLoader.getAds().getAmsPort();
+    }
+    
+    public boolean isBigType() {
+        return getDataType() != AdsDataType.BIGTYPE ? false : true;
+    }
+       
+    public List<AdsSymbol> getSymbolList() {
+        return symbolLoader.getSymbolList(symbolInfo);
+    }   
 }

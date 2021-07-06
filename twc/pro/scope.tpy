@@ -2,9 +2,9 @@
 <!--This file is created by the TCatPlcCtrl automatically. Manually changes will be overwritten!-->
 <PlcProjectInfo xmlns:p="http://www.beckhoff.com/2002/01/TcPlcProjectDesc">
 	<ProjectInfo>
-		<Path>C:\Workspace\Eclipse\Beckhoff\twincat\pro\scope.pro</Path>
+		<Path>C:\Workspace\Eclipse\Beckhoff\twc\pro\scope.pro</Path>
 		<IsLibrary>false</IsLibrary>
-		<ChangeDate>2021-07-04T20:02:04</ChangeDate>
+		<ChangeDate>2021-07-06T06:27:59</ChangeDate>
 		<Library>
 			<Name>STANDARD.LIB</Name>
 			<Path>C:\TWINCAT\PLC\LIB\STANDARD.LIB</Path>
@@ -879,7 +879,7 @@
 	</Functions>
 	<Programs>
 		<Program>
-			<Name Decoration="101375EA" Crc32="2182656641" LastChange="2021-07-04T20:02:04">MAIN</Name>
+			<Name Decoration="101375EA" Crc32="2182656641" LastChange="2021-07-06T06:27:59">MAIN</Name>
 			<PrgInfo>
 				<CodeIndex>51</CodeIndex>
 				<Symbol>
@@ -956,14 +956,6 @@
 			<IGroup>61488</IGroup>
 			<IOffset VarConfig="Changeable">0</IOffset>
 			<BitSize>32</BitSize>
-			<Properties>
-				<Property>
-					<Name>LinkedWith</Name>
-					<Value>
-						<![CDATA[TINC^NC-Task SAF^Achsen^Dummy^Dummy_Enc^Eingänge^Dummy_Enc_In^nInData1]]>
-					</Value>
-				</Property>
-			</Properties>
 		</Symbol>
 		<Symbol>
 			<Name TaskPrio="1">MAIN.lr_set_pos</Name>

@@ -9,9 +9,8 @@ import org.junit.Test;
 
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
-import twincat.ads.AdsSymbolDataTypeInfo;
 import twincat.ads.AdsException;
-import twincat.ads.AdsSymbol;
+import twincat.ads.AdsSymbolDataTypeInfo;
 import twincat.ads.AdsSymbolInfo;
 import twincat.ads.AmsNetId;
 import twincat.ads.enums.AmsPort;
@@ -34,12 +33,15 @@ public class AdsSymbolBySymbolInfoUnitTest {
             adsClient.setAmsPort(AmsPort.TC2PLC1);
             
             AdsSymbolInfo symbolInfo = adsClient.readSymbolInfoBySymbolName(symbolName);
+            List<AdsSymbolDataTypeInfo> symbolDataTypeInfoList = adsClient.readDataTypeInfoList();
+            List<AdsSymbolInfo> symbolInfoList = symbolInfo.getSymbolInfoList(symbolDataTypeInfoList);
 
-            List<AdsSymbolDataTypeInfo> dataTypeInfoList = adsClient.readDataTypeInfoList();
-            List<AdsSymbol> symbolList = symbolInfo.getSymbolList(dataTypeInfoList);
-
-            for (AdsSymbol symbol : symbolList) {
-                logger.info("Type: " + symbol.getDataType() + "\tName: " + symbol.getName());
+            for (AdsSymbolInfo symbolInfoIterator : symbolInfoList) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("Type: " + symbolInfoIterator.getDataType());
+                stringBuilder.append("\t| ");
+                stringBuilder.append("Name: " + symbolInfoIterator.getSymbolName());
+                logger.info(stringBuilder.toString());
             }
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());

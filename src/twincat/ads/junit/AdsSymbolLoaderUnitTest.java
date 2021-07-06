@@ -13,7 +13,7 @@ import twincat.ads.AdsSymbol;
 import twincat.ads.AmsNetId;
 import twincat.ads.enums.AmsPort;
 
-public class AdsSymbolLoaderSmallUnitTest {
+public class AdsSymbolLoaderUnitTest {
     private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getSignedLogger();
 
@@ -23,12 +23,12 @@ public class AdsSymbolLoaderSmallUnitTest {
     }
     
     @Test
-    public void adsSymbolLoaderFullUnitTest() {
+    public void adsSymbolLoaderUnitTest() {
         try {
             adsClient.setAmsNetId(AmsNetId.LOCAL);
             adsClient.setAmsPort(AmsPort.TC2PLC1);
 
-            for (AdsSymbol symbol : adsClient.getSymbolLoader().getSymbols()) {
+            for (AdsSymbol symbol : adsClient.getSymbolLoader().getSymbolList()) {
                 String name = symbol.getName();
                 String type = String.format("%-8s", symbol.getDataType().toString());
                 logger.info("Type: " + type + "| Name: " + name);             

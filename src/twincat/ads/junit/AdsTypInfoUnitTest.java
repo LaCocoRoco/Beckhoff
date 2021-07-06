@@ -9,30 +9,37 @@ import org.junit.Test;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
+import twincat.ads.AdsTypeInfo;
 import twincat.ads.AmsNetId;
 import twincat.ads.enums.AmsPort;
 
-public class AdsLocalHostNameUnitTest {
+public class AdsTypInfoUnitTest {
     private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getSignedLogger();
-
+    
+    private final String type = "POINTER TO ARRAY [0..C_I_MAXSIPOINTER] OF TLIVEANALYSISINTERFACESTEP";
+    
     @Before
     public void startAds() {
         adsClient.open();
     }
 
     @Test
-    public void adsDeviceInfoUnitTest() {
+    public void adsDeviceInfoUnitTest() {   
         try {
             adsClient.setAmsNetId(AmsNetId.LOCAL);
-            adsClient.setAmsPort(AmsPort.SYSTEMSERVICE);
-
-            logger.info(adsClient.readLocalHostName());
+            adsClient.setAmsPort(AmsPort.TC2PLC1);
+            
+            AdsTypeInfo typeInfo = new AdsTypeInfo(type);
+  
+            logger.info("Type   : " + typeInfo.getType());
+            logger.info("Array  : " + typeInfo.getArray());
+            logger.info("Pointer: " + typeInfo.isPointer());
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
         }
     }
-
+    
     @After
     public void stopAds() throws AdsException {
         adsClient.close();

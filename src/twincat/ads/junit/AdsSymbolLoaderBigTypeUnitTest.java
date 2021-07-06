@@ -10,6 +10,7 @@ import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.AdsSymbol;
+import twincat.ads.AdsSymbolLoader;
 import twincat.ads.AmsNetId;
 import twincat.ads.enums.AmsPort;
 
@@ -30,7 +31,8 @@ public class AdsSymbolLoaderBigTypeUnitTest {
             adsClient.setAmsNetId(AmsNetId.LOCAL);
             adsClient.setAmsPort(AmsPort.TC2PLC1);
             
-            for (AdsSymbol symbol : adsClient.getSymbolLoader().getSymbolsBySymbolName(symbolName)) {
+            AdsSymbolLoader symbolLoader = adsClient.getSymbolLoader();
+            for (AdsSymbol symbol : symbolLoader.getSymbolList(symbolName)) {
                 String type = String.format("%-8s", symbol.getDataType().toString());
                 logger.info("Type: " + type + "\t| Name: " + symbol.getName());
             }
