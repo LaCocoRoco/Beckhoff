@@ -1,14 +1,11 @@
 package twincat.test;
 
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import twincat.ads.AdsException;
-import twincat.ads.container.AdsSymbol;
 import twincat.ads.container.AdsSymbolInfo;
 
 public class SymbolBrowser extends JFrame {

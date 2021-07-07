@@ -1,8 +1,8 @@
-package twincat.ads.constants;
+package twincat.ads.constant;
 
 import java.util.Arrays;
 
-// TODO : net id to address
+// TODO : replace amsNetId string with class
 
 public class AmsNetId {
     /*************************/

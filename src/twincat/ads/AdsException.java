@@ -1,6 +1,6 @@
 package twincat.ads;
 
-import twincat.ads.constants.AdsError;
+import twincat.ads.constant.AdsError;
 
 public class AdsException extends Exception {
 	/*************************/

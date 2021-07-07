@@ -5,8 +5,8 @@ import java.nio.ByteOrder;
 import java.util.Arrays;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.constants.AdsDataType;
-import twincat.ads.constants.AdsError;
+import twincat.ads.constant.AdsDataType;
+import twincat.ads.constant.AdsError;
 import twincat.ads.wrapper.Variable;
 
 public class UINT8 extends Variable {

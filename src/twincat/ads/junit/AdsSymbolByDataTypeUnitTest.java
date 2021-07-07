@@ -10,14 +10,14 @@ import org.junit.Test;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
+import twincat.ads.constant.AmsNetId;
+import twincat.ads.constant.AmsPort;
 import twincat.ads.container.AdsDataTypeInfo;
-import twincat.ads.container.AdsSymbolInfo;
-import twincat.ads.constants.AmsNetId;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.container.AdsSymbol;
 
 public class AdsSymbolByDataTypeUnitTest {
     private final AdsClient adsClient = new AdsClient();
-    private final Logger logger = TwincatLogger.getSignedLogger();
+    private final Logger logger = TwincatLogger.getLogger();
     
     private final String dataTypeName = "junit_st";
     
@@ -32,11 +32,11 @@ public class AdsSymbolByDataTypeUnitTest {
             adsClient.setAmsNetId(AmsNetId.LOCAL);
             adsClient.setAmsPort(AmsPort.TC2PLC1);
             
-            AdsDataTypeInfo symbolDataTypeInfo = adsClient.readDataTypeInfoByDataTypeName(dataTypeName);
-            List<AdsDataTypeInfo> symbolDataTypeInfoList = adsClient.readDataTypeInfoList();
-            List<AdsSymbolInfo> symbolInfoList = symbolDataTypeInfo.getSymbolInfoList(symbolDataTypeInfoList);
+            AdsDataTypeInfo dataTypeInfo = adsClient.readDataTypeInfoByDataTypeName(dataTypeName);
+            List<AdsDataTypeInfo> dataTypeInfoList = adsClient.readDataTypeInfoList();
+            List<AdsSymbol> symbolList = dataTypeInfo.getSymbolList(dataTypeInfoList);
             
-            for (AdsSymbolInfo symbolInfo : symbolInfoList) {
+            for (AdsSymbol symbolInfo : symbolList) {
                 logger.info("Type: " + symbolInfo.getDataType() + "\tName: " + symbolInfo.getSymbolName());        
             }
         } catch (AdsException e) {

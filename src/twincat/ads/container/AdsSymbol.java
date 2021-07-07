@@ -1,61 +1,33 @@
 package twincat.ads.container;
 
-import java.util.List;
-
-import twincat.ads.constants.AdsDataType;
-import twincat.ads.constants.AmsPort;
-import twincat.ads.worker.AdsSymbolLoader;
+import twincat.ads.constant.AdsDataType;
 
 public class AdsSymbol {
     /*************************/
-    /*** local attributes ****/
+    /*** global attributes ***/
     /*************************/
 
-    private final AdsSymbolInfo symbolInfo;
+    private String symbolName = new String();
 
-    private final AdsSymbolLoader symbolLoader;
+    private AdsDataType dataType = AdsDataType.UNKNOWN;
 
     /*************************/
-    /****** constructor ******/
+    /**** setter & getter ****/
     /*************************/
-
-    public AdsSymbol(AdsSymbolInfo symbolInfo, AdsSymbolLoader symbolLoader) {
-        this.symbolInfo = symbolInfo;
-        this.symbolLoader = symbolLoader;
+   
+    public String getSymbolName() {
+        return symbolName;
     }
 
-    /*************************/
-    /********* public ********/
-    /*************************/
-    
-    @Override
-    public String toString() {
-        String[] nameList = symbolInfo.getSymbolName().split(".");
-        return nameList.length != 0 ? nameList[nameList.length - 1] : "";
-    }
-    
-    public String getName() {
-        return symbolInfo.getSymbolName();
+    public void setSymbolName(String symbolName) {
+        this.symbolName = symbolName;
     }
 
     public AdsDataType getDataType() {
-        boolean isArray = !symbolInfo.getTypeInfo().getArray().isEmpty();
-        return isArray ? AdsDataType.BIGTYPE : symbolInfo.getDataType();
+        return dataType;
     }
 
-    public String getAmsNetId() {
-        return symbolLoader.getAds().getAmsNetId();
-    }
-    
-    public AmsPort getAmsPort() {
-        return symbolLoader.getAds().getAmsPort();
-    }
-    
-    public boolean isBigType() {
-        return getDataType() != AdsDataType.BIGTYPE ? false : true;
-    }
-       
-    public List<AdsSymbol> getSymbolList() {
-        return symbolLoader.getSymbolList(symbolInfo);
-    }   
+    public void setDataType(AdsDataType dataType) {
+        this.dataType = dataType;
+    } 
 }

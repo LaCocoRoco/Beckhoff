@@ -1,6 +1,6 @@
 package twincat.ads.container;
 
-import twincat.ads.constants.AdsStatus;
+import twincat.ads.constant.AdsStatus;
 
 public class AdsDeviceState {
 	/*************************/

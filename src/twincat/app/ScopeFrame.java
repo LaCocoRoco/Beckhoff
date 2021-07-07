@@ -137,6 +137,7 @@ public class ScopeFrame extends JPanel {
     }
 
     public void setLoggerLevel(Level loggerLevel) {
+        TwincatLogger.setLevel(loggerLevel);
         logger.setLevel(loggerLevel);
     }
   

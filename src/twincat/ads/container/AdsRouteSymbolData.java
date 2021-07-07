@@ -1,25 +1,23 @@
 package twincat.ads.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import twincat.ads.worker.AdsSymbolLoader;
 
-public class AdsRouteHandler {
+public class AdsRouteSymbolData {
     /*************************/
     /*** global attributes ***/
     /*************************/
     
     private final AdsRoute route;
   
-    private final List<AdsSymbolLoader> symbolLoader = new ArrayList<AdsSymbolLoader>();
+    private final AdsSymbolLoader symbolLoader;
 
     /*************************/
     /****** constructor ******/
     /*************************/
     
-    public AdsRouteHandler(AdsRoute route) {
+    public AdsRouteSymbolData(AdsRoute route, AdsSymbolLoader symbolLoader) {
         this.route = route;
+        this.symbolLoader = symbolLoader;
     }
 
     /*************************/
@@ -30,7 +28,7 @@ public class AdsRouteHandler {
         return route;
     }
 
-    public List<AdsSymbolLoader> getSymbolLoaderList() {
+    public AdsSymbolLoader getSymbolLoader() {
         return symbolLoader;
-    }   
+    }
 }

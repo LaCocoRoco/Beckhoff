@@ -9,13 +9,14 @@ import org.junit.Test;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.constants.AmsNetId;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.constant.AmsNetId;
+import twincat.ads.constant.AmsPort;
 import twincat.ads.container.AdsSymbol;
+import twincat.ads.worker.AdsSymbolLoader;
 
 public class AdsSymbolLoaderUnitTest {
     private final AdsClient adsClient = new AdsClient();
-    private final Logger logger = TwincatLogger.getSignedLogger();
+    private final Logger logger = TwincatLogger.getLogger();
 
     @Before
     public void startAds() {
@@ -28,8 +29,11 @@ public class AdsSymbolLoaderUnitTest {
             adsClient.setAmsNetId(AmsNetId.LOCAL);
             adsClient.setAmsPort(AmsPort.TC2PLC1);
 
-            for (AdsSymbol symbol : adsClient.getSymbolLoader().getSymbolList()) {
-                String name = symbol.getName();
+            AdsSymbolLoader symbolLoader = new AdsSymbolLoader(adsClient);
+            symbolLoader.parseSymbolList();
+   
+            for (AdsSymbol symbol : symbolLoader.getSymbolList()) {
+                String name = symbol.getSymbolName();
                 String type = String.format("%-8s", symbol.getDataType().toString());
                 logger.info("Type: " + type + "| Name: " + name);             
             }

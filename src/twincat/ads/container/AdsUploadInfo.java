@@ -1,9 +1,12 @@
 package twincat.ads.container;
 
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class AdsUploadInfo {
+public class AdsUploadInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /*************************/
     /** constant attributes **/
     /*************************/

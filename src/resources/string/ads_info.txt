@@ -23,3 +23,5 @@ read NAME                  get value by symbol name
 read IDXGRP OFFS SIZE      get size of bytes by idxgrp offset
 
 write NAME VALUE           set symbol value by name
+
+logger LEVEL               set logger to fine|info|warning|severe

@@ -8,14 +8,14 @@ import org.junit.Test;
 
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
-import twincat.ads.constants.AmsNetId;
-import twincat.ads.constants.AmsPort;
 import twincat.ads.container.AdsDataTypeInfo;
 import twincat.ads.AdsException;
+import twincat.ads.constant.AmsNetId;
+import twincat.ads.constant.AmsPort;
 
 public class AdsDataTypeInfoUnitTest {
     private final AdsClient adsClient = new AdsClient();
-    private final Logger logger = TwincatLogger.getSignedLogger();
+    private final Logger logger = TwincatLogger.getLogger();
     
     private final String dataTypeName = "junit_st";
     

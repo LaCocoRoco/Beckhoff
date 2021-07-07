@@ -9,13 +9,13 @@ import org.junit.Test;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.constants.AmsNetId;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.constant.AmsNetId;
+import twincat.ads.constant.AmsPort;
 import twincat.ads.container.AdsTypeInfo;
 
 public class AdsTypInfoUnitTest {
     private final AdsClient adsClient = new AdsClient();
-    private final Logger logger = TwincatLogger.getSignedLogger();
+    private final Logger logger = TwincatLogger.getLogger();
     
     private final String type = "POINTER TO ARRAY [0..C_I_MAXSIPOINTER] OF TLIVEANALYSISINTERFACESTEP";
     

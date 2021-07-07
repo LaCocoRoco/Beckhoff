@@ -13,13 +13,13 @@ import twincat.TwincatLogger;
 import twincat.Utilities;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.constants.AdsIndexGroup;
-import twincat.ads.constants.AmsNetId;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.constant.AdsIndexGroup;
+import twincat.ads.constant.AmsNetId;
+import twincat.ads.constant.AmsPort;
 
 public class AdsExportUnitTest {
     private final AdsClient adsClient = new AdsClient();
-    private final Logger logger = TwincatLogger.getSignedLogger();
+    private final Logger logger = TwincatLogger.getLogger();
     
     private final String netId    = AmsNetId.LOCAL;
     private final AmsPort amsPort = AmsPort.SYSTEMSERVICE;

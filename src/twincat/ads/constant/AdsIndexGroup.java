@@ -1,4 +1,4 @@
-package twincat.ads.constants;
+package twincat.ads.constant;
 
 public enum AdsIndexGroup {
     /*************************/

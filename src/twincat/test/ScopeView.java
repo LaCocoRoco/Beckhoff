@@ -14,9 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import twincat.ads.constants.AdsDataType;
-import twincat.ads.constants.AmsNetId;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.constant.AdsDataType;
+import twincat.ads.constant.AmsNetId;
+import twincat.ads.constant.AmsPort;
 import twincat.scope.Acquisition;
 import twincat.scope.Axis;
 import twincat.scope.Channel;

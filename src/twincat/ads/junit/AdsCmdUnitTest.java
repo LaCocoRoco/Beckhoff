@@ -10,7 +10,7 @@ import twincat.ads.worker.AdsCmd;
 
 public class AdsCmdUnitTest {
     private final AdsCmd adsCmd = new AdsCmd();
-    private final Logger logger = TwincatLogger.getSignedLogger();
+    private final Logger logger = TwincatLogger.getLogger();
     
     @Test
     public void adsAmsPortUnitTest() {

@@ -68,7 +68,7 @@ public class PanelConsole extends JPanel {
 
         consoleHandler.setFormatter(TwincatLogger.getFormatter());
         
-        Logger logger = TwincatLogger.getSignedLogger();
+        Logger logger = TwincatLogger.getLogger();
         logger.addHandler(consoleHandler);
 
         JScrollPane consolePanel = new JScrollPane(textArea);

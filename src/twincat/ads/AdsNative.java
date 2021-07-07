@@ -1,4 +1,4 @@
-package twincat.ads.jni;
+package twincat.ads;
 
 import java.lang.reflect.Field;
 
@@ -11,14 +11,11 @@ import de.beckhoff.jni.tcads.AdsNotificationAttrib;
 import de.beckhoff.jni.tcads.AdsState;
 import de.beckhoff.jni.tcads.AdsVersion;
 import de.beckhoff.jni.tcads.AmsAddr;
-import twincat.ads.AdsCallback;
 import twincat.ads.container.AdsDeviceInfo;
 import twincat.ads.container.AdsDeviceState;
-import twincat.ads.AdsException;
-import twincat.ads.AdsNotification;
-import twincat.ads.constants.AdsError;
-import twincat.ads.constants.AdsStatus;
-import twincat.ads.constants.AmsPort;
+import twincat.ads.constant.AdsError;
+import twincat.ads.constant.AdsStatus;
+import twincat.ads.constant.AmsPort;
 
 public class AdsNative {
     /*************************/

@@ -1,15 +1,18 @@
 package twincat.ads.container;
 
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-import twincat.ads.constants.AdsDataType;
-import twincat.ads.constants.AdsDataTypeFlag;
+import twincat.ads.constant.AdsDataType;
+import twincat.ads.constant.AdsDataTypeFlag;
 import twincat.ads.datatype.STRING;
 
-public class AdsDataTypeInfo {
+public class AdsDataTypeInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /*************************/
     /** constant attributes **/
     /*************************/
@@ -44,23 +47,7 @@ public class AdsDataTypeInfo {
 
     private AdsDataTypeFlag dataTypeFlag = AdsDataTypeFlag.UNKNOWN;
 
-    private final ArrayList<AdsDataTypeInfo> internalDataTypeInfoList = new ArrayList<AdsDataTypeInfo>();
-
-    /*************************/
-    /****** constructor ******/
-    /*************************/
-
-    public AdsDataTypeInfo() {
-        /* empty */
-    }
-   
-    public AdsDataTypeInfo(byte[] buffer) {
-        parseDataTypeInfo(buffer);
-    }
-
-    public AdsDataTypeInfo(byte[] buffer, int index) {
-        parsedataTypeInfo(buffer, index);
-    }
+    private final List<AdsDataTypeInfo> internalDataTypeInfoList = new ArrayList<AdsDataTypeInfo>();
 
     /*************************/
     /**** setter & getter ****/
@@ -162,7 +149,7 @@ public class AdsDataTypeInfo {
         this.dataTypeFlag = dataTypeFlag;
     }
 
-    public ArrayList<AdsDataTypeInfo> getSubSymbolDataTypeInfoList() {
+    public List<AdsDataTypeInfo> getSubSymbolDataTypeInfoList() {
         return internalDataTypeInfoList;
     }
 
@@ -171,10 +158,10 @@ public class AdsDataTypeInfo {
     /*************************/
  
     public void parseDataTypeInfo(byte[] buffer) {
-        parsedataTypeInfo(buffer, 0);
+        parseDataTypeInfo(buffer, 0);
     }
 
-    public void parsedataTypeInfo(byte[] buffer, int index) {
+    public void parseDataTypeInfo(byte[] buffer, int index) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
@@ -220,7 +207,8 @@ public class AdsDataTypeInfo {
 
                 int internalIndex = byteBuffer.position();
                 for (int i = 0; i < subItemCount; i++) {
-                    AdsDataTypeInfo dataTypeInfo = new AdsDataTypeInfo(buffer, internalIndex);
+                    AdsDataTypeInfo dataTypeInfo = new AdsDataTypeInfo();
+                    dataTypeInfo.parseDataTypeInfo(buffer, internalIndex);
                     internalDataTypeInfoList.add(dataTypeInfo);
                     internalIndex += dataTypeInfo.getLength();
                 }
@@ -228,64 +216,60 @@ public class AdsDataTypeInfo {
         }
     }
     
-
-    
-    public List<AdsSymbolInfo> getSymbolInfoList(List<AdsDataTypeInfo> symbolDataTypeInfoList) {
-        List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
+    public List<AdsSymbol> getSymbolList(List<AdsDataTypeInfo> dataTypeInfoList) {
+        List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
 
         // dismiss pointer
-        if (typeInfo.isPointer()) return symbolInfoList;
+        if (typeInfo.isPointer()) return symbolList;
         
         // is complex data type
         if (dataType.equals(AdsDataType.BIGTYPE)) {
 
-            // get symbol info list of data type info list from type info type
-            List<AdsSymbolInfo> dataTypeSymbolInfoList = new ArrayList<AdsSymbolInfo>();
-            for (AdsDataTypeInfo symbolDataTypeInfo : symbolDataTypeInfoList) {
-                if (typeInfo.getType().equals(symbolDataTypeInfo.getDataTypeName())) {
-                    dataTypeSymbolInfoList = symbolDataTypeInfo.getSymbolInfoList(symbolDataTypeInfoList);
+            // get symbol list of data type info list byte type info
+            List<AdsSymbol> dataTypeSymbolList = new ArrayList<AdsSymbol>();
+            for (AdsDataTypeInfo dataTypeInfo : dataTypeInfoList) {
+                if (typeInfo.getType().equals(dataTypeInfo.getDataTypeName())) {
+                    dataTypeSymbolList = dataTypeInfo.getSymbolList(dataTypeInfoList);
                     break;
                 }
             }
 
             // is data type
             if (dataTypeFlag.equals(AdsDataTypeFlag.DATA_TYPE)) {
-                for (AdsSymbolInfo dataTypeSymbolInfo : dataTypeSymbolInfoList) {
+                for (AdsSymbol dataTypeSymbol : dataTypeSymbolList) {
                     if (!typeInfo.getArray().isEmpty()) {
-                        // add symbol info and array type info
+                        // concatenate symbol and array type info
                         for (String typeInfoArray : typeInfo.getArray()) {
-                            AdsSymbolInfo symbolInfo = new AdsSymbolInfo();
-                            symbolInfo.setSymbolName(typeInfoArray + dataTypeSymbolInfo.getSymbolName());
-                            symbolInfo.setDataType(dataTypeSymbolInfo.getDataType());
-                            symbolInfoList.add(symbolInfo);
+                            AdsSymbol symbol = new AdsSymbol();
+                            symbol.setSymbolName(typeInfoArray + dataTypeSymbol.getSymbolName());
+                            symbol.setDataType(dataTypeSymbol.getDataType());
+                            symbolList.add(symbol);
                         }
                     } else {
-                        // add symbol info
-                        AdsSymbolInfo symbolInfo = new AdsSymbolInfo();
-                        symbolInfo.setSymbolName(dataTypeSymbolInfo.getSymbolName());
-                        symbolInfo.setDataType(dataTypeSymbolInfo.getDataType());
-                        symbolInfoList.add(symbolInfo);
+                        AdsSymbol symbol = new AdsSymbol();
+                        symbol.setSymbolName(dataTypeSymbol.getSymbolName());
+                        symbol.setDataType(dataTypeSymbol.getDataType());
+                        symbolList.add(symbol);
                     }
                 }
             }
 
             // is data item
             if (dataTypeFlag.equals(AdsDataTypeFlag.DATA_ITEM)) {
-                for (AdsSymbolInfo dataTypeSymbolInfo : dataTypeSymbolInfoList) {
+                for (AdsSymbol dataTypeSymbol : dataTypeSymbolList) {
                     if (!typeInfo.getArray().isEmpty()) {
-                     // add symbol info and array type info
+                        // concatenate symbol and array type info
                         for (String typeInfoArray : typeInfo.getArray()) {
-                            AdsSymbolInfo symbolInfo = new AdsSymbolInfo();
-                            symbolInfo.setSymbolName(dataTypeName + typeInfoArray + "." + dataTypeSymbolInfo.getSymbolName());
-                            symbolInfo.setDataType(dataTypeSymbolInfo.getDataType());
-                            symbolInfoList.add(symbolInfo);
+                            AdsSymbol symbol = new AdsSymbol();
+                            symbol.setSymbolName(dataTypeName + typeInfoArray + "." + dataTypeSymbol.getSymbolName());
+                            symbol.setDataType(dataTypeSymbol.getDataType());
+                            symbolList.add(symbol);
                         }
                     } else {
-                        // add symbol info
-                        AdsSymbolInfo symbolInfo = new AdsSymbolInfo();
-                        symbolInfo.setSymbolName(dataTypeName + "." + dataTypeSymbolInfo.getSymbolName());
-                        symbolInfo.setDataType(dataTypeSymbolInfo.getDataType());
-                        symbolInfoList.add(symbolInfo); 
+                        AdsSymbol symbol = new AdsSymbol();
+                        symbol.setSymbolName(dataTypeName + "." + dataTypeSymbol.getSymbolName());
+                        symbol.setDataType(dataTypeSymbol.getDataType());
+                        symbolList.add(symbol); 
                     }
                 }
             }
@@ -294,27 +278,26 @@ public class AdsDataTypeInfo {
         // is simple data type
         if (!dataType.equals(AdsDataType.BIGTYPE)) {
             if (!typeInfo.getArray().isEmpty()) {
-                // add symbol info and array type info
+                // concatenate symbol and array type info
                 for (String typeInfoArray : typeInfo.getArray()) {
-                    AdsSymbolInfo symbolInfo = new AdsSymbolInfo();
-                    symbolInfo.setSymbolName(dataTypeName + typeInfoArray);
-                    symbolInfo.setDataType(dataType);
-                    symbolInfoList.add(symbolInfo);
+                    AdsSymbol symbol = new AdsSymbol();
+                    symbol.setSymbolName(dataTypeName + typeInfoArray);
+                    symbol.setDataType(dataType);
+                    symbolList.add(symbol);
                 }
             } else {
-                // add symbol info
-                AdsSymbolInfo symbolInfo = new AdsSymbolInfo();
-                symbolInfo.setSymbolName(dataTypeName);
-                symbolInfo.setDataType(dataType);
-                symbolInfoList.add(symbolInfo);
+                AdsSymbol symbol = new AdsSymbol();
+                symbol.setSymbolName(dataTypeName);
+                symbol.setDataType(dataType);
+                symbolList.add(symbol);
             }
         }
 
-        // collect subdivided symbol info
-        for (AdsDataTypeInfo subdividedSymbolDataTypeInfo : internalDataTypeInfoList) {
-            symbolInfoList.addAll(subdividedSymbolDataTypeInfo.getSymbolInfoList(symbolDataTypeInfoList));
+        // collect internal symbol list
+        for (AdsDataTypeInfo internalSymbolDataTypeInfo : internalDataTypeInfoList) {
+            symbolList.addAll(internalSymbolDataTypeInfo.getSymbolList(dataTypeInfoList));
         }
 
-        return symbolInfoList;
+        return symbolList;
     }
 }

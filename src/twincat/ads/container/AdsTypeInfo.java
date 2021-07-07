@@ -1,10 +1,13 @@
 package twincat.ads.container;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdsTypeInfo {
+public class AdsTypeInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /*************************/
     /** constant attributes **/
     /*************************/

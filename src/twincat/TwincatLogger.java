@@ -32,12 +32,10 @@ public final class TwincatLogger {
     /** public static final **/
     /*************************/
 
-    public static final void resetLogger() {
-        TwincatLogger.getSignedLogger();
-    }
-    
-    public static final void loadDefaults() {
-        TwincatLogger.getLogger();
+    public static final void setLevel(Level level) {
+        Logger logger = TwincatLogger.getLogger();
+        logger.setLevel(level);
+        logger.getHandlers()[0].setLevel(level);
     }
     
     public static final SimpleFormatter getFormatter() {
@@ -45,8 +43,18 @@ public final class TwincatLogger {
             @Override
             public synchronized String format(LogRecord logRecord) {
                 Date time = new Date(logRecord.getMillis());
-                String message = logRecord.getMessage();
-                return String.format(LOGGER_FORMATTER, time, message);
+                StringBuilder stringBuilder = new StringBuilder();
+
+                // add class name to all none info messages
+                if (logRecord.getLevel().intValue() != Level.INFO.intValue()) {
+                    String sourceName = logRecord.getSourceClassName();
+                    String className = sourceName.substring(sourceName.lastIndexOf('.') + 1);
+                    stringBuilder.append(className +" : "); 
+                }
+                
+                // Level "INFO" is only intended for general logging purpose
+                stringBuilder.append(logRecord.getMessage());
+                return String.format(LOGGER_FORMATTER, time, stringBuilder.toString());
             }
         };
 
@@ -64,7 +72,7 @@ public final class TwincatLogger {
                 super.flush();
             }
         };
-
+        consoleHandler.setLevel(Level.ALL);
         logger.addHandler(consoleHandler);
     }
     
@@ -75,6 +83,7 @@ public final class TwincatLogger {
             SimpleFormatter twincatFormatter = TwincatLogger.getFormatter();
             FileHandler fileHandler = new FileHandler(LOGGER_FILE_NAME, true);
             fileHandler.setFormatter(twincatFormatter);
+            fileHandler.setLevel(Level.ALL);
             logger.addHandler(fileHandler);
         } catch (SecurityException e) {
             logger.severe(e.getMessage());
@@ -84,10 +93,6 @@ public final class TwincatLogger {
     }
 
     public static final Logger getLogger() {
-        return Logger.getLogger(LOGGER_NAME);
-    }
-
-    public static final Logger getSignedLogger() {
         Enumeration<String> loggerNameList = LogManager.getLogManager().getLoggerNames();
 
         // get logger if already initialized
@@ -99,12 +104,11 @@ public final class TwincatLogger {
             }
         }
 
-        // reset logger
-        LogManager.getLogManager().reset();
-        Logger.getGlobal().setLevel(Level.OFF);
+        // initialize logger
         Logger logger = Logger.getLogger(LOGGER_NAME);
+        logger.setUseParentHandlers(false);
         logger.setLevel(LOGGER_DEFAULT_LEVEL);
-
+        
         // add console logger
         TwincatLogger.addConsoleLogger();
 

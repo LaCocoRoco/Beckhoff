@@ -28,7 +28,7 @@ public class ScopeApp extends JFrame {
     /*** local attributes ***/
     /*************************/
   
-    private final Logger logger = TwincatLogger.getSignedLogger();
+    private final Logger logger = TwincatLogger.getLogger();
     
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
     
