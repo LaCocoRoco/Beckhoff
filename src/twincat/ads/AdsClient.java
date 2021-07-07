@@ -5,6 +5,17 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
+import twincat.ads.constants.AdsDataType;
+import twincat.ads.constants.AdsError;
+import twincat.ads.constants.AdsIndexGroup;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
+import twincat.ads.container.AdsDataTypeInfo;
+import twincat.ads.container.AdsDeviceInfo;
+import twincat.ads.container.AdsDeviceState;
+import twincat.ads.container.AdsRoute;
+import twincat.ads.container.AdsSymbolInfo;
+import twincat.ads.container.AdsUploadInfo;
 import twincat.ads.datatype.BIT;
 import twincat.ads.datatype.BOOL;
 import twincat.ads.datatype.BYTE;
@@ -27,11 +38,9 @@ import twincat.ads.datatype.UINT32;
 import twincat.ads.datatype.UINT8;
 import twincat.ads.datatype.USINT;
 import twincat.ads.datatype.WORD;
-import twincat.ads.enums.AdsDataType;
-import twincat.ads.enums.AdsError;
-import twincat.ads.enums.AdsIndexGroup;
-import twincat.ads.enums.AmsPort;
 import twincat.ads.jni.AdsNative;
+import twincat.ads.worker.AdsRouteLoader;
+import twincat.ads.worker.AdsSymbolLoader;
 import twincat.ads.wrapper.Variable;
 
 public class AdsClient extends AdsNative {
@@ -153,14 +162,14 @@ public class AdsClient extends AdsNative {
         return new AdsSymbolInfo(readBuffer);
     }
 
-    public AdsSymbolDataTypeInfo readDataTypeInfoByDataTypeName(String dataTypeName) throws AdsException {
+    public AdsDataTypeInfo readDataTypeInfoByDataTypeName(String dataTypeName) throws AdsException {
         byte[] writeBuffer = STRING.valueToArray(dataTypeName);
         byte[] readBuffer = new byte[AdsIndexGroup.DATA_TYPE_INFO_BY_NAME_EX.size];
         readWrite(AdsIndexGroup.DATA_TYPE_INFO_BY_NAME_EX.value, 0, readBuffer, writeBuffer);
-        return new AdsSymbolDataTypeInfo(readBuffer);
+        return new AdsDataTypeInfo(readBuffer);
     }
 
-    public List<AdsSymbolDataTypeInfo> readDataTypeInfoList() throws AdsException {
+    public List<AdsDataTypeInfo> readDataTypeInfoList() throws AdsException {
         AdsUploadInfo uploadInfo = readUploadInfo();
 
         byte[] readBuffer = new byte[uploadInfo.getDataTypeLength()];
@@ -168,16 +177,24 @@ public class AdsClient extends AdsNative {
         ByteBuffer readByteBuffer = ByteBuffer.wrap(readBuffer);
         readByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
-        List<AdsSymbolDataTypeInfo> symbolDataTypeInfoList = new ArrayList<AdsSymbolDataTypeInfo>();
+        ArrayList<AdsDataTypeInfo> dataTypeInfoList = new ArrayList<AdsDataTypeInfo>(20000);
 
         int index = 0;
         for (int i = 0; i < uploadInfo.getDataTypeCount(); i++) {
-            AdsSymbolDataTypeInfo symbolDataTypeInfo = new AdsSymbolDataTypeInfo(readBuffer, index);
-            symbolDataTypeInfoList.add(new AdsSymbolDataTypeInfo(readBuffer, index));
-            index += symbolDataTypeInfo.getLength();
+            AdsDataTypeInfo dataTypeInfo = new AdsDataTypeInfo(readBuffer, index);
+            dataTypeInfoList.add(dataTypeInfo);
+            index += dataTypeInfo.getLength();
         }
+        
+        /*
+        for (AdsDataTypeInfo dataTypInfo : dataTypeInfoList) {
+            dataTypInfo.getSubSymbolDataTypeInfoList().trimToSize();
+        }
+        */
+        
+        dataTypeInfoList.trimToSize();
 
-        return symbolDataTypeInfoList;
+        return dataTypeInfoList;
     }
 
     public List<AdsSymbolInfo> readSymbolInfoList() throws AdsException {
@@ -188,7 +205,7 @@ public class AdsClient extends AdsNative {
         ByteBuffer readByteBuffer = ByteBuffer.wrap(readBuffer);
         readByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
-        List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
+        ArrayList<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>(20000);
 
         int index = 0;
         for (int i = 0; i < uploadInfo.getSymbolCount(); i++) {
@@ -196,6 +213,8 @@ public class AdsClient extends AdsNative {
             symbolInfoList.add(symbolInfo);
             index += symbolInfo.getLength();
         }
+        
+        symbolInfoList.trimToSize();
 
         return symbolInfoList;
     }
@@ -228,16 +247,13 @@ public class AdsClient extends AdsNative {
     }
 
     // TODO : throw | uses inside ads client
-    // probably only
-    
     public AdsSymbolLoader getSymbolLoader() {
         return new AdsSymbolLoader(this);
     }
     
     // TODO : throw | uses outside ads client
-    
-    public AdsRouteSymbolLoader readRouteSymbolLoader() {
-        return new AdsRouteSymbolLoader(this);
+    public AdsRouteLoader readRouteLoader() {
+        return new AdsRouteLoader(this);
     }
     
     /*************************/

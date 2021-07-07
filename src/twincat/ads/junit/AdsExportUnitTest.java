@@ -13,9 +13,9 @@ import twincat.TwincatLogger;
 import twincat.Utilities;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.AmsNetId;
-import twincat.ads.enums.AdsIndexGroup;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.constants.AdsIndexGroup;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
 
 public class AdsExportUnitTest {
     private final AdsClient adsClient = new AdsClient();

@@ -1,13 +1,18 @@
-package twincat.ads;
+package twincat.ads.worker;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import twincat.TwincatLogger;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.AdsClient;
+import twincat.ads.AdsException;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
+import twincat.ads.container.AdsRoute;
+import twincat.ads.container.AdsRouteHandler;
 
-public class AdsRouteSymbolLoader {
+public class AdsRouteLoader {
     /*************************/
     /*** global attributes ***/
     /*************************/
@@ -23,8 +28,8 @@ public class AdsRouteSymbolLoader {
     /*************************/
     /****** constructor ******/
     /*************************/
-     
-    public AdsRouteSymbolLoader(AdsClient adsClient) {
+    
+    public AdsRouteLoader(AdsClient adsClient) {
         List<AdsRoute> routeList = new ArrayList<AdsRoute>();
 
         try {
@@ -40,25 +45,26 @@ public class AdsRouteSymbolLoader {
             routeList.add(localRoute);
             routeList.addAll(adsClient.readRouteEntrys());
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.info("AdsRouteLoader: " + e.getAdsErrorMessage());
         } finally {
             adsClient.close();
         }
         
-        logger.info("AdsRouteSymbolLoader : Adding Route Symbol List");
+        logger.info("AdsRouteLoader : Adding Route Symbol List");
         
         for (AdsRoute route : routeList) {
             String amsNetId = route.getAmsNetId();
             List<AdsSymbolLoader> symbolLoaderList = new ArrayList<AdsSymbolLoader>(); 
-            for (AmsPort amsPort : AmsPort.values()) {
-                
+            //for (AmsPort amsPort : AmsPort.values()) {
+            for (int i = 0; i < 20; i++) {
                 try {
-                    // TODO : nur benötigt ports loopen
+                    // TODO : only necessary ports
+                    AmsPort amsPort = AmsPort.TC2PLC1;
                     adsClient.open();
-                    adsClient.setTimeout(10);
+                    //adsClient.setTimeout(10);
                     adsClient.setAmsNetId(amsNetId);
                     adsClient.setAmsPort(amsPort);
-                    adsClient.readUploadInfo();
+                    //adsClient.readUploadInfo();
 
                     //ams port holds symbol data
                     AdsSymbolLoader symbolLoader = adsClient.getSymbolLoader();
@@ -77,7 +83,7 @@ public class AdsRouteSymbolLoader {
             }
         }
         
-        logger.info("AdsRouteSymbolLoader : Route Symbol List Loaded");
+        logger.info("AdsRouteLoader : Route Symbol List Loaded");
     }
 
     /*************************/

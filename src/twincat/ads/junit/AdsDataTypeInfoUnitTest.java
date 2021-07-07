@@ -8,9 +8,9 @@ import org.junit.Test;
 
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
-import twincat.ads.AdsSymbolDataTypeInfo;
-import twincat.ads.AmsNetId;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
+import twincat.ads.container.AdsDataTypeInfo;
 import twincat.ads.AdsException;
 
 public class AdsDataTypeInfoUnitTest {
@@ -30,7 +30,7 @@ public class AdsDataTypeInfoUnitTest {
             adsClient.setAmsNetId(AmsNetId.LOCAL);
             adsClient.setAmsPort(AmsPort.TC2PLC1);
             
-            AdsSymbolDataTypeInfo dataTypeInfo = adsClient.readDataTypeInfoByDataTypeName(dataTypeName);
+            AdsDataTypeInfo dataTypeInfo = adsClient.readDataTypeInfoByDataTypeName(dataTypeName);
             
             printAdsDataTypeInfo(dataTypeInfo, true);
         } catch (AdsException e) {
@@ -43,7 +43,7 @@ public class AdsDataTypeInfoUnitTest {
         adsClient.close();
     }
     
-    private void printAdsDataTypeInfo(AdsSymbolDataTypeInfo dataTypeInfo, boolean printSubData) {
+    private void printAdsDataTypeInfo(AdsDataTypeInfo dataTypeInfo, boolean printSubData) {
         logger.info("Length        : " + dataTypeInfo.getLength());
         logger.info("Version       : " + dataTypeInfo.getVersion());
         logger.info("HashValue     : " + dataTypeInfo.getHashValue());
@@ -58,7 +58,7 @@ public class AdsDataTypeInfoUnitTest {
         
         if (printSubData) {
             logger.info("##############:");
-            for (AdsSymbolDataTypeInfo subDataTypeInfo : dataTypeInfo.getSubSymbolDataTypeInfoList()) {
+            for (AdsDataTypeInfo subDataTypeInfo : dataTypeInfo.getSubSymbolDataTypeInfoList()) {
                 printAdsDataTypeInfo(subDataTypeInfo, printSubData);
             }
         }

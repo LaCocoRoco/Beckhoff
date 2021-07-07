@@ -9,9 +9,9 @@ import org.junit.Test;
 
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
-import twincat.ads.AdsSymbolDataTypeInfo;
-import twincat.ads.AmsNetId;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
+import twincat.ads.container.AdsDataTypeInfo;
 import twincat.ads.AdsException;
 
 public class AdsDataTypeInfoListUnitTest {
@@ -29,9 +29,9 @@ public class AdsDataTypeInfoListUnitTest {
             adsClient.setAmsNetId(AmsNetId.LOCAL);
             adsClient.setAmsPort(AmsPort.TC2PLC1);
             
-            List<AdsSymbolDataTypeInfo> dataTypeInfoList = adsClient.readDataTypeInfoList();
+            List<AdsDataTypeInfo> dataTypeInfoList = adsClient.readDataTypeInfoList();
             
-            for (AdsSymbolDataTypeInfo dataTypeInfo : dataTypeInfoList) {
+            for (AdsDataTypeInfo dataTypeInfo : dataTypeInfoList) {
                 logger.info("DataTypeName    : " + dataTypeInfo.getDataTypeName());
                 logger.info("DataTypeDataType: " + dataTypeInfo.getDataType());
                 logger.info("DataTypeType    : " + dataTypeInfo.getType());

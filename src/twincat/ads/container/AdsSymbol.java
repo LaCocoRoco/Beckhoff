@@ -1,9 +1,10 @@
-package twincat.ads;
+package twincat.ads.container;
 
 import java.util.List;
 
-import twincat.ads.enums.AdsDataType;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.constants.AdsDataType;
+import twincat.ads.constants.AmsPort;
+import twincat.ads.worker.AdsSymbolLoader;
 
 public class AdsSymbol {
     /*************************/

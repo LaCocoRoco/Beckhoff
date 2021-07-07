@@ -9,9 +9,9 @@ import org.junit.Test;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.AdsSymbolInfo;
-import twincat.ads.AmsNetId;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
+import twincat.ads.container.AdsSymbolInfo;
 
 public class AdsSymbolInfoUnitTest {
     private final AdsClient adsClient = new AdsClient();

@@ -8,8 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import twincat.ads.AdsException;
-import twincat.ads.AdsSymbol;
-import twincat.ads.AdsSymbolInfo;
+import twincat.ads.container.AdsSymbol;
+import twincat.ads.container.AdsSymbolInfo;
 
 public class SymbolBrowser extends JFrame {
 	private static final long serialVersionUID = 1L;

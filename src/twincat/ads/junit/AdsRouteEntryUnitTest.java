@@ -10,9 +10,9 @@ import org.junit.Test;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.AdsRoute;
-import twincat.ads.AmsNetId;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
+import twincat.ads.container.AdsRoute;
 
 public class AdsRouteEntryUnitTest {
     private final AdsClient adsClient = new AdsClient();

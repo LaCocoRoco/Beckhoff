@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import org.junit.Test;
 
 import twincat.TwincatLogger;
-import twincat.ads.AdsCmd;
+import twincat.ads.worker.AdsCmd;
 
 public class AdsCmdUnitTest {
     private final AdsCmd adsCmd = new AdsCmd();

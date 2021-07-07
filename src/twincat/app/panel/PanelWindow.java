@@ -19,7 +19,7 @@ public class PanelWindow extends JPanel {
     /*** global attributes ***/
     /*************************/
     
-    private Card card = Card.SCOPE;
+    private Card card = Card.ADS;
 
     private final PanelAds panelAds = new PanelAds();
 
@@ -39,6 +39,7 @@ public class PanelWindow extends JPanel {
         this.add(panelAds, Card.ADS.toString());
         this.add(panelAxis, Card.AXIS.toString());
         this.add(panelSettings, Card.SETTINGS.toString());
+        this.setCard(card);
     }
 
     /*************************/

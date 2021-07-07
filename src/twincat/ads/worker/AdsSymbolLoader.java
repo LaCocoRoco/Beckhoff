@@ -1,11 +1,16 @@
-package twincat.ads;
+package twincat.ads.worker;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import twincat.TwincatLogger;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.container.AdsSymbol;
+import twincat.ads.AdsClient;
+import twincat.ads.AdsException;
+import twincat.ads.constants.AmsPort;
+import twincat.ads.container.AdsDataTypeInfo;
+import twincat.ads.container.AdsSymbolInfo;
 
 public class AdsSymbolLoader {
     /*************************/
@@ -17,9 +22,9 @@ public class AdsSymbolLoader {
     private final List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
 
     private final List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
-
-    private final List<AdsSymbolDataTypeInfo> symbolDataTypeInfoList = new ArrayList<AdsSymbolDataTypeInfo>();
-
+    
+    private final List<AdsDataTypeInfo> dataTypeInfoList = new ArrayList<AdsDataTypeInfo>();
+    
     /*************************/
     /*** local attributes ***/
     /*************************/
@@ -45,17 +50,21 @@ public class AdsSymbolLoader {
             this.adsClient.open();
             this.adsClient.setTimeout(AdsClient.DEFAULT_TIMEOUT);
             
-            logger.info("AdsSymbolLoader : Load Symbol List | " + amsNetId + " | " + amsPort);
+            logger.info("AdsSymbolLoader : Load Symbol List    | " + amsNetId + " | " + amsPort); 
+            //symbolInfoList.addAll(this.adsClient.readSymbolInfoList());
+            this.adsClient.readSymbolInfoList();
+            logger.info("AdsSymbolLoader : Symbol Info Size    | " + symbolInfoList.size());
+            //dataTypeInfoList.addAll(this.adsClient.readDataTypeInfoList());
+            this.adsClient.readDataTypeInfoList();  
+            logger.info("AdsSymbolLoader : Data Type Info Size | " + dataTypeInfoList.size());
             
-            symbolInfoList.addAll(this.adsClient.readSymbolInfoList());
-
             for (AdsSymbolInfo symbolInfo : symbolInfoList) {
                 AdsSymbol symbol = new AdsSymbol(symbolInfo, this);
                 symbolList.add(symbol); 
             }
 
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.info("AdsSymbolLoader: " + e.getAdsErrorMessage());
         } finally {
             this.adsClient.close();
         } 
@@ -77,8 +86,8 @@ public class AdsSymbolLoader {
         return symbolInfoList;
     }
     
-    public List<AdsSymbolDataTypeInfo> getDataTypeInfoList() {
-        return symbolDataTypeInfoList;
+    public List<AdsDataTypeInfo> getDataTypeInfoList() {
+        return dataTypeInfoList;
     }
 
     /*************************/
@@ -109,18 +118,9 @@ public class AdsSymbolLoader {
     // TODO : only load here symbol data type info
     private List<AdsSymbol> symbolInfoListToSymbolList(AdsSymbolInfo symbolInfo) {
 
-        if (symbolDataTypeInfoList.isEmpty()) {
-            try {
-                adsClient.open();
-                symbolDataTypeInfoList.addAll(adsClient.readDataTypeInfoList());
-            } catch (AdsException e) {
-                e.printStackTrace();
-            } finally {
-                adsClient.close();
-            }
-        }
-
-        List<AdsSymbolInfo> symbolInfoList = symbolInfo.getSymbolInfoList(symbolDataTypeInfoList);
+        // load only if necessary
+        
+        List<AdsSymbolInfo> symbolInfoList = symbolInfo.getSymbolInfoList(dataTypeInfoList);
         List<AdsSymbol> symbolList = new ArrayList<AdsSymbol>();
         
         for (AdsSymbolInfo symbolInfoIterator : symbolInfoList) {

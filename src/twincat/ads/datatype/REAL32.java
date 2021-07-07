@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.enums.AdsDataType;
-import twincat.ads.enums.AdsError;
+import twincat.ads.constants.AdsDataType;
+import twincat.ads.constants.AdsError;
 import twincat.ads.wrapper.Variable;
 
 public class REAL32 extends Variable {

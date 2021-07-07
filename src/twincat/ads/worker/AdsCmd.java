@@ -1,4 +1,4 @@
-package twincat.ads;
+package twincat.ads.worker;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -11,8 +11,17 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import twincat.TwincatLogger;
-import twincat.ads.enums.AdsError;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.container.AdsSymbol;
+import twincat.ads.AdsClient;
+import twincat.ads.AdsException;
+import twincat.ads.constants.AdsError;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
+import twincat.ads.container.AdsDeviceInfo;
+import twincat.ads.container.AdsDeviceState;
+import twincat.ads.container.AdsRoute;
+import twincat.ads.container.AdsRouteHandler;
+import twincat.ads.container.AdsSymbolInfo;
 import twincat.ads.wrapper.Variable;
 
 public class AdsCmd {
@@ -78,7 +87,7 @@ public class AdsCmd {
                         StringWriter stringWriter = new StringWriter();
                         PrintWriter printWriter = new PrintWriter(stringWriter);
                         e.printStackTrace(printWriter);
-                        logger.severe("Exception: " + stringWriter.toString());
+                        logger.severe("AdsCmd | Exception | " + stringWriter.toString());
                     } finally {
                         scheduleTime = 0;
                     }
@@ -261,7 +270,7 @@ public class AdsCmd {
             logger.info("Major: " + deviceInfo.getMajorVersion());
             logger.info("Minor: " + deviceInfo.getMinorVersion());
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.warning("AdsCmd | Error | " + e.getAdsErrorMessage());
         } finally {
             adsClient.close();
         }
@@ -276,7 +285,7 @@ public class AdsCmd {
             logger.info("AdsState   : " + deviceState.getAdsState());
             logger.info("DeviceState: " + deviceState.getDevState());
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.warning("AdsCmd | Error | " + e.getAdsErrorMessage());
         } finally {
             adsClient.close();
         }
@@ -296,18 +305,20 @@ public class AdsCmd {
             adsClient.setAmsNetId(amsNetId);
             logger.info(amsNetId);
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.warning("AdsCmd | Error | " + e.getAdsErrorMessage());
         } finally {
             adsClient.close();
         }
     }
 
+    private final List<AdsRouteLoader> dummyList = new ArrayList<AdsRouteLoader>();
+    
     private void cmdSymbolListAll() {
         try {
             adsClient.open();
             adsClient.setTimeout(CMD_ADS_TIMEOUT);
 
-            AdsRouteSymbolLoader routeSymbolLoader = adsClient.readRouteSymbolLoader();
+            AdsRouteLoader routeSymbolLoader = adsClient.readRouteLoader();
             List<AdsRouteHandler> routeSymbolHandlerList = routeSymbolLoader.getRouteSymbolHandlerList();
             
             for (AdsRouteHandler routeSymbolHandler : routeSymbolHandlerList) {
@@ -327,8 +338,11 @@ public class AdsCmd {
                     logger.info(stringBuilder.toString());
                 }
             }
+            
+            dummyList.add(routeSymbolLoader);
+            
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.warning("AdsCmd | Error | " + e.getAdsErrorMessage());
         } finally {
             adsClient.close();
         }
@@ -363,7 +377,7 @@ public class AdsCmd {
                 logger.info(stringBuilder.toString());
             }
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.warning("AdsCmd | Error | " +e.getAdsErrorMessage());
         } finally {
             adsClient.close();
         }
@@ -374,9 +388,9 @@ public class AdsCmd {
             adsClient.setAmsNetId(amsNetId);
             logger.info(amsNetId);
         } catch (IllegalArgumentException e) {
-            logger.info("AmsNetId Wrong Pattern");
+            logger.warning("AdsCmd | Error | AmsNetId Wrong Pattern");
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.warning("AdsCmd | Error | " + e.getAdsErrorMessage());
         }
     }
 
@@ -419,7 +433,7 @@ public class AdsCmd {
             logger.info("Detected: " + portCount);
             adsClient.setAmsPort(cachPort);
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.warning("AdsCmd | Error | " + e.getAdsErrorMessage());
         } finally {
             adsClient.close();
         }
@@ -436,7 +450,10 @@ public class AdsCmd {
 
         try {
             amsPort = AmsPort.getByValue(Integer.parseInt(value));
-        } catch (NumberFormatException e) {}
+        } catch (NumberFormatException e) {
+            logger.warning("AdsCmd | Error | NumberFormatException");
+            return;
+        }
 
         if (!amsPort.equals(AmsPort.UNKNOWN)) {
             adsClient.setAmsPort(amsPort);
@@ -457,7 +474,7 @@ public class AdsCmd {
                 logger.info("Type: " + type + "| Name: " + name);
             }
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.warning("AdsCmd | Error | " + e.getAdsErrorMessage());
         }
     }
 
@@ -474,7 +491,7 @@ public class AdsCmd {
                 logger.info("Type: " + type + "| Name: " + name);
             }
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.warning("AdsCmd | Error | " + e.getAdsErrorMessage());
         }
     }
 
@@ -492,7 +509,7 @@ public class AdsCmd {
             logger.info("Flags:       " + symbolInfo.getSymbolFlag());
             logger.info("Comment:     " + symbolInfo.getComment());
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.warning("AdsCmd | Error | " + e.getAdsErrorMessage());
         } finally {
             adsClient.close();
         }
@@ -507,7 +524,7 @@ public class AdsCmd {
 
             if (variable != null) logger.info(variable.read().toString());
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.warning("AdsCmd | Error | " + e.getAdsErrorMessage());
         } finally {
             adsClient.close();
         }
@@ -524,9 +541,9 @@ public class AdsCmd {
 
                 logger.info(new String(readBuffer, "UTF-8"));
             } catch (NumberFormatException e) {
-                logger.info("NumberFormatException");
+                logger.warning("AdsCmd | Error | NumberFormatException");
             } catch (UnsupportedEncodingException e) {
-                logger.info("UnsupportedEncodingException");
+                logger.warning("AdsCmd | Error | UnsupportedEncodingException");
             }
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
@@ -544,7 +561,7 @@ public class AdsCmd {
 
             if (variable != null) logger.info(variable.write(value).read().toString());
         } catch (AdsException e) {
-            logger.info(e.getAdsErrorMessage());
+            logger.warning("AdsCmd | Error | " + e.getAdsErrorMessage());
         } finally {
             adsClient.close();
         }

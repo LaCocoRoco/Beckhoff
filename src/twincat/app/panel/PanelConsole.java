@@ -20,7 +20,7 @@ import javax.swing.event.AncestorListener;
 import javax.swing.text.BadLocationException;
 
 import twincat.TwincatLogger;
-import twincat.ads.AdsCmd;
+import twincat.ads.worker.AdsCmd;
 import twincat.app.constants.Resources;
 
 public class PanelConsole extends JPanel {

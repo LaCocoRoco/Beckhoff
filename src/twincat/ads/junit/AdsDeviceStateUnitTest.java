@@ -8,11 +8,11 @@ import org.junit.Test;
 
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
-import twincat.ads.AdsDeviceState;
 import twincat.ads.AdsException;
-import twincat.ads.AmsNetId;
-import twincat.ads.enums.AdsStatus;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.constants.AdsStatus;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
+import twincat.ads.container.AdsDeviceState;
 
 public class AdsDeviceStateUnitTest {
     private final AdsClient adsClient = new AdsClient();

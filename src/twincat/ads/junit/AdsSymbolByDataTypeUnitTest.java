@@ -10,10 +10,10 @@ import org.junit.Test;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.AdsSymbolDataTypeInfo;
-import twincat.ads.AdsSymbolInfo;
-import twincat.ads.AmsNetId;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.container.AdsDataTypeInfo;
+import twincat.ads.container.AdsSymbolInfo;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
 
 public class AdsSymbolByDataTypeUnitTest {
     private final AdsClient adsClient = new AdsClient();
@@ -32,8 +32,8 @@ public class AdsSymbolByDataTypeUnitTest {
             adsClient.setAmsNetId(AmsNetId.LOCAL);
             adsClient.setAmsPort(AmsPort.TC2PLC1);
             
-            AdsSymbolDataTypeInfo symbolDataTypeInfo = adsClient.readDataTypeInfoByDataTypeName(dataTypeName);
-            List<AdsSymbolDataTypeInfo> symbolDataTypeInfoList = adsClient.readDataTypeInfoList();
+            AdsDataTypeInfo symbolDataTypeInfo = adsClient.readDataTypeInfoByDataTypeName(dataTypeName);
+            List<AdsDataTypeInfo> symbolDataTypeInfoList = adsClient.readDataTypeInfoList();
             List<AdsSymbolInfo> symbolInfoList = symbolDataTypeInfo.getSymbolInfoList(symbolDataTypeInfoList);
             
             for (AdsSymbolInfo symbolInfo : symbolInfoList) {

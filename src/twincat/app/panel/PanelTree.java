@@ -37,10 +37,10 @@ public class PanelTree extends JPanel {
 
     public PanelTree(PanelControl panelControl) {
         this.panelControl = panelControl;
-        
         this.setLayout(new CardLayout());
         this.add(treeBrowser, Card.BROWSE.toString());
         this.add(treeSearch, Card.SEARCH.toString());
+        this.setCard(card);
     }
 
     /*************************/

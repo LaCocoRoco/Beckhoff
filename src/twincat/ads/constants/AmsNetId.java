@@ -1,4 +1,4 @@
-package twincat.ads;
+package twincat.ads.constants;
 
 import java.util.Arrays;
 

@@ -121,7 +121,7 @@ public class ScopeFrame extends JPanel {
         scopeMenu.add(menuWindow);
         scopeMenu.add(menuExtras);
 
-        panelContent.consoleHide();
+        panelContent.consoleShow();
         
         this.setLayout(new BorderLayout());
         this.add(scopeMenu, BorderLayout.PAGE_START);

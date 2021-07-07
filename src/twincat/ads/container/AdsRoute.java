@@ -1,8 +1,9 @@
-package twincat.ads;
+package twincat.ads.container;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import twincat.ads.constants.AmsNetId;
 import twincat.ads.datatype.STRING;
 
 public class AdsRoute {

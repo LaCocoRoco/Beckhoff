@@ -1,15 +1,15 @@
-package twincat.ads;
+package twincat.ads.container;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
+import twincat.ads.constants.AdsDataType;
+import twincat.ads.constants.AdsDataTypeFlag;
 import twincat.ads.datatype.STRING;
-import twincat.ads.enums.AdsDataType;
-import twincat.ads.enums.AdsDataTypeFlag;
 
-public class AdsSymbolDataTypeInfo {
+public class AdsDataTypeInfo {
     /*************************/
     /** constant attributes **/
     /*************************/
@@ -44,22 +44,22 @@ public class AdsSymbolDataTypeInfo {
 
     private AdsDataTypeFlag dataTypeFlag = AdsDataTypeFlag.UNKNOWN;
 
-    private final List<AdsSymbolDataTypeInfo> subdividedSymbolDataTypeInfoList = new ArrayList<AdsSymbolDataTypeInfo>();
+    private final ArrayList<AdsDataTypeInfo> internalDataTypeInfoList = new ArrayList<AdsDataTypeInfo>();
 
     /*************************/
     /****** constructor ******/
     /*************************/
 
-    public AdsSymbolDataTypeInfo() {
+    public AdsDataTypeInfo() {
         /* empty */
     }
    
-    public AdsSymbolDataTypeInfo(byte[] buffer) {
-        parseSymbolDataTypeInfo(buffer);
+    public AdsDataTypeInfo(byte[] buffer) {
+        parseDataTypeInfo(buffer);
     }
 
-    public AdsSymbolDataTypeInfo(byte[] buffer, int index) {
-        parseSymbolDataTypeInfo(buffer, index);
+    public AdsDataTypeInfo(byte[] buffer, int index) {
+        parsedataTypeInfo(buffer, index);
     }
 
     /*************************/
@@ -162,19 +162,19 @@ public class AdsSymbolDataTypeInfo {
         this.dataTypeFlag = dataTypeFlag;
     }
 
-    public List<AdsSymbolDataTypeInfo> getSubSymbolDataTypeInfoList() {
-        return subdividedSymbolDataTypeInfoList;
+    public ArrayList<AdsDataTypeInfo> getSubSymbolDataTypeInfoList() {
+        return internalDataTypeInfoList;
     }
 
     /*************************/
     /********* public ********/
     /*************************/
  
-    public void parseSymbolDataTypeInfo(byte[] buffer) {
-        parseSymbolDataTypeInfo(buffer, 0);
+    public void parseDataTypeInfo(byte[] buffer) {
+        parsedataTypeInfo(buffer, 0);
     }
 
-    public void parseSymbolDataTypeInfo(byte[] buffer, int index) {
+    public void parsedataTypeInfo(byte[] buffer, int index) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
@@ -218,11 +218,11 @@ public class AdsSymbolDataTypeInfo {
                     comment = STRING.arrayToValue(readBuffer);
                 }
 
-                int subItemIndex = byteBuffer.position();
+                int internalIndex = byteBuffer.position();
                 for (int i = 0; i < subItemCount; i++) {
-                    AdsSymbolDataTypeInfo symbolDataTypeInfo = new AdsSymbolDataTypeInfo(buffer, subItemIndex);
-                    subdividedSymbolDataTypeInfoList.add(symbolDataTypeInfo);
-                    subItemIndex += symbolDataTypeInfo.getLength();
+                    AdsDataTypeInfo dataTypeInfo = new AdsDataTypeInfo(buffer, internalIndex);
+                    internalDataTypeInfoList.add(dataTypeInfo);
+                    internalIndex += dataTypeInfo.getLength();
                 }
             }
         }
@@ -230,7 +230,7 @@ public class AdsSymbolDataTypeInfo {
     
 
     
-    public List<AdsSymbolInfo> getSymbolInfoList(List<AdsSymbolDataTypeInfo> symbolDataTypeInfoList) {
+    public List<AdsSymbolInfo> getSymbolInfoList(List<AdsDataTypeInfo> symbolDataTypeInfoList) {
         List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
 
         // dismiss pointer
@@ -241,7 +241,7 @@ public class AdsSymbolDataTypeInfo {
 
             // get symbol info list of data type info list from type info type
             List<AdsSymbolInfo> dataTypeSymbolInfoList = new ArrayList<AdsSymbolInfo>();
-            for (AdsSymbolDataTypeInfo symbolDataTypeInfo : symbolDataTypeInfoList) {
+            for (AdsDataTypeInfo symbolDataTypeInfo : symbolDataTypeInfoList) {
                 if (typeInfo.getType().equals(symbolDataTypeInfo.getDataTypeName())) {
                     dataTypeSymbolInfoList = symbolDataTypeInfo.getSymbolInfoList(symbolDataTypeInfoList);
                     break;
@@ -311,7 +311,7 @@ public class AdsSymbolDataTypeInfo {
         }
 
         // collect subdivided symbol info
-        for (AdsSymbolDataTypeInfo subdividedSymbolDataTypeInfo : subdividedSymbolDataTypeInfoList) {
+        for (AdsDataTypeInfo subdividedSymbolDataTypeInfo : internalDataTypeInfoList) {
             symbolInfoList.addAll(subdividedSymbolDataTypeInfo.getSymbolInfoList(symbolDataTypeInfoList));
         }
 

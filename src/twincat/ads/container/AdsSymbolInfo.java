@@ -1,13 +1,13 @@
-package twincat.ads;
+package twincat.ads.container;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
+import twincat.ads.constants.AdsDataType;
+import twincat.ads.constants.AdsSymbolFlag;
 import twincat.ads.datatype.STRING;
-import twincat.ads.enums.AdsDataType;
-import twincat.ads.enums.AdsSymbolFlag;
 
 public class AdsSymbolInfo {
     /*************************/
@@ -192,7 +192,7 @@ public class AdsSymbolInfo {
         }
     }
 
-    public List<AdsSymbolInfo> getSymbolInfoList(List<AdsSymbolDataTypeInfo> symbolDataTypeInfoList) {
+    public List<AdsSymbolInfo> getSymbolInfoList(List<AdsDataTypeInfo> symbolDataTypeInfoList) {
         List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
 
         // dismiss pointer
@@ -203,7 +203,7 @@ public class AdsSymbolInfo {
 
             // get symbol info list of data type info list from type info type
             List<AdsSymbolInfo> dataTypeSymbolInfoList = new ArrayList<AdsSymbolInfo>();
-            for (AdsSymbolDataTypeInfo symbolDataTypeInfo : symbolDataTypeInfoList) {
+            for (AdsDataTypeInfo symbolDataTypeInfo : symbolDataTypeInfoList) {
                 if (typeInfo.getType().equals(symbolDataTypeInfo.getDataTypeName())) {
                     dataTypeSymbolInfoList = symbolDataTypeInfo.getSymbolInfoList(symbolDataTypeInfoList);
                     break;

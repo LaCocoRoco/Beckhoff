@@ -7,11 +7,11 @@ import java.util.logging.Logger;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.AdsRoute;
-import twincat.ads.AdsSymbolLoader;
-import twincat.ads.AmsNetId;
-import twincat.ads.AdsRouteHandler;
-import twincat.ads.enums.AmsPort;
+import twincat.ads.constants.AmsNetId;
+import twincat.ads.constants.AmsPort;
+import twincat.ads.container.AdsRoute;
+import twincat.ads.container.AdsRouteHandler;
+import twincat.ads.worker.AdsSymbolLoader;
 
 public class GeneralFunctionTest {
 

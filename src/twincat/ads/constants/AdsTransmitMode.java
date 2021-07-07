@@ -1,4 +1,4 @@
-package twincat.ads.enums;
+package twincat.ads.constants;
 
 public enum AdsTransmitMode {
 	/*************************/
