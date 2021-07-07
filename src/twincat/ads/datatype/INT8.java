@@ -2,7 +2,7 @@ package twincat.ads.datatype;
 
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.constant.AdsDataType;
+import twincat.ads.constant.DataType;
 import twincat.ads.constant.AdsError;
 import twincat.ads.wrapper.Variable;
 
@@ -12,15 +12,15 @@ public class INT8 extends Variable {
 	/*************************/
 
 	public INT8(AdsClient adsClient, int symbolHandle) {
-		super(adsClient, AdsDataType.INT8.size, symbolHandle);
+		super(adsClient, DataType.INT8.size, symbolHandle);
 	}
 
 	public INT8(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
-		super(adsClient, AdsDataType.INT8.size, indexGroup, indexOffset);
+		super(adsClient, DataType.INT8.size, indexGroup, indexOffset);
 	}
 	
 	public INT8(AdsClient adsClient, String symbolName) throws AdsException {
-		super(adsClient, AdsDataType.INT8.size, adsClient.readHandleOfSymbolName(symbolName));
+		super(adsClient, DataType.INT8.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
 	/*************************/
@@ -28,8 +28,8 @@ public class INT8 extends Variable {
 	/*************************/
 
 	@Override
-	public AdsDataType getDataType() {
-		return AdsDataType.INT8;
+	public DataType getDataType() {
+		return DataType.INT8;
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class INT8 extends Variable {
 	/*************************/
 
 	public static final byte arrayToValue(byte[] data) {
-		if (data.length != AdsDataType.INT8.size) return 0;
+		if (data.length != DataType.INT8.size) return 0;
 		return data[0];
 	}
 

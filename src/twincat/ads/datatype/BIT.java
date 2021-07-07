@@ -2,7 +2,7 @@ package twincat.ads.datatype;
 
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.constant.AdsDataType;
+import twincat.ads.constant.DataType;
 import twincat.ads.wrapper.Variable;
 
 public class BIT extends Variable {
@@ -11,15 +11,15 @@ public class BIT extends Variable {
 	/*************************/
 
 	public BIT(AdsClient adsClient, int symbolHandle) {
-		super(adsClient, AdsDataType.BIT.size, symbolHandle);
+		super(adsClient, DataType.BIT.size, symbolHandle);
 	}
 
 	public BIT(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
-		super(adsClient, AdsDataType.BIT.size, indexGroup, indexOffset);
+		super(adsClient, DataType.BIT.size, indexGroup, indexOffset);
 	}
 	
 	public BIT(AdsClient adsClient, String symbolName) throws AdsException {
-		super(adsClient, AdsDataType.BIT.size, adsClient.readHandleOfSymbolName(symbolName));
+		super(adsClient, DataType.BIT.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 
 	/*************************/
@@ -27,8 +27,8 @@ public class BIT extends Variable {
 	/*************************/
 	
 	@Override	
-	public AdsDataType getDataType() {
-		return AdsDataType.BIT;
+	public DataType getDataType() {
+		return DataType.BIT;
 	}
 	
 	@Override
@@ -131,7 +131,7 @@ public class BIT extends Variable {
 	/*************************/
 	
 	public static final boolean arrayToValue(byte[] data) {
-		if (data.length != AdsDataType.BIT.size) return false;
+		if (data.length != DataType.BIT.size) return false;
 		return data[0] == 1 ? true : false;
 	}
 

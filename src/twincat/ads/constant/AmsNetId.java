@@ -2,8 +2,6 @@ package twincat.ads.constant;
 
 import java.util.Arrays;
 
-// TODO : replace amsNetId string with class
-
 public class AmsNetId {
     /*************************/
     /** constant attributes **/
@@ -11,20 +9,20 @@ public class AmsNetId {
 
     public static final String LOCAL = "127.0.0.1.1.1";
 
-    public static final int DATA_LENGTH = 6;
+    public static final int DATA_ID_COUNT = 6;
 
     /*************************/
     /** public static final **/
     /*************************/
  
-    public static final String arrayToString(byte[] data) {
+    public static final String netIdByteArraytoString(byte[] netId) {
         StringBuilder stringBuilder = new StringBuilder();
         
-        if (data.length == DATA_LENGTH) {
-            for (int i = 0; i < data.length; i++) {
-                stringBuilder.append(data[i] & 0xFF);
+        if (netId.length == DATA_ID_COUNT) {
+            for (int i = 0; i < netId.length; i++) {
+                stringBuilder.append(netId[i] & 0xFF);
                 
-                if (i != DATA_LENGTH - 1) {
+                if (i != DATA_ID_COUNT - 1) {
                     stringBuilder.append(".");  
                 }
             }
@@ -33,14 +31,14 @@ public class AmsNetId {
         return stringBuilder.toString();
     }
 
-    public static final byte[] stringToArray(String data) {
-        String[] values = data.split(".");
-        byte[] buffer = new byte[DATA_LENGTH];
+    public static final byte[] netIdStringtoByteArray(String netId) {
+        String[] ids = netId.split("\\.");
+        byte[] buffer = new byte[DATA_ID_COUNT];
         
-        if (values.length == DATA_LENGTH) {
+        if (ids.length == DATA_ID_COUNT) {
             try {
                 for (int i = 0; i < buffer.length; i++) {
-                    int id = Integer.valueOf(values[i]);
+                    int id = Integer.valueOf(ids[i]);
                     buffer[i] = (byte) id;
                 }
             } catch (NumberFormatException e) {
@@ -49,5 +47,22 @@ public class AmsNetId {
         }
         
         return buffer;
+    }
+    
+    public static final String netIdSTringToAddress(String netId) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String[] ids = netId.split("\\.");
+
+        if (ids.length == DATA_ID_COUNT) {
+            for (int i = 0; i < DATA_ID_COUNT - 2; i++) {
+                stringBuilder.append(ids[i]);
+
+                if (i != DATA_ID_COUNT - 3) {
+                    stringBuilder.append(".");  
+                }
+            } 
+        }
+
+        return stringBuilder.toString();
     }
 }

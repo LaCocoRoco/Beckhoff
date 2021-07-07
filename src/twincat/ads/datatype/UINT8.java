@@ -5,7 +5,7 @@ import java.nio.ByteOrder;
 import java.util.Arrays;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.constant.AdsDataType;
+import twincat.ads.constant.DataType;
 import twincat.ads.constant.AdsError;
 import twincat.ads.wrapper.Variable;
 
@@ -15,15 +15,15 @@ public class UINT8 extends Variable {
 	/*************************/
 
 	public UINT8(AdsClient adsClient, int symbolHandle) {
-		super(adsClient, AdsDataType.UINT8.size, symbolHandle);
+		super(adsClient, DataType.UINT8.size, symbolHandle);
 	}
 
 	public UINT8(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
-		super(adsClient, AdsDataType.UINT8.size, indexGroup, indexOffset);
+		super(adsClient, DataType.UINT8.size, indexGroup, indexOffset);
 	}
 	
 	public UINT8(AdsClient adsClient, String symbolName) throws AdsException {
-		super(adsClient, AdsDataType.UINT8.size, adsClient.readHandleOfSymbolName(symbolName));
+		super(adsClient, DataType.UINT8.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
 	/*************************/
@@ -31,8 +31,8 @@ public class UINT8 extends Variable {
 	/*************************/
 	
 	@Override	
-	public AdsDataType getDataType() {
-		return AdsDataType.UINT8;
+	public DataType getDataType() {
+		return DataType.UINT8;
 	}
 	
 	@Override
@@ -134,7 +134,7 @@ public class UINT8 extends Variable {
 	/*************************/
 	
 	public static final short arrayToValue (byte[] data) {
-		if (data.length != AdsDataType.UINT8.size) return 0;
+		if (data.length != DataType.UINT8.size) return 0;
 		ByteBuffer byteBuffer = ByteBuffer.allocate(Short.BYTES);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		byteBuffer.put(data);
@@ -147,6 +147,6 @@ public class UINT8 extends Variable {
 		ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		byteBuffer.putShort(data);
-		return Arrays.copyOfRange(buffer, 0, AdsDataType.UINT8.size);		
+		return Arrays.copyOfRange(buffer, 0, DataType.UINT8.size);		
 	}	
 }

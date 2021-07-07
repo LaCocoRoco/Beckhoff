@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.constant.AdsDataType;
+import twincat.ads.constant.DataType;
 import twincat.ads.constant.AdsError;
 import twincat.ads.wrapper.Variable;
 
@@ -14,15 +14,15 @@ public class REAL64 extends Variable {
 	/*************************/
 
 	public REAL64(AdsClient adsClient, int symbolHandle) {
-		super(adsClient, AdsDataType.REAL64.size, symbolHandle);
+		super(adsClient, DataType.REAL64.size, symbolHandle);
 	}
 
 	public REAL64(AdsClient adsClient, int indexGroup, int indexOffset) throws AdsException {
-		super(adsClient, AdsDataType.REAL64.size, indexGroup, indexOffset);
+		super(adsClient, DataType.REAL64.size, indexGroup, indexOffset);
 	}
 
 	public REAL64(AdsClient adsClient, String symbolName) throws AdsException {
-		super(adsClient, AdsDataType.REAL64.size, adsClient.readHandleOfSymbolName(symbolName));
+		super(adsClient, DataType.REAL64.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 
 	/*************************/
@@ -30,8 +30,8 @@ public class REAL64 extends Variable {
 	/*************************/
 
 	@Override
-	public AdsDataType getDataType() {
-		return AdsDataType.REAL64;
+	public DataType getDataType() {
+		return DataType.REAL64;
 	}
 
 	@Override
@@ -135,14 +135,14 @@ public class REAL64 extends Variable {
 	/*************************/
 
 	public static final double arrayToValue(byte[] data) {
-		if (data.length != AdsDataType.REAL64.size) return 0;
+		if (data.length != DataType.REAL64.size) return 0;
 		ByteBuffer byteBuffer = ByteBuffer.wrap(data);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		return byteBuffer.getDouble();
 	}
 
 	public static final byte[] valueToArray(double data) {
-		ByteBuffer byteBuffer = ByteBuffer.allocate(AdsDataType.REAL64.size);
+		ByteBuffer byteBuffer = ByteBuffer.allocate(DataType.REAL64.size);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		byteBuffer.putLong(Double.doubleToLongBits(data));
 		return byteBuffer.array();

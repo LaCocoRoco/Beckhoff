@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import twincat.ads.AdsException;
-import twincat.ads.container.AdsSymbolInfo;
+import twincat.ads.container.SymbolInfo;
 
 public class SymbolBrowser extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -15,7 +15,7 @@ public class SymbolBrowser extends JFrame {
 		new SymbolBrowser();
 	}
 
-	public DefaultMutableTreeNode addResourceToSymbolTree(DefaultMutableTreeNode rootNode, String value, AdsSymbolInfo symbol) {
+	public DefaultMutableTreeNode addResourceToSymbolTree(DefaultMutableTreeNode rootNode, String value, SymbolInfo symbol) {
 		for (int i = 0; i < rootNode.getChildCount(); i++) {
 			DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) rootNode.getChildAt(i);
 
@@ -32,10 +32,10 @@ public class SymbolBrowser extends JFrame {
 		return node;
 	}
  
-	public DefaultMutableTreeNode createTreeNodeFromSymbolTable(String name, List<AdsSymbolInfo> symbolInfoList) {
+	public DefaultMutableTreeNode createTreeNodeFromSymbolTable(String name, List<SymbolInfo> symbolInfoList) {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(name);
 
-		for (AdsSymbolInfo symbol : symbolInfoList) {
+		for (SymbolInfo symbol : symbolInfoList) {
 			String[] resourceList = symbol.getSymbolName().split("\\.");
 
 			DefaultMutableTreeNode node = root;

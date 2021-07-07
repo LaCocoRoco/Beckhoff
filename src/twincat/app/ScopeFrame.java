@@ -15,9 +15,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import twincat.TwincatLogger;
-import twincat.app.constants.Resources;
-import twincat.app.panel.PanelContent;
-import twincat.app.panel.PanelWindow;
+import twincat.app.component.PanelContent;
+import twincat.app.component.PanelWindow;
+import twincat.app.constant.Resources;
 
 public class ScopeFrame extends JPanel {
     private static final long serialVersionUID = 1L;

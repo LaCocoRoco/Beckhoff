@@ -6,9 +6,9 @@ import twincat.ads.AdsClient;
 import twincat.ads.AdsCallback;
 import twincat.ads.AdsException;
 import twincat.ads.AdsNotification;
-import twincat.ads.constant.AdsDataType;
-import twincat.ads.constant.AdsIndexGroup;
-import twincat.ads.constant.AdsTransmitMode;
+import twincat.ads.constant.DataType;
+import twincat.ads.constant.IndexGroup;
+import twincat.ads.constant.TransmitMode;
 
 public abstract class Variable extends Observable implements AdsCallback {
 	/*************************/
@@ -122,7 +122,7 @@ public abstract class Variable extends Observable implements AdsCallback {
 	private void addNotificationByAddress(int intervall) throws AdsException {
 		AdsNotification adsNotification = new AdsNotification();
 		adsNotification.setDataLength(data.length);
-		adsNotification.setTransmissionMode(AdsTransmitMode.SERVER_CYCLE);
+		adsNotification.setTransmissionMode(TransmitMode.SERVER_CYCLE);
 		adsNotification.setCycleTime(intervall * AdsNotification.TIME_RATIO_NS_TO_MS);
 		
 		notification = adsClient.addDeviceNotification(indexGroup, indexOffset, adsNotification, this);	
@@ -131,10 +131,10 @@ public abstract class Variable extends Observable implements AdsCallback {
 	private void addNotificationBySymbol(int intervall) throws AdsException {
 		AdsNotification adsNotification = new AdsNotification();
 		adsNotification.setDataLength(data.length);
-		adsNotification.setTransmissionMode(AdsTransmitMode.SERVER_CYCLE);
+		adsNotification.setTransmissionMode(TransmitMode.SERVER_CYCLE);
 		adsNotification.setCycleTime(intervall * AdsNotification.TIME_RATIO_NS_TO_MS);
 		
-		long indexGroup = AdsIndexGroup.SYMBOL_VALUE_BY_HANDLE.value;
+		long indexGroup = IndexGroup.SYMBOL_VALUE_BY_HANDLE.value;
 		notification = adsClient.addDeviceNotification(indexGroup, symbolHandle, adsNotification, this);
 	}
 
@@ -172,7 +172,7 @@ public abstract class Variable extends Observable implements AdsCallback {
 
 	public abstract Variable write(String value) throws AdsException;
 
-	public abstract AdsDataType getDataType();
+	public abstract DataType getDataType();
 
 	public abstract boolean toBoolean();
 

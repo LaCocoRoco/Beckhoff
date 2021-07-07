@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import twincat.ads.constant.AdsDataType;
+import twincat.ads.constant.DataType;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
 import twincat.scope.Acquisition;
@@ -95,7 +95,7 @@ public class ScopeView {
         acquisition1.setTaskTime(1);
         acquisition1.setSymbolBased(true);
         acquisition1.setSymbolName("Main.lr_channel_1");
-        acquisition1.setDataType(AdsDataType.REAL64);
+        acquisition1.setDataType(DataType.REAL64);
         acquisition1.setAmsNetId(AmsNetId.LOCAL);
         acquisition1.setAmsPort(AmsPort.TC2PLC1);
 
@@ -104,7 +104,7 @@ public class ScopeView {
         acquisition2.setTaskTime(1);
         acquisition2.setSymbolBased(true);
         acquisition2.setSymbolName("Main.lr_channel_2");
-        acquisition2.setDataType(AdsDataType.REAL64);
+        acquisition2.setDataType(DataType.REAL64);
         acquisition2.setAmsNetId(AmsNetId.LOCAL);
         acquisition2.setAmsPort(AmsPort.TC2PLC1);
 
@@ -113,7 +113,7 @@ public class ScopeView {
         acquisition3.setTaskTime(1);
         acquisition3.setSymbolBased(true);
         acquisition3.setSymbolName("Main.lr_channel_3");
-        acquisition3.setDataType(AdsDataType.REAL64);
+        acquisition3.setDataType(DataType.REAL64);
         acquisition3.setAmsNetId(AmsNetId.LOCAL);
         acquisition3.setAmsPort(AmsPort.TC2PLC1);
 
@@ -122,7 +122,7 @@ public class ScopeView {
         acquisition4.setTaskTime(1);
         acquisition4.setSymbolBased(true);
         acquisition4.setSymbolName("Main.lr_channel_4");
-        acquisition4.setDataType(AdsDataType.REAL64);
+        acquisition4.setDataType(DataType.REAL64);
         acquisition4.setAmsNetId(AmsNetId.LOCAL);
         acquisition4.setAmsPort(AmsPort.TC2PLC1);
 
@@ -131,7 +131,7 @@ public class ScopeView {
         acquisition5.setTaskTime(1);
         acquisition5.setSymbolBased(true);
         acquisition5.setSymbolName("Main.lr_channel_5");
-        acquisition5.setDataType(AdsDataType.REAL64);
+        acquisition5.setDataType(DataType.REAL64);
         acquisition5.setAmsNetId(AmsNetId.LOCAL);
         acquisition5.setAmsPort(AmsPort.TC2PLC1);
 
@@ -140,7 +140,7 @@ public class ScopeView {
         acquisition6.setTaskTime(1);
         acquisition6.setSymbolBased(true);
         acquisition6.setSymbolName("Main.lr_channel_6");
-        acquisition6.setDataType(AdsDataType.REAL64);
+        acquisition6.setDataType(DataType.REAL64);
         acquisition6.setAmsNetId(AmsNetId.LOCAL);
         acquisition6.setAmsPort(AmsPort.TC2PLC1);
 
@@ -149,7 +149,7 @@ public class ScopeView {
         acquisition7.setTaskTime(1);
         acquisition7.setSymbolBased(true);
         acquisition7.setSymbolName("Main.lr_channel_7");
-        acquisition7.setDataType(AdsDataType.REAL64);
+        acquisition7.setDataType(DataType.REAL64);
         acquisition7.setAmsNetId(AmsNetId.LOCAL);
         acquisition7.setAmsPort(AmsPort.TC2PLC1);
 
@@ -158,7 +158,7 @@ public class ScopeView {
         acquisition8.setTaskTime(1);
         acquisition8.setSymbolBased(true);
         acquisition8.setSymbolName("Main.lr_channel_8");
-        acquisition8.setDataType(AdsDataType.REAL64);
+        acquisition8.setDataType(DataType.REAL64);
         acquisition8.setAmsNetId(AmsNetId.LOCAL);
         acquisition8.setAmsPort(AmsPort.TC2PLC1);
 

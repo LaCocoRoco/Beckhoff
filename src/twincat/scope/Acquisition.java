@@ -1,6 +1,6 @@
 package twincat.scope;
 
-import twincat.ads.constant.AdsDataType;
+import twincat.ads.constant.DataType;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
 
@@ -23,7 +23,7 @@ public class Acquisition {
 	
 	private AmsPort amsPort = AmsPort.TC2PLC1;
 
-	private AdsDataType dataType = AdsDataType.UNKNOWN;
+	private DataType dataType = DataType.UNKNOWN;
 
 	/*************************/
 	/**** setter & getter ****/
@@ -77,11 +77,11 @@ public class Acquisition {
 		this.amsPort = amsPort;
 	}
 
-	public AdsDataType getDataType() {
+	public DataType getDataType() {
 		return dataType;
 	}
 
-	public void setDataType(AdsDataType dataType) {
+	public void setDataType(DataType dataType) {
 		this.dataType = dataType;
 	}
 

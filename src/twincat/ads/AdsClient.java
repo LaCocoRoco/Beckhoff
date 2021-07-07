@@ -5,17 +5,17 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-import twincat.ads.constant.AdsDataType;
+import twincat.ads.constant.DataType;
 import twincat.ads.constant.AdsError;
-import twincat.ads.constant.AdsIndexGroup;
+import twincat.ads.constant.IndexGroup;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.container.AdsDataTypeInfo;
-import twincat.ads.container.AdsDeviceInfo;
-import twincat.ads.container.AdsDeviceState;
-import twincat.ads.container.AdsRoute;
-import twincat.ads.container.AdsSymbolInfo;
-import twincat.ads.container.AdsUploadInfo;
+import twincat.ads.container.DataTypeInfo;
+import twincat.ads.container.DeviceInfo;
+import twincat.ads.container.DeviceState;
+import twincat.ads.container.Route;
+import twincat.ads.container.SymbolInfo;
+import twincat.ads.container.UploadInfo;
 import twincat.ads.datatype.BIT;
 import twincat.ads.datatype.BOOL;
 import twincat.ads.datatype.BYTE;
@@ -46,7 +46,7 @@ public class AdsClient extends AdsNative {
     /*************************/
 
     public static final int DEFAULT_TIMEOUT = 1000;
-    
+
     /*************************/
     /****** constructor ******/
     /*************************/
@@ -56,6 +56,26 @@ public class AdsClient extends AdsNative {
         super.amsAddress.setPort(AmsPort.SYSTEMSERVICE.value);
     }
 
+    /*************************/
+    /**** setter & getter ****/
+    /*************************/
+    
+    public void setAmsNetId(String amsNetId) {
+        super.amsAddress.setNetIdStringEx(amsNetId);
+    }
+    
+    public String getAmsNetId() {
+        return super.amsAddress.getNetIdString();
+    }
+
+    public void setAmsPort(AmsPort amsPort) {
+        super.amsAddress.setPort(amsPort.value);
+    }
+    
+    public AmsPort getAmsPort() {
+        return AmsPort.getByValue(super.amsAddress.getPort());
+    }
+    
     /*************************/
     /*** ads implementation **/
     /*************************/
@@ -80,15 +100,15 @@ public class AdsClient extends AdsNative {
         return super.adsGetLocalAddress();
     }
 
-    public AdsDeviceInfo readDeviceInfo() throws AdsException {
+    public DeviceInfo readDeviceInfo() throws AdsException {
         return super.adsReadDeviceInfo();
     }
 
-    public AdsDeviceState readDeviceState() throws AdsException {
+    public DeviceState readDeviceState() throws AdsException {
         return super.adsReadState();
     }
 
-    public void writeDeviceState(AdsDeviceState adsDeviceState, byte[] writeBuffer) throws AdsException {
+    public void writeDeviceState(DeviceState adsDeviceState, byte[] writeBuffer) throws AdsException {
         super.adsWriteControl(adsDeviceState, writeBuffer);
     }
 
@@ -118,71 +138,71 @@ public class AdsClient extends AdsNative {
     /*************************/
 
     public String readLocalHostName() throws AdsException {
-        byte[] readBuffer = new byte[AdsIndexGroup.SYSTEM_IP_HOST_NAME.size];
-        read(AdsIndexGroup.SYSTEM_IP_HOST_NAME.value, 0, readBuffer);
+        byte[] readBuffer = new byte[IndexGroup.SYSTEM_IP_HOST_NAME.size];
+        read(IndexGroup.SYSTEM_IP_HOST_NAME.value, 0, readBuffer);
         return STRING.arrayToValue(readBuffer);
     }
     
     public void readBySymbolHandle(int symbolHandle, byte[] readBuffer) throws AdsException {
         if (symbolHandle != 0) {
-            read(AdsIndexGroup.SYMBOL_VALUE_BY_HANDLE.value, symbolHandle, readBuffer);
+            read(IndexGroup.SYMBOL_VALUE_BY_HANDLE.value, symbolHandle, readBuffer);
         } else throw new AdsException(AdsError.ADS_INV_SYMB);
     }
 
     public void writeBySymbolHandle(int symbolHandle, byte[] writeBuffer) throws AdsException {
         if (symbolHandle != 0) {
-            write(AdsIndexGroup.SYMBOL_VALUE_BY_HANDLE.value, symbolHandle, writeBuffer);
+            write(IndexGroup.SYMBOL_VALUE_BY_HANDLE.value, symbolHandle, writeBuffer);
         } else throw new AdsException(AdsError.ADS_INV_SYMB);
     }
 
     public void writeReleaseSymbolHandle(int symbolHandle) throws AdsException {
         byte[] writeBuffer = INT32.valueToArray(symbolHandle);
-        write(AdsIndexGroup.SYMBOL_RELEASE_HANDLE.value, 0, writeBuffer);
+        write(IndexGroup.SYMBOL_RELEASE_HANDLE.value, 0, writeBuffer);
     }
 
     public int readHandleOfSymbolName(String symbolName) throws AdsException {
         byte[] writeBuffer = STRING.valueToArray(symbolName);
         byte[] readBuffer = new byte[Integer.SIZE / Byte.SIZE];
-        readWrite(AdsIndexGroup.SYMBOL_HANDLE_BY_NAME.value, 0, readBuffer, writeBuffer);
+        readWrite(IndexGroup.SYMBOL_HANDLE_BY_NAME.value, 0, readBuffer, writeBuffer);
         return INT32.arrayToValue(readBuffer);
     }
 
     public void readBySymbolName(byte[] readBuffer, String symbolName) throws AdsException {
         byte[] writeBuffer = STRING.valueToArray(symbolName);
-        readWrite(AdsIndexGroup.SYMBOL_VALUE_BY_NAME.value, 0, readBuffer, writeBuffer);
+        readWrite(IndexGroup.SYMBOL_VALUE_BY_NAME.value, 0, readBuffer, writeBuffer);
     }
  
-    public AdsSymbolInfo readSymbolInfoBySymbolName(String symbolName) throws AdsException {
+    public SymbolInfo readSymbolInfoBySymbolName(String symbolName) throws AdsException {
         byte[] writeBuffer = symbolName.getBytes();
-        byte[] readBuffer = new byte[AdsIndexGroup.SYMBOL_INFO_BYNAME_EX.size];
-        readWrite(AdsIndexGroup.SYMBOL_INFO_BYNAME_EX.value, 0, readBuffer, writeBuffer);
-        AdsSymbolInfo symbolInfo = new AdsSymbolInfo();
+        byte[] readBuffer = new byte[IndexGroup.SYMBOL_INFO_BYNAME_EX.size];
+        readWrite(IndexGroup.SYMBOL_INFO_BYNAME_EX.value, 0, readBuffer, writeBuffer);
+        SymbolInfo symbolInfo = new SymbolInfo();
         symbolInfo.parseSymbolInfo(readBuffer);
         return symbolInfo;
     }
 
-    public AdsDataTypeInfo readDataTypeInfoByDataTypeName(String dataTypeName) throws AdsException {
+    public DataTypeInfo readDataTypeInfoByDataTypeName(String dataTypeName) throws AdsException {
         byte[] writeBuffer = STRING.valueToArray(dataTypeName);
-        byte[] readBuffer = new byte[AdsIndexGroup.DATA_TYPE_INFO_BY_NAME_EX.size];
-        readWrite(AdsIndexGroup.DATA_TYPE_INFO_BY_NAME_EX.value, 0, readBuffer, writeBuffer);
-        AdsDataTypeInfo dataTypeInfo = new AdsDataTypeInfo();
+        byte[] readBuffer = new byte[IndexGroup.DATA_TYPE_INFO_BY_NAME_EX.size];
+        readWrite(IndexGroup.DATA_TYPE_INFO_BY_NAME_EX.value, 0, readBuffer, writeBuffer);
+        DataTypeInfo dataTypeInfo = new DataTypeInfo();
         dataTypeInfo.parseDataTypeInfo(readBuffer);
         return dataTypeInfo;
     }
 
-    public List<AdsDataTypeInfo> readDataTypeInfoList() throws AdsException {
-        AdsUploadInfo uploadInfo = readUploadInfo();
+    public List<DataTypeInfo> readDataTypeInfoList() throws AdsException {
+        UploadInfo uploadInfo = readUploadInfo();
 
         byte[] readBuffer = new byte[uploadInfo.getDataTypeLength()];
-        read(AdsIndexGroup.SYMBOL_DATA_TYPE_UPLOAD.value, 0, readBuffer);
+        read(IndexGroup.SYMBOL_DATA_TYPE_UPLOAD.value, 0, readBuffer);
         ByteBuffer readByteBuffer = ByteBuffer.wrap(readBuffer);
         readByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
-        List<AdsDataTypeInfo> dataTypeInfoList = new ArrayList<AdsDataTypeInfo>();
+        List<DataTypeInfo> dataTypeInfoList = new ArrayList<DataTypeInfo>();
 
         int index = 0;
         for (int i = 0; i < uploadInfo.getDataTypeCount(); i++) {
-            AdsDataTypeInfo dataTypeInfo = new AdsDataTypeInfo();
+            DataTypeInfo dataTypeInfo = new DataTypeInfo();
             dataTypeInfo.parseDataTypeInfo(readBuffer, index);
             dataTypeInfoList.add(dataTypeInfo);
             index += dataTypeInfo.getLength();
@@ -191,19 +211,19 @@ public class AdsClient extends AdsNative {
         return dataTypeInfoList;
     }
 
-    public List<AdsSymbolInfo> readSymbolInfoList() throws AdsException {
-        AdsUploadInfo uploadInfo = readUploadInfo();
+    public List<SymbolInfo> readSymbolInfoList() throws AdsException {
+        UploadInfo uploadInfo = readUploadInfo();
 
         byte[] readBuffer = new byte[uploadInfo.getSymbolLength()];
-        read(AdsIndexGroup.SYMBOL_UPLOAD.value, 0, readBuffer);
+        read(IndexGroup.SYMBOL_UPLOAD.value, 0, readBuffer);
         ByteBuffer readByteBuffer = ByteBuffer.wrap(readBuffer);
         readByteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
-        List<AdsSymbolInfo> symbolInfoList = new ArrayList<AdsSymbolInfo>();
+        List<SymbolInfo> symbolInfoList = new ArrayList<SymbolInfo>();
 
         int index = 0;
         for (int i = 0; i < uploadInfo.getSymbolCount(); i++) {
-            AdsSymbolInfo symbolInfo = new AdsSymbolInfo();
+            SymbolInfo symbolInfo = new SymbolInfo();
             symbolInfo.parseSymbolInfo(readBuffer, index);
             symbolInfoList.add(symbolInfo);
             index += symbolInfo.getLength();
@@ -212,20 +232,21 @@ public class AdsClient extends AdsNative {
         return symbolInfoList;
     }
 
-    public AdsUploadInfo readUploadInfo() throws AdsException {
-        byte[] readBuffer = new byte[AdsIndexGroup.SYMBOL_UPLOAD_INFO_2.size];
-        read(AdsIndexGroup.SYMBOL_UPLOAD_INFO_2.value, 0, readBuffer);
-        return new AdsUploadInfo(readBuffer);
+    public UploadInfo readUploadInfo() throws AdsException {
+        byte[] readBuffer = new byte[IndexGroup.SYMBOL_UPLOAD_INFO_2.size];
+        read(IndexGroup.SYMBOL_UPLOAD_INFO_2.value, 0, readBuffer);
+        return new UploadInfo(readBuffer);
     }
 
-    public List<AdsRoute> readRouteEntrys() throws AdsException {     
-        List<AdsRoute> routeList = new ArrayList<AdsRoute>();
+    public List<Route> readRouteEntrys() throws AdsException {     
+        List<Route> routeList = new ArrayList<Route>();
 
-        for (int i = 0; i < AdsIndexGroup.SYSTEM_ENUM_REMOTE.size; i++) {
+        for (int i = 0; i < IndexGroup.SYSTEM_ENUM_REMOTE.size; i++) {
             try {
-                byte[] readBuffer = new byte[AdsIndexGroup.SYSTEM_ENUM_REMOTE.size];
-                read(AdsIndexGroup.SYSTEM_ENUM_REMOTE.value, i, readBuffer);
-                AdsRoute route = new AdsRoute(readBuffer);
+                byte[] readBuffer = new byte[IndexGroup.SYSTEM_ENUM_REMOTE.size];
+                read(IndexGroup.SYSTEM_ENUM_REMOTE.value, i, readBuffer);
+                Route route = new Route();
+                route.parseRoute(readBuffer);
                 routeList.add(route);
             } catch (AdsException e) {
                 if (e.getAdsError().equals(AdsError.ADS_NOMORE_NOT_HDL)) {
@@ -243,7 +264,7 @@ public class AdsClient extends AdsNative {
     /******** mapping ********/
     /*************************/
 
-    public Variable getVariableByAddress(AdsDataType dataType, int idxGrp, int idxOffs) throws AdsException {
+    public Variable getVariableByAddress(DataType dataType, int idxGrp, int idxOffs) throws AdsException {
         switch (dataType) {
             case BIT:       return new BIT(this, idxGrp, idxOffs);
             case BOOL:      return new BOOL(this, idxGrp, idxOffs);
@@ -272,8 +293,8 @@ public class AdsClient extends AdsNative {
     }
 
     public Variable getVariableBySymbolName(String symbolName) throws AdsException {
-        AdsSymbolInfo symbolInfo = readSymbolInfoBySymbolName(symbolName);
-        AdsDataType dataType = symbolInfo.getDataType();
+        SymbolInfo symbolInfo = readSymbolInfoBySymbolName(symbolName);
+        DataType dataType = symbolInfo.getDataType();
         short dataSize = (short) symbolInfo.getDataSize();
 
         switch (dataType) {

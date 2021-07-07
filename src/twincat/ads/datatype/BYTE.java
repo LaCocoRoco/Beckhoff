@@ -2,7 +2,7 @@ package twincat.ads.datatype;
 
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.constant.AdsDataType;
+import twincat.ads.constant.DataType;
 
 public class BYTE extends UINT8 {
 	/*************************/
@@ -26,7 +26,7 @@ public class BYTE extends UINT8 {
 	/*************************/
 		
 	@Override	
-	public AdsDataType getDataType() {
-		return AdsDataType.BYTE;
+	public DataType getDataType() {
+		return DataType.BYTE;
 	}	
 }

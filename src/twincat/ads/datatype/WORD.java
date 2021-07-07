@@ -2,7 +2,7 @@ package twincat.ads.datatype;
 
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.constant.AdsDataType;
+import twincat.ads.constant.DataType;
 
 public class WORD extends UINT16 {
 	/*************************/
@@ -26,7 +26,7 @@ public class WORD extends UINT16 {
 	/*************************/
 	
 	@Override	
-	public AdsDataType getDataType() {
-		return AdsDataType.WORD;
+	public DataType getDataType() {
+		return DataType.WORD;
 	}
 }

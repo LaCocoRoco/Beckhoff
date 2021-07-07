@@ -11,11 +11,10 @@ import de.beckhoff.jni.tcads.AdsNotificationAttrib;
 import de.beckhoff.jni.tcads.AdsState;
 import de.beckhoff.jni.tcads.AdsVersion;
 import de.beckhoff.jni.tcads.AmsAddr;
-import twincat.ads.container.AdsDeviceInfo;
-import twincat.ads.container.AdsDeviceState;
 import twincat.ads.constant.AdsError;
-import twincat.ads.constant.AdsStatus;
-import twincat.ads.constant.AmsPort;
+import twincat.ads.constant.State;
+import twincat.ads.container.DeviceInfo;
+import twincat.ads.container.DeviceState;
 
 public class AdsNative {
     /*************************/
@@ -67,30 +66,6 @@ public class AdsNative {
     }
 
     /*************************/
-    /**** setter & getter ****/
-    /*************************/
-
-    public AmsPort getAmsPort() {
-        return AmsPort.getByValue(amsAddress.mPort);
-    }
-
-    public void setAmsPort(AmsPort amsPort) {
-        amsAddress.setPort(amsPort.value);
-    }
-
-    public String getAmsNetId() {
-        return amsAddress.getNetIdString();
-    }
-
-    public void setAmsNetId(String amsNetId) throws AdsException {
-        try {
-            amsAddress.setNetIdStringEx(amsNetId);
-        } catch (IllegalArgumentException e) {
-            throw new AdsException(AdsError.ADS_INV_AMS_NET_ID);
-        }
-    }
-
-    /*************************/
     /********* public ********/
     /*************************/
 
@@ -133,7 +108,7 @@ public class AdsNative {
         return version + "." + revision + "." + build;
     }
 
-    protected AdsDeviceInfo adsReadDeviceInfo() throws AdsException {
+    protected DeviceInfo adsReadDeviceInfo() throws AdsException {
         if (adsPort != 0) {
             AdsDevName devName = new AdsDevName();
             AdsVersion version = new AdsVersion();
@@ -141,7 +116,7 @@ public class AdsNative {
             long errorCode = AdsCallDllFunction.adsSyncReadDeviceInfoReq(amsAddress, devName, version);
             if (errorCode != 0) throw new AdsException(errorCode);
 
-            AdsDeviceInfo deviceInfo = new AdsDeviceInfo();
+            DeviceInfo deviceInfo = new DeviceInfo();
             deviceInfo.setDeviceName(devName.getDevName());
             deviceInfo.setMinorVersion(version.getVersion());
             deviceInfo.setMajorVersion(version.getRevision());
@@ -151,16 +126,16 @@ public class AdsNative {
         } else throw new AdsException(AdsError.ADS_ADSPORT_CLOSED);
     }
 
-    protected AdsDeviceState adsReadState() throws AdsException {
+    protected DeviceState adsReadState() throws AdsException {
         if (adsPort != 0) {
             AdsState adsState = new AdsState();
             AdsState devState = new AdsState();
 
             long errorCode = AdsCallDllFunction.adsSyncReadStateReq(amsAddress, adsState, devState);
 
-            AdsDeviceState deviceState = new AdsDeviceState();
-            deviceState.setAdsState(AdsStatus.getByValue(adsState.getState()));
-            deviceState.setDevState(AdsStatus.getByValue(devState.getState()));
+            DeviceState deviceState = new DeviceState();
+            deviceState.setAdsState(State.getByValue(adsState.getState()));
+            deviceState.setDevState(State.getByValue(devState.getState()));
 
             if (errorCode != 0) throw new AdsException(errorCode);
 
@@ -168,7 +143,7 @@ public class AdsNative {
         } else throw new AdsException(AdsError.ADS_ADSPORT_CLOSED);
     }
 
-    protected void adsWriteControl(AdsDeviceState adsDeviceState, byte[] writeBuffer) throws AdsException {
+    protected void adsWriteControl(DeviceState adsDeviceState, byte[] writeBuffer) throws AdsException {
         if (adsPort != 0) {
             JNIByteBuffer jniWriteBuffer = new JNIByteBuffer(writeBuffer);
             int jniWriteBufferLength = jniWriteBuffer.getUsedBytesCount();

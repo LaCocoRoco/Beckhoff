@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 
 import twincat.TwincatLogger;
 import twincat.Utilities;
-import twincat.app.constants.Resources;
+import twincat.app.constant.Resources;
 
 public class ScopeApp extends JFrame {
     private static final long serialVersionUID = 1L;
