@@ -319,12 +319,12 @@ public class CommandLine {
     }
 
     private void cmdSymbolListAll() {
-        List<RouteSymbolLoader> routeSymbolLoaderList = RouteSymbolLoader.getRouteLoaderList();
+        List<RouteSymbolHandler> routeSymbolHandlerList = RouteSymbolHandler.getRouteHandlerList();
 
-        for (RouteSymbolLoader routeSymbolLoader : routeSymbolLoaderList) {
-            String hostName = routeSymbolLoader.getRoute().getHostName();
+        for (RouteSymbolHandler routeSymbolHandler : routeSymbolHandlerList) {
+            String hostName = routeSymbolHandler.getRoute().getHostName();
 
-            SymbolLoader symbolLoader = routeSymbolLoader.getSymbolLoader();
+            SymbolLoader symbolLoader = routeSymbolHandler.getSymbolLoader();
             String amsNetId = symbolLoader.getAmsNetId();
             AmsPort amsPort = symbolLoader.getAmsPort();
             int symbolListSize = symbolLoader.getSymbolList().size();

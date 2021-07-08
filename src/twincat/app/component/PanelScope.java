@@ -1,6 +1,5 @@
 package twincat.app.component;
 
-import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
-import twincat.app.constant.Resources;
+import twincat.Resources;
 import twincat.scope.Scope;
 
 public class PanelScope extends JSplitPane {
@@ -42,7 +41,7 @@ public class PanelScope extends JSplitPane {
         this.setOrientation(JSplitPane.VERTICAL_SPLIT);
         this.setContinuousLayout(true);
         this.setOneTouchExpandable(false);
-        this.setBackground(Color.WHITE);
+        //this.setBackground(Color.WHITE);
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
                 setDividerLocation(DIVIDER_LOCATION);

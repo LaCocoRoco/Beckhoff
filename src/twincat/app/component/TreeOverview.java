@@ -13,11 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
+import twincat.Resources;
 import twincat.Utilities;
-import twincat.app.constant.Resources;
 import twincat.app.container.LoremIpsum;
 
-public class TreeBrowser extends JPanel {
+public class TreeOverview extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*************************/
@@ -30,7 +30,7 @@ public class TreeBrowser extends JPanel {
     /****** constructor ******/
     /*************************/
 
-    public TreeBrowser(PanelTree panelTree) {
+    public TreeOverview(PanelBrowser panelBrowser) {
         JScrollPane browserPanel = new JScrollPane();
         browserPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         browserPanel.setBorder(BorderFactory.createEmptyBorder());
@@ -99,7 +99,7 @@ public class TreeBrowser extends JPanel {
         browserButtonSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panelTree.getPanelControl().displaySearch();
+                panelBrowser.getPanelControl().displaySearch();
             }
         });
 

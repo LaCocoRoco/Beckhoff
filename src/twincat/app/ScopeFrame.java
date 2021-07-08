@@ -14,24 +14,25 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import twincat.Resources;
 import twincat.TwincatLogger;
 import twincat.app.component.PanelContent;
 import twincat.app.component.PanelWindow;
-import twincat.app.constant.Resources;
+import twincat.app.constant.Window;
 
 public class ScopeFrame extends JPanel {
     private static final long serialVersionUID = 1L;
-
+ 
     /*************************/
     /*** local attributes ****/
     /*************************/
     
-    private final Logger logger = TwincatLogger.getLogger();
-    
+    private final PanelWindow panelWindow;
+
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
     
     private final JMenuBar scopeMenu = new JMenuBar();
-    
+
     private final PanelContent panelContent = new PanelContent();
 
     private final JMenuItem menuItemFileNew = new JMenuItem();   
@@ -48,38 +49,40 @@ public class ScopeFrame extends JPanel {
     
     private final JMenuItem menuItemWindowAxis = new JMenuItem();
     
+    private final Logger logger = TwincatLogger.getLogger();
+    
     /*************************/
     /****** constructor ******/
     /*************************/
 
     public ScopeFrame() {
-        PanelWindow panelWindow = panelContent.getPanelWindow();
+        panelWindow = panelContent.getPanelWindow();
         
         menuItemWindowScope.setText(languageBundle.getString(Resources.TEXT_WINDOW_SCOPE));
         menuItemWindowScope.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                panelWindow.setCard(PanelWindow.Card.SCOPE);
+                panelWindow.setCard(Window.SCOPE);
             }
         });
 
         menuItemWindowAds.setText(languageBundle.getString(Resources.TEXT_WINDOW_ADS));
         menuItemWindowAds.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                panelWindow.setCard(PanelWindow.Card.ADS);
+                panelWindow.setCard(Window.ADS);
             }
         });
 
         menuItemWindowAxis.setText(languageBundle.getString(Resources.TEXT_WINDOW_AXIS));
         menuItemWindowAxis.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                panelWindow.setCard(PanelWindow.Card.AXIS);
+                panelWindow.setCard(Window.AXIS);
             }
         });
 
         menuItemSettings.setText(languageBundle.getString(Resources.TEXT_EXTRAS_SETTINGS));
         menuItemSettings.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                panelWindow.setCard(PanelWindow.Card.SETTINGS);
+                panelWindow.setCard(Window.SETTINGS);
             }
         });
 
@@ -120,8 +123,8 @@ public class ScopeFrame extends JPanel {
         scopeMenu.add(menuFile);
         scopeMenu.add(menuWindow);
         scopeMenu.add(menuExtras);
-
-        panelContent.consoleShow();
+     
+        panelContent.consoleHide();
         
         this.setLayout(new BorderLayout());
         this.add(scopeMenu, BorderLayout.PAGE_START);
@@ -136,15 +139,26 @@ public class ScopeFrame extends JPanel {
         return logger.getLevel();
     }
 
-    public void setLoggerLevel(Level loggerLevel) {
-        TwincatLogger.setLevel(loggerLevel);
-        logger.setLevel(loggerLevel);
+    public void setLoggerLevel(Level level) {
+        logger.setLevel(level);
     }
   
-    public void setScopeMenuVisible(boolean flag) {
+    public void setMenuVisible(boolean flag) {
         scopeMenu.setVisible(flag);
     }
 
+    public void setConsoleVisible(boolean flag) {
+        if (flag) {
+            panelContent.consoleShow();   
+        } else {
+            panelContent.consoleHide();
+        }
+    }
+    
+    public void setWindow(Window card) {
+        panelWindow.setCard(card);
+    }
+    
     public void minifyMenuItems() {
         menuItemFileNew.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         menuItemFileNew.setHorizontalAlignment(JMenuItem.LEFT);

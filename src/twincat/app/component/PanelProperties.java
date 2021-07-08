@@ -4,23 +4,16 @@ import java.awt.CardLayout;
 
 import javax.swing.JPanel;
 
+import twincat.app.constant.Properties;
+
 public class PanelProperties extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*************************/
-    /** constant attributes **/
-    /*************************/
-
-    public static enum Card {
-        EMPTY, TRIGGER_GROUP, TRIGGER_CHANNEL,
-        CHART, AXIS, CHANNEL, ACQUISITION
-    }
-    
-    /*************************/
     /*** global attributes ***/
     /*************************/
     
-    private Card card = Card.EMPTY;  
+    private Properties card = Properties.EMPTY;  
 
     private final PanelControl panelControl;
 
@@ -48,13 +41,13 @@ public class PanelProperties extends JPanel {
         this.panelControl = panelControl;
         
         this.setLayout(new CardLayout());
-        this.add(new JPanel(), Card.EMPTY.toString());
-        this.add(propertiesTriggerGroup, Card.TRIGGER_GROUP.toString());
-        this.add(propertiesTriggerChannel, Card.TRIGGER_CHANNEL.toString());
-        this.add(propertiesChart, Card.CHART.toString());
-        this.add(propertiesAxis, Card.AXIS.toString());
-        this.add(propertiesChannel, Card.CHANNEL.toString());
-        this.add(propertiesAcquisition, Card.ACQUISITION.toString());
+        this.add(new JPanel(), Properties.EMPTY.toString());
+        this.add(propertiesTriggerGroup, Properties.TRIGGER_GROUP.toString());
+        this.add(propertiesTriggerChannel, Properties.TRIGGER_CHANNEL.toString());
+        this.add(propertiesChart, Properties.CHART.toString());
+        this.add(propertiesAxis, Properties.AXIS.toString());
+        this.add(propertiesChannel, Properties.CHANNEL.toString());
+        this.add(propertiesAcquisition, Properties.ACQUISITION.toString());
     }
 
     /*************************/
@@ -69,11 +62,11 @@ public class PanelProperties extends JPanel {
     /********* public ********/
     /*************************/
 
-    public Card getCard() {
+    public Properties getCard() {
         return card;
     }
 
-    public void setCard(Card card) {
+    public void setCard(Properties card) {
         CardLayout cardLayout = (CardLayout) (this.getLayout());
         cardLayout.show(this, card.toString());
         this.card = card;        

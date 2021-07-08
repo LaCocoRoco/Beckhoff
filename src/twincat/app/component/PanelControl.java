@@ -1,6 +1,5 @@
 package twincat.app.component;
 
-import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -8,7 +7,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
-import twincat.app.constant.Resources;
+import twincat.Resources;
+import twincat.app.constant.Browser;
+import twincat.app.constant.Properties;
 
 public class PanelControl extends JSplitPane {
     private static final long serialVersionUID = 1L;
@@ -29,9 +30,9 @@ public class PanelControl extends JSplitPane {
     /*** local attributes ****/
     /*************************/
     
-    private PanelProperties.Card propertiesCard = PanelProperties.Card.EMPTY;
+    private Properties properties = Properties.EMPTY;
     
-    private final PanelTree panelTree = new PanelTree(this);
+    private final PanelBrowser panelBrowser = new PanelBrowser(this);
 
     private final PanelProperties panelProperties = new PanelProperties(this);
 
@@ -42,13 +43,12 @@ public class PanelControl extends JSplitPane {
     public PanelControl(PanelScope panelScope) {
         this.panelScope = panelScope;
         
-        this.setLeftComponent(panelTree);
+        this.setLeftComponent(panelBrowser);
         this.setRightComponent(panelProperties);
         this.setDividerSize(Resources.DEFAULT_DIVIDER_SIZE);
         this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         this.setContinuousLayout(true);
         this.setOneTouchExpandable(false);
-        this.setBackground(Color.WHITE);
         this.setBorder(BorderFactory.createEmptyBorder()); 
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
@@ -77,13 +77,13 @@ public class PanelControl extends JSplitPane {
     /*************************/
   
     public void displaySearch() {
-        propertiesCard = panelProperties.getCard();
-        panelTree.setCard(PanelTree.Card.SEARCH);
-        panelProperties.setCard(PanelProperties.Card.ACQUISITION);
+        properties = panelProperties.getCard();
+        panelBrowser.setCard(Browser.SEARCH);
+        panelProperties.setCard(Properties.ACQUISITION);
     }
     
     public void displayBrowser() {
-        panelTree.setCard(PanelTree.Card.BROWSE);
-        panelProperties.setCard(propertiesCard);
+        panelBrowser.setCard(Browser.OVERVIEW);
+        panelProperties.setCard(properties);
     }
 }

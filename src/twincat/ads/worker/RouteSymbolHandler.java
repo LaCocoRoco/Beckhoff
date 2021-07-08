@@ -11,7 +11,7 @@ import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
 import twincat.ads.container.Route;
 
-public class RouteSymbolLoader {
+public class RouteSymbolHandler {
     /*************************/
     /** constant attributes **/
     /*************************/
@@ -30,7 +30,7 @@ public class RouteSymbolLoader {
     /****** constructor ******/
     /*************************/
     
-    public RouteSymbolLoader(Route route, SymbolLoader symbolLoader) {
+    public RouteSymbolHandler(Route route, SymbolLoader symbolLoader) {
         this.route = route;
         this.symbolLoader = symbolLoader;
     }
@@ -51,15 +51,15 @@ public class RouteSymbolLoader {
     /** public static final **/
     /*************************/   
     
-    public static final List<RouteSymbolLoader> getSymbolLoaderList(AmsNetId amsNetId) {
+    public static final List<RouteSymbolHandler> getSymbolLoaderList(AmsNetId amsNetId) {
         return null;
     }
        
-    public static final List<RouteSymbolLoader> getSymbolLoaderList(AmsPort amsPort) {
+    public static final List<RouteSymbolHandler> getSymbolLoaderList(AmsPort amsPort) {
         return null;
     }
     
-    public static final List<RouteSymbolLoader> getRouteLoaderList() {
+    public static final List<RouteSymbolHandler> getRouteHandlerList() {
         Logger logger = TwincatLogger.getLogger();
         AdsClient adsClient = new AdsClient();
 
@@ -92,7 +92,7 @@ public class RouteSymbolLoader {
 
         logger.fine("Loading Route Symbol List");
         
-        List<RouteSymbolLoader> routeSymbolLoaderList = new ArrayList<RouteSymbolLoader>();
+        List<RouteSymbolHandler> routeSymbolHandlerList = new ArrayList<RouteSymbolHandler>();
         
         for (Route route : routeList) {
             String amsNetId = route.getAmsNetId();
@@ -111,8 +111,8 @@ public class RouteSymbolLoader {
                     symbolLoader.setAmsNetId(amsNetId);
                     symbolLoader.parseSymbolList();
                     
-                    RouteSymbolLoader routeSymbolLoader = new RouteSymbolLoader(route, symbolLoader);         
-                    routeSymbolLoaderList.add(routeSymbolLoader);
+                    RouteSymbolHandler routeSymbolHandler = new RouteSymbolHandler(route, symbolLoader);         
+                    routeSymbolHandlerList.add(routeSymbolHandler);
                 } catch (AdsException e) {
                     // skip port exceptions
                 } finally {
@@ -123,6 +123,6 @@ public class RouteSymbolLoader {
         
         logger.fine("Route Symbol Loader List Done"); 
         
-        return routeSymbolLoaderList;
+        return routeSymbolHandlerList;
     }
 }

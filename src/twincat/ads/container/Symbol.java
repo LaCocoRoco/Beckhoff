@@ -29,5 +29,5 @@ public class Symbol {
 
     public void setDataType(DataType dataType) {
         this.dataType = dataType;
-    } 
+    }
 }

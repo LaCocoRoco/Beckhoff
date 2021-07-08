@@ -6,8 +6,8 @@ import java.awt.Insets;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import twincat.Resources;
 import twincat.Utilities;
-import twincat.app.constant.Resources;
 
 public class PanelAds extends JScrollPane {
     private static final long serialVersionUID = 1L;

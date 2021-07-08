@@ -1,7 +1,6 @@
 package twincat.app.component;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Insets;
@@ -19,9 +18,9 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.text.BadLocationException;
 
+import twincat.Resources;
 import twincat.TwincatLogger;
 import twincat.ads.worker.CommandLine;
-import twincat.app.constant.Resources;
 
 public class PanelConsole extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -74,7 +73,6 @@ public class PanelConsole extends JPanel {
         JScrollPane consolePanel = new JScrollPane(textArea);
         consolePanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         consolePanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        consolePanel.setBackground(Color.WHITE);
         consolePanel.setViewportView(textArea);
 
         CommandLine adsCmd = new CommandLine();

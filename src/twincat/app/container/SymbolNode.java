@@ -10,7 +10,7 @@ public class SymbolNode {
     /*************************/
 
     private final Symbol symbol;
-    
+
     private final SymbolLoader symbolLoader;
 
     /*************************/
@@ -23,12 +23,20 @@ public class SymbolNode {
     }
 
     /*************************/
+    /**** setter & getter ****/
+    /*************************/
+    
+    public Symbol getSymbol() {
+        return symbol;
+    }
+
+    /*************************/
     /********* public ********/
     /*************************/
- 
+
     @Override
     public String toString() {
-        int indexBeg = symbol.getSymbolName().lastIndexOf(".");
+        int indexBeg = symbol.getSymbolName().lastIndexOf(".") + 1;
         int indexEnd = symbol.getSymbolName().length();
         return symbol.getSymbolName().substring(indexBeg, indexEnd);
     }

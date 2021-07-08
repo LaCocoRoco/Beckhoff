@@ -11,8 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
+import twincat.Resources;
 import twincat.Utilities;
-import twincat.app.constant.Resources;
 import twincat.app.container.LoremIpsum;
 
 public class PanelChart extends JPanel {

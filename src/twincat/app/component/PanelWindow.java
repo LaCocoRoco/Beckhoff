@@ -4,22 +4,16 @@ import java.awt.CardLayout;
 
 import javax.swing.JPanel;
 
+import twincat.app.constant.Window;
+
 public class PanelWindow extends JPanel {
     private static final long serialVersionUID = 1L;
-
-    /*************************/
-    /** constant attributes **/
-    /*************************/
-
-    public static enum Card {
-        SCOPE, ADS, AXIS, SETTINGS
-    }
 
     /*************************/
     /*** global attributes ***/
     /*************************/
     
-    private Card card = Card.ADS;
+    private Window card = Window.SCOPE;
 
     private final PanelAds panelAds = new PanelAds();
 
@@ -35,10 +29,10 @@ public class PanelWindow extends JPanel {
 
     public PanelWindow() {
         this.setLayout(new CardLayout());
-        this.add(panelScope, Card.SCOPE.toString());
-        this.add(panelAds, Card.ADS.toString());
-        this.add(panelAxis, Card.AXIS.toString());
-        this.add(panelSettings, Card.SETTINGS.toString());
+        this.add(panelScope, Window.SCOPE.toString());
+        this.add(panelAds, Window.ADS.toString());
+        this.add(panelAxis, Window.AXIS.toString());
+        this.add(panelSettings, Window.SETTINGS.toString());
         this.setCard(card);
     }
 
@@ -66,11 +60,11 @@ public class PanelWindow extends JPanel {
     /********* public ********/
     /*************************/
     
-    public Card getCard() {
+    public Window getCard() {
         return card;
     }
 
-    public void setCard(Card card) {
+    public void setCard(Window card) {
         CardLayout cardLayout = (CardLayout) (this.getLayout());
         cardLayout.show(this, card.toString());
         this.card = card;

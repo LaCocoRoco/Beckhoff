@@ -9,9 +9,10 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
+import twincat.Resources;
 import twincat.TwincatLogger;
 import twincat.Utilities;
-import twincat.app.constant.Resources;
+import twincat.app.constant.Window;
 
 public class ScopeApp extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -27,9 +28,7 @@ public class ScopeApp extends JFrame {
     /*************************/
     /*** local attributes ***/
     /*************************/
-  
-    private final Logger logger = TwincatLogger.getLogger();
-    
+
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
     
     /*************************/
@@ -40,7 +39,10 @@ public class ScopeApp extends JFrame {
         parseArgs(args);
         
         ScopeFrame scopeFrame = new ScopeFrame();
-        scopeFrame.setScopeMenuVisible(true);
+        scopeFrame.minifyMenuItems();
+        scopeFrame.setMenuVisible(true);
+        scopeFrame.setConsoleVisible(false);
+        scopeFrame.setWindow(Window.SCOPE);
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int framePositionX = screenSize.width / 2 - WIDTH_FRAME / 2;
@@ -68,23 +70,23 @@ public class ScopeApp extends JFrame {
                     break;
                 
                 case "off":
-                    logger.setLevel(Level.OFF);
+                    TwincatLogger.setLevel(Level.OFF);
                     break;
 
                 case "fine":
-                    logger.setLevel(Level.FINE);
+                    TwincatLogger.setLevel(Level.FINE);
                     break; 
                     
                 case "info":
-                    logger.setLevel(Level.INFO);
+                    TwincatLogger.setLevel(Level.INFO);
                     break; 
                     
                 case "warning":
-                    logger.setLevel(Level.WARNING);
+                    TwincatLogger.setLevel(Level.WARNING);
                     break;
                     
                 case "severe":
-                    logger.setLevel(Level.SEVERE);
+                    TwincatLogger.setLevel(Level.SEVERE);
                     break;
             }
         }

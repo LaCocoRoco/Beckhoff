@@ -4,22 +4,16 @@ import java.awt.CardLayout;
 
 import javax.swing.JPanel;
 
-public class PanelTree extends JPanel {
+import twincat.app.constant.Browser;
+
+public class PanelBrowser extends JPanel {
     private static final long serialVersionUID = 1L;
-
-    /*************************/
-    /** constant attributes **/
-    /*************************/
-
-    public static enum Card {
-        BROWSE, SEARCH
-    }
 
     /*************************/
     /*** global attributes ***/
     /*************************/
     
-    private Card card = Card.BROWSE;
+    private Browser browser = Browser.OVERVIEW;
 
     private final PanelControl panelControl;
 
@@ -27,7 +21,7 @@ public class PanelTree extends JPanel {
     /*** local attributes ****/
     /*************************/
 
-    private final TreeBrowser treeBrowser = new TreeBrowser(this);
+    private final TreeOverview treeOverview = new TreeOverview(this);
 
     private final TreeSearch treeSearch = new TreeSearch(this);
 
@@ -35,12 +29,12 @@ public class PanelTree extends JPanel {
     /****** constructor ******/
     /*************************/
 
-    public PanelTree(PanelControl panelControl) {
+    public PanelBrowser(PanelControl panelControl) {
         this.panelControl = panelControl;
         this.setLayout(new CardLayout());
-        this.add(treeBrowser, Card.BROWSE.toString());
-        this.add(treeSearch, Card.SEARCH.toString());
-        this.setCard(card);
+        this.add(treeOverview, Browser.OVERVIEW.toString());
+        this.add(treeSearch, Browser.SEARCH.toString());
+        this.setCard(browser);
     }
 
     /*************************/
@@ -55,13 +49,13 @@ public class PanelTree extends JPanel {
     /********* public ********/
     /*************************/
 
-    public Card getCard() {
-        return card;
+    public Browser getCard() {
+        return browser;
     }
 
-    public void setCard(Card card) {
+    public void setCard(Browser card) {
         CardLayout cardLayout = (CardLayout) (this.getLayout());
         cardLayout.show(this, card.toString());
-        this.card = card;       
+        this.browser = card;       
     }
 }

@@ -7,7 +7,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import twincat.app.constant.Resources;
+import twincat.Resources;
 import twincat.app.container.LoremIpsum;
 
 public class PropertiesChannel extends JPanel {

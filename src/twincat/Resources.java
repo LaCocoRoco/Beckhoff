@@ -1,4 +1,4 @@
-package twincat.app.constant;
+package twincat;
 
 public class Resources {
 
@@ -69,10 +69,10 @@ public class Resources {
     
     public static final String TEXT_SEARCH_APPLY = "searchApply";
     
-    public static final String TEXT_SEARCH_ALL_NET_IDS = "searchAllNetId";
+    public static final String TEXT_SEARCH_ALL_ROUTES = "searchAllRoutes";
     
     public static final String TEXT_SEARCH_ALL_PORTS = "searchAllPorts";
-    
+
     public static final String TEXT_SEARCH_HINT = "searchHint";
     
     
