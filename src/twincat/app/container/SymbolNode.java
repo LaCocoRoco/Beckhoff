@@ -1,8 +1,5 @@
 package twincat.app.container;
 
-import java.util.List;
-
-import twincat.ads.constant.DataType;
 import twincat.ads.container.Symbol;
 import twincat.ads.worker.SymbolLoader;
 
@@ -13,52 +10,58 @@ public class SymbolNode {
 
     private boolean isVisible = true;
 
-    /*************************/
-    /*** local attributes ****/
-    /*************************/
+    private final boolean fullSymbolName;
 
     private final Symbol symbol;
 
-    @SuppressWarnings("unused")
     private final SymbolLoader symbolLoader;
 
     /*************************/
     /****** constructor ******/
     /*************************/
 
-    public SymbolNode(Symbol symbol, SymbolLoader symbolLoader) {
+    public SymbolNode(Symbol symbol, SymbolLoader symbolLoader, boolean fullSymbolName) {
         this.symbol = symbol;
         this.symbolLoader = symbolLoader;
+        this.fullSymbolName = fullSymbolName;
     }
 
     /*************************/
     /**** setter & getter ****/
     /*************************/
 
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    public boolean isUsingFullSymbolName() {
+        return fullSymbolName;
+    }
+
     public Symbol getSymbol() {
         return symbol;
     }
-    
-    public boolean isVisible() {
-        switch (symbol.getDataType()) {
-            case BIT:
-                // set bit invisible
-                return false;
 
-            default:
-                // everything else visible
-                return true;
-        }
+    public SymbolLoader getSymbolLoader() {
+        return symbolLoader;
     }
 
     /*************************/
-    /********* public ********/
+    /******** override *******/
     /*************************/
 
     @Override
     public String toString() {
-        int indexBeg = symbol.getSymbolName().lastIndexOf(".") + 1;
-        int indexEnd = symbol.getSymbolName().length();
-        return symbol.getSymbolName().substring(indexBeg, indexEnd);
+        if (!fullSymbolName) {
+            int indexBeg = symbol.getSymbolName().lastIndexOf(".") + 1;
+            int indexEnd = symbol.getSymbolName().length();
+            return symbol.getSymbolName().substring(indexBeg, indexEnd);
+        } else {
+            return symbol.getSymbolName();
+        }
     }
 }

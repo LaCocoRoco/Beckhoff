@@ -23,7 +23,7 @@ public class PanelBrowser extends JPanel {
 
     private final TreeOverview treeOverview = new TreeOverview(this);
 
-    private final TreeSearch treeSearch = new TreeSearch(this);
+    private final TreeAcquisition treeAcquisition = new TreeAcquisition(this);
 
     /*************************/
     /****** constructor ******/
@@ -33,7 +33,7 @@ public class PanelBrowser extends JPanel {
         this.panelControl = panelControl;
         this.setLayout(new CardLayout());
         this.add(treeOverview, Browser.OVERVIEW.toString());
-        this.add(treeSearch, Browser.SEARCH.toString());
+        this.add(treeAcquisition, Browser.ACQUISITION.toString());
         this.setCard(browser);
     }
 

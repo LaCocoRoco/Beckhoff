@@ -4,7 +4,7 @@
 	<ProjectInfo>
 		<Path>C:\Workspace\Eclipse\Beckhoff\twc\pro\ads.pro</Path>
 		<IsLibrary>false</IsLibrary>
-		<ChangeDate>2021-07-09T12:41:04</ChangeDate>
+		<ChangeDate>2021-07-09T20:54:00</ChangeDate>
 		<Library>
 			<Name>STANDARD.LIB</Name>
 			<Path>C:\TWINCAT\PLC\LIB\STANDARD.LIB</Path>
@@ -944,7 +944,7 @@
 	</Functions>
 	<Programs>
 		<Program>
-			<Name Decoration="1001046E" Crc32="4068594680" LastChange="2021-07-09T12:41:03">main</Name>
+			<Name Decoration="10010460" Crc32="1589089940" LastChange="2021-07-09T12:41:30">main</Name>
 			<PrgInfo>
 				<CodeIndex>51</CodeIndex>
 				<Symbol>
@@ -956,7 +956,7 @@
 	<Symbols>
 		<Symbol>
 			<Name>main.l_test_bit</Name>
-			<Type>BYTE</Type>
+			<Type>BOOL</Type>
 			<Comment>
 				<![CDATA[
 	l_fb_unit	:fb_junit;]]>

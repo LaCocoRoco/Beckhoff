@@ -1,6 +1,9 @@
 package twincat.app.container;
 
+import java.util.Enumeration;
+
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 public class SymbolTreeNode extends DefaultMutableTreeNode {
     private static final long serialVersionUID = 1L;
@@ -36,66 +39,53 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
     /*************************/
     /**** setter & getter ****/
     /*************************/
-
-    /*
-    public static final boolean isAnySymbolChildVisible(SymbolTreeNode symbolTreeNode) {
-        // wir rufen alle kinder auf, ist eines sichtbar wird der tree eingeblendet
-
-        Object userObject = symbolTreeNode.getUserObject();
-
-        // ist das hier ein node mit symbol ?
-        if (userObject instanceof SymbolNode) {
-            SymbolNode symbolNode = (SymbolNode) userObject;
-
-            // ist dieses symbol sichtbar ?
-            if (symbolNode.isVisible()) {
-                return true;
-            }
-        }
-
-        // durchsuche das naechste kind
-        for (int i = 0; i < symbolTreeNode.getChildCount(); i++) {
-            SymbolTreeNode symbolTreeNodeChild = (SymbolTreeNode) symbolTreeNode.getChildAt(i);
-
-            // das kind nochmals aufrufen und kontrollieren
-            if (SymbolTreeNode.isAnySymbolChildVisible(symbolTreeNodeChild)) {
-                return true;
-            }
-        }
-
-        // keines sichtbar. kann ausgeblendet werden
-        return false;
-    }
-
+    
     public boolean isVisible() {
-        if (userObject instanceof SymbolNode) {
+        /*
+        if (isVisible) {
+            // is global attribute set
+            return true; 
+        } else if (userObject instanceof SymbolNode) {
+            // is symbol node visible
             SymbolNode symbolNode = (SymbolNode) userObject;
             return symbolNode.isVisible();
         } else {
+            // is any child visible
             return SymbolTreeNode.isAnySymbolChildVisible(this);
         }
+        */
+        
+        return isVisible;
     }
-    */
+   
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
 
     /*************************/
     /********* public ********/
     /*************************/
 
-    public SymbolTreeNode getTreeNode(String name) {
+    public SymbolTreeNode getNode(String name) {
         for (int i = 0; i < this.getChildCount(); i++) {
             if (this.getChildAt(i).toString().equals(name)) {
-                // return node by node name
+                // return child node
                 return (SymbolTreeNode) this.getChildAt(i);
             }
         }
 
-        // add new node by node name
-        SymbolTreeNode node = new SymbolTreeNode(name);
-        this.add(node);
-        return node;
+        // add new node
+        SymbolTreeNode symbolTreeNode = new SymbolTreeNode(name);
+        this.add(symbolTreeNode);
+        return symbolTreeNode;
     }
 
-    public SymbolTreeNode addSymbolNode(SymbolNode symbolNode) {
+    public void addSymbolNode(SymbolNode symbolNode) {
+        SymbolTreeNode symbolTreeNode = new SymbolTreeNode(symbolNode);
+        this.add(symbolTreeNode);
+    }
+
+    public void addSymbolNodeAndSplit(SymbolNode symbolNode) {
         String[] symbolNodeNameArray = symbolNode.getSymbol().getSymbolName().split("\\.");
 
         // set symbol name of dot to global
@@ -122,8 +112,7 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
 
             if (i == symbolNodeNameArray.length - 1) {
                 // add mew symbol node to tree
-                SymbolTreeNode symbolTreeNode = new SymbolTreeNode(symbolNode);
-                symbolTreeNodePointer.add(symbolTreeNode);
+                symbolTreeNodePointer.addSymbolNode(symbolNode);
             } else {
                 // add new folder node to tree
                 SymbolTreeNode symbolTreeNode = new SymbolTreeNode(symbolNodeName);
@@ -131,18 +120,16 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
                 symbolTreeNodePointer = symbolTreeNode;
             }
         }
-
-        return symbolTreeNodePointer;
     }
 
-    /*************************/
-    /******** override *******/
-    /*************************/
+    public TreeNode getChildAt(int index, boolean symbolFilter) {
+        if (!symbolFilter) {
+            return super.getChildAt(index);
+        }
 
-    /*
-    @Override
-    public TreeNode getChildAt(int index) {
-        if (children == null) throw new ArrayIndexOutOfBoundsException();
+        if (children == null) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
 
         int realIndex = -1;
         int visibleIndex = -1;
@@ -166,13 +153,18 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         throw new ArrayIndexOutOfBoundsException();
     }
 
-    @Override
-    public int getChildCount() {
-        if (children == null) return 0;
+    public int getChildCount(boolean symbolFilter) {
+        if (!symbolFilter) {
+            return super.getChildCount();
+        }
+
+        if (children == null) { 
+            return 0;
+        }
 
         int count = 0;
+        
         Enumeration<?> enumerator = children.elements();
-
         while (enumerator.hasMoreElements()) {
             SymbolTreeNode symbolTreeNode = (SymbolTreeNode) enumerator.nextElement();
 
@@ -184,5 +176,30 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
 
         return count;
     }
-    */
+
+    /*************************/
+    /** public static final **/
+    /*************************/
+
+    public static final boolean isAnySymbolChildVisible(SymbolTreeNode symbolTreeNode) {
+        Object userObject = symbolTreeNode.getUserObject();
+
+        if (userObject instanceof SymbolNode) {
+            SymbolNode symbolNode = (SymbolNode) userObject;
+
+            if (symbolNode.isVisible()) {
+                return true;
+            }
+        }
+
+        for (int i = 0; i < symbolTreeNode.getChildCount(); i++) {
+            SymbolTreeNode symbolTreeNodeChild = (SymbolTreeNode) symbolTreeNode.getChildAt(i);
+
+            if (SymbolTreeNode.isAnySymbolChildVisible(symbolTreeNodeChild)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

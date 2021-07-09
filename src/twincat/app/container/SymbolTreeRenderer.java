@@ -1,7 +1,6 @@
 package twincat.app.container;
 
 import java.awt.Component;
-import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
@@ -70,8 +69,9 @@ public class SymbolTreeRenderer extends DefaultTreeCellRenderer {
     /*************************/
 
     @Override
-    public Component getTreeCellRendererComponent(JTree t, Object v, boolean s, boolean e, boolean l, int r,
-            boolean hF) {
+    public Component getTreeCellRendererComponent(JTree t, Object v,
+            boolean s, boolean e, boolean l, int r, boolean hF) {
+        
         super.getTreeCellRendererComponent(t, v, s, e, l, r, hF);
 
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) v;
@@ -88,42 +88,42 @@ public class SymbolTreeRenderer extends DefaultTreeCellRenderer {
                 case INT8:
                     this.setIcon(ICON_INT8);
                     break;
-                    
+
                 case UINT8:
                     this.setIcon(ICON_UINT8);
                     break;
-                    
+
                 case INT16:
                     this.setIcon(ICON_INT16);
                     break;
-                    
+
                 case UINT16:
                     this.setIcon(ICON_UINT16);
                     break;
-                    
+
                 case INT32:
                     this.setIcon(ICON_INT32);
                     break;
-                    
+
                 case UINT32:
                     this.setIcon(ICON_UINT32);
                     break;
-                    
+
                 case REAL32:
                     this.setIcon(ICON_REAL32);
                     break;
                 case REAL64:
                     this.setIcon(ICON_REAL64);
                     break;
-                    
+
                 case STRING:
                     this.setIcon(ICON_STRING);
                     break;
-                    
+
                 case BIGTYPE:
                     this.setIcon(ICON_BIGTYPE);
                     break;
-                    
+
                 default:
                     break;
             }

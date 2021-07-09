@@ -78,7 +78,7 @@ public class PanelControl extends JSplitPane {
   
     public void displaySearch() {
         properties = panelProperties.getCard();
-        panelBrowser.setCard(Browser.SEARCH);
+        panelBrowser.setCard(Browser.ACQUISITION);
         panelProperties.setCard(Properties.ACQUISITION);
     }
     
