@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -39,6 +40,7 @@ import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.TreePath;
 
 import twincat.Resources;
+import twincat.TwincatLogger;
 import twincat.ads.constant.DataType;
 import twincat.ads.container.Symbol;
 import twincat.ads.worker.RouteSymbolHandler;
@@ -62,6 +64,8 @@ public class TreeSearch extends JPanel {
     private final JComboBox<String> portComboBox = new JComboBox<String>();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
+
+    private final Logger logger = TwincatLogger.getLogger();
 
     /*************************/
     /****** constructor ******/
@@ -88,6 +92,7 @@ public class TreeSearch extends JPanel {
                     int x = mouseEvent.getX();
                     int y = mouseEvent.getY();
                     
+                    /*
                     TreePath treePath = symbolTree.getPathForLocation(x, y);
                     SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();
                     Object userObject = symbolTreeNode.getUserObject();
@@ -95,9 +100,8 @@ public class TreeSearch extends JPanel {
                     if (userObject instanceof SymbolNode) {
                         SymbolNode symbolNode = (SymbolNode) symbolTreeNode.getUserObject();
                         
-                        if (symbolNode.isBigType()) {
-                            /* TODO : add new list
-                             * NOTE > is leaf ?
+                        if (symbolNode.getSymbol().getDataType().equals(DataType.BIGTYPE)) {
+                            // TODO : add new list | Note : is leaf ?
                             SymbolTreeNode symbolTreeNodePort = symbolTreeNode.getTreeNode(route).getTreeNode(port);
                             SymbolLoader symbolLoader = routeSymbolHandler.getSymbolLoader();
 
@@ -106,14 +110,14 @@ public class TreeSearch extends JPanel {
                                 SymbolNode symbolNode = new SymbolNode(symbol, symbolLoader);
                                 symbolTreeNodePort.addSymbolNode(symbolNode);
                             }
-                            */
                         }
                         
                         System.out.println(symbolNode.getSymbol().getSymbolName());
                     }
 
                     //Object[] resourceList = treePath.getPath();
-                    //Object test = resourceList[0];        
+                    //Object test = resourceList[0]; 
+                    */
                 }
             }
         });
@@ -211,8 +215,7 @@ public class TreeSearch extends JPanel {
         Border searchTextEmptyBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
         CompoundBorder searchTextBorder = new CompoundBorder(searchTextLowerBorder, searchTextEmptyBorder);
         searchBotToolbarTextField.setBorder(searchTextBorder);
-        searchBotToolbarTextField
-                .setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        searchBotToolbarTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         searchBotToolbarTextField.setText(languageBundle.getString(Resources.TEXT_SEARCH_HINT));
         searchBotToolbarTextField.setForeground(Color.GRAY);
         searchBotToolbarTextField.addFocusListener(new FocusListener() {
@@ -356,6 +359,9 @@ public class TreeSearch extends JPanel {
         SymbolTreeNode symbolTreeNode = new SymbolTreeNode();
         SymbolTreeModel symbolTreeModel = new SymbolTreeModel(symbolTreeNode);
 
+        logger.info("Build RouteSymbolHandler Start");
+        long startTime = System.currentTimeMillis();
+        
         for (RouteSymbolHandler routeSymbolHandler : routeSymbolHandlerList) {
             String route = routeSymbolHandler.getRoute().getHostName();
             String port = routeSymbolHandler.getSymbolLoader().getAmsPort().toString();
@@ -382,9 +388,10 @@ public class TreeSearch extends JPanel {
             }
         }
 
+        logger.info("Build RouteSymbolHandler Stop: " + (System.currentTimeMillis() - startTime));
+        
         symbolTree.setModel(symbolTreeModel);
         symbolTree.expandRow(0);    // expand to port level
-
 
         // 99. build finished
     }

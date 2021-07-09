@@ -8,6 +8,12 @@ import twincat.ads.worker.SymbolLoader;
 
 public class SymbolNode {
     /*************************/
+    /*** global attributes ***/
+    /*************************/
+
+    private boolean isVisible = true;
+
+    /*************************/
     /*** local attributes ****/
     /*************************/
 
@@ -28,9 +34,21 @@ public class SymbolNode {
     /*************************/
     /**** setter & getter ****/
     /*************************/
-    
+
     public Symbol getSymbol() {
         return symbol;
+    }
+    
+    public boolean isVisible() {
+        switch (symbol.getDataType()) {
+            case BIT:
+                // set bit invisible
+                return false;
+
+            default:
+                // everything else visible
+                return true;
+        }
     }
 
     /*************************/
@@ -42,15 +60,5 @@ public class SymbolNode {
         int indexBeg = symbol.getSymbolName().lastIndexOf(".") + 1;
         int indexEnd = symbol.getSymbolName().length();
         return symbol.getSymbolName().substring(indexBeg, indexEnd);
-    }
-    
-    // TODO : combine is big type and get symbol list
-    
-    public boolean isBigType() {
-        return symbol.getDataType().equals(DataType.BIGTYPE) ? true : false;
-    }
-    
-    public List<Symbol> getSymbolList() {
-        return null;
     }
 }
