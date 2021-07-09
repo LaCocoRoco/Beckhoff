@@ -1,12 +1,10 @@
-package twincat.app.container;
+package twincat;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
 
 import javax.swing.JTextArea;
-
-import twincat.Utilities;
 
 public class LoremIpsum extends JTextArea {
     private static final long serialVersionUID = 1L;

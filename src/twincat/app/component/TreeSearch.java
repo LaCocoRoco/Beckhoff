@@ -2,7 +2,7 @@ package twincat.app.component;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.ComponentOrientation;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -12,14 +12,19 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -30,15 +35,18 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.basic.BasicComboBoxUI;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.plaf.basic.BasicTreeUI;
+import javax.swing.tree.TreePath;
 
 import twincat.Resources;
+import twincat.ads.constant.DataType;
 import twincat.ads.container.Symbol;
 import twincat.ads.worker.RouteSymbolHandler;
 import twincat.ads.worker.SymbolLoader;
-import twincat.app.container.LoremIpsum;
 import twincat.app.container.SymbolNode;
+import twincat.app.container.SymbolTreeModel;
+import twincat.app.container.SymbolTreeNode;
+import twincat.app.container.SymbolTreeRenderer;
 
 public class TreeSearch extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -46,9 +54,9 @@ public class TreeSearch extends JPanel {
     /*************************/
     /*** local attributes ****/
     /*************************/
-    
-    private final JTree tree = new JTree();
 
+    private final JTree symbolTree = new JTree();
+    
     private final JComboBox<String> routeComboBox = new JComboBox<String>();
 
     private final JComboBox<String> portComboBox = new JComboBox<String>();
@@ -59,22 +67,70 @@ public class TreeSearch extends JPanel {
     /****** constructor ******/
     /*************************/
 
-    
-
     public TreeSearch(PanelBrowser panelBrowser) {
+        symbolTree.setCellRenderer(new SymbolTreeRenderer());      
+        symbolTree.setBorder(BorderFactory.createEmptyBorder(5, -5, 0, 0));
+        symbolTree.setRootVisible(false);
+        symbolTree.setScrollsOnExpand(false);
+        symbolTree.setShowsRootHandles(true);
+        symbolTree.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        
+        symbolTree.setUI(new BasicTreeUI() {
+            @Override
+            protected boolean shouldPaintExpandControl(TreePath p, int r, boolean iE, boolean hBE, boolean iL) {
+                return false; 
+            } 
+        });
+        
+        symbolTree.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent mouseEvent) {
+                if (mouseEvent.getClickCount() == 2) {
+                    int x = mouseEvent.getX();
+                    int y = mouseEvent.getY();
+                    
+                    TreePath treePath = symbolTree.getPathForLocation(x, y);
+                    SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();
+                    Object userObject = symbolTreeNode.getUserObject();
+                     
+                    if (userObject instanceof SymbolNode) {
+                        SymbolNode symbolNode = (SymbolNode) symbolTreeNode.getUserObject();
+                        
+                        if (symbolNode.isBigType()) {
+                            /* TODO : add new list
+                             * NOTE > is leaf ?
+                            SymbolTreeNode symbolTreeNodePort = symbolTreeNode.getTreeNode(route).getTreeNode(port);
+                            SymbolLoader symbolLoader = routeSymbolHandler.getSymbolLoader();
+
+                            List<Symbol> symbolList = symbolLoader.getSymbolList();
+                            for (Symbol symbol : symbolList) {
+                                SymbolNode symbolNode = new SymbolNode(symbol, symbolLoader);
+                                symbolTreeNodePort.addSymbolNode(symbolNode);
+                            }
+                            */
+                        }
+                        
+                        System.out.println(symbolNode.getSymbol().getSymbolName());
+                    }
+
+                    //Object[] resourceList = treePath.getPath();
+                    //Object test = resourceList[0];        
+                }
+            }
+        });
+        
         JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
-        scrollPanel.setViewportView(tree);
+        scrollPanel.setViewportView(symbolTree);
 
         Border hostNameComboBoxInside = BorderFactory.createLoweredBevelBorder();
         Border hostNameComboBoxOutside = BorderFactory.createEmptyBorder(0, 0, 0, 1);
         CompoundBorder hostNameComboBoxBorder = new CompoundBorder(hostNameComboBoxOutside, hostNameComboBoxInside);
 
-        routeComboBox.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         routeComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         routeComboBox.setBorder(hostNameComboBoxBorder);
+        
         routeComboBox.setUI(new BasicComboBoxUI() {
             protected JButton createArrowButton() {
                 return new JButton() {
@@ -86,7 +142,18 @@ public class TreeSearch extends JPanel {
                 };
             }
         });
-
+        
+        routeComboBox.setRenderer(new DefaultListCellRenderer() {
+            private static final long serialVersionUID = 1L;
+            
+            @Override
+            public Component getListCellRendererComponent(JList<?> l, Object v, int i, boolean is, boolean chF) {
+                JLabel lbl = (JLabel) super.getListCellRendererComponent(l, v, i, is,  chF);
+                lbl.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+                return lbl;
+            }  
+        });
+       
         routeComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -97,8 +164,8 @@ public class TreeSearch extends JPanel {
         });
 
         portComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        portComboBox.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         portComboBox.setBorder(BorderFactory.createLoweredBevelBorder());
+        
         portComboBox.setUI(new BasicComboBoxUI() {
             protected JButton createArrowButton() {
                 return new JButton() {
@@ -110,7 +177,18 @@ public class TreeSearch extends JPanel {
                 };
             }
         });
-
+        
+        portComboBox.setRenderer(new DefaultListCellRenderer() {
+            private static final long serialVersionUID = 1L;
+            
+            @Override
+            public Component getListCellRendererComponent(JList<?> l, Object v, int i, boolean is, boolean chF) {
+                JLabel lbl = (JLabel) super.getListCellRendererComponent(l, v, i, is,  chF);
+                lbl.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+                return lbl;
+            }   
+        });
+        
         portComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -194,24 +272,22 @@ public class TreeSearch extends JPanel {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                // load route symbol handler list
                 routeSymbolHandlerList.addAll(RouteSymbolHandler.getRouteHandlerList());
                 buildSearchTree();
             }
         });
     }
 
+    // TODO : background process
+    // TODO : rework combo box
+    // TODO : filter
+
     private final List<RouteSymbolHandler> routeSymbolHandlerList = new ArrayList<RouteSymbolHandler>();
 
     private boolean comboBoxEvent = false;
 
-    /*
-     * 1. problem : combo box can be reselected 2. problem : search input can change
-     * it self all the time 3. problem : on selecting element load new data type
-     * information
-     */
     private void buildSearchTree() {
-        // 1. skip combo box event overload | TODO : fix
+        // 1. skip combo box event overload
         if (comboBoxEvent) return;
         comboBoxEvent = true;
 
@@ -276,98 +352,40 @@ public class TreeSearch extends JPanel {
         // 8. combo box done
         comboBoxEvent = false;
 
-        // 8. build tree
-        List<JTree> routeTreeList = new ArrayList<JTree>();
+        // 9. build tree
+        SymbolTreeNode symbolTreeNode = new SymbolTreeNode();
+        SymbolTreeModel symbolTreeModel = new SymbolTreeModel(symbolTreeNode);
+
         for (RouteSymbolHandler routeSymbolHandler : routeSymbolHandlerList) {
             String route = routeSymbolHandler.getRoute().getHostName();
             String port = routeSymbolHandler.getSymbolLoader().getAmsPort().toString();
 
             if (selectedRoute != allRoutes) {
                 if (!selectedRoute.equals(route)) {
-                    // skip route
-                    continue;
+                    continue; // skip route
                 }
             }
 
             if (selectedPort != allPorts) {
                 if (!selectedPort.equals(port)) {
-                    // skip port
-                    continue;
+                    continue; // skip port
                 }
             }
 
-            // Route JTree: PLC01-RT1 | Port Tree Node: = NC & Runtime
-            // TODO : get / make route and port
-            // JTree.setRootVisible() 
-            DefaultMutableTreeNode routeTreeNode = getRouteTreeNode(routeTreeList, route, port);
-
+            SymbolTreeNode symbolTreeNodePort = symbolTreeNode.getTreeNode(route).getTreeNode(port);
             SymbolLoader symbolLoader = routeSymbolHandler.getSymbolLoader();
 
             List<Symbol> symbolList = symbolLoader.getSymbolList();
-
-            
             for (Symbol symbol : symbolList) {
                 SymbolNode symbolNode = new SymbolNode(symbol, symbolLoader);
-                addSymbolNodeToTreeNode(routeTreeNode, symbolNode);
-
+                symbolTreeNodePort.addSymbolNode(symbolNode);
             }
         }
-        
- 
+
+        symbolTree.setModel(symbolTreeModel);
+        symbolTree.expandRow(0);    // expand to port level
+
+
         // 99. build finished
-    }
-
-    private void addSymbolNodeToTreeNode(DefaultMutableTreeNode treeNode, SymbolNode symbolNode) {
-        String[] symbolArray = symbolNode.getSymbol().getSymbolName().split("\\.");
-
-        if (symbolArray[0].isEmpty()) symbolArray[0] = "Global";
-
-        nextsymbol:
-        for (int i = 0; i < symbolArray.length; i++) {
-            String symbolName = symbolArray[i];
-
-            if (treeNode.getChildCount() != 0) {
-                // compare with all child nodes
-                for (int x = 0; x < treeNode.getChildCount(); x++) {
-                    DefaultMutableTreeNode treeChildNode = (DefaultMutableTreeNode) treeNode.getChildAt(x);
-                    if (treeChildNode.toString().equals(symbolName)) {
-                        // pass reference to child node
-                        treeNode = treeChildNode;
-                        continue nextsymbol;
-                    }
-                }
-            }
-
-            if (i == symbolArray.length - 1) {
-                // this should be using the "to string" method?
-                DefaultMutableTreeNode symbolTreeNode = new DefaultMutableTreeNode(symbolNode);
-                treeNode.add(symbolTreeNode);
-            } else {
-                // add symbol as node and pass reference
-                DefaultMutableTreeNode symbolTreeNode = new DefaultMutableTreeNode(symbolName);
-                treeNode.add(symbolTreeNode);
-                treeNode = symbolTreeNode;
-            }
-        }
-    }
- 
-    // TODO 
-    private DefaultMutableTreeNode getRouteTreeNode(JTree treeList, String route, String port) {
-        for (JTree tree : treeList) {
-            DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
-            DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) treeModel.getRoot();
-
-            if (treeNode.toString().equals(route)) {
-                return treeNode;
-            }
-        }
-
-        DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(route);
-        JTree tree = new JTree(treeNode);
-        tree.setBorder(BorderFactory.createEmptyBorder());
-        tree.setScrollsOnExpand(false);
-        treeList.add(tree);
-
-        return treeNode;
     }
 }

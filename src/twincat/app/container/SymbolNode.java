@@ -1,5 +1,7 @@
 package twincat.app.container;
 
+import java.util.List;
+
 import twincat.ads.constant.DataType;
 import twincat.ads.container.Symbol;
 import twincat.ads.worker.SymbolLoader;
@@ -11,6 +13,7 @@ public class SymbolNode {
 
     private final Symbol symbol;
 
+    @SuppressWarnings("unused")
     private final SymbolLoader symbolLoader;
 
     /*************************/
@@ -41,7 +44,13 @@ public class SymbolNode {
         return symbol.getSymbolName().substring(indexBeg, indexEnd);
     }
     
+    // TODO : combine is big type and get symbol list
+    
     public boolean isBigType() {
         return symbol.getDataType().equals(DataType.BIGTYPE) ? true : false;
+    }
+    
+    public List<Symbol> getSymbolList() {
+        return null;
     }
 }

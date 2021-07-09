@@ -20,32 +20,54 @@ public class Resources {
     public static final String PATH_LANGUAGE = "resources/string/language";
    
     public static final String PATH_TEXT_ADS_INFO = "/resources/string/ads_info.txt";
+    
 
     public static final String PATH_ICON_APP = "/resources/images/app.png";
     
+    public static final String PATH_ICON_CONTROL_PLAY = "/resources/images/control_play.png";
     
-    public static final String PATH_ICON_PLAY = "/resources/images/play.png";
-    
-    public static final String PATH_ICON_PAUSE = "/resources/images/pause.png";
+    public static final String PATH_ICON_CONTROL_PAUSE = "/resources/images/control_pause.png";
      
-    public static final String PATH_ICON_STOP = "/resources/images/stop.png";
+    public static final String PATH_ICON_CONTROL_STOP = "/resources/images/control_stop.png";
     
-    public static final String PATH_ICON_SCOPE = "/resources/images/scope.png";
+    public static final String PATH_ICON_NAVIGATE_SCOPE = "/resources/images/navigate_scope.png";
     
-    public static final String PATH_ICON_CHART = "/resources/images/chart.png";
+    public static final String PATH_ICON_NAVIGATE_CHART = "/resources/images/navigate_chart.png";
     
-    public static final String PATH_ICON_AXIS = "/resources/images/axis.png";
+    public static final String PATH_ICON_NAVIGATE_AXIS = "/resources/images/navigate_axis.png";
     
-    public static final String PATH_ICON_CHANNEL = "/resources/images/channel.png";
+    public static final String PATH_ICON_NAVIGATE_CHANNEL = "/resources/images/navigate_channel.png";
     
-    public static final String PATH_ICON_DELETE = "/resources/images/delete.png";
+    public static final String PATH_ICON_NAVIGATE_DELETE = "/resources/images/navigate_delete.png";
     
-    public static final String PATH_ICON_SEARCH = "/resources/images/search.png";
+    public static final String PATH_ICON_NAVIGATE_SEARCH = "/resources/images/navigate_search.png";
     
     public static final String PATH_ICON_FOLDER_OPEN = "/resources/images/folder_open.png";
     
     public static final String PATH_ICON_FOLDER_CLOSED = "/resources/images/folder_closed.png";
     
+    public static final String PATH_ICON_DATATYPE_BIT = "/resources/images/datatype_bit.png";
+    
+    public static final String PATH_ICON_DATATYPE_INT8 = "/resources/images/datatype_int8.png";
+    
+    public static final String PATH_ICON_DATATYPE_UINT8 = "/resources/images/datatype_uint8.png";
+    
+    public static final String PATH_ICON_DATATYPE_INT16 = "/resources/images/datatype_int16.png";
+    
+    public static final String PATH_ICON_DATATYPE_UINT16 = "/resources/images/datatype_uint16.png";
+    
+    public static final String PATH_ICON_DATATYPE_INT32 = "/resources/images/datatype_int32.png";
+    
+    public static final String PATH_ICON_DATATYPE_UINT32 = "/resources/images/datatype_uint32.png";
+    
+    public static final String PATH_ICON_DATATYPE_REAL32 = "/resources/images/datatype_real32.png";
+    
+    public static final String PATH_ICON_DATATYPE_REAL64 = "/resources/images/datatype_real64.png";
+    
+    public static final String PATH_ICON_DATATYPE_STRING = "/resources/images/datatype_string.png";
+          
+    public static final String PATH_ICON_DATATYPE_BIGTYPE = "/resources/images/datatype_bigtype.png";
+       
     
     public static final String TEXT_CHART_PLAY = "chartPlay";
     

@@ -11,9 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
+import twincat.LoremIpsum;
 import twincat.Resources;
 import twincat.Utilities;
-import twincat.app.container.LoremIpsum;
 
 public class PanelChart extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -46,17 +46,17 @@ public class PanelChart extends JPanel {
         
         JButton buttonChartPlay = new JButton();
         buttonChartPlay.setToolTipText(languageBundle.getString(Resources.TEXT_CHART_PLAY));
-        buttonChartPlay.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_PLAY)));
+        buttonChartPlay.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PLAY)));
         buttonChartPlay.setFocusable(false);
   
         JButton buttonChartPause = new JButton();
         buttonChartPause.setToolTipText(languageBundle.getString(Resources.TEXT_CHART_PAUSE));
-        buttonChartPause.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_PAUSE)));
+        buttonChartPause.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PAUSE)));
         buttonChartPause.setFocusable(false);
         
         JButton buttonChartStop = new JButton();
         buttonChartStop.setToolTipText(languageBundle.getString(Resources.TEXT_CHART_STOP));
-        buttonChartStop.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_STOP)));
+        buttonChartStop.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_STOP)));
         buttonChartStop.setFocusable(false);
   
         JToolBar chartToolBar = new JToolBar();

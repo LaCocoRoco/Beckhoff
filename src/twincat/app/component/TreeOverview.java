@@ -13,9 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
+import twincat.LoremIpsum;
 import twincat.Resources;
 import twincat.Utilities;
-import twincat.app.container.LoremIpsum;
 
 public class TreeOverview extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -46,7 +46,7 @@ public class TreeOverview extends JPanel {
 
         JButton browserButtonAddScope = new JButton();
         browserButtonAddScope.setToolTipText(languageBundle.getString(Resources.TEXT_BROWSER_ADD_SCOPE));
-        browserButtonAddScope.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_SCOPE)));
+        browserButtonAddScope.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_SCOPE)));
         browserButtonAddScope.setFocusable(false);
         browserButtonAddScope.addActionListener(new ActionListener() {
             @Override
@@ -58,7 +58,7 @@ public class TreeOverview extends JPanel {
 
         JButton browserButtonAddChart = new JButton();
         browserButtonAddChart.setToolTipText(languageBundle.getString(Resources.TEXT_BROWSER_ADD_CHART));
-        browserButtonAddChart.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CHART)));
+        browserButtonAddChart.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_CHART)));
         browserButtonAddChart.setFocusable(false);
         browserButtonAddChart.addActionListener(new ActionListener() {
             @Override
@@ -70,7 +70,7 @@ public class TreeOverview extends JPanel {
 
         JButton browserButtonAddAxis = new JButton();
         browserButtonAddAxis.setToolTipText(languageBundle.getString(Resources.TEXT_BROWSER_ADD_AXIS));
-        browserButtonAddAxis.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_AXIS)));
+        browserButtonAddAxis.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_AXIS)));
         browserButtonAddAxis.setFocusable(false);
         browserButtonAddAxis.addActionListener(new ActionListener() {
             @Override
@@ -82,7 +82,7 @@ public class TreeOverview extends JPanel {
 
         JButton browserButtonAddChannel = new JButton();
         browserButtonAddChannel.setToolTipText(languageBundle.getString(Resources.TEXT_BROWSER_ADD_CHANNEL));
-        browserButtonAddChannel.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CHANNEL)));
+        browserButtonAddChannel.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_CHANNEL)));
         browserButtonAddChannel.setFocusable(false);
         browserButtonAddChannel.addActionListener(new ActionListener() {
             @Override
@@ -94,7 +94,7 @@ public class TreeOverview extends JPanel {
 
         JButton browserButtonSearch = new JButton();
         browserButtonSearch.setToolTipText(languageBundle.getString(Resources.TEXT_BROWSER_SEARCH));
-        browserButtonSearch.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_SEARCH)));
+        browserButtonSearch.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_SEARCH)));
         browserButtonSearch.setFocusable(false);
         browserButtonSearch.addActionListener(new ActionListener() {
             @Override
@@ -105,7 +105,7 @@ public class TreeOverview extends JPanel {
 
         JButton browserButtonDelete = new JButton();
         browserButtonDelete.setToolTipText(languageBundle.getString(Resources.TEXT_BROWSER_DELETE));
-        browserButtonDelete.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_DELETE)));
+        browserButtonDelete.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_DELETE)));
         browserButtonDelete.setFocusable(false);
         browserButtonSearch.addActionListener(new ActionListener() {
             @Override
