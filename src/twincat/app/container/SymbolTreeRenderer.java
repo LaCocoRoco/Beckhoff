@@ -54,7 +54,7 @@ public class SymbolTreeRenderer extends DefaultTreeCellRenderer {
             Utilities.getImageFromFilePath(Resources.PATH_ICON_FOLDER_OPEN));
 
     private static final ImageIcon ICON_CLOSED = new ImageIcon(
-            Utilities.getImageFromFilePath(Resources.PATH_ICON_FOLDER_CLOSED));
+Utilities.getImageFromFilePath(Resources.PATH_ICON_FOLDER_CLOSED));
 
     /*************************/
     /****** constructor ******/

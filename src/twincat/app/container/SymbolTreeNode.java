@@ -18,7 +18,7 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
     /*** global attributes ***/
     /*************************/
 
-    private boolean isVisible = true;
+    private boolean hide = false;
 
     /*************************/
     /****** constructor ******/
@@ -39,27 +39,13 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
     /*************************/
     /**** setter & getter ****/
     /*************************/
-    
-    public boolean isVisible() {
-        /*
-        if (isVisible) {
-            // is global attribute set
-            return true; 
-        } else if (userObject instanceof SymbolNode) {
-            // is symbol node visible
-            SymbolNode symbolNode = (SymbolNode) userObject;
-            return symbolNode.isVisible();
-        } else {
-            // is any child visible
-            return SymbolTreeNode.isAnySymbolChildVisible(this);
-        }
-        */
-        
-        return isVisible;
+
+    public void setHide(boolean hideNode) {
+        this.hide = hideNode;
     }
-   
-    public void setVisible(boolean isVisible) {
-        this.isVisible = isVisible;
+
+    public boolean isHidden() {
+        return hide;
     }
 
     /*************************/
@@ -176,12 +162,29 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
 
         return count;
     }
-
+    
+    /*************************/
+    /******** private ********/
+    /*************************/   
+    
+    private boolean isVisible() {
+        if (hide) {
+            return false; 
+        }
+        
+        if (userObject instanceof SymbolNode) {
+            SymbolNode symbolNode = (SymbolNode) userObject;
+            return symbolNode.isVisible();
+        } else {
+            return SymbolTreeNode.isAnyChildVisible(this);
+        }
+    }
+   
     /*************************/
     /** public static final **/
     /*************************/
 
-    public static final boolean isAnySymbolChildVisible(SymbolTreeNode symbolTreeNode) {
+    public static final boolean isAnyChildVisible(SymbolTreeNode symbolTreeNode) {
         Object userObject = symbolTreeNode.getUserObject();
 
         if (userObject instanceof SymbolNode) {
@@ -195,7 +198,7 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         for (int i = 0; i < symbolTreeNode.getChildCount(); i++) {
             SymbolTreeNode symbolTreeNodeChild = (SymbolTreeNode) symbolTreeNode.getChildAt(i);
 
-            if (SymbolTreeNode.isAnySymbolChildVisible(symbolTreeNodeChild)) {
+            if (SymbolTreeNode.isAnyChildVisible(symbolTreeNodeChild)) {
                 return true;
             }
         }

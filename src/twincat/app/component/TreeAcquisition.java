@@ -17,6 +17,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -34,6 +36,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingWorker;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.TreePath;
@@ -56,6 +60,8 @@ public class TreeAcquisition extends JPanel {
 
     private final JTree acquisitionTree = new JTree();
 
+    private final JTextField searchTextField = new JTextField();
+    
     private final SymbolTreeModel browseTreeModel = new SymbolTreeModel();
 
     private final SymbolTreeModel searchTreeModel = new SymbolTreeModel();
@@ -68,9 +74,11 @@ public class TreeAcquisition extends JPanel {
 
     private final List<RouteSymbolHandler> routeSymbolHandlerList = new ArrayList<RouteSymbolHandler>();
 
-    private final ItemListener routeComboBoxListener;
+    private final List<SymbolNode> searchSymbolNodeList = new ArrayList<SymbolNode>();
+   
+    private final ItemListener routeItemListener;
 
-    private final ItemListener portComboBoxListener;
+    private final ItemListener portItemListener;
 
     /*************************/
     /****** constructor ******/
@@ -140,7 +148,7 @@ public class TreeAcquisition extends JPanel {
             }
         });
 
-        routeComboBox.addItemListener(routeComboBoxListener = new ItemListener() {
+        routeComboBox.addItemListener(routeItemListener = new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -176,7 +184,7 @@ public class TreeAcquisition extends JPanel {
             }
         });
 
-        portComboBox.addItemListener(portComboBoxListener = new ItemListener() {
+        portComboBox.addItemListener(portItemListener = new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -197,11 +205,11 @@ public class TreeAcquisition extends JPanel {
         Border searchBorderOutside = BorderFactory.createEmptyBorder(0, 4, 0, 0);
         CompoundBorder searchCompoundBorder = new CompoundBorder(searchBorderInside, searchBorderOutside);
 
-        JTextField searchTextField = new JTextField();
         searchTextField.setBorder(searchCompoundBorder);
         searchTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         searchTextField.setText(languageBundle.getString(Resources.TEXT_SEARCH_HINT));
         searchTextField.setForeground(Color.GRAY);
+        
         searchTextField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -221,6 +229,24 @@ public class TreeAcquisition extends JPanel {
                 }
             }
         });
+        
+        searchTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateSearchText();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateSearchText();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateSearchText();
+            }     
+        });
+        
 
         JToolBar searchToolBar = new JToolBar();
         searchToolBar.setFloatable(false);
@@ -278,18 +304,20 @@ public class TreeAcquisition extends JPanel {
             String route = routeSymbolHandler.getRoute().getHostName();
             String port = routeSymbolHandler.getSymbolLoader().getAmsPort().toString();
 
-            SymbolTreeNode portBrowseTreeNode = rootBrowseTreeNode.getNode(route).getNode(port);
-            SymbolTreeNode portSearchTreeNode = rootSearchTreeNode.getNode(route).getNode(port);
+            SymbolTreeNode portBrowseSymbolTreeNode = rootBrowseTreeNode.getNode(route).getNode(port);
+            SymbolTreeNode portSearchSymbolTreeNode = rootSearchTreeNode.getNode(route).getNode(port);
 
             SymbolLoader symbolLoader = routeSymbolHandler.getSymbolLoader();
 
-            List<Symbol> symbolList = symbolLoader.getSymbolList();
-            for (Symbol symbol : symbolList) {
+            List<Symbol> routeSymbolList = symbolLoader.getSymbolList();
+            for (Symbol symbol : routeSymbolList) {     
                 SymbolNode browseSymbolNode = new SymbolNode(symbol, symbolLoader, false);
-                portBrowseTreeNode.addSymbolNodeAndSplit(browseSymbolNode);
+                portBrowseSymbolTreeNode.addSymbolNodeAndSplit(browseSymbolNode);
 
                 SymbolNode searchSymbolNode = new SymbolNode(symbol, symbolLoader, true);
-                portSearchTreeNode.addSymbolNode(searchSymbolNode);
+                portSearchSymbolTreeNode.addSymbolNode(searchSymbolNode);
+                
+                searchSymbolNodeList.add(searchSymbolNode);
             }
         }
 
@@ -298,9 +326,6 @@ public class TreeAcquisition extends JPanel {
 
         acquisitionTree.setModel(browseTreeModel);
         acquisitionTree.expandRow(0);
-
-        routeComboBox.removeItemListener(routeComboBoxListener);
-        portComboBox.removeItemListener(portComboBoxListener);
 
         String allRoutes = languageBundle.getString(Resources.TEXT_SEARCH_ALL_ROUTES);
         String allPorts = languageBundle.getString(Resources.TEXT_SEARCH_ALL_PORTS);
@@ -324,6 +349,9 @@ public class TreeAcquisition extends JPanel {
             }
         }
 
+        routeComboBox.removeItemListener(routeItemListener);
+        portComboBox.removeItemListener(portItemListener);
+        
         for (String route : routeList) {
             routeComboBox.addItem(route);
         }
@@ -332,14 +360,11 @@ public class TreeAcquisition extends JPanel {
             portComboBox.addItem(port);
         }
 
-        routeComboBox.addItemListener(routeComboBoxListener);
-        portComboBox.addItemListener(portComboBoxListener);
+        routeComboBox.addItemListener(routeItemListener);
+        portComboBox.addItemListener(portItemListener);
     }
 
     private void updateRouteComboBox() {
-        portComboBox.removeItemListener(portComboBoxListener);
-        portComboBox.removeAllItems();
-
         String allRoutes = languageBundle.getString(Resources.TEXT_SEARCH_ALL_ROUTES);
         String allPorts = languageBundle.getString(Resources.TEXT_SEARCH_ALL_PORTS);
 
@@ -368,6 +393,9 @@ public class TreeAcquisition extends JPanel {
             }
         }
 
+        portComboBox.removeItemListener(portItemListener);
+        portComboBox.removeAllItems();
+        
         for (String port : portList) {
             portComboBox.addItem(port);
         }
@@ -377,12 +405,9 @@ public class TreeAcquisition extends JPanel {
         }
 
         portComboBox.setSelectedItem(selectedPort);
-        portComboBox.addItemListener(portComboBoxListener);
+        portComboBox.addItemListener(portItemListener);
     }
 
-    // TODO : hide show elements
-    // TODO : load panel
-    
     private void updateTreeModel() {
         String allRoutes = languageBundle.getString(Resources.TEXT_SEARCH_ALL_ROUTES);
         String allPorts = languageBundle.getString(Resources.TEXT_SEARCH_ALL_PORTS);
@@ -400,33 +425,27 @@ public class TreeAcquisition extends JPanel {
 
             if (selectedRoute != allRoutes) {
                 if (routeTreeNode.toString().equals(selectedRoute)) {
-                    System.out.println("Show Route: " + routeTreeNode.toString());
-                    routeTreeNode.setVisible(true);
+                    routeTreeNode.setHide(false);
                 } else {
-                    System.out.println("Hide Route: " + routeTreeNode.toString());
-                    routeTreeNode.setVisible(false);
+                    routeTreeNode.setHide(true);
                 }
             } else {
-                System.out.println("Show Route: " + routeTreeNode.toString());
-                routeTreeNode.setVisible(true);
+                routeTreeNode.setHide(false);
             }
 
-            if (routeTreeNode.isVisible()) {
+            if (!routeTreeNode.isHidden()) {
                 for (int x = 0; x < routeTreeNode.getChildCount(); x++) {
                     SymbolTreeNode portTreeNode = (SymbolTreeNode) routeTreeNode.getChildAt(x);
 
                     if (selectedPort != allPorts) {
                         if (portTreeNode.toString().equals(selectedPort)) {
-                            System.out.println("Show Port: " + portTreeNode.toString());
-                            portTreeNode.setVisible(true);
+                            portTreeNode.setHide(false);
                         } else {
-                            System.out.println("Hide Port: " + portTreeNode.toString());
-                            portTreeNode.setVisible(false);
+                            portTreeNode.setHide(true);
                         }
 
                     } else {
-                        System.out.println("Show Port: " + portTreeNode.toString());
-                        portTreeNode.setVisible(true);
+                        portTreeNode.setHide(false);
                     }
                 }
             }
@@ -437,4 +456,46 @@ public class TreeAcquisition extends JPanel {
 
         acquisitionTree.expandRow(0);
     }
+ 
+    private void updateSearchText() {
+        String inputText = searchTextField.getText();
+        String searchHint = languageBundle.getString(Resources.TEXT_SEARCH_HINT);
+        
+        if (!inputText.isEmpty() && !inputText.equals(searchHint))  {
+            // set tree model
+            if (acquisitionTree.getModel() != searchTreeModel) {
+                acquisitionTree.setModel(searchTreeModel);
+            }
+            
+            // filter tree model
+            Pattern pattern = Pattern.compile("(.*)(" + inputText + ")(.*)", Pattern.CASE_INSENSITIVE);
+            for (SymbolNode symbolNode : searchSymbolNodeList) {
+                String symbolName = symbolNode.getSymbol().getSymbolName();
+                Matcher matcher = pattern.matcher(symbolName); 
+
+                if (matcher.matches()) {
+                    symbolNode.setVisible(true);
+                } else {
+                    symbolNode.setVisible(false);
+                }  
+            }
+            
+            // reload tree model
+            searchTreeModel.reload();
+            
+            // expand tree full level
+            for (int i = 0; i < acquisitionTree.getRowCount(); i++) {
+                acquisitionTree.expandRow(i);
+            }
+            
+        } else {
+            // set tree model
+            if (acquisitionTree.getModel() != browseTreeModel) {
+                acquisitionTree.setModel(browseTreeModel);
+            }
+            
+            // expand tree top level
+            acquisitionTree.expandRow(0);
+        }
+    }  
 }

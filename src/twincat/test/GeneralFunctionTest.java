@@ -1,12 +1,10 @@
 package twincat.test;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import twincat.TwincatLogger;
-import twincat.ads.constant.AmsNetId;
-import twincat.ads.constant.AmsPort;
-import twincat.ads.worker.SymbolLoader;
 
 public class GeneralFunctionTest {
     private final Logger logger = TwincatLogger.getLogger();
@@ -20,11 +18,17 @@ public class GeneralFunctionTest {
     }
 
     private void generalFunctionTest() {
-        logger.setLevel(Level.FINE);
         
-        SymbolLoader symbolLoader = new SymbolLoader();
-        symbolLoader.setAmsNetId(AmsNetId.LOCAL);
-        symbolLoader.setAmsPort(AmsPort.TC2PLC1);
-        symbolLoader.parseSymbolTable(); 
+        String input = "(.*)(comp)(.*)";
+        
+        String symbolName = ".JUNIT_ARRAY_COMPLEX[1,5].INTERNAL_STRUCTURE_ARRAY[3].ST_VALUE.Q";
+        Pattern pattern = Pattern.compile(input, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(symbolName); 
+        
+        if (matcher.matches()) {
+            logger.info("true");
+        } else {
+            logger.info("false");
+        }  
     }
 }
