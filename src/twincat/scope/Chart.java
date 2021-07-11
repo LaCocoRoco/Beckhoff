@@ -344,7 +344,7 @@ public class Chart extends Observable {
     }
 
     public void close() {
-        Scope.stopSchedule(schedule);
+        Utilities.stopSchedule(schedule);
 
         Iterator<Axis> axisIterator = axisList.iterator();
         while (axisIterator.hasNext()) {

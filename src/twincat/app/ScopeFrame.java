@@ -96,14 +96,14 @@ public class ScopeFrame extends JPanel {
         menuItemFileNew.setText(languageBundle.getString(Resources.TEXT_FILE_NEW));
         menuItemFileNew.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-               // TODO 
+               // TODO : menu new file
             }
         });
         
         menuItemFileOpen.setText(languageBundle.getString(Resources.TEXT_FILE_OPEN));
         menuItemFileOpen.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                // TODO
+                // TODO : menu open file
             }
         });
         

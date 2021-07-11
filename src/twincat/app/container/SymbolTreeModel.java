@@ -3,14 +3,17 @@ package twincat.app.container;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
+import twincat.app.constant.Filter;
+
 public class SymbolTreeModel extends DefaultTreeModel {
     private static final long serialVersionUID = 1L;
 
+
     /*************************/
-    /*** local attributes ****/
+    /*** global attributes ***/
     /*************************/
 
-    protected boolean symbolFilter = false;
+    private Filter filterLevel = Filter.NONE;
 
     /*************************/
     /****** constructor ******/
@@ -32,8 +35,12 @@ public class SymbolTreeModel extends DefaultTreeModel {
     /********* public ********/
     /*************************/
 
-    public void setSymbolFilter(boolean symbolFilter) {
-        this.symbolFilter = symbolFilter;
+    public Filter getFilterLevel() {
+        return filterLevel;
+    }
+
+    public void setFilterLevel(Filter filterLevel) {
+        this.filterLevel = filterLevel;
     }
 
     /*************************/
@@ -42,10 +49,8 @@ public class SymbolTreeModel extends DefaultTreeModel {
 
     @Override
     public Object getChild(Object parent, int index) {
-        if (symbolFilter) {
-            if (parent instanceof SymbolTreeNode) {
-                return ((SymbolTreeNode) parent).getChildAt(index, symbolFilter);
-            }
+        if (parent instanceof SymbolTreeNode) {
+            return ((SymbolTreeNode) parent).getChildAt(index, filterLevel);
         }
 
         return super.getChild(parent, index);
@@ -53,10 +58,8 @@ public class SymbolTreeModel extends DefaultTreeModel {
 
     @Override
     public int getChildCount(Object parent) {
-        if (symbolFilter) {
-            if (parent instanceof SymbolTreeNode) {
-                return ((SymbolTreeNode) parent).getChildCount(symbolFilter);
-            }
+        if (parent instanceof SymbolTreeNode) {
+            return ((SymbolTreeNode) parent).getChildCount(filterLevel);
         }
 
         return super.getChildCount(parent);

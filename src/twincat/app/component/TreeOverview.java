@@ -36,14 +36,6 @@ public class TreeOverview extends JPanel {
         browserPanel.setBorder(BorderFactory.createEmptyBorder());
         browserPanel.setViewportView(new LoremIpsum());
 
-        // TODO : tree build
-        // build from scope list
-
-        // TODO : tree navigation
-        // on select (scope example):
-        // set local reference (delete & add)
-        // show properties panel
-
         JButton browserButtonAddScope = new JButton();
         browserButtonAddScope.setToolTipText(languageBundle.getString(Resources.TEXT_BROWSER_ADD_SCOPE));
         browserButtonAddScope.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_SCOPE)));

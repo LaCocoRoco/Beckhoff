@@ -5,6 +5,8 @@ import java.util.Enumeration;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import twincat.app.constant.Filter;
+
 public class SymbolTreeNode extends DefaultMutableTreeNode {
     private static final long serialVersionUID = 1L;
 
@@ -18,8 +20,8 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
     /*** global attributes ***/
     /*************************/
 
-    private boolean hide = false;
-
+    private boolean isVisible = true;
+   
     /*************************/
     /****** constructor ******/
     /*************************/
@@ -40,14 +42,14 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
     /**** setter & getter ****/
     /*************************/
 
-    public void setHide(boolean hideNode) {
-        this.hide = hideNode;
+    public boolean isVisible() {
+        return isVisible;
     }
 
-    public boolean isHidden() {
-        return hide;
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
     }
-
+    
     /*************************/
     /********* public ********/
     /*************************/
@@ -71,6 +73,15 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         this.add(symbolTreeNode);
     }
 
+    // substring
+    // 0. .JUINT_STRUCT.ST_VALUE 
+    // 1. .JUINT_STRUCT
+    // 2. .ST_VALUE
+    
+    public void addSymbolNodeAndSplit(SymbolNode symbolNodeChild, SymbolNode symbolNodeParent) {
+        
+    }
+    
     public void addSymbolNodeAndSplit(SymbolNode symbolNode) {
         String[] symbolNodeNameArray = symbolNode.getSymbol().getSymbolName().split("\\.");
 
@@ -108,24 +119,26 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         }
     }
 
-    public TreeNode getChildAt(int index, boolean symbolFilter) {
-        if (!symbolFilter) {
+    public TreeNode getChildAt(int index, Filter filterLevel) {
+        // filter is disabled
+        if (filterLevel.equals(Filter.NONE)) {
             return super.getChildAt(index);
         }
 
+        // no children
         if (children == null) {
             throw new ArrayIndexOutOfBoundsException();
         }
 
+        // evaluate index
         int realIndex = -1;
         int visibleIndex = -1;
-
         Enumeration<?> enumerator = children.elements();
         while (enumerator.hasMoreElements()) {
             SymbolTreeNode symbolTreeNode = (SymbolTreeNode) enumerator.nextElement();
 
             // skip node if it is not visible
-            if (symbolTreeNode.isVisible()) {
+            if (symbolTreeNode.isVisible(filterLevel)) {
                 visibleIndex++;
             }
 
@@ -139,52 +152,73 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         throw new ArrayIndexOutOfBoundsException();
     }
 
-    public int getChildCount(boolean symbolFilter) {
-        if (!symbolFilter) {
+    public int getChildCount(Filter filterLevel) {
+        // filter is disabled
+        if (filterLevel.equals(Filter.NONE)) {
             return super.getChildCount();
         }
 
-        if (children == null) { 
+        // no children
+        if (children == null) {
             return 0;
         }
 
+        // evaluate child count
         int count = 0;
-        
         Enumeration<?> enumerator = children.elements();
         while (enumerator.hasMoreElements()) {
             SymbolTreeNode symbolTreeNode = (SymbolTreeNode) enumerator.nextElement();
 
             // skip node if it is not visible
-            if (symbolTreeNode.isVisible()) {
+            if (symbolTreeNode.isVisible(filterLevel)) {
                 count++;
             }
         }
 
         return count;
     }
-    
+
     /*************************/
     /******** private ********/
-    /*************************/   
+    /*************************/
+
+    private boolean isFilterNode() {
+        return isVisible;
+    }
+
+    private boolean isFilterSymbols() {
+        return SymbolTreeNode.isAnySymbolNodeVisible(this);
+    }
     
-    private boolean isVisible() {
-        if (hide) {
-            return false; 
-        }
-        
+    private boolean isFilterAll() {
         if (userObject instanceof SymbolNode) {
-            SymbolNode symbolNode = (SymbolNode) userObject;
-            return symbolNode.isVisible();
-        } else {
-            return SymbolTreeNode.isAnyChildVisible(this);
+            return SymbolTreeNode.isAnySymbolNodeVisible(this);    
+        } else  {
+            return isVisible;    
         }
     }
-   
+ 
+    private boolean isVisible(Filter filterLevel) {
+        switch (filterLevel) {
+            case NODE:
+                return isFilterNode();
+
+            case SYMBOLS:
+                return isFilterSymbols();
+                
+            case ALL:
+                return isFilterAll();
+                
+            default:
+                return true;
+        }
+    }
+
     /*************************/
     /** public static final **/
     /*************************/
 
-    public static final boolean isAnyChildVisible(SymbolTreeNode symbolTreeNode) {
+    public static final boolean isAnySymbolNodeVisible(SymbolTreeNode symbolTreeNode) {
         Object userObject = symbolTreeNode.getUserObject();
 
         if (userObject instanceof SymbolNode) {
@@ -198,7 +232,7 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         for (int i = 0; i < symbolTreeNode.getChildCount(); i++) {
             SymbolTreeNode symbolTreeNodeChild = (SymbolTreeNode) symbolTreeNode.getChildAt(i);
 
-            if (SymbolTreeNode.isAnyChildVisible(symbolTreeNodeChild)) {
+            if (SymbolTreeNode.isAnySymbolNodeVisible(symbolTreeNodeChild)) {
                 return true;
             }
         }

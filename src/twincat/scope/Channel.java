@@ -8,6 +8,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import twincat.Utilities;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.wrapper.Variable;
@@ -285,7 +286,7 @@ public class Channel extends Observable implements Observer {
 	private void stopWatchdog() {
 		if (watchdogStarted) {
 			watchdogStarted = false;
-			Scope.stopSchedule(schedule);	
+			Utilities.stopSchedule(schedule);	
 		}
 	}
 	

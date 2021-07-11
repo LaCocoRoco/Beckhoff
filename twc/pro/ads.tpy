@@ -4,7 +4,7 @@
 	<ProjectInfo>
 		<Path>C:\Workspace\Eclipse\Beckhoff\twc\pro\ads.pro</Path>
 		<IsLibrary>false</IsLibrary>
-		<ChangeDate>2021-07-10T09:00:56</ChangeDate>
+		<ChangeDate>2021-07-11T12:29:30</ChangeDate>
 		<Library>
 			<Name>STANDARD.LIB</Name>
 			<Path>C:\TWINCAT\PLC\LIB\STANDARD.LIB</Path>
@@ -966,13 +966,6 @@
 			<BitSize>8</BitSize>
 		</Symbol>
 		<Symbol>
-			<Name Constant="1">.junit_c</Name>
-			<Type>INT</Type>
-			<IGroup>16448</IGroup>
-			<IOffset>0</IOffset>
-			<BitSize>16</BitSize>
-		</Symbol>
-		<Symbol>
 			<Name>.junit_bit</Name>
 			<Type>BOOL</Type>
 			<IGroup>16448</IGroup>
@@ -1087,6 +1080,13 @@
 			<IGroup>16448</IGroup>
 			<IOffset>1470</IOffset>
 			<BitSize>128</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name Constant="1">.junit_c</Name>
+			<Type>INT</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>0</IOffset>
+			<BitSize>16</BitSize>
 		</Symbol>
 	</Symbols>
 	<VarConfigs/>

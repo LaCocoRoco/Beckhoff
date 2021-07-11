@@ -41,8 +41,6 @@ public class DataTypeInfo implements Serializable {
 
     private String type = new String();
 
-    private TypeInfo typeInfo = new TypeInfo();
- 
     private DataType dataType = DataType.UNKNOWN;
 
     private DataTypeFlag dataTypeFlag = DataTypeFlag.UNKNOWN;
@@ -124,14 +122,6 @@ public class DataTypeInfo implements Serializable {
     public void setComment(String comment) {
         this.comment = comment;
     }
-    
-    public TypeInfo getTypeInfo() {
-        return typeInfo;
-    }
-
-    public void setTypeInfo(TypeInfo typeInfo) {
-        this.typeInfo = typeInfo;
-    }
 
     public DataType getDataType() {
         return dataType;
@@ -149,7 +139,7 @@ public class DataTypeInfo implements Serializable {
         this.dataTypeFlag = dataTypeFlag;
     }
 
-    public List<DataTypeInfo> getSubSymbolDataTypeInfoList() {
+    public List<DataTypeInfo> getInternalSymbolDataTypeInfoList() {
         return internalDataTypeInfoList;
     }
 
@@ -196,7 +186,6 @@ public class DataTypeInfo implements Serializable {
                     byte[] readBuffer = new byte[typeLength];
                     byteBuffer.get(readBuffer, 0, typeLength);
                     type = STRING.arrayToValue(readBuffer);
-                    typeInfo.parseType(type);
                 }
 
                 if (byteBuffer.remaining() >= commentLength) {
@@ -214,90 +203,5 @@ public class DataTypeInfo implements Serializable {
                 }
             }
         }
-    }
-    
-    public List<Symbol> getSymbolList(List<DataTypeInfo> dataTypeInfoList) {
-        List<Symbol> symbolList = new ArrayList<Symbol>();
-
-        // dismiss pointer
-        if (typeInfo.isPointer()) return symbolList;
-        
-        // is complex data type
-        if (dataType.equals(DataType.BIGTYPE)) {
-
-            // get symbol list of data type info list byte type info
-            List<Symbol> dataTypeSymbolList = new ArrayList<Symbol>();
-            for (DataTypeInfo dataTypeInfo : dataTypeInfoList) {
-                if (typeInfo.getType().equals(dataTypeInfo.getDataTypeName())) {
-                    dataTypeSymbolList = dataTypeInfo.getSymbolList(dataTypeInfoList);
-                    break;
-                }
-            }
-
-            // is data type
-            if (dataTypeFlag.equals(DataTypeFlag.DATA_TYPE)) {
-                for (Symbol dataTypeSymbol : dataTypeSymbolList) {
-                    if (!typeInfo.getArray().isEmpty()) {
-                        // concatenate symbol and array type info
-                        for (String typeInfoArray : typeInfo.getArray()) {
-                            Symbol symbol = new Symbol();
-                            symbol.setSymbolName(typeInfoArray + dataTypeSymbol.getSymbolName());
-                            symbol.setDataType(dataTypeSymbol.getDataType());
-                            symbolList.add(symbol);
-                        }
-                    } else {
-                        Symbol symbol = new Symbol();
-                        symbol.setSymbolName(dataTypeSymbol.getSymbolName());
-                        symbol.setDataType(dataTypeSymbol.getDataType());
-                        symbolList.add(symbol);
-                    }
-                }
-            }
-
-            // is data item
-            if (dataTypeFlag.equals(DataTypeFlag.DATA_ITEM)) {
-                for (Symbol dataTypeSymbol : dataTypeSymbolList) {
-                    if (!typeInfo.getArray().isEmpty()) {
-                        // concatenate symbol and array type info
-                        for (String typeInfoArray : typeInfo.getArray()) {
-                            Symbol symbol = new Symbol();
-                            symbol.setSymbolName(dataTypeName + typeInfoArray + "." + dataTypeSymbol.getSymbolName());
-                            symbol.setDataType(dataTypeSymbol.getDataType());
-                            symbolList.add(symbol);
-                        }
-                    } else {
-                        Symbol symbol = new Symbol();
-                        symbol.setSymbolName(dataTypeName + "." + dataTypeSymbol.getSymbolName());
-                        symbol.setDataType(dataTypeSymbol.getDataType());
-                        symbolList.add(symbol); 
-                    }
-                }
-            }
-        }
-
-        // is simple data type
-        if (!dataType.equals(DataType.BIGTYPE)) {
-            if (!typeInfo.getArray().isEmpty()) {
-                // concatenate symbol and array type info
-                for (String typeInfoArray : typeInfo.getArray()) {
-                    Symbol symbol = new Symbol();
-                    symbol.setSymbolName(dataTypeName + typeInfoArray);
-                    symbol.setDataType(dataType);
-                    symbolList.add(symbol);
-                }
-            } else {
-                Symbol symbol = new Symbol();
-                symbol.setSymbolName(dataTypeName);
-                symbol.setDataType(dataType);
-                symbolList.add(symbol);
-            }
-        }
-
-        // collect internal symbol list
-        for (DataTypeInfo internalSymbolDataTypeInfo : internalDataTypeInfoList) {
-            symbolList.addAll(internalSymbolDataTypeInfo.getSymbolList(dataTypeInfoList));
-        }
-
-        return symbolList;
     }
 }

@@ -58,7 +58,7 @@ public class DataTypeInfoUnitTest {
         
         if (printSubData) {
             logger.info("##############:");
-            for (DataTypeInfo subDataTypeInfo : dataTypeInfo.getSubSymbolDataTypeInfoList()) {
+            for (DataTypeInfo subDataTypeInfo : dataTypeInfo.getInternalSymbolDataTypeInfoList()) {
                 printDataTypeInfo(subDataTypeInfo, printSubData);
             }
         }

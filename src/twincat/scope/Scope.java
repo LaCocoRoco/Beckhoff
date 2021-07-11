@@ -1,12 +1,9 @@
 package twincat.scope;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
-import java.util.TimeZone;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ScheduledFuture;
+
+import twincat.Utilities;
 
 public final class Scope {
 	/*************************/
@@ -38,7 +35,7 @@ public final class Scope {
 	/*************************/
 
 	public void setRecordTime(String recordTime) {
-		this.recordTime = Scope.stringTimeToMilliseconds(recordTime);
+		this.recordTime = Utilities.stringTimeToMilliseconds(recordTime);
 	}
 	
 	public void addChart(Chart chart) {
@@ -81,30 +78,4 @@ public final class Scope {
         	chart.close();
         }
 	}
-
-	/*************************/
-	/** public static final **/
-	/*************************/
-	
-	public static final void stopSchedule(ScheduledFuture<?> schedule) {
-		if (schedule != null) {
-			if (!schedule.isCancelled()) {
-				schedule.cancel(true);
-			}
-		}	
-	}
-	
-	public static final long stringTimeToMilliseconds(String time)  {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss.SSS");
-		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-		try {
-			Date date = dateFormat.parse(time);
-			return (int) date.getTime();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		return 0;
-	}	
 }

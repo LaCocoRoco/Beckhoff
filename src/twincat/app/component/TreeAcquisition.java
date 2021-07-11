@@ -17,6 +17,10 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,9 +47,12 @@ import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.TreePath;
 
 import twincat.Resources;
+import twincat.Utilities;
+import twincat.ads.constant.DataType;
 import twincat.ads.container.Symbol;
 import twincat.ads.worker.RouteSymbolHandler;
 import twincat.ads.worker.SymbolLoader;
+import twincat.app.constant.Filter;
 import twincat.app.container.SymbolNode;
 import twincat.app.container.SymbolTreeModel;
 import twincat.app.container.SymbolTreeNode;
@@ -61,7 +68,7 @@ public class TreeAcquisition extends JPanel {
     private final JTree acquisitionTree = new JTree();
 
     private final JTextField searchTextField = new JTextField();
-    
+
     private final SymbolTreeModel browseTreeModel = new SymbolTreeModel();
 
     private final SymbolTreeModel searchTreeModel = new SymbolTreeModel();
@@ -75,10 +82,8 @@ public class TreeAcquisition extends JPanel {
     private final List<RouteSymbolHandler> routeSymbolHandlerList = new ArrayList<RouteSymbolHandler>();
 
     private final List<SymbolNode> searchSymbolNodeList = new ArrayList<SymbolNode>();
-   
-    private final ItemListener routeItemListener;
 
-    private final ItemListener portItemListener;
+    private final ItemListener comboBoxItemListener;
 
     /*************************/
     /****** constructor ******/
@@ -106,8 +111,50 @@ public class TreeAcquisition extends JPanel {
                     int x = mouseEvent.getX();
                     int y = mouseEvent.getY();
 
-                    // TODO : expand big type
-                    // TODO : log none big type
+                    TreePath treePath = acquisitionTree.getPathForLocation(x, y);
+                    
+                    if (treePath == null) return;
+                    
+                    SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();   
+                    Object userObject = symbolTreeNode.getUserObject();
+
+                    if (userObject instanceof SymbolNode) {
+                        SymbolNode symbolNode = (SymbolNode) userObject;
+                        Symbol selectedSymbol = symbolNode.getSymbol();
+ 
+                        if (symbolTreeNode.isLeaf()) {
+                            if (selectedSymbol.getDataType().equals(DataType.BIGTYPE)) {
+                                SymbolLoader symbolLoader = symbolNode.getSymbolLoader();
+
+                                List<Symbol> symbolList = symbolLoader.getSymbolList(selectedSymbol);
+                                for (Symbol symbol : symbolList) {
+                                    
+                                    if (acquisitionTree.getModel().equals(browseTreeModel)) {
+                                        SymbolNode browseSymbolNode = new SymbolNode(symbol, symbolLoader, false);
+
+                                        // TODO : remove path before
+                                        
+                                        symbolTreeNode.addSymbolNodeAndSplit(browseSymbolNode);
+                                        
+                                    } else {
+                                        SymbolNode searchSymbolNode = new SymbolNode(symbol, symbolLoader, true);
+                                        symbolTreeNode.addSymbolNode(searchSymbolNode);
+                                        
+                                        searchSymbolNodeList.add(searchSymbolNode);
+                                    }
+                                }
+                                
+                                // expand children of symbol tree node
+                                for (int i = 0; i < symbolTreeNode.getChildCount(); i++) {
+                                    SymbolTreeNode symbolTreeNodeChild = (SymbolTreeNode) symbolTreeNode.getChildAt(i);
+                                    TreePath symbolTreeNodeChildPath = new TreePath(symbolTreeNodeChild.getPath());
+                                    acquisitionTree.setSelectionPath(symbolTreeNodeChildPath);
+                                }
+                            } else {
+                                System.out.println(selectedSymbol.getSymbolName());
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -121,6 +168,26 @@ public class TreeAcquisition extends JPanel {
         Border routeBorderInside = BorderFactory.createLoweredBevelBorder();
         Border routeBorderOutside = BorderFactory.createEmptyBorder(0, 0, 0, 1);
         CompoundBorder routeCompoundBorder = new CompoundBorder(routeBorderOutside, routeBorderInside);
+
+        comboBoxItemListener = new ItemListener() {
+            private ScheduledFuture<?> schedule = null;
+
+            private final Runnable task = new Runnable() {
+                public void run() {
+                    updateRouteComboBox();
+                    updateTreeModel();
+                }
+            };
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    Utilities.stopSchedule(schedule);
+                    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
+                    schedule = scheduler.schedule(task, 0, TimeUnit.MILLISECONDS);
+                }
+            }
+        };
 
         routeComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         routeComboBox.setBorder(routeCompoundBorder);
@@ -148,15 +215,7 @@ public class TreeAcquisition extends JPanel {
             }
         });
 
-        routeComboBox.addItemListener(routeItemListener = new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    updateRouteComboBox();
-                    updateTreeModel();
-                }
-            }
-        });
+        routeComboBox.addItemListener(comboBoxItemListener);
 
         portComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         portComboBox.setBorder(BorderFactory.createLoweredBevelBorder());
@@ -184,14 +243,7 @@ public class TreeAcquisition extends JPanel {
             }
         });
 
-        portComboBox.addItemListener(portItemListener = new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    updateTreeModel();
-                }
-            }
-        });
+        portComboBox.addItemListener(comboBoxItemListener);
 
         JToolBar routeToolBar = new JToolBar();
         routeToolBar.setFloatable(false);
@@ -209,7 +261,7 @@ public class TreeAcquisition extends JPanel {
         searchTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         searchTextField.setText(languageBundle.getString(Resources.TEXT_SEARCH_HINT));
         searchTextField.setForeground(Color.GRAY);
-        
+
         searchTextField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -229,24 +281,39 @@ public class TreeAcquisition extends JPanel {
                 }
             }
         });
-        
+
         searchTextField.getDocument().addDocumentListener(new DocumentListener() {
+            private static final int DELAY_TIME = 100;
+
+            private final Runnable task = new Runnable() {
+                public void run() {
+                    updateSearchTreeModel();
+                }
+            };
+
+            private ScheduledFuture<?> schedule = null;
+
+            private void delayUpdateSearchTreeModel() {
+                Utilities.stopSchedule(schedule);
+                ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
+                schedule = scheduler.schedule(task, DELAY_TIME, TimeUnit.MILLISECONDS);
+            }
+
             @Override
             public void insertUpdate(DocumentEvent e) {
-                updateSearchText();
+                delayUpdateSearchTreeModel();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                updateSearchText();
+                delayUpdateSearchTreeModel();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                updateSearchText();
-            }     
+                delayUpdateSearchTreeModel();
+            }
         });
-        
 
         JToolBar searchToolBar = new JToolBar();
         searchToolBar.setFloatable(false);
@@ -292,13 +359,15 @@ public class TreeAcquisition extends JPanel {
     }
 
     private void updateAcquisition() {
+        // TODO : show loading screen
+        
         routeSymbolHandlerList.addAll(RouteSymbolHandler.getRouteHandlerList());
 
         SymbolTreeNode rootBrowseTreeNode = (SymbolTreeNode) browseTreeModel.getRoot();
         SymbolTreeNode rootSearchTreeNode = (SymbolTreeNode) searchTreeModel.getRoot();
 
-        browseTreeModel.setSymbolFilter(false);
-        searchTreeModel.setSymbolFilter(false);
+        browseTreeModel.setFilterLevel(Filter.NONE);
+        searchTreeModel.setFilterLevel(Filter.NONE);
 
         for (RouteSymbolHandler routeSymbolHandler : routeSymbolHandlerList) {
             String route = routeSymbolHandler.getRoute().getHostName();
@@ -310,19 +379,19 @@ public class TreeAcquisition extends JPanel {
             SymbolLoader symbolLoader = routeSymbolHandler.getSymbolLoader();
 
             List<Symbol> routeSymbolList = symbolLoader.getSymbolList();
-            for (Symbol symbol : routeSymbolList) {     
+            for (Symbol symbol : routeSymbolList) {
                 SymbolNode browseSymbolNode = new SymbolNode(symbol, symbolLoader, false);
                 portBrowseSymbolTreeNode.addSymbolNodeAndSplit(browseSymbolNode);
 
                 SymbolNode searchSymbolNode = new SymbolNode(symbol, symbolLoader, true);
                 portSearchSymbolTreeNode.addSymbolNode(searchSymbolNode);
-                
+
                 searchSymbolNodeList.add(searchSymbolNode);
             }
         }
 
-        browseTreeModel.setSymbolFilter(true);
-        searchTreeModel.setSymbolFilter(true);
+        browseTreeModel.setFilterLevel(Filter.NODE);
+        searchTreeModel.setFilterLevel(Filter.ALL);
 
         acquisitionTree.setModel(browseTreeModel);
         acquisitionTree.expandRow(0);
@@ -349,9 +418,9 @@ public class TreeAcquisition extends JPanel {
             }
         }
 
-        routeComboBox.removeItemListener(routeItemListener);
-        portComboBox.removeItemListener(portItemListener);
-        
+        routeComboBox.removeItemListener(comboBoxItemListener);
+        portComboBox.removeItemListener(comboBoxItemListener);
+
         for (String route : routeList) {
             routeComboBox.addItem(route);
         }
@@ -360,8 +429,8 @@ public class TreeAcquisition extends JPanel {
             portComboBox.addItem(port);
         }
 
-        routeComboBox.addItemListener(routeItemListener);
-        portComboBox.addItemListener(portItemListener);
+        routeComboBox.addItemListener(comboBoxItemListener);
+        portComboBox.addItemListener(comboBoxItemListener);
     }
 
     private void updateRouteComboBox() {
@@ -393,9 +462,9 @@ public class TreeAcquisition extends JPanel {
             }
         }
 
-        portComboBox.removeItemListener(portItemListener);
+        portComboBox.removeItemListener(comboBoxItemListener);
         portComboBox.removeAllItems();
-        
+
         for (String port : portList) {
             portComboBox.addItem(port);
         }
@@ -405,10 +474,31 @@ public class TreeAcquisition extends JPanel {
         }
 
         portComboBox.setSelectedItem(selectedPort);
-        portComboBox.addItemListener(portItemListener);
+        portComboBox.addItemListener(comboBoxItemListener);
     }
 
     private void updateTreeModel() {
+        // update tree model route and ports visibility
+        updateTreeModelVisibility(browseTreeModel);
+        updateTreeModelVisibility(searchTreeModel);
+
+        // update tree models
+        if (acquisitionTree.getModel().equals(browseTreeModel)) {
+            // tree model browse reload
+            browseTreeModel.reload();
+            // tree model browse expand top level
+            acquisitionTree.expandRow(0);
+        } else {
+            // tree model search reload
+            searchTreeModel.reload();
+            // tree model search expand full
+            for (int i = 0; i < acquisitionTree.getRowCount(); i++) {
+                acquisitionTree.expandRow(i);
+            }
+        }
+    }
+
+    private void updateTreeModelVisibility(SymbolTreeModel symbolTreeModel) {
         String allRoutes = languageBundle.getString(Resources.TEXT_SEARCH_ALL_ROUTES);
         String allPorts = languageBundle.getString(Resources.TEXT_SEARCH_ALL_PORTS);
 
@@ -418,84 +508,88 @@ public class TreeAcquisition extends JPanel {
         String selectedRoute = selectedItemRoute != null ? selectedItemRoute.toString() : allRoutes;
         String selectedPort = selectedItemPort != null ? selectedItemPort.toString() : allPorts;
 
-        SymbolTreeNode rootBrowseTreeNode = (SymbolTreeNode) browseTreeModel.getRoot();
+        SymbolTreeNode rootBrowseTreeNode = (SymbolTreeNode) symbolTreeModel.getRoot();
 
         for (int i = 0; i < rootBrowseTreeNode.getChildCount(); i++) {
             SymbolTreeNode routeTreeNode = (SymbolTreeNode) rootBrowseTreeNode.getChildAt(i);
 
             if (selectedRoute != allRoutes) {
                 if (routeTreeNode.toString().equals(selectedRoute)) {
-                    routeTreeNode.setHide(false);
+                    routeTreeNode.setVisible(true);
                 } else {
-                    routeTreeNode.setHide(true);
+                    routeTreeNode.setVisible(false);
                 }
             } else {
-                routeTreeNode.setHide(false);
+                routeTreeNode.setVisible(true);
             }
 
-            if (!routeTreeNode.isHidden()) {
+            if (routeTreeNode.isVisible()) {
                 for (int x = 0; x < routeTreeNode.getChildCount(); x++) {
                     SymbolTreeNode portTreeNode = (SymbolTreeNode) routeTreeNode.getChildAt(x);
 
                     if (selectedPort != allPorts) {
                         if (portTreeNode.toString().equals(selectedPort)) {
-                            portTreeNode.setHide(false);
+                            portTreeNode.setVisible(true);
                         } else {
-                            portTreeNode.setHide(true);
+                            portTreeNode.setVisible(false);
                         }
 
                     } else {
-                        portTreeNode.setHide(false);
+                        portTreeNode.setVisible(true);
                     }
                 }
             }
         }
-
-        browseTreeModel.reload();
-        searchTreeModel.reload();
-
-        acquisitionTree.expandRow(0);
     }
- 
-    private void updateSearchText() {
+
+    // TODO : probably remove search tree
+    
+    private void updateSearchTreeModel() {
         String inputText = searchTextField.getText();
         String searchHint = languageBundle.getString(Resources.TEXT_SEARCH_HINT);
-        
-        if (!inputText.isEmpty() && !inputText.equals(searchHint))  {
-            // set tree model
-            if (acquisitionTree.getModel() != searchTreeModel) {
-                acquisitionTree.setModel(searchTreeModel);
-            }
-            
+
+        if (!inputText.isEmpty() && !inputText.equals(searchHint)) {
+            // hide tree while filtering
+            acquisitionTree.setVisible(false);
+
+            // TODO : show loading screen
+
             // filter tree model
             Pattern pattern = Pattern.compile("(.*)(" + inputText + ")(.*)", Pattern.CASE_INSENSITIVE);
             for (SymbolNode symbolNode : searchSymbolNodeList) {
                 String symbolName = symbolNode.getSymbol().getSymbolName();
-                Matcher matcher = pattern.matcher(symbolName); 
+                Matcher matcher = pattern.matcher(symbolName);
 
                 if (matcher.matches()) {
                     symbolNode.setVisible(true);
                 } else {
                     symbolNode.setVisible(false);
-                }  
+                }
             }
-            
+
             // reload tree model
             searchTreeModel.reload();
-            
-            // expand tree full level
+
+            // set tree model search
+            if (acquisitionTree.getModel() != searchTreeModel) {
+                acquisitionTree.setModel(searchTreeModel);
+            }
+
+            // expand tree model search full
             for (int i = 0; i < acquisitionTree.getRowCount(); i++) {
                 acquisitionTree.expandRow(i);
             }
-            
         } else {
-            // set tree model
+            // set tree model browse
             if (acquisitionTree.getModel() != browseTreeModel) {
                 acquisitionTree.setModel(browseTreeModel);
+                // expand tree model browse top level
+                acquisitionTree.expandRow(0);
             }
-            
-            // expand tree top level
-            acquisitionTree.expandRow(0);
         }
-    }  
+
+        // TODO : hide loading screen
+        // show tree after filtering
+        acquisitionTree.setVisible(true);
+    }
 }
