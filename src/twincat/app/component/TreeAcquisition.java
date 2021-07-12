@@ -5,7 +5,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -21,23 +24,29 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.OverlayLayout;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.event.DocumentEvent;
@@ -47,6 +56,7 @@ import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.TreePath;
 
 import twincat.Resources;
+import twincat.TwincatLogger;
 import twincat.Utilities;
 import twincat.ads.constant.DataType;
 import twincat.ads.container.Symbol;
@@ -64,6 +74,8 @@ public class TreeAcquisition extends JPanel {
     /*************************/
     /*** local attributes ****/
     /*************************/
+
+    private final ItemListener comboBoxItemListener;
 
     private final JTree acquisitionTree = new JTree();
 
@@ -83,13 +95,76 @@ public class TreeAcquisition extends JPanel {
 
     private final List<SymbolNode> searchSymbolNodeList = new ArrayList<SymbolNode>();
 
-    private final ItemListener comboBoxItemListener;
+    private final Logger logger = TwincatLogger.getLogger();
 
     /*************************/
     /****** constructor ******/
     /*************************/
 
     public TreeAcquisition(PanelBrowser panelBrowser) {
+        MouseAdapter acquisitionTreeMouseAdapter = new MouseAdapter() {
+            public void mousePressed(MouseEvent mouseEvent) {
+                if (mouseEvent.getClickCount() == 2) {
+                    int x = mouseEvent.getX();
+                    int y = mouseEvent.getY();
+
+                    TreePath treePath = acquisitionTree.getPathForLocation(x, y);
+
+                    if (treePath != null) {
+                        // get object information
+                        SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();
+                        Object userObject = symbolTreeNode.getUserObject();
+
+                        // handle symbol nodes
+                        if (userObject instanceof SymbolNode) {
+                            SymbolNode symbolNodeParent = (SymbolNode) userObject;
+                            Symbol selectedSymbol = symbolNodeParent.getSymbol();
+
+                            if (selectedSymbol.getDataType().equals(DataType.BIGTYPE)) {
+                                SymbolLoader symbolLoader = symbolNodeParent.getSymbolLoader();
+
+                                // add new symbol node
+                                List<Symbol> symbolList = symbolLoader.getSymbolList(selectedSymbol);
+                                for (Symbol symbol : symbolList) {
+                                    if (acquisitionTree.getModel().equals(browseTreeModel)) {
+                                        // add symbol node to browse tree
+                                        SymbolNode symbolNodeChild = new SymbolNode(symbol, symbolLoader, false);
+                                        symbolTreeNode.addSymbolNodeSplitName(symbolNodeParent, symbolNodeChild);
+                                    } else {
+                                        // add symbol node to search tree
+                                        SymbolNode symbolNodeChild = new SymbolNode(symbol, symbolLoader, true);
+                                        symbolTreeNode.addSymbolNodeFullName(symbolNodeParent, symbolNodeChild);
+                                        searchSymbolNodeList.add(symbolNodeChild);
+                                    }
+                                }
+
+                                // snapshot of symbol tree node path
+                                TreePath symbolTreePath = new TreePath(symbolTreeNode.getPath());
+
+                                // update search tree model
+                                if (acquisitionTree.getModel().equals(searchTreeModel)) {
+                                    symbolTreeNode.removeFromParent();
+                                    searchTreeModel.reload();
+                                }
+
+                                // set view to model
+                                acquisitionTree.setSelectionPath(symbolTreePath);
+                            } else {
+                                logger.info(selectedSymbol.getSymbolName());
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        BasicTreeUI acquisitionTreeBasicUI = new BasicTreeUI() {
+            @Override
+            protected boolean shouldPaintExpandControl(TreePath p, int r, boolean iE, boolean hBE, boolean iL) {
+                return false;
+            }
+        };
+
         acquisitionTree.setCellRenderer(new SymbolTreeRenderer());
         acquisitionTree.setBorder(BorderFactory.createEmptyBorder(5, -5, 0, 0));
         acquisitionTree.setRootVisible(false);
@@ -97,77 +172,14 @@ public class TreeAcquisition extends JPanel {
         acquisitionTree.setShowsRootHandles(true);
         acquisitionTree.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         acquisitionTree.setModel(new SymbolTreeModel());
-
-        acquisitionTree.setUI(new BasicTreeUI() {
-            @Override
-            protected boolean shouldPaintExpandControl(TreePath p, int r, boolean iE, boolean hBE, boolean iL) {
-                return false;
-            }
-        });
-
-        acquisitionTree.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent mouseEvent) {
-                if (mouseEvent.getClickCount() == 2) {
-                    int x = mouseEvent.getX();
-                    int y = mouseEvent.getY();
-
-                    TreePath treePath = acquisitionTree.getPathForLocation(x, y);
-                    
-                    if (treePath == null) return;
-                    
-                    SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();   
-                    Object userObject = symbolTreeNode.getUserObject();
-
-                    if (userObject instanceof SymbolNode) {
-                        SymbolNode symbolNode = (SymbolNode) userObject;
-                        Symbol selectedSymbol = symbolNode.getSymbol();
- 
-                        if (symbolTreeNode.isLeaf()) {
-                            if (selectedSymbol.getDataType().equals(DataType.BIGTYPE)) {
-                                SymbolLoader symbolLoader = symbolNode.getSymbolLoader();
-
-                                List<Symbol> symbolList = symbolLoader.getSymbolList(selectedSymbol);
-                                for (Symbol symbol : symbolList) {
-                                    
-                                    if (acquisitionTree.getModel().equals(browseTreeModel)) {
-                                        SymbolNode browseSymbolNode = new SymbolNode(symbol, symbolLoader, false);
-
-                                        // TODO : remove path before
-                                        
-                                        symbolTreeNode.addSymbolNodeAndSplit(browseSymbolNode);
-                                        
-                                    } else {
-                                        SymbolNode searchSymbolNode = new SymbolNode(symbol, symbolLoader, true);
-                                        symbolTreeNode.addSymbolNode(searchSymbolNode);
-                                        
-                                        searchSymbolNodeList.add(searchSymbolNode);
-                                    }
-                                }
-                                
-                                // expand children of symbol tree node
-                                for (int i = 0; i < symbolTreeNode.getChildCount(); i++) {
-                                    SymbolTreeNode symbolTreeNodeChild = (SymbolTreeNode) symbolTreeNode.getChildAt(i);
-                                    TreePath symbolTreeNodeChildPath = new TreePath(symbolTreeNodeChild.getPath());
-                                    acquisitionTree.setSelectionPath(symbolTreeNodeChildPath);
-                                }
-                            } else {
-                                System.out.println(selectedSymbol.getSymbolName());
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        acquisitionTree.addMouseListener(acquisitionTreeMouseAdapter);
+        acquisitionTree.setUI(acquisitionTreeBasicUI);
 
         JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(acquisitionTree);
-
-        Border routeBorderInside = BorderFactory.createLoweredBevelBorder();
-        Border routeBorderOutside = BorderFactory.createEmptyBorder(0, 0, 0, 1);
-        CompoundBorder routeCompoundBorder = new CompoundBorder(routeBorderOutside, routeBorderInside);
 
         comboBoxItemListener = new ItemListener() {
             private ScheduledFuture<?> schedule = null;
@@ -189,10 +201,7 @@ public class TreeAcquisition extends JPanel {
             }
         };
 
-        routeComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        routeComboBox.setBorder(routeCompoundBorder);
-
-        routeComboBox.setUI(new BasicComboBoxUI() {
+        BasicComboBoxUI routeComboBoxBasicUI = new BasicComboBoxUI() {
             protected JButton createArrowButton() {
                 return new JButton() {
                     private static final long serialVersionUID = 1L;
@@ -202,9 +211,43 @@ public class TreeAcquisition extends JPanel {
                     }
                 };
             }
-        });
+        };
 
-        routeComboBox.setRenderer(new DefaultListCellRenderer() {
+        DefaultListCellRenderer routeComboBoxDefaultListCellRenderer = new DefaultListCellRenderer() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public Component getListCellRendererComponent(JList<?> l, Object v, int i, boolean is, boolean chF) {
+                JLabel lbl = (JLabel) super.getListCellRendererComponent(l, v, i, is, chF);
+
+                lbl.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+                return lbl;
+            }
+        };
+
+        Border routeBorderInside = BorderFactory.createLoweredBevelBorder();
+        Border routeBorderOutside = BorderFactory.createEmptyBorder(0, 0, 0, 1);
+        CompoundBorder routeCompoundBorder = new CompoundBorder(routeBorderOutside, routeBorderInside);
+
+        routeComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        routeComboBox.addItemListener(comboBoxItemListener);
+        routeComboBox.setBorder(routeCompoundBorder);
+        routeComboBox.setUI(routeComboBoxBasicUI);
+        routeComboBox.setRenderer(routeComboBoxDefaultListCellRenderer);
+
+        BasicComboBoxUI portComboBoxBasicUI = new BasicComboBoxUI() {
+            protected JButton createArrowButton() {
+                return new JButton() {
+                    private static final long serialVersionUID = 1L;
+
+                    public int getWidth() {
+                        return 0;
+                    }
+                };
+            }
+        };
+
+        DefaultListCellRenderer portComboBoxDefaultListCellRenderer = new DefaultListCellRenderer() {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -213,37 +256,13 @@ public class TreeAcquisition extends JPanel {
                 lbl.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
                 return lbl;
             }
-        });
-
-        routeComboBox.addItemListener(comboBoxItemListener);
+        };
 
         portComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         portComboBox.setBorder(BorderFactory.createLoweredBevelBorder());
-
-        portComboBox.setUI(new BasicComboBoxUI() {
-            protected JButton createArrowButton() {
-                return new JButton() {
-                    private static final long serialVersionUID = 1L;
-
-                    public int getWidth() {
-                        return 0;
-                    }
-                };
-            }
-        });
-
-        portComboBox.setRenderer(new DefaultListCellRenderer() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Component getListCellRendererComponent(JList<?> l, Object v, int i, boolean is, boolean chF) {
-                JLabel lbl = (JLabel) super.getListCellRendererComponent(l, v, i, is, chF);
-                lbl.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-                return lbl;
-            }
-        });
-
         portComboBox.addItemListener(comboBoxItemListener);
+        portComboBox.setUI(portComboBoxBasicUI);
+        portComboBox.setRenderer(portComboBoxDefaultListCellRenderer);
 
         JToolBar routeToolBar = new JToolBar();
         routeToolBar.setFloatable(false);
@@ -253,16 +272,7 @@ public class TreeAcquisition extends JPanel {
         routeToolBar.add(routeComboBox);
         routeToolBar.add(portComboBox);
 
-        Border searchBorderInside = BorderFactory.createLoweredBevelBorder();
-        Border searchBorderOutside = BorderFactory.createEmptyBorder(0, 4, 0, 0);
-        CompoundBorder searchCompoundBorder = new CompoundBorder(searchBorderInside, searchBorderOutside);
-
-        searchTextField.setBorder(searchCompoundBorder);
-        searchTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        searchTextField.setText(languageBundle.getString(Resources.TEXT_SEARCH_HINT));
-        searchTextField.setForeground(Color.GRAY);
-
-        searchTextField.addFocusListener(new FocusListener() {
+        FocusListener searchTextFieldFocusListener = new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
                 String tempString = searchTextField.getText();
@@ -280,9 +290,9 @@ public class TreeAcquisition extends JPanel {
                     searchTextField.setText(languageBundle.getString(Resources.TEXT_SEARCH_HINT));
                 }
             }
-        });
+        };
 
-        searchTextField.getDocument().addDocumentListener(new DocumentListener() {
+        DocumentListener searchTextDocumentListener = new DocumentListener() {
             private static final int DELAY_TIME = 100;
 
             private final Runnable task = new Runnable() {
@@ -313,7 +323,18 @@ public class TreeAcquisition extends JPanel {
             public void changedUpdate(DocumentEvent e) {
                 delayUpdateSearchTreeModel();
             }
-        });
+        };
+
+        Border searchBorderInside = BorderFactory.createLoweredBevelBorder();
+        Border searchBorderOutside = BorderFactory.createEmptyBorder(0, 4, 0, 0);
+        CompoundBorder searchCompoundBorder = new CompoundBorder(searchBorderInside, searchBorderOutside);
+
+        searchTextField.setBorder(searchCompoundBorder);
+        searchTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        searchTextField.setText(languageBundle.getString(Resources.TEXT_SEARCH_HINT));
+        searchTextField.setForeground(Color.GRAY);
+        searchTextField.addFocusListener(searchTextFieldFocusListener);
+        searchTextField.getDocument().addDocumentListener(searchTextDocumentListener);
 
         JToolBar searchToolBar = new JToolBar();
         searchToolBar.setFloatable(false);
@@ -325,16 +346,18 @@ public class TreeAcquisition extends JPanel {
         acquisitionToolbar.add(routeToolBar);
         acquisitionToolbar.add(searchToolBar);
 
-        JButton applyButton = new JButton(languageBundle.getString(Resources.TEXT_SEARCH_APPLY));
-        applyButton.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        applyButton.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        applyButton.setFocusable(false);
-        applyButton.addActionListener(new ActionListener() {
+        ActionListener applyButtonActionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 panelBrowser.getPanelControl().displayBrowser();
             }
-        });
+        };
+
+        JButton applyButton = new JButton(languageBundle.getString(Resources.TEXT_SEARCH_APPLY));
+        applyButton.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        applyButton.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        applyButton.setFocusable(false);
+        applyButton.addActionListener(applyButtonActionListener);
 
         JToolBar applyToolBar = new JToolBar();
         applyToolBar.setLayout(new BorderLayout());
@@ -343,24 +366,49 @@ public class TreeAcquisition extends JPanel {
         applyToolBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         applyToolBar.add(applyButton);
 
-        new SwingWorker<Void, Void>() {
+        SwingWorker<Void, Void> backgroundTask = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
                 updateAcquisition();
                 return null;
             }
-        }.execute();
+        };
 
+        backgroundTask.execute();
+
+        
+        
+        JLabel loadingData = new JLabel("Loading");
+        loadingData.setAlignmentX(CENTER_ALIGNMENT);
+        loadingData.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_BIG));
+
+        JLabel loadingLabel = new JLabel("Some Data");
+        loadingLabel.setAlignmentX(CENTER_ALIGNMENT);
+        loadingLabel.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
+
+        JPanel loadingScreen = new JPanel();
+        loadingScreen.setLayout(new BoxLayout(loadingScreen, BoxLayout.Y_AXIS));
+        loadingScreen.add(Box.createVerticalGlue());
+        loadingScreen.add(loadingData);
+        loadingScreen.add(loadingLabel);
+        loadingScreen.add(Box.createVerticalGlue());
+
+        // TODO : card layout
+        
         this.setLayout(new BorderLayout());
         this.add(acquisitionToolbar, BorderLayout.PAGE_START);
-        this.add(scrollPanel, BorderLayout.CENTER);
+        this.add(loadingScreen, BorderLayout.CENTER);
         this.add(applyToolBar, BorderLayout.PAGE_END);
         this.setBorder(BorderFactory.createEmptyBorder());
     }
 
+    /*************************/
+    /******** private ********/
+    /*************************/
+
     private void updateAcquisition() {
         // TODO : show loading screen
-        
+
         routeSymbolHandlerList.addAll(RouteSymbolHandler.getRouteHandlerList());
 
         SymbolTreeNode rootBrowseTreeNode = (SymbolTreeNode) browseTreeModel.getRoot();
@@ -381,10 +429,10 @@ public class TreeAcquisition extends JPanel {
             List<Symbol> routeSymbolList = symbolLoader.getSymbolList();
             for (Symbol symbol : routeSymbolList) {
                 SymbolNode browseSymbolNode = new SymbolNode(symbol, symbolLoader, false);
-                portBrowseSymbolTreeNode.addSymbolNodeAndSplit(browseSymbolNode);
+                portBrowseSymbolTreeNode.addSymbolNodeSplitName(browseSymbolNode);
 
                 SymbolNode searchSymbolNode = new SymbolNode(symbol, symbolLoader, true);
-                portSearchSymbolTreeNode.addSymbolNode(searchSymbolNode);
+                portSearchSymbolTreeNode.addSymbolNodeFullName(searchSymbolNode);
 
                 searchSymbolNodeList.add(searchSymbolNode);
             }
@@ -542,20 +590,14 @@ public class TreeAcquisition extends JPanel {
         }
     }
 
-    // TODO : probably remove search tree
-    
     private void updateSearchTreeModel() {
         String inputText = searchTextField.getText();
         String searchHint = languageBundle.getString(Resources.TEXT_SEARCH_HINT);
 
         if (!inputText.isEmpty() && !inputText.equals(searchHint)) {
-            // hide tree while filtering
-            acquisitionTree.setVisible(false);
-
-            // TODO : show loading screen
-
             // filter tree model
             Pattern pattern = Pattern.compile("(.*)(" + inputText + ")(.*)", Pattern.CASE_INSENSITIVE);
+
             for (SymbolNode symbolNode : searchSymbolNodeList) {
                 String symbolName = symbolNode.getSymbol().getSymbolName();
                 Matcher matcher = pattern.matcher(symbolName);
@@ -587,9 +629,18 @@ public class TreeAcquisition extends JPanel {
                 acquisitionTree.expandRow(0);
             }
         }
+    }
 
-        // TODO : hide loading screen
-        // show tree after filtering
-        acquisitionTree.setVisible(true);
+    private void disableAcquisition() {
+
+
+        UIManager.put("ComboBox.disabledForeground", Color.GRAY);
+        searchTextField.setDisabledTextColor(Color.GRAY);
+        
+        portComboBox.setEnabled(false);
+        routeComboBox.setEnabled(false);
+        searchTextField.setEnabled(false);
+        acquisitionTree.setEnabled(false);
+
     }
 }

@@ -19,14 +19,18 @@ public class GeneralFunctionTest {
 
     private void generalFunctionTest() {
         
-        String input = "(.*)(comp)(.*)";
+        String input = ".*(array|string).*";
         
         String symbolName = ".JUNIT_ARRAY_COMPLEX[1,5].INTERNAL_STRUCTURE_ARRAY[3].ST_VALUE.Q";
+        
         Pattern pattern = Pattern.compile(input, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(symbolName); 
+        
+        Matcher matcher = pattern.matcher(symbolName);
         
         if (matcher.matches()) {
-            logger.info("true");
+            for (int i = 0; i < matcher.groupCount(); i++) {
+                logger.info("" + matcher.group(i)); 
+            }
         } else {
             logger.info("false");
         }  

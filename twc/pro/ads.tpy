@@ -4,7 +4,7 @@
 	<ProjectInfo>
 		<Path>C:\Workspace\Eclipse\Beckhoff\twc\pro\ads.pro</Path>
 		<IsLibrary>false</IsLibrary>
-		<ChangeDate>2021-07-11T12:29:30</ChangeDate>
+		<ChangeDate>2021-07-12T12:17:09</ChangeDate>
 		<Library>
 			<Name>STANDARD.LIB</Name>
 			<Path>C:\TWINCAT\PLC\LIB\STANDARD.LIB</Path>
@@ -944,11 +944,14 @@
 	</Functions>
 	<Programs>
 		<Program>
-			<Name Decoration="10010460" Crc32="1589089940" LastChange="2021-07-09T12:41:30">main</Name>
+			<Name Decoration="1002F460" Crc32="3342212623" LastChange="2021-07-11T15:27:41">main</Name>
 			<PrgInfo>
 				<CodeIndex>51</CodeIndex>
 				<Symbol>
 					<Name>main.l_test_bit</Name>
+				</Symbol>
+				<Symbol>
+					<Name>main.l_fb_unit</Name>
 				</Symbol>
 			</PrgInfo>
 		</Program>
@@ -957,13 +960,16 @@
 		<Symbol>
 			<Name>main.l_test_bit</Name>
 			<Type>BOOL</Type>
-			<Comment>
-				<![CDATA[
-	l_fb_unit	:fb_junit;]]>
-			</Comment>
 			<IGroup>16448</IGroup>
 			<IOffset>1586</IOffset>
 			<BitSize>8</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name>main.l_fb_unit</Name>
+			<Type Decoration="1006DAB6">fb_junit</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>1486</IOffset>
+			<BitSize>624</BitSize>
 		</Symbol>
 		<Symbol>
 			<Name>.junit_bit</Name>

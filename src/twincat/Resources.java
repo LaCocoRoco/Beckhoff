@@ -23,7 +23,7 @@ public class Resources {
     
 
     public static final String PATH_ICON_APP = "/resources/images/app.png";
-    
+
     public static final String PATH_ICON_CONTROL_PLAY = "/resources/images/control_play.png";
     
     public static final String PATH_ICON_CONTROL_PAUSE = "/resources/images/control_pause.png";
@@ -68,6 +68,8 @@ public class Resources {
           
     public static final String PATH_ICON_DATATYPE_BIGTYPE = "/resources/images/datatype_bigtype.png";
        
+
+    
     
     public static final String TEXT_CHART_PLAY = "chartPlay";
     

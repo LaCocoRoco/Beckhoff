@@ -5,6 +5,7 @@ import java.util.Enumeration;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import twincat.ads.constant.AmsPort;
 import twincat.app.constant.Filter;
 
 public class SymbolTreeNode extends DefaultMutableTreeNode {
@@ -21,7 +22,7 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
     /*************************/
 
     private boolean isVisible = true;
-   
+
     /*************************/
     /****** constructor ******/
     /*************************/
@@ -49,7 +50,7 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
     public void setVisible(boolean isVisible) {
         this.isVisible = isVisible;
     }
-    
+
     /*************************/
     /********* public ********/
     /*************************/
@@ -68,55 +69,69 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         return symbolTreeNode;
     }
 
-    public void addSymbolNode(SymbolNode symbolNode) {
+    public void addSymbolNodeFullName(SymbolNode symbolNode) {
         SymbolTreeNode symbolTreeNode = new SymbolTreeNode(symbolNode);
         this.add(symbolTreeNode);
     }
 
-    // substring
-    // 0. .JUINT_STRUCT.ST_VALUE 
-    // 1. .JUINT_STRUCT
-    // 2. .ST_VALUE
-    
-    public void addSymbolNodeAndSplit(SymbolNode symbolNodeChild, SymbolNode symbolNodeParent) {
-        
+    public void addSymbolNodeFullName(SymbolNode symbolNodeParent, SymbolNode symbolNodeChild) {
+        SymbolTreeNode symbolTreeNode = new SymbolTreeNode(symbolNodeChild);
+        SymbolTreeNode symbolNodeParentOfParent = (SymbolTreeNode) this.getParent();
+        int symbolNodeParentIndex = symbolNodeParentOfParent.getIndex(this);
+        symbolNodeParentOfParent.insert(symbolTreeNode, symbolNodeParentIndex);
+        System.out.println(symbolNodeChild.toString());
     }
-    
-    public void addSymbolNodeAndSplit(SymbolNode symbolNode) {
-        String[] symbolNodeNameArray = symbolNode.getSymbol().getSymbolName().split("\\.");
 
-        // set symbol name of dot to global
-        if (symbolNodeNameArray[0].isEmpty()) {
-            symbolNodeNameArray[0] = GLOBAL_SYMBOL_NAME;
+    public void addSymbolNodeSplitName(SymbolNode symbolNode) {
+        AmsPort amsPort = symbolNode.getSymbolLoader().getAmsPort();
+        String symbolName = symbolNode.getSymbol().getSymbolName();
+        String[] symbolNameArray = symbolName.split("\\.");
+       
+        // NC structure
+        switch (amsPort) {
+            case NC:
+            case NCSAF:
+            case NCSVB:
+                symbolNameArray = new String[3];
+
+                int rangeBeg = symbolName.lastIndexOf(".");
+                int rangeMid = symbolName.indexOf(".");
+                int rangeEnd = symbolName.length();
+
+                symbolNameArray[0] = symbolName.substring(0, rangeMid);
+                symbolNameArray[1] = symbolName.substring(rangeMid + 1, rangeBeg);
+                symbolNameArray[2] = symbolName.substring(rangeBeg + 1, rangeEnd);
+                break;
+
+            default:
+                break;
         }
 
-        SymbolTreeNode symbolTreeNodePointer = this;
-
-        symbolNodeName: for (int i = 0; i < symbolNodeNameArray.length; i++) {
-            String symbolNodeName = symbolNodeNameArray[i];
-
-            if (this.getChildCount() != 0) {
-                for (int x = 0; x < symbolTreeNodePointer.getChildCount(); x++) {
-                    SymbolTreeNode symbolTreeNodeChild = (SymbolTreeNode) symbolTreeNodePointer.getChildAt(x);
-
-                    // pass reference and continue to next symbol name
-                    if (symbolTreeNodeChild.toString().equals(symbolNodeName)) {
-                        symbolTreeNodePointer = symbolTreeNodeChild;
-                        continue symbolNodeName;
-                    }
-                }
-            }
-
-            if (i == symbolNodeNameArray.length - 1) {
-                // add mew symbol node to tree
-                symbolTreeNodePointer.addSymbolNode(symbolNode);
-            } else {
-                // add new folder node to tree
-                SymbolTreeNode symbolTreeNode = new SymbolTreeNode(symbolNodeName);
-                symbolTreeNodePointer.add(symbolTreeNode);
-                symbolTreeNodePointer = symbolTreeNode;
-            }
+        // set empty symbol name to global
+        if (symbolNameArray[0].isEmpty()) {
+            symbolNameArray[0] = GLOBAL_SYMBOL_NAME;
         }
+
+        addSymbolNodeSplitName(symbolNameArray, symbolNode);
+    }
+
+    public void addSymbolNodeSplitName(SymbolNode symbolNodeParent, SymbolNode symbolNodeChild) {
+        String symbolNameParent = symbolNodeParent.getSymbol().getSymbolName();
+        String symbolNameChild = symbolNodeChild.getSymbol().getSymbolName();
+        String symbolName = symbolNameChild.replace(symbolNameParent, "");
+
+        String[] symbolNameArray = symbolName.split("\\.");
+        String[] symbolNameParentArray = symbolNameParent.split("\\.");
+
+        // set array symbol name to parent
+        if (symbolName.contains("[")) {
+            String symbolNodeNameParent = symbolNameParentArray[symbolNameParentArray.length - 1];
+            String symbolNodeName = symbolNodeNameParent + symbolNameArray[0];
+            symbolNameArray[0] = symbolNodeName;
+        }
+        ;
+
+        addSymbolNodeSplitName(symbolNameArray, symbolNodeChild);
     }
 
     public TreeNode getChildAt(int index, Filter filterLevel) {
@@ -189,15 +204,15 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
     private boolean isFilterSymbols() {
         return SymbolTreeNode.isAnySymbolNodeVisible(this);
     }
-    
+
     private boolean isFilterAll() {
         if (userObject instanceof SymbolNode) {
-            return SymbolTreeNode.isAnySymbolNodeVisible(this);    
-        } else  {
-            return isVisible;    
+            return SymbolTreeNode.isAnySymbolNodeVisible(this);
+        } else {
+            return isVisible;
         }
     }
- 
+
     private boolean isVisible(Filter filterLevel) {
         switch (filterLevel) {
             case NODE:
@@ -205,12 +220,45 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
 
             case SYMBOLS:
                 return isFilterSymbols();
-                
+
             case ALL:
                 return isFilterAll();
-                
+
             default:
                 return true;
+        }
+    }
+
+    private void addSymbolNodeSplitName(String[] symbolNameArray, SymbolNode symbolNode) {
+        SymbolTreeNode symbolTreeNodePointer = this;
+
+        symbolNodeName: for (int i = 0; i < symbolNameArray.length; i++) {
+            String symbolNodeName = symbolNameArray[i];
+
+            if (symbolNodeName.isEmpty()) continue;
+
+            if (this.getChildCount() != 0) {
+                for (int x = 0; x < symbolTreeNodePointer.getChildCount(); x++) {
+                    SymbolTreeNode symbolTreeNodeChild = (SymbolTreeNode) symbolTreeNodePointer.getChildAt(x);
+
+                    // pass reference and continue to next symbol name
+                    if (symbolTreeNodeChild.toString().equals(symbolNodeName)) {
+                        symbolTreeNodePointer = symbolTreeNodeChild;
+                        continue symbolNodeName;
+                    }
+                }
+            }
+
+            if (i == symbolNameArray.length - 1) {
+                // add mew symbol node to tree
+                SymbolTreeNode symbolTreeNode = new SymbolTreeNode(symbolNode);
+                symbolTreeNodePointer.add(symbolTreeNode);
+            } else {
+                // add new symbol node as folder to tree
+                SymbolTreeNode symbolTreeNode = new SymbolTreeNode(symbolNodeName);
+                symbolTreeNodePointer.add(symbolTreeNode);
+                symbolTreeNodePointer = symbolTreeNode;
+            }
         }
     }
 
