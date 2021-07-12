@@ -99,6 +99,8 @@ public class Resources {
 
     public static final String TEXT_SEARCH_HINT = "searchHint";
     
+    public static final String TEXT_SEARCH_LOADING = "searchLoading";
+    
     
     public static final String TEXT_WINDOW = "window";
            

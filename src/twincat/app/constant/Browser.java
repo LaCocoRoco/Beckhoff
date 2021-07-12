@@ -5,5 +5,5 @@ public enum Browser {
     /** constant attributes **/
     /*************************/
     
-    OVERVIEW, ACQUISITION
+    BROWSER, SEARCH
 }

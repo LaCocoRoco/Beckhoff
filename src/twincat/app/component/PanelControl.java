@@ -32,7 +32,7 @@ public class PanelControl extends JSplitPane {
     
     private Properties properties = Properties.EMPTY;
     
-    private final PanelBrowser panelBrowser = new PanelBrowser(this);
+    private final PanelTree panelTree = new PanelTree(this);
 
     private final PanelProperties panelProperties = new PanelProperties(this);
 
@@ -43,7 +43,7 @@ public class PanelControl extends JSplitPane {
     public PanelControl(PanelScope panelScope) {
         this.panelScope = panelScope;
         
-        this.setLeftComponent(panelBrowser);
+        this.setLeftComponent(panelTree);
         this.setRightComponent(panelProperties);
         this.setDividerSize(Resources.DEFAULT_DIVIDER_SIZE);
         this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
@@ -78,12 +78,12 @@ public class PanelControl extends JSplitPane {
   
     public void displaySearch() {
         properties = panelProperties.getCard();
-        panelBrowser.setCard(Browser.ACQUISITION);
+        panelTree.setCard(Browser.SEARCH);
         panelProperties.setCard(Properties.ACQUISITION);
     }
     
     public void displayBrowser() {
-        panelBrowser.setCard(Browser.OVERVIEW);
+        panelTree.setCard(Browser.BROWSER);
         panelProperties.setCard(properties);
     }
 }

@@ -6,14 +6,14 @@ import javax.swing.JPanel;
 
 import twincat.app.constant.Browser;
 
-public class PanelBrowser extends JPanel {
+public class PanelTree extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*************************/
     /*** global attributes ***/
     /*************************/
     
-    private Browser browser = Browser.OVERVIEW;
+    private Browser browser = Browser.BROWSER;
 
     private final PanelControl panelControl;
 
@@ -21,19 +21,19 @@ public class PanelBrowser extends JPanel {
     /*** local attributes ****/
     /*************************/
 
-    private final TreeOverview treeOverview = new TreeOverview(this);
+    private final TreeBrowser treeBrowser = new TreeBrowser(this);
 
-    private final TreeAcquisition treeAcquisition = new TreeAcquisition(this);
+    private final TreeSearch treeSearch = new TreeSearch(this);
 
     /*************************/
     /****** constructor ******/
     /*************************/
 
-    public PanelBrowser(PanelControl panelControl) {
+    public PanelTree(PanelControl panelControl) {
         this.panelControl = panelControl;
         this.setLayout(new CardLayout());
-        this.add(treeOverview, Browser.OVERVIEW.toString());
-        this.add(treeAcquisition, Browser.ACQUISITION.toString());
+        this.add(treeBrowser, Browser.BROWSER.toString());
+        this.add(treeSearch, Browser.SEARCH.toString());
         this.setCard(browser);
     }
 

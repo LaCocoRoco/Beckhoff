@@ -129,7 +129,6 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
             String symbolNodeName = symbolNodeNameParent + symbolNameArray[0];
             symbolNameArray[0] = symbolNodeName;
         }
-        ;
 
         addSymbolNodeSplitName(symbolNameArray, symbolNodeChild);
     }

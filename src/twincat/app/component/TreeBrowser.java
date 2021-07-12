@@ -17,7 +17,7 @@ import twincat.LoremIpsum;
 import twincat.Resources;
 import twincat.Utilities;
 
-public class TreeOverview extends JPanel {
+public class TreeBrowser extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*************************/
@@ -30,7 +30,7 @@ public class TreeOverview extends JPanel {
     /****** constructor ******/
     /*************************/
 
-    public TreeOverview(PanelBrowser panelBrowser) {
+    public TreeBrowser(PanelTree panelBrowser) {
         JScrollPane browserPanel = new JScrollPane();
         browserPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         browserPanel.setBorder(BorderFactory.createEmptyBorder());
