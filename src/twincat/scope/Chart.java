@@ -33,9 +33,9 @@ import twincat.TwincatLogger;
 import twincat.Utilities;
 
 public class Chart extends Observable {
-    /*************************/
-    /** constant attributes **/
-    /*************************/
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 
     private static final int CHART_PADDING = 5;
 
@@ -49,9 +49,9 @@ public class Chart extends Observable {
 
     private static final int CHART_TICK_LENGTH = 10;
 
-    /*************************/
-    /*** global attributes ***/
-    /*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
     private int width = 800;
 
@@ -83,13 +83,17 @@ public class Chart extends Observable {
 
     private VolatileImage image = Chart.createBitmaskVolatileImage(width, height);
 
+    /*********************************/
+    /***** global final variable *****/
+    /*********************************/
+    
     private final CopyOnWriteArrayList<Axis> axisList = new CopyOnWriteArrayList<Axis>();
 
     private final CopyOnWriteArrayList<TriggerGroup> triggerGroupList = new CopyOnWriteArrayList<TriggerGroup>();
 
-    /*************************/
-    /*** local attributes ***/
-    /*************************/
+    /*********************************/
+    /******** local variable *********/
+    /*********************************/
 
     private boolean refresh = true;
 
@@ -130,7 +134,11 @@ public class Chart extends Observable {
     private VolatileImage dynamicImage = Chart.createBitmaskVolatileImage(width, height);
 
     private ScheduledFuture<?> schedule = null;
-
+    
+    /*********************************/
+    /****** predefined variable ******/
+    /*********************************/
+    
     private final Runnable task = new Runnable() {
         public void run() {
             try {
@@ -144,9 +152,9 @@ public class Chart extends Observable {
         }
     };
 
-    /*************************/
-    /****** constructor ******/
-    /*************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
     public Chart(int framesPerSecond) {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
@@ -155,9 +163,9 @@ public class Chart extends Observable {
         Chart.accelerateTranslucentVolatileImage();
     }
 
-    /*************************/
-    /**** setter & getter ****/
-    /*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 
     public int getWidth() {
         return width;
@@ -302,9 +310,9 @@ public class Chart extends Observable {
         return triggerGroupList;
     }
 
-    /*************************/
-    /********* public ********/
-    /*************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
 
     public void play() {
         pauseTimeStamp = 0;
@@ -382,9 +390,9 @@ public class Chart extends Observable {
         }
     }
 
-    /*************************/
-    /******** private ********/
-    /*************************/
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
     private void updateObserver() {
         setChanged();

@@ -9,14 +9,14 @@ import javax.swing.JTextArea;
 import twincat.Resources;
 import twincat.Utilities;
 
-public class PanelAds extends JScrollPane {
+public class AdsPanel extends JScrollPane {
     private static final long serialVersionUID = 1L;
 
-    /*************************/
-    /****** constructor ******/
-    /*************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
-    public PanelAds() {
+    public AdsPanel(XReference xref) {
         String instructionText = Utilities.getStringFromFilePath(Resources.PATH_TEXT_ADS_INFO);
 
         JTextArea instructionTextArea = new JTextArea(instructionText);

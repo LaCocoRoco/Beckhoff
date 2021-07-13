@@ -22,26 +22,26 @@ import twincat.Resources;
 import twincat.TwincatLogger;
 import twincat.ads.worker.CommandLine;
 
-public class PanelConsole extends JPanel {
+public class ConsolePanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
-    /*************************/
-    /** constant attributes **/
-    /*************************/
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 
     private static final int MAX_LINE_COUNT = 2000;
 
-    /*************************/
-    /*** local attributes ****/
-    /*************************/
+    /*********************************/
+    /******** local variable *********/
+    /*********************************/
 
     private String clipboard = new String();
 
-    /*************************/
-    /****** constructor ******/
-    /*************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
-    public PanelConsole() {
+    public ConsolePanel(XReference xref) {
         JTextArea textArea = new JTextArea();
         textArea.setMargin(new Insets(5, 5, 5, 5));
         textArea.setLineWrap(true);
@@ -66,7 +66,7 @@ public class PanelConsole extends JPanel {
         };
 
         consoleHandler.setFormatter(TwincatLogger.getFormatter());
-        
+
         Logger logger = TwincatLogger.getLogger();
         logger.addHandler(consoleHandler);
 

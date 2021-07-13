@@ -6,53 +6,33 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 
-public class PanelContent extends JSplitPane {
+public class ContentPanel extends JSplitPane {
     private static final long serialVersionUID = 1L;
-    
-    /*************************/
-    /** constant attributes **/
-    /*************************/
+
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 
     private static final int DIVIDER_SIZE = 5;
-   
+
     private static final double DIVIDER_LOCATION = 0.8;
 
-    /*************************/
-    /*** global attributes ***/
-    /*************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
-    private final PanelConsole panelConsole = new PanelConsole();
-
-    private final PanelWindow panelWindow = new PanelWindow();
-      
-    /*************************/
-    /****** constructor ******/
-    /*************************/
-   
-    public PanelContent() {
-        this.setLeftComponent(panelWindow);
-        this.setRightComponent(panelConsole);
+    public ContentPanel(XReference xref) {
+        this.setLeftComponent(xref.windowPanel);
+        this.setRightComponent(xref.panelConsole);
         this.setOrientation(JSplitPane.VERTICAL_SPLIT);
         this.setContinuousLayout(true);
         this.setOneTouchExpandable(false);
         this.setBorder(new EmptyBorder(3, 3, 3, 3));
     }
 
-    /*************************/
-    /**** setter & getter ****/
-    /*************************/
-
-    public PanelConsole getPanelConsole() {
-        return panelConsole;
-    }
-
-    public PanelWindow getPanelWindow() {
-        return panelWindow;
-    }
-
-    /*************************/
-    /******** public *********/
-    /*************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
 
     public void consoleToggle() {
         if (this.getDividerSize() != 0) {
@@ -61,7 +41,7 @@ public class PanelContent extends JSplitPane {
             consoleShow();
         }
     }
-    
+
     public void consoleShow() {
         setDividerLocation(DIVIDER_LOCATION);
         getRightComponent().setVisible(true);
@@ -73,10 +53,10 @@ public class PanelContent extends JSplitPane {
             }
         });
     }
-    
+
     public void consoleHide() {
         getRightComponent().setVisible(false);
         getLeftComponent().setVisible(true);
         setDividerSize(0);
-    }      
+    }
 }

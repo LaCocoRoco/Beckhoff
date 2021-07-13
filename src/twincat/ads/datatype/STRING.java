@@ -6,15 +6,15 @@ import twincat.ads.constant.DataType;
 import twincat.ads.wrapper.Variable;
 
 public class STRING extends Variable {
-	/*************************/
-	/** constant attributes **/
-	/*************************/
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 
 	private static final String NULL_TERMINATION = "\u0000";
 
-	/*************************/
-	/****** constructor ******/
-	/*************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
 	public STRING(AdsClient adsClient, int symbolHandle) {
 		super(adsClient, DataType.STRING.size, symbolHandle);
@@ -40,9 +40,9 @@ public class STRING extends Variable {
 		super(adsClient, dataSize, adsClient.readHandleOfSymbolName(symbolName));
 	}
 		
-	/*************************/
-	/******** override *******/
-	/*************************/
+    /*********************************/
+    /******** override method ********/
+    /*********************************/
 
 	@Override
 	public DataType getDataType() {
@@ -138,9 +138,9 @@ public class STRING extends Variable {
 		return this;
 	}
 
-	/*************************/
-	/** public static final **/
-	/*************************/
+    /*********************************/
+    /** public static final method ***/
+    /*********************************/
 
 	public static final String arrayToValue(byte[] data) {
 		String value = new String();

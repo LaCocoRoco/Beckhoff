@@ -5,9 +5,9 @@ import twincat.ads.AdsException;
 import twincat.ads.constant.DataType;
 
 public class USINT extends UINT8 {
-	/*************************/
-	/****** constructor ******/
-	/*************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
 	public USINT(AdsClient adsClient, int symbolHandle) {
 		super(adsClient, symbolHandle);
@@ -21,9 +21,9 @@ public class USINT extends UINT8 {
 		super(adsClient, symbolName);
 	}
 		
-	/*************************/
-	/******** override *******/
-	/*************************/
+    /*********************************/
+    /******** override method ********/
+    /*********************************/
 		
 	@Override	
 	public DataType getDataType() {

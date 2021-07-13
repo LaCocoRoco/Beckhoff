@@ -1,9 +1,9 @@
 package twincat.app.constant;
 
 public enum Filter {
-    /*************************/
-    /** constant attributes **/
-    /*************************/
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
     
     NONE, SYMBOLS, NODE, ALL
 }

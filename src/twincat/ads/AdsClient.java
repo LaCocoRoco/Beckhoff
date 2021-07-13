@@ -41,24 +41,24 @@ import twincat.ads.datatype.WORD;
 import twincat.ads.wrapper.Variable;
 
 public class AdsClient extends AdsNative {
-    /***********************************/
-    /**** global constant variable *****/
-    /***********************************/
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
 
     public static final int DEFAULT_TIMEOUT = 1000;
 
-    /***********************************/
-    /*********** constructor ***********/
-    /***********************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
     public AdsClient() {
         super.amsAddress.setNetIdStringEx(AmsNetId.LOCAL);
         super.amsAddress.setPort(AmsPort.SYSTEMSERVICE.value);
     }
 
-    /***********************************/
-    /********* setter & getter *********/
-    /***********************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 
     public void setAmsNetId(String amsNetId) {
         super.amsAddress.setNetIdStringEx(amsNetId);
@@ -76,9 +76,9 @@ public class AdsClient extends AdsNative {
         return AmsPort.getByValue(super.amsAddress.getPort());
     }
 
-    /***********************************/
-    /******* ads implementation ********/
-    /***********************************/
+    /*********************************/
+    /****** ads implementation *******/
+    /*********************************/
 
     public void open() {
         super.adsOpenPort();
@@ -133,9 +133,9 @@ public class AdsClient extends AdsNative {
         super.adsDeleteDeviceNotification(notification, callback);
     }
 
-    /***********************************/
-    /********* public function *********/
-    /***********************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
 
     public String readLocalHostName() throws AdsException {
         byte[] readBuffer = new byte[IndexGroup.SYSTEM_IP_HOST_NAME.size];
@@ -260,9 +260,9 @@ public class AdsClient extends AdsNative {
         return routeList;
     }
 
-    /***********************************/
-    /************* mapping *************/
-    /***********************************/
+    /*********************************/
+    /************ mapping ************/
+    /*********************************/
 
     public Variable getVariableByAddress(DataType dataType, int idxGrp, int idxOffs) throws AdsException {
         switch (dataType) {

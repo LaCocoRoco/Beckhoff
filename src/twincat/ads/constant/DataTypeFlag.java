@@ -1,9 +1,9 @@
 package twincat.ads.constant;
 
 public enum DataTypeFlag {
-    /***********************************/
-    /**** global constant variable *****/
-    /***********************************/
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
 
     DATA_TYPE           (0x000001),
     DATA_ITEM           (0x000002),
@@ -28,23 +28,23 @@ public enum DataTypeFlag {
     INIT_ON_RESULT      (0x400000),
     UNKNOWN             (0xFFFFFF); 
 
-    /***********************************/
-    /********* global variable *********/
-    /***********************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
     public final int value;
 
-    /***********************************/
-    /*********** constructor ***********/
-    /***********************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
     private DataTypeFlag(int value) {
         this.value = value;
     }
 
-    /***********************************/
-    /** public static final function ***/
-    /***********************************/
+    /*********************************/
+    /** public static final method ***/
+    /*********************************/
 
     public static final DataTypeFlag getByValue(int value) {
         for (DataTypeFlag dataTypeFlag : DataTypeFlag.values()) {

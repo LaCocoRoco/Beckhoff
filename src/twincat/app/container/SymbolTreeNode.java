@@ -9,23 +9,23 @@ import twincat.ads.constant.AmsPort;
 import twincat.app.constant.Filter;
 
 public class SymbolTreeNode extends DefaultMutableTreeNode {
-    /***********************************/
-    /***** local constant variable *****/
-    /***********************************/
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 
     private static final long serialVersionUID = 1L;
 
     private static final String GLOBAL_SYMBOL_NAME = "Global";
 
-    /***********************************/
-    /********* global variable *********/
-    /***********************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
     private boolean isVisible = true;
 
-    /***********************************/
-    /*********** constructor ***********/
-    /***********************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
     public SymbolTreeNode() {
         super();
@@ -39,9 +39,9 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         super(userObject, allowsChildren);
     }
 
-    /***********************************/
-    /********* setter & getter *********/
-    /***********************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 
     public boolean isVisible() {
         return isVisible;
@@ -51,9 +51,9 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         this.isVisible = isVisible;
     }
 
-    /***********************************/
-    /********* public function *********/
-    /***********************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
 
     public SymbolTreeNode getNode(String name) {
         for (int i = 0; i < this.getChildCount(); i++) {
@@ -191,9 +191,9 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         return count;
     }
 
-    /***********************************/
-    /******** private function *********/
-    /***********************************/
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
     private boolean isFilterNode() {
         return isVisible;
@@ -260,9 +260,9 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         }
     }
 
-    /***********************************/
-    /** public static final function ***/
-    /***********************************/
+    /*********************************/
+    /** public static final method ***/
+    /*********************************/
 
     public static final boolean isAnySymbolNodeVisible(SymbolTreeNode symbolTreeNode) {
         Object userObject = symbolTreeNode.getUserObject();

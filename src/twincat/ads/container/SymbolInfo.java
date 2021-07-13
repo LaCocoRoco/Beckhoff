@@ -1,6 +1,5 @@
 package twincat.ads.container;
 
-import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -8,18 +7,16 @@ import twincat.ads.constant.DataType;
 import twincat.ads.constant.SymbolFlag;
 import twincat.ads.datatype.STRING;
 
-public class SymbolInfo implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    /*************************/
-    /** constant attributes **/
-    /*************************/
+public class SymbolInfo {
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/   
 
     private static final int INFO_DATA_LENGTH = 30;
 
-    /*************************/
-    /*** global attributes ***/
-    /*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
     private int length = 0;
 
@@ -39,9 +36,9 @@ public class SymbolInfo implements Serializable {
 
     private SymbolFlag symbolFlag = SymbolFlag.UNKNOWN;
 
-    /*************************/
-    /**** setter & getter ****/
-    /*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 
     public int getLength() {
         return length;
@@ -115,9 +112,9 @@ public class SymbolInfo implements Serializable {
         this.comment = comment;
     }
 
-    /*************************/
-    /********* public ********/
-    /*************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
 
     public void parseSymbolInfo(byte[] buffer) {
         parseSymbolInfo(buffer, 0);

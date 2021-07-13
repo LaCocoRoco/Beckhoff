@@ -3,17 +3,17 @@ package twincat.ads.container;
 import twincat.ads.constant.State;
 
 public class DeviceState {
-	/*************************/
-	/*** global attributes ***/
-	/*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 	
 	private State adsState = State.UNKNOWN;
 	
 	private State devState = State.UNKNOWN;
 
-	/*************************/
-	/**** setter & getter ****/
-	/*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 
 	public State getAdsState() {
 		return adsState;

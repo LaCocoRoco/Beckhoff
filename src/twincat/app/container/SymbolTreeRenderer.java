@@ -11,11 +11,11 @@ import twincat.Resources;
 import twincat.Utilities;
 
 public class SymbolTreeRenderer extends DefaultTreeCellRenderer {
-    /***********************************/
-    /***** local constant variable *****/
-    /***********************************/
-
     private static final long serialVersionUID = 1L;
+    
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 
     private static final ImageIcon ICON_BIT = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_DATATYPE_BIT));
 
@@ -43,9 +43,9 @@ public class SymbolTreeRenderer extends DefaultTreeCellRenderer {
 
     private static final ImageIcon ICON_CLOSED = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_FOLDER_CLOSED));
 
-    /***********************************/
-    /********* public function *********/
-    /***********************************/
+    /*********************************/
+    /******** override method ********/
+    /*********************************/
 
     @Override
     public Component getTreeCellRendererComponent(JTree t, Object v,

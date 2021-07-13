@@ -7,9 +7,9 @@ import twincat.ads.constant.AmsNetId;
 import twincat.ads.datatype.STRING;
 
 public class Route {
-    /*************************/
-    /** constant attributes **/
-    /*************************/
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
     
     private static final int UNKNOWN_DATA_LENGTH = 38;
 
@@ -17,9 +17,9 @@ public class Route {
     
     private static final int HOST_NAME_MAX_DATA_LENGTH = 32;
 
-    /*************************/
-    /*** global attributes ***/
-    /*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
     
     private String hostName = new String();
 
@@ -27,9 +27,9 @@ public class Route {
  
     private String amsNetId = new String();
 
-    /*************************/
-    /**** setter & getter ****/
-    /*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
  
     public String getHostName() {
         return hostName;
@@ -55,9 +55,9 @@ public class Route {
         this.amsNetId = amsNetId;
     }
   
-    /*************************/
-    /********* public ********/
-    /*************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
 
     public void parseRoute(byte[] buffer) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);

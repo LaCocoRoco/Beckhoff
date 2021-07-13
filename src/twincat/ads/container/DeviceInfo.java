@@ -1,9 +1,9 @@
 package twincat.ads.container;
 
 public class DeviceInfo {
-	/*************************/
-	/*** global attributes ***/
-	/*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 		
 	private String deviceName = new String();
 
@@ -13,9 +13,9 @@ public class DeviceInfo {
 	
 	private int buildVersion = 0;
 
-	/*************************/
-	/**** setter & getter ****/
-	/*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 
 	public String getDeviceName() {
 		return deviceName;

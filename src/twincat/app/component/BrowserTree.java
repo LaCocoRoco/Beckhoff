@@ -17,20 +17,20 @@ import twincat.LoremIpsum;
 import twincat.Resources;
 import twincat.Utilities;
 
-public class TreeBrowser extends JPanel {
+public class BrowserTree extends JPanel {
     private static final long serialVersionUID = 1L;
 
-    /*************************/
-    /*** local attributes ****/
-    /*************************/
+    /*********************************/
+    /****** local final variable *****/
+    /*********************************/
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
-    /*************************/
-    /****** constructor ******/
-    /*************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
-    public TreeBrowser(PanelTree panelBrowser) {
+    public BrowserTree(XReference xref) {
         JScrollPane browserPanel = new JScrollPane();
         browserPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         browserPanel.setBorder(BorderFactory.createEmptyBorder());
@@ -91,7 +91,7 @@ public class TreeBrowser extends JPanel {
         browserButtonSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panelBrowser.getPanelControl().displaySearch();
+                xref.controlPanel.displaySearch();
             }
         });
 

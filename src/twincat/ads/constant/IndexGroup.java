@@ -1,9 +1,9 @@
 package twincat.ads.constant;
 
 public enum IndexGroup {
-    /***********************************/
-    /**** global constant variable *****/
-    /***********************************/
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
 
     SYSTEM_IP_HOST_NAME         (0x02BE, 0x0100),   // 00702
     SYSTEM_ENUM_REMOTE          (0x0323, 0x082C),   // 00803
@@ -53,26 +53,26 @@ public enum IndexGroup {
     
     UNKNOWN                     (0xFFFF, 0xFFFF);   // 65535
 
-    /***********************************/
-    /********* global variable *********/
-    /***********************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
     public final int value;
 
     public final int size;
 
-    /***********************************/
-    /*********** constructor ***********/
-    /***********************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
     private IndexGroup(int value, int size) {
         this.value = value;
         this.size = size;
     }
 
-    /***********************************/
-    /** public static final function ***/
-    /***********************************/
+    /*********************************/
+    /** public static final method ***/
+    /*********************************/
 
     public static final IndexGroup getByValue(int value) {
         for (IndexGroup indexGroup : IndexGroup.values()) {

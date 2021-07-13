@@ -3,15 +3,15 @@ package twincat.ads;
 import twincat.ads.constant.TransmitMode;
 
 public class AdsNotification {
-    /***********************************/
-    /**** global constant variable *****/
-    /***********************************/
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
 
 	public static final int TIME_RATIO_NS_TO_MS = 10000;
 
-    /***********************************/
-    /********* global variable *********/
-    /***********************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
 	private long dataLength = 0;
 
@@ -21,9 +21,9 @@ public class AdsNotification {
 	
 	private TransmitMode transmissionMode = TransmitMode.UNKNOWN;
 
-    /***********************************/
-    /********* setter & getter *********/
-    /***********************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 
 	public long getDataLength() {
 		return dataLength;

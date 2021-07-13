@@ -3,17 +3,17 @@ package twincat.ads.container;
 import twincat.ads.constant.DataType;
 
 public class Symbol {
-    /*************************/
-    /*** global attributes ***/
-    /*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
     private String symbolName = new String();
 
     private DataType dataType = DataType.UNKNOWN;
 
-    /*************************/
-    /**** setter & getter ****/
-    /*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
    
     public String getSymbolName() {
         return symbolName;

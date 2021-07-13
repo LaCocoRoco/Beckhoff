@@ -1,7 +1,10 @@
 package twincat;
 
 public class Resources {
-
+    /*********************************/
+    /*********** defaults ************/
+    /*********************************/
+    
     public static final String DEFAULT_FONT_MONO = "Consolas";
 
     public static final String DEFAULT_FONT = "Dialog";
@@ -16,12 +19,14 @@ public class Resources {
     
     public static final int DEFAULT_SCROLLBAR_WIDTH = 23;
     
+    /*********************************/
+    /************* path **************/
+    /*********************************/
     
     public static final String PATH_LANGUAGE = "resources/string/language";
    
     public static final String PATH_TEXT_ADS_INFO = "/resources/string/ads_info.txt";
     
-
     public static final String PATH_ICON_APP = "/resources/images/app.png";
 
     public static final String PATH_ICON_CONTROL_PLAY = "/resources/images/control_play.png";
@@ -68,9 +73,10 @@ public class Resources {
           
     public static final String PATH_ICON_DATATYPE_BIGTYPE = "/resources/images/datatype_bigtype.png";
        
+    /*********************************/
+    /********* localization **********/
+    /*********************************/
 
-    
-    
     public static final String TEXT_CHART_PLAY = "chartPlay";
     
     public static final String TEXT_CHART_PAUSE = "chartPause";

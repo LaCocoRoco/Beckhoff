@@ -16,27 +16,31 @@ import twincat.ads.container.TypeInfo;
 import twincat.ads.container.UploadInfo;
 
 public class SymbolLoader {
-    /*************************/
-    /*** global attributes ***/
-    /*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
     private final AdsClient adsClient = new AdsClient();
  
+    /*********************************/
+    /***** global final variable *****/
+    /*********************************/
+    
     private final List<Symbol> symbolList = new ArrayList<Symbol>();
 
     private final List<SymbolInfo> symbolInfoList = new ArrayList<SymbolInfo>();
 
     private final List<DataTypeInfo> dataTypeInfoList = new ArrayList<DataTypeInfo>();
 
-    /*************************/
-    /*** local attributes ***/
-    /*************************/
+    /*********************************/
+    /****** local final variable *****/
+    /*********************************/
 
     private final Logger logger = TwincatLogger.getLogger();
 
-    /*************************/
-    /**** setter & getter ****/
-    /*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
     
     public String getAmsNetId() {
         return adsClient.getAmsNetId();
@@ -70,9 +74,9 @@ public class SymbolLoader {
         return dataTypeInfoList;
     }
 
-    /*************************/
-    /********* public ********/
-    /*************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
 
     public void parseSymbolList() {
         try {
@@ -219,9 +223,9 @@ public class SymbolLoader {
         dataTypeInfoList.clear();
     }
     
-    /*************************/
-    /******** private ********/
-    /*************************/
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
     private List<Symbol> getSymbolList(List<SymbolInfo> symbolInfoList) {
         List<Symbol> symbolList = new ArrayList<Symbol>();

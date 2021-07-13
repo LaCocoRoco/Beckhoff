@@ -1,21 +1,18 @@
 package twincat.ads.container;
 
-import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class UploadInfo implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    /*************************/
-    /** constant attributes **/
-    /*************************/
+public class UploadInfo {
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 
     private static final int INFO_BUFFER_LENGTH = 24;
    
-    /*************************/
-    /*** global attributes ***/
-    /*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
     private int symbolCount = 0;
   
@@ -29,9 +26,9 @@ public class UploadInfo implements Serializable {
     
     private int extraLength = 0;
     
-    /*************************/
-    /****** constructor ******/
-    /*************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
     public UploadInfo() {
         /* empty */
@@ -41,9 +38,9 @@ public class UploadInfo implements Serializable {
         parseUploadInfo(buffer);
     }
 
-    /*************************/
-    /**** setter & getter ****/
-    /*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
     
     public int getSymbolCount() {
         return symbolCount;
@@ -93,9 +90,9 @@ public class UploadInfo implements Serializable {
         this.extraLength = extraLength;
     }
     
-    /*************************/
-    /********* public ********/
-    /*************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
    
     public void parseUploadInfo(byte[] buffer) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);

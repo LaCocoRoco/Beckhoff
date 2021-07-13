@@ -11,15 +11,15 @@ import twincat.ads.constant.IndexGroup;
 import twincat.ads.constant.TransmitMode;
 
 public abstract class Variable extends Observable implements AdsCallback {
-	/*************************/
-	/*** global attributes ***/
-	/*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
 	private long timeStamp = 0;
 
-	/*************************/
-	/*** local attributes ***/
-	/*************************/
+    /*********************************/
+    /******** local variable *********/
+    /*********************************/
 
 	private long notification = 0;
 
@@ -33,9 +33,9 @@ public abstract class Variable extends Observable implements AdsCallback {
 
 	protected final byte[] data;
 	
-	/*************************/
-	/****** constructor ******/
-	/*************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
 	public Variable(AdsClient adsClient, int dataSize, int symbolHandle) {
 		this.adsClient = adsClient;
@@ -50,17 +50,17 @@ public abstract class Variable extends Observable implements AdsCallback {
 		this.indexOffset = indexOffset;
 	}	
 	
-	/*************************/
-	/**** setter & getter ****/
-	/*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 
 	public long getTimeStamp() {
 		return timeStamp;
 	}
 	
-	/*************************/
-	/********* public ********/
-	/*************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
 
 	@Override
 	public void update(long notification, long timeStampe, byte[] data) {
@@ -90,18 +90,18 @@ public abstract class Variable extends Observable implements AdsCallback {
 		removeNotification();
 	}
 	
-	/*************************/
-	/******* protected *******/
-	/*************************/	
+    /*********************************/
+    /******** protected method *******/
+    /*********************************/
 
 	protected void write(byte[] data) throws AdsException {
 		if (symbolHandle != 0) writeBySymbole(data);
 		else writeByAddress(data);
 	}
 
-	/*************************/
-	/******** private ********/
-	/*************************/
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
 	private void readByAddress() throws AdsException {
 		adsClient.read(indexGroup, indexOffset, data);		
@@ -152,9 +152,9 @@ public abstract class Variable extends Observable implements AdsCallback {
 		}
 	}
 
-	/*************************/
-	/****** abstraction ******/
-	/*************************/
+    /*********************************/
+    /**** public abstract method *****/
+    /*********************************/
 
 	public abstract Variable write(boolean value) throws AdsException;
 

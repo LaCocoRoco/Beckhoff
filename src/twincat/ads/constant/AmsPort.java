@@ -1,9 +1,9 @@
 package twincat.ads.constant;
 
 public enum AmsPort {
-    /***********************************/
-    /**** global constant variable *****/
-    /***********************************/
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
 
     NONE                (0x0000),   // 00000
     ROUTER              (0x0001),   // 00001
@@ -77,23 +77,23 @@ public enum AmsPort {
     MULTIUSER           (0x4C90),   // 19600
     UNKNOWN             (0xFFFF);   // 65535
 
-    /***********************************/
-    /********* global variable *********/
-    /***********************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
     public final int value;
 
-    /***********************************/
-    /*********** constructor ***********/
-    /***********************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
     private AmsPort(int value) {
         this.value = value;
     }
 
-    /***********************************/
-    /** public static final function ***/
-    /***********************************/
+    /*********************************/
+    /** public static final method ***/
+    /*********************************/
 
     public static final AmsPort getByValue(int value) {
         for (AmsPort dataType : AmsPort.values()) {

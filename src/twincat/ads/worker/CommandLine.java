@@ -26,9 +26,9 @@ import twincat.ads.container.SymbolInfo;
 import twincat.ads.wrapper.Variable;
 
 public class CommandLine {
-    /*************************/
-    /*** private constant ****/
-    /*************************/
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 
     private static final String COMMAND_ADS = "ads";
 
@@ -60,19 +60,23 @@ public class CommandLine {
 
     private static final int CMD_ADS_TIMEOUT = 10;
 
-    /*************************/
-    /*** local attributes ****/
-    /*************************/
+    /*********************************/
+    /******** local variable *********/
+    /*********************************/
 
     private long scheduleTime = 0;
 
+    /*********************************/
+    /****** local final variable *****/
+    /*********************************/
+    
     private final AdsClient adsClient = new AdsClient();
 
     private final Logger logger = TwincatLogger.getLogger();
 
-    /*************************/
-    /********* public ********/
-    /*************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
 
     public void send(String commando) {
         logger.info("> " + commando);
@@ -104,9 +108,9 @@ public class CommandLine {
         }
     }
 
-    /*************************/
-    /******** private ********/
-    /*************************/
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
     private void cmdParser(String instruction) {
         String[] data = instruction.split(CommandLine.CMD_PATTERN);

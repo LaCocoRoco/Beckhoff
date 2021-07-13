@@ -3,17 +3,17 @@ package twincat.ads.constant;
 import java.util.Arrays;
 
 public class AmsNetId {
-    /***********************************/
-    /**** global constant variable *****/
-    /***********************************/
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
 
     public static final String LOCAL = "127.0.0.1.1.1";
 
     public static final int DATA_ID_COUNT = 6;
 
-    /***********************************/
-    /** public static final function ***/
-    /***********************************/
+    /*********************************/
+    /** public static final method ***/
+    /*********************************/
 
     public static final String netIdByteArraytoString(byte[] netId) {
         StringBuilder stringBuilder = new StringBuilder();

@@ -5,9 +5,9 @@ import twincat.ads.AdsException;
 import twincat.ads.constant.DataType;
 
 public class DINT extends INT32 {
-	/*************************/
-	/****** constructor ******/
-	/*************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
 	public DINT(AdsClient adsClient, int symbolHandle) {
 		super(adsClient, symbolHandle);
@@ -21,9 +21,9 @@ public class DINT extends INT32 {
 		super(adsClient, symbolName);
 	}
 		
-	/*************************/
-	/******** override *******/
-	/*************************/
+    /*********************************/
+    /******** override method ********/
+    /*********************************/
 		
 	@Override	
 	public DataType getDataType() {

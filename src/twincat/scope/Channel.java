@@ -14,313 +14,321 @@ import twincat.ads.AdsException;
 import twincat.ads.wrapper.Variable;
 
 public class Channel extends Observable implements Observer {
-	/*************************/
-	/** constant attributes **/
-	/*************************/		
-	
-	private static final int NOTIFICATION_TIMEOUT = 200;
-	
-	private static final int WATCHDOG_TIMEOUT = 2000;
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 
-	/*************************/
-	/*** global attributes ***/
-	/*************************/
+    private static final int NOTIFICATION_TIMEOUT = 200;
 
-	private boolean refresh = false;
+    private static final int WATCHDOG_TIMEOUT = 2000;
 
-	private String channelName = "Channel";
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
-	private boolean channelVisible = true;
+    private boolean refresh = false;
 
-	private boolean antialias = false;
+    private String channelName = "Channel";
 
-	private Color lineColor = Color.RED;
+    private boolean channelVisible = true;
 
-	private int lineWidth = 1;
+    private boolean antialias = false;
 
-	private boolean lineVisible = true;
+    private Color lineColor = Color.RED;
 
-	private Color plotColor = Color.RED;
+    private int lineWidth = 1;
 
-	private int plotSize = 4;
+    private boolean lineVisible = true;
 
-	private boolean plotVisible = true;
+    private Color plotColor = Color.RED;
 
-	private boolean watchdogEnabled = false;
+    private int plotSize = 4;
 
-	private String channelError = new String();
+    private boolean plotVisible = true;
 
-	private int notificationError = 0;
+    private boolean watchdogEnabled = false;
 
-	private final Samples samples = new Samples();
+    private String channelError = new String();
 
-	/*************************/
-	/*** local attributes ***/
-	/*************************/
-	
-	private Acquisition acquisition = null;
+    private int notificationError = 0;
 
-	private boolean notificationStarted = false;
+    /*********************************/
+    /***** global final variable *****/
+    /*********************************/
 
-	private boolean watchdogStarted = false;	
+    private final Samples samples = new Samples();
 
-	private long notificationTimeout = 0;
+    /*********************************/
+    /******** local variable *********/
+    /*********************************/
 
-	private long watchdogTimeout = 0;
+    private Acquisition acquisition = null;
 
-	private AdsClient adsClient = new AdsClient();
-	
-	private Variable variable = null;
+    private boolean notificationStarted = false;
 
-	private ScheduledFuture<?> schedule = null;
+    private boolean watchdogStarted = false;
 
-	private final Runnable task = new Runnable() {
-		public void run() {
-			watchdog();
-		}
-	};
+    private long notificationTimeout = 0;
 
-	/*************************/
-	/****** constructor ******/
-	/*************************/
+    private long watchdogTimeout = 0;
 
-	public Channel(Acquisition acquisition) {
-		this.acquisition = acquisition;
-	}
+    private AdsClient adsClient = new AdsClient();
 
-	/*************************/
-	/**** setter & getter ****/
-	/*************************/
-	
-	public boolean isRefresh() {
-		return refresh;
-	}
+    private Variable variable = null;
 
-	public void setRefresh(boolean refresh) {
-		this.refresh = refresh;
-	}
+    private ScheduledFuture<?> schedule = null;
 
-	public String getChannelName() {
-		return channelName;
-	}
+    /*********************************/
+    /****** predefined variable ******/
+    /*********************************/
 
-	public void setChannelName(String channelName) {
-		this.channelName = channelName;
-		this.refresh = true;
-	}
+    private final Runnable task = new Runnable() {
+        public void run() {
+            watchdog();
+        }
+    };
 
-	public boolean isAntialias() {
-		return antialias;
-	}
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
-	public void setAntialias(boolean antialias) {
-		this.antialias = antialias;
-		this.refresh = true;
-	}
+    public Channel(Acquisition acquisition) {
+        this.acquisition = acquisition;
+    }
 
-	public boolean isChannelVisible() {
-		return channelVisible;
-	}
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 
-	public void setChannelVisible(boolean channelVisible) {
-		this.channelVisible = channelVisible;
-		this.refresh = true;
-	}
+    public boolean isRefresh() {
+        return refresh;
+    }
 
-	public Color getLineColor() {
-		return lineColor;
-	}
+    public void setRefresh(boolean refresh) {
+        this.refresh = refresh;
+    }
 
-	public void setLineColor(Color lineColor) {
-		this.lineColor = lineColor;
-		this.refresh = true;
-	}
+    public String getChannelName() {
+        return channelName;
+    }
 
-	public int getLineWidth() {
-		return lineWidth;
-	}
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+        this.refresh = true;
+    }
 
-	public void setLineWidth(int lineWidth) {
-		this.lineWidth = lineWidth;
-		this.refresh = true;
-	}
+    public boolean isAntialias() {
+        return antialias;
+    }
 
-	public boolean isLineVisible() {
-		return lineVisible;
-	}
+    public void setAntialias(boolean antialias) {
+        this.antialias = antialias;
+        this.refresh = true;
+    }
 
-	public void setLineVisible(boolean lineVisible) {
-		this.lineVisible = lineVisible;
-		this.refresh = true;
-	}
+    public boolean isChannelVisible() {
+        return channelVisible;
+    }
 
-	public Color getPlotColor() {
-		return plotColor;
-	}
+    public void setChannelVisible(boolean channelVisible) {
+        this.channelVisible = channelVisible;
+        this.refresh = true;
+    }
 
-	public void setPlotColor(Color plotColor) {
-		this.plotColor = plotColor;
-		this.refresh = true;
-	}
+    public Color getLineColor() {
+        return lineColor;
+    }
 
-	public int getPlotSize() {
-		return plotSize;
-	}
+    public void setLineColor(Color lineColor) {
+        this.lineColor = lineColor;
+        this.refresh = true;
+    }
 
-	public void setPlotSize(int plotSize) {
-		this.plotSize = plotSize;
-		this.refresh = true;
-	}
+    public int getLineWidth() {
+        return lineWidth;
+    }
 
-	public boolean isPlotVisible() {
-		return plotVisible;
-	}
+    public void setLineWidth(int lineWidth) {
+        this.lineWidth = lineWidth;
+        this.refresh = true;
+    }
 
-	public void setPlotVisible(boolean plotVisible) {
-		this.plotVisible = plotVisible;
-		this.refresh = true;
-	}
+    public boolean isLineVisible() {
+        return lineVisible;
+    }
 
-	public boolean isWatchdogEnabled() {
-		return watchdogEnabled;
-	}
+    public void setLineVisible(boolean lineVisible) {
+        this.lineVisible = lineVisible;
+        this.refresh = true;
+    }
 
-	public void setWatchdogEnabled(boolean watchdogEnabled) {
-		this.watchdogEnabled = watchdogEnabled;
-		this.refresh = true;
-	}
-	
-	public String getChannelError() {
-		return channelError;
-	}
+    public Color getPlotColor() {
+        return plotColor;
+    }
 
-	public void setChannelError(String channelError) {
-		this.channelError = channelError;
-		this.refresh = true;
-	}
+    public void setPlotColor(Color plotColor) {
+        this.plotColor = plotColor;
+        this.refresh = true;
+    }
 
-	public int getNotificationError() {
-		return notificationError;
-	}
+    public int getPlotSize() {
+        return plotSize;
+    }
 
-	public void setNotificationError(int notificationError) {
-		this.notificationError = notificationError;
-		this.refresh = true;
-	}
+    public void setPlotSize(int plotSize) {
+        this.plotSize = plotSize;
+        this.refresh = true;
+    }
 
-	public Samples getSamples() {
-		return samples;
-	}
+    public boolean isPlotVisible() {
+        return plotVisible;
+    }
 
-	/*************************/
-	/********* public ********/
-	/*************************/
+    public void setPlotVisible(boolean plotVisible) {
+        this.plotVisible = plotVisible;
+        this.refresh = true;
+    }
 
-	@Override
-	public void update(Observable observable, Object object) {
-		samples.add(variable.toDouble(), variable.getTimeStamp());
-		notificationTimeout = System.currentTimeMillis();
-		setChanged();
-		notifyObservers();
-	}	
+    public boolean isWatchdogEnabled() {
+        return watchdogEnabled;
+    }
 
-	public void start() {
-		startChannel();
-		startNotification();
-		startWatchdog();
-	}
+    public void setWatchdogEnabled(boolean watchdogEnabled) {
+        this.watchdogEnabled = watchdogEnabled;
+        this.refresh = true;
+    }
 
-	public void stop() {
-		stopNotification();
-		stopWatchdog();
-	}
+    public String getChannelError() {
+        return channelError;
+    }
 
-	public void close() {
-		stopNotification();
-		stopWatchdog();
-	}
-	
-	/*************************/
-	/******** private ********/
-	/*************************/	
+    public void setChannelError(String channelError) {
+        this.channelError = channelError;
+        this.refresh = true;
+    }
 
-	private void startNotification() {
-		if (!notificationStarted) {
-			notificationStarted = true;
-			
-			try {
-			    adsClient.open();
-	            adsClient.setAmsNetId(acquisition.getAmsNetId());
-	            adsClient.setAmsPort(acquisition.getAmsPort());
-			    
-				if (acquisition.isSymbolBased()) {
-					variable = adsClient.getVariableBySymbolName(acquisition.getSymbolName());
-					variable.addObserver(this);
-					variable.addNotification(acquisition.getTaskTime());
-				} else {
-					variable = adsClient.getVariableByAddress(acquisition.getDataType(),
-							acquisition.getIndexGroup(), acquisition.getIndexOffset());
-					variable.addObserver(this);
-					variable.addNotification(acquisition.getTaskTime());
-				}
-			} catch (AdsException adsException) {
-				channelError = "Notification Start | " + adsException.getAdsErrorMessage();
-				notificationStarted = false;
-				stopWatchdog();
-			}	
-		}	
-	}
+    public int getNotificationError() {
+        return notificationError;
+    }
 
-	private void stopNotification() {
-		if (notificationStarted) {
-			notificationStarted = false;
-			
-			try {
-				variable.close();
-			} catch (AdsException adsException) {
-				channelError = "Notification Stop | " + adsException.getAdsErrorMessage();
-			}
-		}
-	}
-	
-	private void stopWatchdog() {
-		if (watchdogStarted) {
-			watchdogStarted = false;
-			Utilities.stopSchedule(schedule);	
-		}
-	}
-	
-	private void startWatchdog() {
-		if (!watchdogStarted && watchdogEnabled && notificationStarted) {
-			watchdogStarted = true;
-			watchdogTimeout = System.currentTimeMillis();
-			notificationTimeout = System.currentTimeMillis();
-			notificationError = 0;
-			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
-			schedule = scheduler.scheduleAtFixedRate(task, 0, NOTIFICATION_TIMEOUT, TimeUnit.MILLISECONDS);
-		}
-	}
-	
-	private void watchdog() {
-		if (System.currentTimeMillis() - watchdogTimeout > WATCHDOG_TIMEOUT) {
-			stopNotification();
-			stopWatchdog();
-			channelError = "Watchdog Timeout";
-			return;
-		}
-		
-		if (System.currentTimeMillis() - notificationTimeout > NOTIFICATION_TIMEOUT) {
-			notificationError++;
-			stopNotification();
-			startNotification();
-			return;
-		}
-		
-		watchdogTimeout = System.currentTimeMillis();
-	}
+    public void setNotificationError(int notificationError) {
+        this.notificationError = notificationError;
+        this.refresh = true;
+    }
 
-	private void startChannel() {
-		samples.clear();
-		channelError = "None";
-	}
+    public Samples getSamples() {
+        return samples;
+    }
+
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
+
+    @Override
+    public void update(Observable observable, Object object) {
+        samples.add(variable.toDouble(), variable.getTimeStamp());
+        notificationTimeout = System.currentTimeMillis();
+        setChanged();
+        notifyObservers();
+    }
+
+    public void start() {
+        startChannel();
+        startNotification();
+        startWatchdog();
+    }
+
+    public void stop() {
+        stopNotification();
+        stopWatchdog();
+    }
+
+    public void close() {
+        stopNotification();
+        stopWatchdog();
+    }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+
+    private void startNotification() {
+        if (!notificationStarted) {
+            notificationStarted = true;
+
+            try {
+                adsClient.open();
+                adsClient.setAmsNetId(acquisition.getAmsNetId());
+                adsClient.setAmsPort(acquisition.getAmsPort());
+
+                if (acquisition.isSymbolBased()) {
+                    variable = adsClient.getVariableBySymbolName(acquisition.getSymbolName());
+                    variable.addObserver(this);
+                    variable.addNotification(acquisition.getTaskTime());
+                } else {
+                    variable = adsClient.getVariableByAddress(acquisition.getDataType(),
+                            acquisition.getIndexGroup(), acquisition.getIndexOffset());
+                    variable.addObserver(this);
+                    variable.addNotification(acquisition.getTaskTime());
+                }
+            } catch (AdsException adsException) {
+                channelError = "Notification Start | " + adsException.getAdsErrorMessage();
+                notificationStarted = false;
+                stopWatchdog();
+            }
+        }
+    }
+
+    private void stopNotification() {
+        if (notificationStarted) {
+            notificationStarted = false;
+
+            try {
+                variable.close();
+            } catch (AdsException adsException) {
+                channelError = "Notification Stop | " + adsException.getAdsErrorMessage();
+            }
+        }
+    }
+
+    private void stopWatchdog() {
+        if (watchdogStarted) {
+            watchdogStarted = false;
+            Utilities.stopSchedule(schedule);
+        }
+    }
+
+    private void startWatchdog() {
+        if (!watchdogStarted && watchdogEnabled && notificationStarted) {
+            watchdogStarted = true;
+            watchdogTimeout = System.currentTimeMillis();
+            notificationTimeout = System.currentTimeMillis();
+            notificationError = 0;
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
+            schedule = scheduler.scheduleAtFixedRate(task, 0, NOTIFICATION_TIMEOUT, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    private void watchdog() {
+        if (System.currentTimeMillis() - watchdogTimeout > WATCHDOG_TIMEOUT) {
+            stopNotification();
+            stopWatchdog();
+            channelError = "Watchdog Timeout";
+            return;
+        }
+
+        if (System.currentTimeMillis() - notificationTimeout > NOTIFICATION_TIMEOUT) {
+            notificationError++;
+            stopNotification();
+            startNotification();
+            return;
+        }
+
+        watchdogTimeout = System.currentTimeMillis();
+    }
+
+    private void startChannel() {
+        samples.clear();
+        channelError = "None";
+    }
 }

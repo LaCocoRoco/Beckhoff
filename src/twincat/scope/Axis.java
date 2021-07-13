@@ -7,17 +7,17 @@ import java.util.Observer;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Axis implements Observer {
-	/*************************/
-	/** constant attributes **/
-	/*************************/
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 	
 	private static final double AUTOSCALE_OFFSET = 0.1;
 	
 	private static final int AUTOSCALE_MODULATE = 10;
 	
-	/*************************/
-	/*** global attributes ***/
-	/*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 	
 	private boolean refresh = false;
 
@@ -37,19 +37,23 @@ public class Axis implements Observer {
 
     private int autoscaleOffset = 20;
 
+    /*********************************/
+    /****** local final variable *****/
+    /*********************************/
+    
 	private final CopyOnWriteArrayList<Channel> channelList = new CopyOnWriteArrayList<Channel>();   
 
-	/*************************/
-	/*** local attributes ***/
-	/*************************/
+    /*********************************/
+    /******** local variable *********/
+    /*********************************/
 	
 	private double autoscaleValueMin = 0;
 	
 	private double autoscaleValueMax = 0;
 	
-	/*************************/
-	/**** setter & getter ****/
-	/*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 	
 	public boolean isRefresh() {
 		return refresh;
@@ -135,15 +139,19 @@ public class Axis implements Observer {
 		return channelList;
 	}
 
-	/*************************/
-	/********* public ********/
-	/*************************/	
+	/*********************************/
+    /******** override method ********/
+    /*********************************/
 
-	@Override
-	public void update(Observable observable, Object object) {
-		scaleValues((Channel) observable);
-	}
-	
+    @Override
+    public void update(Observable observable, Object object) {
+        scaleValues((Channel) observable);
+    }
+    	
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
+
 	public void start() {
 		Iterator<Channel> channelIterator = channelList.iterator();
 		while (channelIterator.hasNext()) {
@@ -182,9 +190,9 @@ public class Axis implements Observer {
     	}
 	}
 
-	/*************************/
-	/******** private ********/
-	/*************************/
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
 	private void scaleValues(Channel channel) {
 		if (autoscale) {

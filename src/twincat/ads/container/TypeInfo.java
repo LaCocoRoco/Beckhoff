@@ -1,17 +1,14 @@
 package twincat.ads.container;
 
 import java.awt.Point;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TypeInfo implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    /*************************/
-    /** constant attributes **/
-    /*************************/
-   
+public class TypeInfo {
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/    
+    
     private static final String POINTER_PATTERN   = "POINTER TO";
      
     private static final String ARRAY_PATTERN_BEG = "ARRAY ";

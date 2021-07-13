@@ -6,17 +6,21 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import twincat.Utilities;
 
 public final class Scope {
-	/*************************/
-	/*** global attributes ***/
-	/*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
 	private long recordTime = 0;
-
+	
+    /*********************************/
+    /***** global final variable *****/
+    /*********************************/
+	
 	private final CopyOnWriteArrayList<Chart> chartList = new CopyOnWriteArrayList<Chart>();
 
-	/*************************/
-	/**** setter & getter ****/
-	/*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 	
 	public long getRecordTime() {
 		return recordTime;
@@ -30,9 +34,9 @@ public final class Scope {
 		return chartList;
 	}
 
-	/*************************/
-	/********* public ********/
-	/*************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
 
 	public void setRecordTime(String recordTime) {
 		this.recordTime = Utilities.stringTimeToMilliseconds(recordTime);

@@ -5,9 +5,9 @@ import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
 
 public class Acquisition {
-	/*************************/
-	/*** global attributes ***/
-	/*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 	
 	private int taskTime = 2;
 
@@ -25,9 +25,9 @@ public class Acquisition {
 
 	private DataType dataType = DataType.UNKNOWN;
 
-	/*************************/
-	/**** setter & getter ****/
-	/*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 
 	public boolean isSymbolBased() {
 		return symbolBased;

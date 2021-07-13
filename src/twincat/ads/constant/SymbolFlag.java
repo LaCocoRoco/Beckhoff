@@ -1,9 +1,9 @@
 package twincat.ads.constant;
 
 public enum SymbolFlag {
-    /***********************************/
-    /**** global constant variable *****/
-    /***********************************/
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
 
     NONE                (0x0000),
     PERSISTENT          (0x0001),
@@ -21,23 +21,23 @@ public enum SymbolFlag {
     EXTENDED_FLAGS      (0x8000),
     UNKNOWN             (0xFFFF); 
 
-    /***********************************/
-    /********* global variable *********/
-    /***********************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
     public final int value;
 
-    /***********************************/
-    /*********** constructor ***********/
-    /***********************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
     private SymbolFlag(int value) {
         this.value = value;
     }
     
-    /***********************************/
-    /** public static final function ***/
-    /***********************************/
+    /*********************************/
+    /** public static final method ***/
+    /*********************************/
 
     public static final SymbolFlag getByValue(int value) {
         for (SymbolFlag dataType : SymbolFlag.values()) {

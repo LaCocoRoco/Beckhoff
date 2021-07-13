@@ -14,21 +14,21 @@ import twincat.ads.container.Route;
 import twincat.ads.container.RouteSymbolData;
 
 public class RouteSymbolLoader extends Observable {
-    /***********************************/
-    /***** local constant variable *****/
-    /***********************************/
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 
     private static final int READ_UPLOAD_INFO_TIMEOUT = 10;
 
-    /***********************************/
-    /********* global variable *********/
-    /***********************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
     private String loadingState = new String();
 
-    /***********************************/
-    /****** global final variable ******/
-    /***********************************/
+    /*********************************/
+    /***** global final variable *****/
+    /*********************************/
 
     private final AdsClient adsClient = new AdsClient();
 
@@ -36,9 +36,9 @@ public class RouteSymbolLoader extends Observable {
 
     private final Logger logger = TwincatLogger.getLogger();
 
-    /***********************************/
-    /********* setter & getter *********/
-    /***********************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 
     public String getLoadingState() {
         return loadingState;
@@ -52,9 +52,9 @@ public class RouteSymbolLoader extends Observable {
         return routeSymbolDataList;
     }
 
-    /***********************************/
-    /********* public function *********/
-    /***********************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
 
     public void clearRouteSymbolData() {
         routeSymbolDataList.clear();
@@ -141,9 +141,9 @@ public class RouteSymbolLoader extends Observable {
         logger.fine("Load Route Symbol Data Done");
     }
 
-    /***********************************/
-    /******** private function *********/
-    /***********************************/
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
     private List<Route> loadRouteList() {
         List<Route> routeList = new ArrayList<Route>();

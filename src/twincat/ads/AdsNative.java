@@ -17,9 +17,9 @@ import twincat.ads.container.DeviceInfo;
 import twincat.ads.container.DeviceState;
 
 public class AdsNative {
-    /***********************************/
-    /***** local constant variable *****/
-    /***********************************/
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 
     private static final String ADS_TO_JAVA_X86 = "C:\\TwinCAT\\AdsApi\\AdsToJava\\x86\\;";
 
@@ -33,9 +33,9 @@ public class AdsNative {
 
     protected final AmsAddr amsAddress = new AmsAddr();
 
-    /***********************************/
-    /*********** constructor ***********/
-    /***********************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
     public AdsNative() {
         // load java library path
@@ -65,9 +65,9 @@ public class AdsNative {
         } catch (NoSuchFieldException | IllegalAccessException | UnsatisfiedLinkError e) {}
     }
 
-    /***********************************/
-    /********* public function *********/
-    /***********************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
 
     protected void adsOpenPort() {
         if (adsPort == 0) {

@@ -1,6 +1,5 @@
 package twincat.ads.container;
 
-import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -10,18 +9,16 @@ import twincat.ads.constant.DataType;
 import twincat.ads.constant.DataTypeFlag;
 import twincat.ads.datatype.STRING;
 
-public class DataTypeInfo implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    /*************************/
-    /** constant attributes **/
-    /*************************/
+public class DataTypeInfo {
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/    
 
     private static final int INFO_DATA_LENGTH = 44;
 
-    /*************************/
-    /*** global attributes ***/
-    /*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
     private int length = 0;
 
@@ -47,9 +44,9 @@ public class DataTypeInfo implements Serializable {
 
     private final List<DataTypeInfo> internalDataTypeInfoList = new ArrayList<DataTypeInfo>();
 
-    /*************************/
-    /**** setter & getter ****/
-    /*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 
     public int getLength() {
         return length;
@@ -143,9 +140,9 @@ public class DataTypeInfo implements Serializable {
         return internalDataTypeInfoList;
     }
 
-    /*************************/
-    /********* public ********/
-    /*************************/
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
  
     public void parseDataTypeInfo(byte[] buffer) {
         parseDataTypeInfo(buffer, 0);

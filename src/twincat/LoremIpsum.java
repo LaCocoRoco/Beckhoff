@@ -9,17 +9,17 @@ import javax.swing.JTextArea;
 public class LoremIpsum extends JTextArea {
     private static final long serialVersionUID = 1L;
     
-    /*************************/
-    /** constant attributes **/
-    /*************************/
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 
     private static final String LOREM_IPSUM_PATH = "/resources/string/lorem_ipsum.txt";
 
     private static final int FONT_SIZE = 12;
     
-    /*************************/
-    /****** constructor ******/
-    /*************************/   
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
     
     public LoremIpsum() {
         this.setBackground(Color.WHITE);

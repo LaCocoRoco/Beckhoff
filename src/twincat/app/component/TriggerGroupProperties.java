@@ -10,14 +10,14 @@ import javax.swing.JScrollPane;
 import twincat.LoremIpsum;
 import twincat.Resources;
 
-public class PropertiesAcquisition extends JPanel {
-   private static final long serialVersionUID = 1L;
+public class TriggerGroupProperties extends JPanel {
+    private static final long serialVersionUID = 1L;
 
-    /*************************/
-    /****** constructor ******/
-    /*************************/
-     
-    public PropertiesAcquisition() {
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
+
+    public TriggerGroupProperties(XReference xref) {
         JScrollPane propertiesPanel = new JScrollPane();
         propertiesPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         propertiesPanel.setBorder(BorderFactory.createEmptyBorder());
@@ -25,6 +25,6 @@ public class PropertiesAcquisition extends JPanel {
 
         this.setLayout(new BorderLayout());
         this.add(propertiesPanel, BorderLayout.CENTER);
-        this.setBorder(BorderFactory.createEmptyBorder()); 
+        this.setBorder(BorderFactory.createEmptyBorder());
     }
 }

@@ -68,34 +68,36 @@ import twincat.app.container.SymbolTreeModel;
 import twincat.app.container.SymbolTreeNode;
 import twincat.app.container.SymbolTreeRenderer;
 
-public class TreeSearch extends JPanel {
-    /***********************************/
-    /***** local constant variable *****/
-    /***********************************/
-
+public class SearchTree extends JPanel {
     private static final long serialVersionUID = 1L;
 
-    private static enum Search { LOADING, TREE };
-    
-    /***********************************/
-    /********* local variable **********/
-    /***********************************/
- 
-    private JTree searchTree = new JTree();
+    /*********************************/
+    /******** cross reference ********/    
+    /*********************************/
 
-    private SymbolTreeModel searchTreeModel = new SymbolTreeModel();
+    private final XReference xref;
 
-    /***********************************/
-    /******* local final variable ******/
-    /***********************************/
-    
-    private final PanelTree panelTree;
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
+
+    private static enum Search {
+        LOADING, TREE
+    };
+
+    /*********************************/
+    /****** local final variable *****/
+    /*********************************/
+
+    private final JLabel loadingState = new JLabel();
+
+    private final JTree searchTree = new JTree();
 
     private final JPanel searchPanel = new JPanel();
- 
-    private final JLabel loadingData = new JLabel();
 
     private final JTextField searchTextField = new JTextField();
+
+    private final SymbolTreeModel searchTreeModel = new SymbolTreeModel();
 
     private final SymbolTreeModel browseTreeModel = new SymbolTreeModel();
 
@@ -111,9 +113,9 @@ public class TreeSearch extends JPanel {
 
     private final Logger logger = TwincatLogger.getLogger();
 
-    /***********************************/
-    /******* predefined variable *******/
-    /***********************************/
+    /*********************************/
+    /****** predefined variable ******/
+    /*********************************/
 
     private final MouseAdapter acquisitionTreeMouseAdapter = new MouseAdapter() {
         public void mousePressed(MouseEvent mouseEvent) {
@@ -127,7 +129,6 @@ public class TreeSearch extends JPanel {
                     SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();
                     Object userObject = symbolTreeNode.getUserObject();
 
-                    // handle symbol nodes
                     if (userObject instanceof SymbolNode) {
                         SymbolNode symbolNodeParent = (SymbolNode) userObject;
                         Symbol selectedSymbol = symbolNodeParent.getSymbol();
@@ -135,6 +136,7 @@ public class TreeSearch extends JPanel {
                         if (selectedSymbol.getDataType().equals(DataType.BIGTYPE)) {
                             SymbolLoader symbolLoader = symbolNodeParent.getSymbolLoader();
 
+                            // add symbol node
                             List<Symbol> symbolList = symbolLoader.getSymbolList(selectedSymbol);
                             for (Symbol symbol : symbolList) {
                                 if (searchTree.getModel().equals(browseTreeModel)) {
@@ -299,27 +301,27 @@ public class TreeSearch extends JPanel {
     private final ActionListener applyButtonActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            panelTree.getPanelControl().displayBrowser();
+            xref.controlPanel.displayBrowser();
         }
     };
 
     private final SwingWorker<Void, Void> backgroundTask = new SwingWorker<Void, Void>() {
         @Override
         protected Void doInBackground() throws Exception {
-            panelSearchDisable();
-            panelSearchBuild();
-            panelSearchEnable();
+            disableSearchTree();
+            buildSearchTree();
+            enableSearchTree();
             return null;
         }
     };
 
-    /***********************************/
-    /*********** constructor ***********/
-    /***********************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
-    public TreeSearch(PanelTree panelTree) {
-        this.panelTree = panelTree;
-        
+    public SearchTree(XReference xref) {
+        this.xref = xref;
+
         searchTree.setCellRenderer(new SymbolTreeRenderer());
         searchTree.setBorder(BorderFactory.createEmptyBorder(5, -5, 0, 0));
         searchTree.setRootVisible(false);
@@ -381,6 +383,8 @@ public class TreeSearch extends JPanel {
         acquisitionToolbar.add(routeToolBar);
         acquisitionToolbar.add(searchToolBar);
 
+        // TODO : replace with axis panel button
+        
         JButton applyButton = new JButton(languageBundle.getString(Resources.TEXT_SEARCH_APPLY));
         applyButton.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         applyButton.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
@@ -396,33 +400,33 @@ public class TreeSearch extends JPanel {
 
         JLabel loadingText = new JLabel();
         loadingText.setText(languageBundle.getString(Resources.TEXT_SEARCH_LOADING));
-        loadingText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_BIG));  
-        loadingData.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL)); 
-        
+        loadingText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_BIG));
+        loadingState.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
+
         JPanel loadingBackground = new JPanel();
         loadingBackground.setLayout(new GridBagLayout());
         loadingBackground.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         loadingBackground.setMaximumSize(new Dimension(200, 50));
-        loadingBackground.setBackground(Color.WHITE);  
+        loadingBackground.setBackground(Color.WHITE);
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        loadingBackground.add(loadingText, gridBagConstraints);      
+        loadingBackground.add(loadingText, gridBagConstraints);
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        loadingBackground.add(loadingData, gridBagConstraints);
- 
+        loadingBackground.add(loadingState, gridBagConstraints);
+
         JPanel loadingPanel = new JPanel();
         loadingPanel.setLayout(new BoxLayout(loadingPanel, BoxLayout.PAGE_AXIS));
         loadingPanel.add(Box.createVerticalGlue());
         loadingPanel.add(loadingBackground);
         loadingPanel.add(Box.createVerticalGlue());
-        
+
         searchPanel.setLayout(new CardLayout());
         searchPanel.add(loadingPanel, Search.LOADING.toString());
         searchPanel.add(treePanel, Search.TREE.toString());
-        
+
         backgroundTask.execute();
 
         this.setLayout(new BorderLayout());
@@ -436,14 +440,14 @@ public class TreeSearch extends JPanel {
     /******** private function *********/
     /***********************************/
 
-    private void setSearchPanelCard(Search card) {
+    private void setSearchPanel(Search card) {
         CardLayout cardLayout = (CardLayout) (searchPanel.getLayout());
         cardLayout.show(searchPanel, card.toString());
     }
-    
-    private void panelSearchDisable() {
-        setSearchPanelCard(Search.LOADING);
-        
+
+    private void disableSearchTree() {
+        setSearchPanel(Search.LOADING);
+
         portComboBox.setEditable(true);
         ComboBoxEditor portComboBoxEditor = portComboBox.getEditor();
         JTextField portComboBoxEditorTextField = (JTextField) portComboBoxEditor.getEditorComponent();
@@ -464,9 +468,9 @@ public class TreeSearch extends JPanel {
         searchTextField.setEnabled(false);
     }
 
-    private void panelSearchEnable() {
-        setSearchPanelCard(Search.TREE);
-        
+    private void enableSearchTree() {
+        setSearchPanel(Search.TREE);
+
         portComboBox.setEditable(false);
         portComboBox.setEnabled(true);
 
@@ -476,29 +480,29 @@ public class TreeSearch extends JPanel {
         searchTextField.setEnabled(true);
     }
 
-    private void panelSearchBuild() {
+    private void buildSearchTree() {
         routeSymbolLoader.addObserver(new Observer() {
             @Override
             public void update(Observable observable, Object object) {
-                loadingData.setText(routeSymbolLoader.getLoadingState());
-            } 
+                loadingState.setText(routeSymbolLoader.getLoadingState());
+            }
         });
 
         routeSymbolLoader.loadRouteSymbolDataList();
-        
+
         SymbolTreeNode rootBrowseTreeNode = (SymbolTreeNode) browseTreeModel.getRoot();
         SymbolTreeNode rootSearchTreeNode = (SymbolTreeNode) searchTreeModel.getRoot();
 
         for (RouteSymbolData routeSymbolData : routeSymbolLoader.getRouteSymbolDataList()) {
-            String route = routeSymbolData.getRoute().getHostName();
-            String port = routeSymbolData.getSymbolLoader().getAmsPort().toString();
+            SymbolLoader symbolLoader = routeSymbolData.getSymbolLoader();
 
-            loadingData.setText(route + " | " + port);
-            
+            String route = routeSymbolData.getRoute().getHostName();
+            String port = symbolLoader.getAmsPort().toString();
+
+            loadingState.setText(route + " | " + port);
+
             SymbolTreeNode portBrowseSymbolTreeNode = rootBrowseTreeNode.getNode(route).getNode(port);
             SymbolTreeNode portSearchSymbolTreeNode = rootSearchTreeNode.getNode(route).getNode(port);
-
-            SymbolLoader symbolLoader = routeSymbolData.getSymbolLoader();
 
             List<Symbol> routeSymbolList = symbolLoader.getSymbolList();
             for (Symbol symbol : routeSymbolList) {
@@ -515,7 +519,7 @@ public class TreeSearch extends JPanel {
         browseTreeModel.setFilterLevel(Filter.NODE);
         searchTreeModel.setFilterLevel(Filter.ALL);
 
-        reloadTreeModelBrowse();
+        reloadBrowseTreeModel();
 
         String allRoutes = languageBundle.getString(Resources.TEXT_SEARCH_ALL_ROUTES);
         String allPorts = languageBundle.getString(Resources.TEXT_SEARCH_ALL_PORTS);
@@ -552,6 +556,40 @@ public class TreeSearch extends JPanel {
 
         routeComboBox.addItemListener(comboBoxItemListener);
         portComboBox.addItemListener(comboBoxItemListener);
+    }
+
+    private void reloadSearchTreeModel() {
+        setSearchPanel(Search.LOADING);
+        searchTextField.setEnabled(false);
+        loadingState.setText("Reload Tree");
+
+        searchTree.setModel(searchTreeModel);
+        searchTreeModel.reload();
+
+        // expand tree nodes
+        for (int i = 0; i < searchTree.getRowCount(); i++) {
+            searchTree.expandRow(i);
+        }
+
+        setSearchPanel(Search.TREE);
+        searchTextField.setEnabled(true);
+        searchTextField.requestFocus();
+    }
+
+    private void reloadBrowseTreeModel() {
+        searchTree.setModel(browseTreeModel);
+        browseTreeModel.reload();
+
+        // expand tree nodes
+        SymbolTreeNode rootSymbolTreeNode = (SymbolTreeNode) searchTree.getModel().getRoot();
+        for (int i = 0; i < rootSymbolTreeNode.getChildCount(); i++) {
+            SymbolTreeNode routeSymbolTreeNode = (SymbolTreeNode) rootSymbolTreeNode.getChildAt(i);
+            for (int x = 0; x < routeSymbolTreeNode.getChildCount(); x++) {
+                SymbolTreeNode portSymbolTreeNode = (SymbolTreeNode) routeSymbolTreeNode.getChildAt(x);
+                TreePath symbolTreePath = new TreePath(portSymbolTreeNode.getPath());
+                searchTree.setSelectionPath(symbolTreePath);
+            }
+        }
     }
 
     private void updateRouteComboBox() {
@@ -597,51 +635,15 @@ public class TreeSearch extends JPanel {
         portComboBox.setSelectedItem(selectedPort);
         portComboBox.addItemListener(comboBoxItemListener);
     }
-    
-    private void reloadTreeModelSearch() {
-        setSearchPanelCard(Search.LOADING);
-        searchTextField.setEnabled(false);  
-        loadingData.setText("Reload Tree");
-        
-        searchTree.setModel(searchTreeModel);
-        searchTreeModel.reload();
-        
-        // expand tree nodes
-        for (int i = 0; i < searchTree.getRowCount(); i++) {
-            searchTree.expandRow(i);
-        }
-        
-        setSearchPanelCard(Search.TREE);
-        searchTextField.setEnabled(true);
-        searchTextField.requestFocus();
-    }
-    
-    private void reloadTreeModelBrowse() {
-        searchTree.setModel(browseTreeModel);
-        browseTreeModel.reload();
-        
-        // expand tree nodes
-        SymbolTreeNode rootSymbolTreeNode = (SymbolTreeNode) searchTree.getModel().getRoot();
-        for (int i = 0; i < rootSymbolTreeNode.getChildCount(); i++) {
-            SymbolTreeNode routeSymbolTreeNode = (SymbolTreeNode) rootSymbolTreeNode.getChildAt(i);
-            for (int x = 0; x < routeSymbolTreeNode.getChildCount(); x++) {
-                SymbolTreeNode portSymbolTreeNode = (SymbolTreeNode) routeSymbolTreeNode.getChildAt(x);
-                TreePath symbolTreePath = new TreePath(portSymbolTreeNode.getPath());   
-                searchTree.setSelectionPath(symbolTreePath);        
-            }
-        }
-    }
-    
+
     private void updateTreeModel() {
-        // update tree model route and ports visibility
         updateTreeModelVisibility(browseTreeModel);
         updateTreeModelVisibility(searchTreeModel);
- 
-        // reload tree models
+
         if (searchTree.getModel().equals(browseTreeModel)) {
-            reloadTreeModelBrowse();
+            reloadBrowseTreeModel();
         } else {
-            reloadTreeModelSearch();
+            reloadSearchTreeModel();
         }
     }
 
@@ -699,9 +701,9 @@ public class TreeSearch extends JPanel {
                 }
             }
 
-            reloadTreeModelSearch();
+            reloadSearchTreeModel();
         } else {
-            reloadTreeModelBrowse();
+            reloadBrowseTreeModel();
         }
     }
 }

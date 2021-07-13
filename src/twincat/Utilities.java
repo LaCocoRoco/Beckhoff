@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 
 public class Utilities {
-    /***********************************/
-    /** public static final function ***/
-    /***********************************/
+    /*********************************/
+    /** public static final method ***/
+    /*********************************/
 
     public static final Image getImageFromFilePath(String path) {
         return new ImageIcon(Utilities.class.getResource(path)).getImage();

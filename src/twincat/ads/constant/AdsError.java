@@ -1,9 +1,9 @@
 package twincat.ads.constant;
 
 public enum AdsError {
-    /***********************************/
-    /**** global constant variable *****/
-    /***********************************/
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
 
 	ADS_NO_ERR 					(0x0000),
 	ADS_INTERNAL_ERR 			(0x0001),
@@ -121,23 +121,23 @@ public enum AdsError {
 	   
 	UNKNOWN						(0xFFFF);
 
-    /***********************************/
-    /********* global variable *********/
-    /***********************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
 	public final int value;
 
-    /***********************************/
-    /*********** constructor ***********/
-    /***********************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
     private AdsError(int value) {
         this.value = value;
     }
 
-    /***********************************/
-    /** public static final function ***/
-    /***********************************/
+    /*********************************/
+    /** public static final method ***/
+    /*********************************/
   
     public static final AdsError getByValue(int value) {
         for (AdsError adsError : AdsError.values()) {

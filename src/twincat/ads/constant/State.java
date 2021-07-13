@@ -1,9 +1,9 @@
 package twincat.ads.constant;
 
 public enum State {
-    /***********************************/
-    /**** global constant variable *****/
-    /***********************************/
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
 
 	INVALID 		(0x0000),
 	IDLE 			(0x0001),
@@ -22,23 +22,23 @@ public enum State {
 	RESUME			(0x000E),
 	UNKNOWN			(0xFFFF);
 
-    /***********************************/
-    /********* global variable *********/
-    /***********************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
 	public final int value;
 
-    /***********************************/
-    /*********** constructor ***********/
-    /***********************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
     private State(int value) {
         this.value = value;
     }
 
-    /***********************************/
-    /** public static final function ***/
-    /***********************************/
+    /*********************************/
+    /** public static final method ***/
+    /*********************************/
 
     public static final State getByValue(int value) {
         for (State status : State.values()) {

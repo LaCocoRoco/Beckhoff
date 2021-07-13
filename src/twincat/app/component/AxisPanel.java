@@ -1,22 +1,28 @@
-package twincat.test;
+package twincat.app.component;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.util.Observable;
-import java.util.Observer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
 
-import twincat.ads.constant.DataType;
+import twincat.TwincatLogger;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
+import twincat.ads.constant.DataType;
+import twincat.ads.container.RouteSymbolData;
+import twincat.ads.container.Symbol;
+import twincat.ads.worker.RouteSymbolLoader;
+import twincat.ads.worker.SymbolLoader;
+import twincat.app.container.AxisAcquisition;
+import twincat.java.basic.ScrollablePanel;
+import twincat.java.basic.WrapLayout;
 import twincat.scope.Acquisition;
 import twincat.scope.Axis;
 import twincat.scope.Channel;
@@ -25,31 +31,97 @@ import twincat.scope.Scope;
 import twincat.scope.TriggerChannel;
 import twincat.scope.TriggerGroup;
 
-public class ScopeView {
-    private final static int FRAME_WIDTH = 1500;
-    private final static int FRAME_HEIGHT = 1000;
+public class AxisPanel extends JScrollPane {
+    private static final long serialVersionUID = 1L;
 
-    public static void main(String[] args) {
-        new ScopeView();
+    /*********************************/
+    /******** cross reference ********/
+    /*********************************/
+
+    @SuppressWarnings("unused")
+    private final XReference xref;
+
+    /*********************************/
+    /****** local final variable *****/
+    /*********************************/
+
+    private final RouteSymbolLoader routeSymbolLoader = new RouteSymbolLoader();
+
+    private final Logger logger = TwincatLogger.getLogger();
+
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
+
+    public AxisPanel(XReference xref) {
+        this.xref = xref;
+        
+        ScrollablePanel scrollablePanel = new ScrollablePanel(new WrapLayout(FlowLayout.LEADING));
+        scrollablePanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
+
+        routeSymbolLoader.loadRouteSymbolDataList(AmsPort.NC);
+        routeSymbolLoader.loadRouteSymbolDataList(AmsPort.NCSAF);
+        routeSymbolLoader.loadRouteSymbolDataList(AmsPort.NCSVB);
+
+        for (RouteSymbolData routeSymbolData : routeSymbolLoader.getRouteSymbolDataList()) {
+            String amsNetId = routeSymbolData.getRoute().getAmsNetId();
+            AmsPort amsPort = routeSymbolData.getSymbolLoader().getAmsPort();
+
+            SymbolLoader symbolLoader = routeSymbolData.getSymbolLoader();
+
+            List<String> axisNameList = new ArrayList<String>();
+            List<Symbol> routeSymbolList = symbolLoader.getSymbolList();
+            List<AxisAcquisition> axisAcquisitionList = new ArrayList<AxisAcquisition>();
+            for (Symbol symbol : routeSymbolList) {
+                String symbolName = symbol.getSymbolName();
+
+                int rangeBeg = symbolName.indexOf(".");
+                int rangeEnd = symbolName.lastIndexOf(".");
+
+                String axisName = symbolName.substring(rangeBeg + 1, rangeEnd);
+                String axisSymbolName = symbolName.substring(0, rangeEnd);
+
+                if (!axisNameList.contains(axisName)) {
+                    AxisAcquisition axisAcquisition = new AxisAcquisition();
+                    axisAcquisition.setAmsNetId(amsNetId);
+                    axisAcquisition.setAmsPort(amsPort);
+                    axisAcquisition.setAxisName(axisName);
+                    axisAcquisition.setAxisSymbolName(axisSymbolName);
+                    axisAcquisitionList.add(axisAcquisition);
+                    axisNameList.add(axisName);
+                }
+            }
+
+            for (AxisAcquisition axisAcquisition : axisAcquisitionList) {
+                JButton axisButton = new JButton();
+                axisButton.setText(axisAcquisition.getAxisName());
+                axisButton.setFocusPainted(false);
+                axisButton.setContentAreaFilled(false);
+                axisButton.setPreferredSize(new Dimension(150, 50));
+
+                axisButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        buildAxisScope(axisAcquisition);
+                    }
+                });
+
+                scrollablePanel.add(axisButton);
+            }
+        }
+
+        this.setViewportView(scrollablePanel);
     }
 
-    public ScopeView() {
-        // frame
-        JFrame jFrame = new JFrame();
-        jFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
-        jFrame.setLayout(new BorderLayout());
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jFrame.setVisible(true);
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
-        // panel
-        JPanel jPanel = new JPanel();
-        jPanel.setSize(FRAME_WIDTH, FRAME_HEIGHT);
-        jFrame.add(jPanel);
-
-        // image
-        JLabel jLabel = new JLabel();
-        jLabel.setLayout(new FlowLayout());
-        jPanel.add(jLabel);
+    public void buildAxisScope(AxisAcquisition axisAcquisition) {
+        logger.info(axisAcquisition.getAmsNetId());
+        logger.info(axisAcquisition.getAmsPort().toString());
+        logger.info(axisAcquisition.getAxisName());
+        logger.info(axisAcquisition.getAxisSymbolName());
 
         // scope
         Scope scope = new Scope();
@@ -57,8 +129,6 @@ public class ScopeView {
 
         // chart
         Chart chart = new Chart(20);
-        chart.setHeight(FRAME_HEIGHT);
-        chart.setWidth(FRAME_WIDTH);
         chart.setDisplayTime(500);
         chart.setDebug(true);
 
@@ -299,24 +369,5 @@ public class ScopeView {
         axis3.addChannel(channel6);
         axis4.addChannel(channel7);
         axis4.addChannel(channel8);
-
-        // chart add observer
-        chart.addObserver(new Observer() {
-            @Override
-            public void update(Observable o, Object arg) {
-                jLabel.setIcon(new ImageIcon(chart.getImage()));
-            }
-        });
-
-        jFrame.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent evt) {
-                Component c = (Component) evt.getSource();
-                chart.setHeight(c.getHeight());
-                chart.setWidth(c.getWidth());
-            }
-        });
-
-        // scope start
-        scope.start();
     }
 }

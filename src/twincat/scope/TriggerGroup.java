@@ -6,21 +6,25 @@ import java.util.Observer;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TriggerGroup implements Observer {
-	/*************************/
-	/*** global attributes ***/
-	/*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
 	private boolean enabled = true;
 
 	private int triggerOffset = 0;
-
+	
+    /*********************************/
+    /***** global final variable *****/
+    /*********************************/
+	
 	private final CopyOnWriteArrayList<Long> triggerTimeStampList = new CopyOnWriteArrayList<Long>();
 
 	private final CopyOnWriteArrayList<TriggerChannel> triggerChannelList = new CopyOnWriteArrayList<TriggerChannel>();
 
-	/*************************/
-	/**** setter & getter ****/
-	/*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 	
 	public boolean isEnabled() {
 		return enabled;
@@ -46,9 +50,9 @@ public class TriggerGroup implements Observer {
 		return triggerChannelList;
 	}
 
-	/*************************/
-	/********* public ********/
-	/*************************/
+    /*********************************/
+    /******** override method ********/
+    /*********************************/
 
 	@Override
 	public void update(Observable observable, Object object) {
@@ -57,7 +61,11 @@ public class TriggerGroup implements Observer {
 			triggerTimeStampList.add(triggerChannel.getReleaseTimeStamp());
 		}
 	}
-
+	
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
+	
 	public long getTriggerTimeStamp(long displayTime) {
 		if (enabled) {
 			if (!triggerTimeStampList.isEmpty()) {
@@ -92,9 +100,9 @@ public class TriggerGroup implements Observer {
         }
 	}
 
-	/*************************/
-	/******** private ********/
-	/*************************/
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
 	private boolean getTriggerCombined() {
 		if (!triggerChannelList.isEmpty()) {

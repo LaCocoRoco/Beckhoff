@@ -16,23 +16,23 @@ import twincat.app.constant.Window;
 public class ScopeApp extends JFrame {
     private static final long serialVersionUID = 1L;
 
-    /*************************/
-    /** constant attributes **/
-    /*************************/
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
 
     private static final int WIDTH_FRAME = 800;
 
     private static final int HEIGHT_FRAME = 800;
 
-    /*************************/
-    /*** local attributes ***/
-    /*************************/
+    /*********************************/
+    /******** local variable *********/
+    /*********************************/
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
     
-    /*************************/
-    /****** constructor ******/
-    /*************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
     public ScopeApp(String[] args) {
         parseArgs(args);
@@ -57,9 +57,9 @@ public class ScopeApp extends JFrame {
         this.setVisible(true);
     }
 
-    /*************************/
-    /******** private ********/
-    /*************************/
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
     private void parseArgs(String[] args)  {
         for(String arg : args) {
@@ -91,9 +91,9 @@ public class ScopeApp extends JFrame {
         }
     }
     
-    /*************************/
-    /** public static final **/
-    /*************************/ 
+    /*********************************/
+    /** public static final method ***/
+    /*********************************/
     
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {

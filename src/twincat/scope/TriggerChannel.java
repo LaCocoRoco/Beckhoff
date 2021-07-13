@@ -4,9 +4,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class TriggerChannel extends Observable implements Observer {
-	/*************************/
-	/** constant attributes **/
-	/*************************/
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
 
 	public static enum Combine {
 		AND, OR
@@ -16,9 +16,9 @@ public class TriggerChannel extends Observable implements Observer {
 		RISING_EDGE, FALLING_EDGE
 	}
 
-	/*************************/
-	/*** global attributes ***/
-	/*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
 
 	private String triggerName = "Trigger";
 
@@ -30,17 +30,17 @@ public class TriggerChannel extends Observable implements Observer {
 
 	private long releaseTimeStamp = 0;
 
-	/*************************/
-	/****** constructor ******/
-	/*************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
 
 	public TriggerChannel(Channel channel) {
 		channel.addObserver(this);
 	}
 
-	/*************************/
-	/**** setter & getter ****/
-	/*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
 
 	public String getTriggerName() {
 		return triggerName;
@@ -82,9 +82,9 @@ public class TriggerChannel extends Observable implements Observer {
 		this.releaseTimeStamp = setReleaseTimeStamp;
 	}
 
-	/*************************/
-	/********* public ********/
-	/*************************/	
+    /*********************************/
+    /******** override method ********/
+    /*********************************/
 
 	@Override
 	public void update(Observable observable, Object object) {
@@ -96,9 +96,9 @@ public class TriggerChannel extends Observable implements Observer {
 		}
 	}
 
-	/*************************/
-	/******** private ********/
-	/*************************/
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 	
 	private boolean isTriggerReleased(Channel channel) {
 		int index = channel.getSamples().getCurrentIndex();

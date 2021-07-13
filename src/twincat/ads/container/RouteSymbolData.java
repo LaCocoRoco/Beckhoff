@@ -3,27 +3,26 @@ package twincat.ads.container;
 import twincat.ads.worker.SymbolLoader;
 
 public class RouteSymbolData {
-    
-    /*************************/
-    /*** global attributes ***/
-    /*************************/
+    /*********************************/
+    /******** global variable ********/
+    /*********************************/
     
     private final Route route;
  
     private final SymbolLoader symbolLoader;
     
-    /*************************/
-    /****** constructor ******/
-    /*************************/
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
         
     public RouteSymbolData(Route route, SymbolLoader symbolLoader) {
         this.route = route;
         this.symbolLoader = symbolLoader;
     }
 
-    /*************************/
-    /**** setter & getter ****/
-    /*************************/
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
     
     public Route getRoute() {
         return route;
