@@ -1,10 +1,10 @@
 package twincat.ads.constant;
 
 public enum AdsError {
-	/*************************/
-	/** constant attributes **/
-	/*************************/
-	
+    /***********************************/
+    /**** global constant variable *****/
+    /***********************************/
+
 	ADS_NO_ERR 					(0x0000),
 	ADS_INTERNAL_ERR 			(0x0001),
 	ADS_NO_RUNTIME 				(0x0002),
@@ -120,25 +120,25 @@ public enum AdsError {
 	VARIABLE_WRITE_PARSE_ERROR	(0x5555),
 	   
 	UNKNOWN						(0xFFFF);
-	
-	/*************************/
-	/*** global attributes ***/
-	/*************************/
+
+    /***********************************/
+    /********* global variable *********/
+    /***********************************/
 
 	public final int value;
 
-	/*************************/
-	/****** constructor ******/
-	/*************************/
+    /***********************************/
+    /*********** constructor ***********/
+    /***********************************/
 
     private AdsError(int value) {
         this.value = value;
     }
-    
-	/*************************/
-	/** public static final **/
-	/*************************/
-	  
+
+    /***********************************/
+    /** public static final function ***/
+    /***********************************/
+  
     public static final AdsError getByValue(int value) {
         for (AdsError adsError : AdsError.values()) {
             if (adsError.value == value) {

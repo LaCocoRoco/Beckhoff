@@ -1,9 +1,9 @@
 package twincat.ads.constant;
 
 public enum DataType {
-	/*************************/
-	/** constant attributes **/
-	/*************************/
+    /***********************************/
+    /**** global constant variable *****/
+    /***********************************/
 
 	BIT			(0x0021, 0x01),
 	BOOL		(0x0021, 0x01),
@@ -44,27 +44,27 @@ public enum DataType {
 	MAXTYPE		(0x0043, 0x00),
 	UNKNOWN		(0xFFFF, 0x00);
 
-	/*************************/
-	/*** global attributes ***/
-	/*************************/	
-	
+    /***********************************/
+    /********* global variable *********/
+    /***********************************/
+
 	public final int value;
 
 	public final int size;
-	
-	/*************************/
-	/****** constructor ******/
-	/*************************/
-	
+
+    /***********************************/
+    /*********** constructor ***********/
+    /***********************************/
+
     private DataType(int value, int size) {
         this.value = value;
         this.size = size;
     }
-    
-	/*************************/
-	/** public static final **/
-	/*************************/
-	  
+
+    /***********************************/
+    /** public static final function ***/
+    /***********************************/
+
     public static final DataType getByValue(int value) {
         for (DataType dataType : DataType.values()) {
             if (dataType.value == value) {

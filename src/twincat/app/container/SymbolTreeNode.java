@@ -9,23 +9,23 @@ import twincat.ads.constant.AmsPort;
 import twincat.app.constant.Filter;
 
 public class SymbolTreeNode extends DefaultMutableTreeNode {
-    private static final long serialVersionUID = 1L;
+    /***********************************/
+    /***** local constant variable *****/
+    /***********************************/
 
-    /*************************/
-    /** constant attributes **/
-    /*************************/
+    private static final long serialVersionUID = 1L;
 
     private static final String GLOBAL_SYMBOL_NAME = "Global";
 
-    /*************************/
-    /*** global attributes ***/
-    /*************************/
+    /***********************************/
+    /********* global variable *********/
+    /***********************************/
 
     private boolean isVisible = true;
 
-    /*************************/
-    /****** constructor ******/
-    /*************************/
+    /***********************************/
+    /*********** constructor ***********/
+    /***********************************/
 
     public SymbolTreeNode() {
         super();
@@ -39,9 +39,9 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         super(userObject, allowsChildren);
     }
 
-    /*************************/
-    /**** setter & getter ****/
-    /*************************/
+    /***********************************/
+    /********* setter & getter *********/
+    /***********************************/
 
     public boolean isVisible() {
         return isVisible;
@@ -51,9 +51,9 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         this.isVisible = isVisible;
     }
 
-    /*************************/
-    /********* public ********/
-    /*************************/
+    /***********************************/
+    /********* public function *********/
+    /***********************************/
 
     public SymbolTreeNode getNode(String name) {
         for (int i = 0; i < this.getChildCount(); i++) {
@@ -79,7 +79,6 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         SymbolTreeNode symbolNodeParentOfParent = (SymbolTreeNode) this.getParent();
         int symbolNodeParentIndex = symbolNodeParentOfParent.getIndex(this);
         symbolNodeParentOfParent.insert(symbolTreeNode, symbolNodeParentIndex);
-        System.out.println(symbolNodeChild.toString());
     }
 
     public void addSymbolNodeSplitName(SymbolNode symbolNode) {
@@ -192,9 +191,9 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         return count;
     }
 
-    /*************************/
-    /******** private ********/
-    /*************************/
+    /***********************************/
+    /******** private function *********/
+    /***********************************/
 
     private boolean isFilterNode() {
         return isVisible;
@@ -261,9 +260,9 @@ public class SymbolTreeNode extends DefaultMutableTreeNode {
         }
     }
 
-    /*************************/
-    /** public static final **/
-    /*************************/
+    /***********************************/
+    /** public static final function ***/
+    /***********************************/
 
     public static final boolean isAnySymbolNodeVisible(SymbolTreeNode symbolTreeNode) {
         Object userObject = symbolTreeNode.getUserObject();

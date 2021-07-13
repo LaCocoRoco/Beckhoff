@@ -1,10 +1,10 @@
 package twincat.ads.constant;
 
 public enum TransmitMode {
-	/*************************/
-	/** constant attributes **/
-	/*************************/
-	
+    /***********************************/
+    /**** global constant variable *****/
+    /***********************************/
+
 	NO_TRANSMIT        (0x0000),
 	CLIENT_CYCLE       (0x0001),
 	CLIENT_REQ         (0x0002),
@@ -12,24 +12,24 @@ public enum TransmitMode {
 	SERVER_ON_CHANGE   (0x0004),
 	UNKNOWN            (0xFFFF);
 
-	/*************************/
-	/*** global attributes ***/
-	/*************************/	
-	
+    /***********************************/
+    /********* global variable *********/
+    /***********************************/
+
 	public final int value;
 
-	/*************************/
-	/****** constructor ******/
-	/*************************/
-	
+    /***********************************/
+    /*********** constructor ***********/
+    /***********************************/
+
     private TransmitMode(int value) {
         this.value = value;
     }
-    
-	/*************************/
-	/** public static final **/
-	/*************************/
-	  
+
+    /***********************************/
+    /** public static final function ***/
+    /***********************************/
+
     public static final TransmitMode getByValue(int value) {
         for (TransmitMode trasmitMode : TransmitMode.values()) {
             if (trasmitMode.value == value) {

@@ -1,10 +1,10 @@
 package twincat.ads.constant;
 
 public enum State {
-	/*************************/
-	/** constant attributes **/
-	/*************************/
-	
+    /***********************************/
+    /**** global constant variable *****/
+    /***********************************/
+
 	INVALID 		(0x0000),
 	IDLE 			(0x0001),
 	RESET 			(0x0002),
@@ -21,25 +21,25 @@ public enum State {
 	SUSPEND			(0x000D),
 	RESUME			(0x000E),
 	UNKNOWN			(0xFFFF);
-	
-	/*************************/
-	/*** global attributes ***/
-	/*************************/
+
+    /***********************************/
+    /********* global variable *********/
+    /***********************************/
 
 	public final int value;
 
-	/*************************/
-	/****** constructor ******/
-	/*************************/
+    /***********************************/
+    /*********** constructor ***********/
+    /***********************************/
 
     private State(int value) {
         this.value = value;
     }
-    
-	/*************************/
-	/** public static final **/
-	/*************************/
-	  
+
+    /***********************************/
+    /** public static final function ***/
+    /***********************************/
+
     public static final State getByValue(int value) {
         for (State status : State.values()) {
             if (status.value == value) {

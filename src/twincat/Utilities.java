@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 
 public class Utilities {
-    /*************************/
-    /** public static final **/
-    /*************************/
+    /***********************************/
+    /** public static final function ***/
+    /***********************************/
 
     public static final Image getImageFromFilePath(String path) {
         return new ImageIcon(Utilities.class.getResource(path)).getImage();
@@ -37,6 +37,18 @@ public class Utilities {
         PrintWriter printWriter = new PrintWriter(stringWriter);
         e.printStackTrace(printWriter);
         return stringWriter.toString();
+    }
+    
+    public static final boolean isScheduleDone(ScheduledFuture<?> schedule) {
+        if (schedule != null) {
+            if (schedule.isDone()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        
+        return true;
     }
     
     public static final void stopSchedule(ScheduledFuture<?> schedule) {

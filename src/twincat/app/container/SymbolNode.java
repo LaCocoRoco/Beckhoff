@@ -4,11 +4,15 @@ import twincat.ads.container.Symbol;
 import twincat.ads.worker.SymbolLoader;
 
 public class SymbolNode {
-    /*************************/
-    /*** global attributes ***/
-    /*************************/
+    /***********************************/
+    /********* global variable *********/
+    /***********************************/
 
     private boolean isVisible = true;
+
+    /***********************************/
+    /****** global final variable ******/
+    /***********************************/
 
     private final boolean fullSymbolName;
 
@@ -16,9 +20,9 @@ public class SymbolNode {
 
     private final SymbolLoader symbolLoader;
 
-    /*************************/
-    /****** constructor ******/
-    /*************************/
+    /***********************************/
+    /*********** constructor ***********/
+    /***********************************/
 
     public SymbolNode(Symbol symbol, SymbolLoader symbolLoader, boolean fullSymbolName) {
         this.symbol = symbol;
@@ -26,9 +30,9 @@ public class SymbolNode {
         this.fullSymbolName = fullSymbolName;
     }
 
-    /*************************/
-    /**** setter & getter ****/
-    /*************************/
+    /***********************************/
+    /********* setter & getter *********/
+    /***********************************/
 
     public boolean isVisible() {
         return isVisible;
@@ -50,9 +54,9 @@ public class SymbolNode {
         return symbolLoader;
     }
 
-    /*************************/
-    /******** override *******/
-    /*************************/
+    /***********************************/
+    /******** override function ********/
+    /***********************************/
 
     @Override
     public String toString() {

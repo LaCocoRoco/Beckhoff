@@ -12,15 +12,11 @@ import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
 
 public final class TwincatLogger {
-    /*************************/
-    /** constant attributes **/
-    /*************************/
+    /***********************************/
+    /**** global constant variable *****/
+    /***********************************/
 
     public static final Level LOGGER_DEFAULT_LEVEL = Level.INFO;   
-    
-    /*************************/
-    /** constant attributes **/
-    /*************************/
 
     public static final String LOGGER_NAME = "TwincatLogger";
 
@@ -28,9 +24,9 @@ public final class TwincatLogger {
 
     public static final String LOGGER_FILE_NAME = "AppLogg.txt";
 
-    /*************************/
-    /** public static final **/
-    /*************************/
+    /***********************************/
+    /** public static final function ***/
+    /***********************************/
 
     public static final void setLevel(Level level) {
         Logger logger = TwincatLogger.getLogger();

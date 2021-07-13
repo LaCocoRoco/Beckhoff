@@ -3,22 +3,22 @@ package twincat.ads;
 import twincat.ads.constant.AdsError;
 
 public class AdsException extends Exception {
-	/*************************/
-	/** constant attributes **/
-	/*************************/	
-	
+    /***********************************/
+    /***** local constant variable *****/
+    /***********************************/
+
 	private static final long serialVersionUID = 1L;
 
-	/*************************/
-	/*** global attributes ***/
-	/*************************/	
+    /***********************************/
+    /********* global variable *********/
+    /***********************************/
 
 	private AdsError adsError;
 
-	/*************************/
-	/****** constructor ******/
-	/*************************/
-	
+    /***********************************/
+    /*********** constructor ***********/
+    /***********************************/
+
 	public AdsException(AdsError adsError) {
 		this.adsError = adsError;
 	}
@@ -27,10 +27,10 @@ public class AdsException extends Exception {
 		this.adsError = AdsError.getByValue((int) adsError);
 	}
 
-	/*************************/
-	/**** setter & getter ****/
-	/*************************/
-	
+    /***********************************/
+    /********* setter & getter *********/
+    /***********************************/
+
 	public AdsError getAdsError() {
 		return adsError;
 	}
@@ -39,10 +39,10 @@ public class AdsException extends Exception {
 		this.adsError = adsError;
 	}
 
-	/*************************/
-	/********* public ********/
-	/*************************/	
-		
+    /***********************************/
+    /********* public function *********/
+    /***********************************/
+
 	public String getAdsErrorMessage() {
 		return adsError.toString();
 	}

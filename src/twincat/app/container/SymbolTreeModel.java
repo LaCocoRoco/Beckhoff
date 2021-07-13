@@ -6,19 +6,22 @@ import javax.swing.tree.TreeNode;
 import twincat.app.constant.Filter;
 
 public class SymbolTreeModel extends DefaultTreeModel {
+    /***********************************/
+    /***** local constant variable *****/
+    /***********************************/
+
     private static final long serialVersionUID = 1L;
 
-
-    /*************************/
-    /*** global attributes ***/
-    /*************************/
+    /***********************************/
+    /********* global variable *********/
+    /***********************************/
 
     private Filter filterLevel = Filter.NONE;
 
-    /*************************/
-    /****** constructor ******/
-    /*************************/
-    
+    /***********************************/
+    /*********** constructor ***********/
+    /***********************************/
+
     public SymbolTreeModel() {
         super(new SymbolTreeNode());
     }
@@ -31,9 +34,9 @@ public class SymbolTreeModel extends DefaultTreeModel {
         super(root, asksAllowsChildren);
     }
 
-    /*************************/
-    /********* public ********/
-    /*************************/
+    /***********************************/
+    /********* public function *********/
+    /***********************************/
 
     public Filter getFilterLevel() {
         return filterLevel;
@@ -43,9 +46,9 @@ public class SymbolTreeModel extends DefaultTreeModel {
         this.filterLevel = filterLevel;
     }
 
-    /*************************/
-    /******** override *******/
-    /*************************/
+    /***********************************/
+    /******** override function ********/
+    /***********************************/
 
     @Override
     public Object getChild(Object parent, int index) {

@@ -20,6 +20,7 @@ import twincat.ads.constant.AmsPort;
 import twincat.ads.container.DeviceInfo;
 import twincat.ads.container.DeviceState;
 import twincat.ads.container.Route;
+import twincat.ads.container.RouteSymbolData;
 import twincat.ads.container.Symbol;
 import twincat.ads.container.SymbolInfo;
 import twincat.ads.wrapper.Variable;
@@ -318,13 +319,14 @@ public class CommandLine {
         }
     }
 
-    private void cmdSymbolListAll() {
-        List<RouteSymbolHandler> routeSymbolHandlerList = RouteSymbolHandler.getRouteHandlerList();
+    private void cmdSymbolListAll() {  
+        RouteSymbolLoader routeSymbolLoader = new RouteSymbolLoader();
+        routeSymbolLoader.loadRouteSymbolDataList();
 
-        for (RouteSymbolHandler routeSymbolHandler : routeSymbolHandlerList) {
-            String hostName = routeSymbolHandler.getRoute().getHostName();
+        for (RouteSymbolData routeSymbolData : routeSymbolLoader.getRouteSymbolDataList()) {
+            String hostName = routeSymbolData.getRoute().getHostName();
 
-            SymbolLoader symbolLoader = routeSymbolHandler.getSymbolLoader();
+            SymbolLoader symbolLoader = routeSymbolData.getSymbolLoader();
             String amsNetId = symbolLoader.getAmsNetId();
             AmsPort amsPort = symbolLoader.getAmsPort();
             int symbolListSize = symbolLoader.getSymbolList().size();
