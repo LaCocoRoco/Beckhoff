@@ -6,6 +6,6 @@ Author: Deiring Andreas
 Version: 1.0
 Build: ${build.number}
 Date: 14.07.2021
-Time: 17:08:03
+Time: 17:10:56
 Main-Class: twincat.app.ScopeApp
 
