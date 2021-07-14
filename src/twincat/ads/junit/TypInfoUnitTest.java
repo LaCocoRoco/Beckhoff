@@ -14,7 +14,8 @@ public class TypInfoUnitTest {
 
     @Test
     public void typInfoUnitTest() {
-        TypeInfo typeInfo = new TypeInfo(type);
+        TypeInfo typeInfo = new TypeInfo();
+        typeInfo.parseTypeInfo(type);
 
         logger.info("Type   : " + typeInfo.getType());
         logger.info("Array  : " + typeInfo.getArray());

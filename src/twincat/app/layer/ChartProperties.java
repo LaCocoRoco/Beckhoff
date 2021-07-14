@@ -1,4 +1,4 @@
-package twincat.app.component;
+package twincat.app.layer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -10,14 +10,14 @@ import javax.swing.JScrollPane;
 import twincat.LoremIpsum;
 import twincat.Resources;
 
-public class ChannelProperties extends JPanel {
+public class ChartProperties extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*********************************/
     /********** constructor **********/
     /*********************************/
 
-    public ChannelProperties(XReference xref) {
+    public ChartProperties(XReference xref) {
         JScrollPane propertiesPanel = new JScrollPane();
         propertiesPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         propertiesPanel.setBorder(BorderFactory.createEmptyBorder());

@@ -11,9 +11,9 @@ public class TypeInfo {
     
     private static final String POINTER_PATTERN   = "POINTER TO";
      
-    private static final String ARRAY_PATTERN_BEG = "ARRAY ";
+    private static final String PATTERN_ARRAY_BEG = "ARRAY ";
     
-    private static final String ARRAY_PATTERN_END = "OF ";
+    private static final String PATTERN_ARRAY_END = "OF ";
     
     /*************************/
     /*** global attributes ***/
@@ -25,18 +25,6 @@ public class TypeInfo {
 
     private final List<String> array = new ArrayList<String>();
 
-    /*************************/
-    /****** constructor ******/
-    /*************************/
-
-    public TypeInfo() {
-        /* empty */
-    }
-    
-    public TypeInfo(String type) {
-        parseType(type);  
-    }
-    
     /*************************/
     /**** setter & getter ****/
     /*************************/
@@ -65,10 +53,10 @@ public class TypeInfo {
     /********* public ********/
     /*************************/
 
-    public void parseType(String type) {
+    public void parseTypeInfo(String type) {
         pointer = type.contains(POINTER_PATTERN) ? true : false;
 
-        if (type.contains(ARRAY_PATTERN_BEG)) {
+        if (type.contains(PATTERN_ARRAY_BEG)) {
             int begPattern = type.indexOf("[");
             int endPattern = type.indexOf("]");
 
@@ -89,7 +77,7 @@ public class TypeInfo {
             }
             
             if (!pointArray.isEmpty()) array.addAll(getNamedTypeArray(pointArray, 0)); 
-            int begIndex = type.indexOf(ARRAY_PATTERN_END) + ARRAY_PATTERN_END.length();
+            int begIndex = type.indexOf(PATTERN_ARRAY_END) + PATTERN_ARRAY_END.length();
             type = type.substring(begIndex, type.length());
         }
         

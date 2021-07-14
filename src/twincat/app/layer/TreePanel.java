@@ -1,44 +1,42 @@
-package twincat.app.component;
+package twincat.app.layer;
 
 import java.awt.CardLayout;
 
 import javax.swing.JPanel;
 
-import twincat.app.constant.Window;
+import twincat.app.constant.Browser;
 
-public class WindowPanel extends JPanel {
+public class TreePanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*********************************/
     /******** global variable ********/
     /*********************************/
 
-    private Window card = Window.SCOPE;
+    private Browser browser = Browser.BROWSER;
 
     /*********************************/
     /********** constructor **********/
     /*********************************/
 
-    public WindowPanel(XReference ref) {
+    public TreePanel(XReference xref) {
         this.setLayout(new CardLayout());
-        this.add(ref.scopePanel, Window.SCOPE.toString());
-        this.add(ref.adsPanel, Window.ADS.toString());
-        this.add(ref.axisPanel, Window.AXIS.toString());
-        this.add(ref.settingsPanel, Window.SETTINGS.toString());
-        this.setCard(card);
+        this.add(xref.browserTree, Browser.BROWSER.toString());
+        this.add(xref.searchTree, Browser.SEARCH.toString());
+        this.setCard(browser);
     }
 
     /*********************************/
     /********* public method *********/
     /*********************************/
 
-    public Window getCard() {
-        return card;
+    public Browser getCard() {
+        return browser;
     }
 
-    public void setCard(Window card) {
+    public void setCard(Browser card) {
         CardLayout cardLayout = (CardLayout) (this.getLayout());
         cardLayout.show(this, card.toString());
-        this.card = card;
+        this.browser = card;
     }
 }

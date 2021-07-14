@@ -236,7 +236,7 @@ public class SymbolLoader {
   
             // read symbol info type info
             TypeInfo symbolInfoTypeInfo = new TypeInfo();
-            symbolInfoTypeInfo.parseType(symbolInfo.getType());
+            symbolInfoTypeInfo.parseTypeInfo(symbolInfo.getType());
             
             // redeclare array to big type
             if (symbolInfoTypeInfo.getArray().isEmpty()) {
@@ -256,7 +256,7 @@ public class SymbolLoader {
 
         // read symbol info type info
         TypeInfo symbolInfoTypeInfo = new TypeInfo();
-        symbolInfoTypeInfo.parseType(symbolInfo.getType());
+        symbolInfoTypeInfo.parseTypeInfo(symbolInfo.getType());
         
         // dismiss pointer
         if (symbolInfoTypeInfo.isPointer()) return symbolList;
@@ -271,7 +271,7 @@ public class SymbolLoader {
                         
                         // read data type info type info
                         TypeInfo internalDataTypeInfoTypeInfo = new TypeInfo();
-                        internalDataTypeInfoTypeInfo.parseType(internalDataTypeInfo.getType());
+                        internalDataTypeInfoTypeInfo.parseTypeInfo(internalDataTypeInfo.getType());
                         
                         if (!symbolInfoTypeInfo.getArray().isEmpty()) {       
                             // concatenate symbol and array type info

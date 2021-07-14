@@ -16,8 +16,8 @@ import javax.swing.JPanel;
 
 import twincat.Resources;
 import twincat.TwincatLogger;
-import twincat.app.component.XReference;
 import twincat.app.constant.Window;
+import twincat.app.layer.XReference;
 
 public class ScopeFrame extends JPanel {
     private static final long serialVersionUID = 1L;

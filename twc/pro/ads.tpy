@@ -4,7 +4,7 @@
 	<ProjectInfo>
 		<Path>C:\Workspace\Eclipse\Beckhoff\twc\pro\ads.pro</Path>
 		<IsLibrary>false</IsLibrary>
-		<ChangeDate>2021-07-12T12:17:09</ChangeDate>
+		<ChangeDate>2021-07-14T06:14:57</ChangeDate>
 		<Library>
 			<Name>STANDARD.LIB</Name>
 			<Path>C:\TWINCAT\PLC\LIB\STANDARD.LIB</Path>
@@ -972,6 +972,13 @@
 			<BitSize>624</BitSize>
 		</Symbol>
 		<Symbol>
+			<Name Constant="1">.junit_c</Name>
+			<Type>INT</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>0</IOffset>
+			<BitSize>16</BitSize>
+		</Symbol>
+		<Symbol>
 			<Name>.junit_bit</Name>
 			<Type>BOOL</Type>
 			<IGroup>16448</IGroup>
@@ -1076,23 +1083,25 @@
 			<Name>.juint_struct</Name>
 			<Type Decoration="100223F2">junit_st</Type>
 			<Comment>
-				<![CDATA[disabled
-	junit_time					:TIME;
-.	junit_array_index_var		:ARRAY[0..junit_c] OF INT;
-	juinit_p_simple			:POINTER TO LREAL;
-	juinit_p_complex			:POINTER TO junit_st;
-	juinit_p_complex_array 	:POINTER TO ARRAY [0..2] OF junit_st;]]>
+				<![CDATA[disabled]]>
 			</Comment>
 			<IGroup>16448</IGroup>
 			<IOffset>1470</IOffset>
 			<BitSize>128</BitSize>
 		</Symbol>
 		<Symbol>
-			<Name Constant="1">.junit_c</Name>
-			<Type>INT</Type>
+			<Name>.junit_time</Name>
+			<Type>TIME</Type>
+			<Comment>
+				<![CDATA[
+.	junit_array_index_var		:ARRAY[0..junit_c] OF INT;
+	juinit_p_simple			:POINTER TO LREAL;
+	juinit_p_complex			:POINTER TO junit_st;
+	juinit_p_complex_array 	:POINTER TO ARRAY [0..2] OF junit_st;]]>
+			</Comment>
 			<IGroup>16448</IGroup>
-			<IOffset>0</IOffset>
-			<BitSize>16</BitSize>
+			<IOffset>1564</IOffset>
+			<BitSize>32</BitSize>
 		</Symbol>
 	</Symbols>
 	<VarConfigs/>
