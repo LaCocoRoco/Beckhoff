@@ -28,6 +28,7 @@ public class PropertiesPanel extends JPanel {
         this.add(xref.axisProperties, Properties.AXIS.toString());
         this.add(xref.channelProperties, Properties.CHANNEL.toString());
         this.add(xref.acquisitionProperties, Properties.ACQUISITION.toString());
+        this.add(xref.scopeProperties, Properties.SCOPE.toString());
     }
 
     /*********************************/

@@ -13,7 +13,7 @@ public class CommandLineUnitTest {
     private final Logger logger = TwincatLogger.getLogger();
     
     @Test
-    public void commandLineUnitTest() {
+    public void test() {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         

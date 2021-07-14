@@ -17,12 +17,12 @@ public class LocalHostNameUnitTest {
     private final Logger logger = TwincatLogger.getLogger();
 
     @Before
-    public void startAdsClient() {
+    public void start() {
         adsClient.open();
     }
 
     @Test
-    public void localHostNameUnitTest() {
+    public void test() {
         try {
             adsClient.setAmsNetId(AmsNetId.LOCAL);
             adsClient.setAmsPort(AmsPort.SYSTEMSERVICE);
@@ -34,7 +34,7 @@ public class LocalHostNameUnitTest {
     }
 
     @After
-    public void stopAdsClient() throws AdsException {
+    public void stop() throws AdsException {
         adsClient.close();
     }
 }

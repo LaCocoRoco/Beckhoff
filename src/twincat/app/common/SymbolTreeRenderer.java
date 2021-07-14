@@ -1,4 +1,4 @@
-package twincat.app.container;
+package twincat.app.common;
 
 import java.awt.Component;
 
@@ -35,9 +35,11 @@ public class SymbolTreeRenderer extends DefaultTreeCellRenderer {
 
     private static final ImageIcon ICON_REAL64 = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_DATATYPE_REAL64));
 
+    private static final ImageIcon ICON_STRING = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_DATATYPE_STRING));
+
     private static final ImageIcon ICON_BIGTYPE = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_DATATYPE_BIGTYPE));
 
-    private static final ImageIcon ICON_STRING = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_DATATYPE_STRING));
+    private static final ImageIcon ICON_TIME = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_DATATYPE_TIME));
 
     private static final ImageIcon ICON_OPEN = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_FOLDER_OPEN));
 
@@ -91,6 +93,7 @@ public class SymbolTreeRenderer extends DefaultTreeCellRenderer {
                 case REAL32:
                     this.setIcon(ICON_REAL32);
                     break;
+                    
                 case REAL64:
                     this.setIcon(ICON_REAL64);
                     break;
@@ -103,6 +106,10 @@ public class SymbolTreeRenderer extends DefaultTreeCellRenderer {
                     this.setIcon(ICON_BIGTYPE);
                     break;
 
+                case TIME:
+                    this.setIcon(ICON_TIME);
+                    break;
+                    
                 default:
                     break;
             }

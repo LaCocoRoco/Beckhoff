@@ -14,15 +14,15 @@ import java.util.logging.Logger;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
+import twincat.ads.common.DeviceInfo;
+import twincat.ads.common.DeviceState;
+import twincat.ads.common.Route;
+import twincat.ads.common.RouteSymbolData;
+import twincat.ads.common.Symbol;
+import twincat.ads.common.SymbolInfo;
 import twincat.ads.constant.AdsError;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.container.DeviceInfo;
-import twincat.ads.container.DeviceState;
-import twincat.ads.container.Route;
-import twincat.ads.container.RouteSymbolData;
-import twincat.ads.container.Symbol;
-import twincat.ads.container.SymbolInfo;
 import twincat.ads.wrapper.Variable;
 
 public class CommandLine {
@@ -61,6 +61,12 @@ public class CommandLine {
     private static final int CMD_ADS_TIMEOUT = 10;
 
     /*********************************/
+    /***** global final variable *****/
+    /*********************************/
+    
+    private final AdsClient adsClient = new AdsClient();
+
+    /*********************************/
     /******** local variable *********/
     /*********************************/
 
@@ -69,10 +75,16 @@ public class CommandLine {
     /*********************************/
     /****** local final variable *****/
     /*********************************/
-    
-    private final AdsClient adsClient = new AdsClient();
 
     private final Logger logger = TwincatLogger.getLogger();
+
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
+    
+    public AdsClient getAdsClient() {
+        return adsClient;
+    }
 
     /*********************************/
     /********* public method *********/

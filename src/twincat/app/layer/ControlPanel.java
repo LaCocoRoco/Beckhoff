@@ -64,8 +64,6 @@ public class ControlPanel extends JSplitPane {
     /********* public method *********/
     /*********************************/
 
-    // TODO : do not safe in control panel
-    
     public void displaySearch() {
         properties = xref.propertiesPanel.getCard();
         xref.treePanel.setCard(Browser.SEARCH);

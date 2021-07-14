@@ -9,23 +9,23 @@ import org.junit.Test;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
+import twincat.ads.common.SymbolInfo;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.container.SymbolInfo;
 
 public class SymbolInfoBySymbolNameUnitTest {
     private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getLogger();
 
-    private final String symbolName = ".junit_time";
+    private final String symbolName = ".junit_array_index_var";
 
     @Before
-    public void startAdsClient() {
+    public void start() {
         adsClient.open();
     }
 
     @Test
-    public void symbolInfoBySymbolNameUnitTest() {
+    public void test() {
         try {
             adsClient.setAmsNetId(AmsNetId.LOCAL);
             adsClient.setAmsPort(AmsPort.TC2PLC1);
@@ -47,7 +47,7 @@ public class SymbolInfoBySymbolNameUnitTest {
     }
 
     @After
-    public void stopAdsClient() throws AdsException {
+    public void stop() throws AdsException {
         adsClient.close();
     }
 }

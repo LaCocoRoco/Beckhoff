@@ -1,4 +1,4 @@
-package twincat.ads.container;
+package twincat.ads.common;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -76,7 +76,7 @@ public class Route {
         if (byteBuffer.remaining() >= ADDRESS_MAX_DATA_LENGTH) {
             byte[] readBuffer = new byte[ADDRESS_MAX_DATA_LENGTH];
             byteBuffer.get(readBuffer, 0, ADDRESS_MAX_DATA_LENGTH);
-            hostAddress = STRING.arrayToValue(readBuffer);
+            hostAddress = STRING.arrayToString(readBuffer);
             int positionOffset = ADDRESS_MAX_DATA_LENGTH - hostAddress.length();
             byteBuffer.position(byteBuffer.position() - positionOffset + 1);
         }
@@ -84,7 +84,7 @@ public class Route {
         if (byteBuffer.remaining() >= HOST_NAME_MAX_DATA_LENGTH) {
             byte[] readBuffer = new byte[HOST_NAME_MAX_DATA_LENGTH];
             byteBuffer.get(readBuffer, 0, HOST_NAME_MAX_DATA_LENGTH);
-            hostName = STRING.arrayToValue(readBuffer);
+            hostName = STRING.arrayToString(readBuffer);
             int positionOffset = HOST_NAME_MAX_DATA_LENGTH - hostName.length();
             byteBuffer.position(byteBuffer.position() - positionOffset + 1);
         }

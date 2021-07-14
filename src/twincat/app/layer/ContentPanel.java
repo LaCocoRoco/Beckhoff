@@ -23,7 +23,7 @@ public class ContentPanel extends JSplitPane {
 
     public ContentPanel(XReference xref) {
         this.setLeftComponent(xref.windowPanel);
-        this.setRightComponent(xref.panelConsole);
+        this.setRightComponent(xref.consolePanel);
         this.setOrientation(JSplitPane.VERTICAL_SPLIT);
         this.setContinuousLayout(true);
         this.setOneTouchExpandable(false);

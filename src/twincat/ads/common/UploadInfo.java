@@ -1,4 +1,4 @@
-package twincat.ads.container;
+package twincat.ads.common;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

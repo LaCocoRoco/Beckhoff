@@ -1,4 +1,4 @@
-package twincat.ads.container;
+package twincat.ads.common;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -63,6 +63,7 @@ public class TypeInfo {
             List<Point> pointArray = new ArrayList<Point>();
             
             String[] data = type.substring(begPattern + 1, endPattern).split(",");
+            
             for (String position : data) {
                 String[] size = position.replace(" ", "").split("\\..");
                 

@@ -36,83 +36,83 @@ public class REAL32 extends Variable {
 
 	@Override
 	public boolean toBoolean() {
-		return arrayToValue(data) > 0 ? true : false;
+		return arrayToFloat(data) > 0 ? true : false;
 	}
 
 	@Override
 	public byte toByte() {
-		return (byte) arrayToValue(data);
+		return (byte) arrayToFloat(data);
 	}
 
 	@Override
 	public short toShort() {
-		return (short) arrayToValue(data);
+		return (short) arrayToFloat(data);
 	}
 
 	@Override
 	public int toInteger() {
-		return (int) arrayToValue(data);
+		return (int) arrayToFloat(data);
 	}
 
 	@Override
 	public long toLong() {
-		return (long) arrayToValue(data);
+		return (long) arrayToFloat(data);
 	}
 
 	@Override
 	public float toFloat() {
-		return (float) arrayToValue(data);
+		return (float) arrayToFloat(data);
 	}
 
 	@Override
 	public double toDouble() {
-		return (double) arrayToValue(data);
+		return (double) arrayToFloat(data);
 	}
 
 	@Override
 	public String toString() {
-		return Float.toString(REAL32.arrayToValue(data));
+		return Float.toString(REAL32.arrayToFloat(data));
 	}
 
 	@Override
 	public Variable write(boolean value) throws AdsException {
-		super.write(REAL32.valueToArray(value ? (float) 1 : (float) 0));
+		super.write(REAL32.floatToArray(value ? (float) 1 : (float) 0));
 		return this;
 	}
 
 	@Override
 	public Variable write(byte value) throws AdsException {
-		super.write(REAL32.valueToArray((float) value));
+		super.write(REAL32.floatToArray((float) value));
 		return this;
 	}
 
 	@Override
 	public Variable write(short value) throws AdsException {
-		super.write(REAL32.valueToArray((float) value));
+		super.write(REAL32.floatToArray((float) value));
 		return this;
 	}
 
 	@Override
 	public Variable write(int value) throws AdsException {
-		super.write(REAL32.valueToArray((float) value));
+		super.write(REAL32.floatToArray((float) value));
 		return this;
 	}
 
 	@Override
 	public Variable write(long value) throws AdsException {
-		super.write(REAL32.valueToArray((float) value));
+		super.write(REAL32.floatToArray((float) value));
 		return this;
 	}
 
 	@Override
 	public Variable write(float value) throws AdsException {
-		super.write(REAL32.valueToArray((float) value));
+		super.write(REAL32.floatToArray((float) value));
 		return this;
 	}
 
 	@Override
 	public Variable write(double value) throws AdsException {
-		super.write(REAL32.valueToArray((float) value));
+		super.write(REAL32.floatToArray((float) value));
 		return this;
 	}
 
@@ -120,7 +120,7 @@ public class REAL32 extends Variable {
 	public Variable write(String value) throws AdsException {
 		try  {
 			float data = Float.parseFloat(value);
-			super.write(REAL32.valueToArray(data));
+			super.write(REAL32.floatToArray(data));
 		} catch(NumberFormatException e) {
 			throw new AdsException(AdsError.VARIABLE_WRITE_PARSE_ERROR);
 		}
@@ -131,14 +131,14 @@ public class REAL32 extends Variable {
     /** public static final method ***/
     /*********************************/
 
-	public static final float arrayToValue(byte[] data) {
+	public static final float arrayToFloat(byte[] data) {
 		if (data.length != DataType.REAL32.size) return 0;
 		ByteBuffer byteBuffer = ByteBuffer.wrap(data);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		return byteBuffer.getFloat();
 	}
 
-	public static final byte[] valueToArray(float data) {
+	public static final byte[] floatToArray(float data) {
 		ByteBuffer byteBuffer = ByteBuffer.allocate(DataType.REAL32.size);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		byteBuffer.putInt(Float.floatToRawIntBits(data));

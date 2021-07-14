@@ -10,21 +10,21 @@ import org.junit.Test;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
+import twincat.ads.common.Route;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.container.Route;
 
 public class RouteEntryUnitTest {
     private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getLogger();
 
     @Before
-    public void startAdsClient() {
+    public void start() {
         adsClient.open();
     }
 
     @Test
-    public void routeEntryUnitTest() {
+    public void test() {
         try {
             adsClient.setAmsNetId(AmsNetId.LOCAL);
             adsClient.setAmsPort(AmsPort.SYSTEMSERVICE);
@@ -42,7 +42,7 @@ public class RouteEntryUnitTest {
     }
 
     @After
-    public void stopAdsClient() throws AdsException {
+    public void stop() throws AdsException {
         adsClient.close();
     }
 }

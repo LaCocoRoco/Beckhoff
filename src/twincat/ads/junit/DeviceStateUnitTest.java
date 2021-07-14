@@ -9,22 +9,22 @@ import org.junit.Test;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
+import twincat.ads.common.DeviceState;
 import twincat.ads.constant.State;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.container.DeviceState;
 
 public class DeviceStateUnitTest {
     private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getLogger();
 	
 	@Before
-	public void startAdsClient() {
+	public void start() {
 		adsClient.open();
 	}
 
 	@Test
-	public void deviceStateUnitTest() {
+	public void test() {
 		try {
 	        adsClient.setAmsNetId(AmsNetId.LOCAL);
 	        adsClient.setAmsPort(AmsPort.TC2PLC1);
@@ -58,7 +58,7 @@ public class DeviceStateUnitTest {
 	}
 
 	@After
-	public void stopAdsClient() throws AdsException {
+	public void stop() throws AdsException {
 		adsClient.close();
 	}
 }

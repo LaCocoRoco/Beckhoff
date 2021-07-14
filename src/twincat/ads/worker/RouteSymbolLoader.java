@@ -8,10 +8,10 @@ import java.util.logging.Logger;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
+import twincat.ads.common.Route;
+import twincat.ads.common.RouteSymbolData;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.container.Route;
-import twincat.ads.container.RouteSymbolData;
 
 public class RouteSymbolLoader extends Observable {
     /*********************************/

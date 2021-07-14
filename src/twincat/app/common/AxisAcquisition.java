@@ -1,4 +1,4 @@
-package twincat.app.container;
+package twincat.app.common;
 
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;

@@ -57,16 +57,16 @@ import javax.swing.tree.TreePath;
 import twincat.Resources;
 import twincat.TwincatLogger;
 import twincat.Utilities;
+import twincat.ads.common.RouteSymbolData;
+import twincat.ads.common.Symbol;
 import twincat.ads.constant.DataType;
-import twincat.ads.container.RouteSymbolData;
-import twincat.ads.container.Symbol;
 import twincat.ads.worker.RouteSymbolLoader;
 import twincat.ads.worker.SymbolLoader;
+import twincat.app.common.SymbolNode;
+import twincat.app.common.SymbolTreeModel;
+import twincat.app.common.SymbolTreeNode;
+import twincat.app.common.SymbolTreeRenderer;
 import twincat.app.constant.Filter;
-import twincat.app.container.SymbolNode;
-import twincat.app.container.SymbolTreeModel;
-import twincat.app.container.SymbolTreeNode;
-import twincat.app.container.SymbolTreeRenderer;
 
 public class SearchTree extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -91,15 +91,15 @@ public class SearchTree extends JPanel {
 
     private final JLabel loadingState = new JLabel();
 
+    private final JScrollPane treePanel = new JScrollPane();
+    
     private final JTree searchTree = new JTree();
 
+    private final JTree browseTree = new JTree();
+    
     private final JPanel searchPanel = new JPanel();
 
     private final JTextField searchTextField = new JTextField();
-
-    private final SymbolTreeModel searchTreeModel = new SymbolTreeModel();
-
-    private final SymbolTreeModel browseTreeModel = new SymbolTreeModel();
 
     private final JComboBox<String> routeComboBox = new JComboBox<String>();
 
@@ -117,7 +117,22 @@ public class SearchTree extends JPanel {
     /****** predefined variable ******/
     /*********************************/
 
-    private final MouseAdapter acquisitionTreeMouseAdapter = new MouseAdapter() {
+    private final MouseAdapter browseTreeMouseAdapter = new MouseAdapter() {
+        public void mousePressed(MouseEvent mouseEvent) {
+            if (mouseEvent.getClickCount() == 2) {
+                int x = mouseEvent.getX();
+                int y = mouseEvent.getY();
+
+                TreePath treePath = browseTree.getPathForLocation(x, y);
+
+                if (treePath != null) {
+                    symbolTreeNodeSelected(treePath);
+                }
+            }
+        }
+    };
+ 
+    private final MouseAdapter searchTreeMouseAdapter = new MouseAdapter() {
         public void mousePressed(MouseEvent mouseEvent) {
             if (mouseEvent.getClickCount() == 2) {
                 int x = mouseEvent.getX();
@@ -126,65 +141,33 @@ public class SearchTree extends JPanel {
                 TreePath treePath = searchTree.getPathForLocation(x, y);
 
                 if (treePath != null) {
-                    SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();
-                    Object userObject = symbolTreeNode.getUserObject();
-
-                    if (userObject instanceof SymbolNode) {
-                        SymbolNode symbolNodeParent = (SymbolNode) userObject;
-                        Symbol selectedSymbol = symbolNodeParent.getSymbol();
-
-                        if (selectedSymbol.getDataType().equals(DataType.BIGTYPE)) {
-                            SymbolLoader symbolLoader = symbolNodeParent.getSymbolLoader();
-
-                            // add symbol node
-                            List<Symbol> symbolList = symbolLoader.getSymbolList(selectedSymbol);
-                            for (Symbol symbol : symbolList) {
-                                if (searchTree.getModel().equals(browseTreeModel)) {
-                                    // add symbol node to browse tree
-                                    SymbolNode symbolNodeChild = new SymbolNode(symbol, symbolLoader, false);
-                                    symbolTreeNode.addSymbolNodeSplitName(symbolNodeParent, symbolNodeChild);
-                                } else {
-                                    // add symbol node to search tree
-                                    SymbolNode symbolNodeChild = new SymbolNode(symbol, symbolLoader, true);
-                                    symbolTreeNode.addSymbolNodeFullName(symbolNodeParent, symbolNodeChild);
-                                    searchSymbolNodeList.add(symbolNodeChild);
-                                }
-                            }
-
-                            // snapshot of symbol tree node path
-                            TreePath symbolTreePath = new TreePath(symbolTreeNode.getPath());
-
-                            // update search tree model
-                            if (searchTree.getModel().equals(searchTreeModel)) {
-                                symbolTreeNode.removeFromParent();
-                                searchTreeModel.reload();
-                            }
-
-                            // set view to model
-                            searchTree.setSelectionPath(symbolTreePath);
-                        } else {
-                            logger.info(selectedSymbol.getSymbolName());
-                        }
-                    }
+                    symbolTreeNodeSelected(treePath);
                 }
             }
         }
     };
 
-    private final BasicTreeUI acquisitionTreeBasicUI = new BasicTreeUI() {
+    private final BasicTreeUI browseTreeUI = new BasicTreeUI() {
         @Override
         protected boolean shouldPaintExpandControl(TreePath p, int r, boolean iE, boolean hBE, boolean iL) {
             return false;
         }
     };
 
+    private final BasicTreeUI searchTreeUI = new BasicTreeUI() {
+        @Override
+        protected boolean shouldPaintExpandControl(TreePath p, int r, boolean iE, boolean hBE, boolean iL) {
+            return false;
+        }
+    };
+    
     private final ItemListener comboBoxItemListener = new ItemListener() {
         private ScheduledFuture<?> schedule = null;
 
         private final Runnable task = new Runnable() {
             public void run() {
                 updateRouteComboBox();
-                updateTreeModel();
+                updateTreeView();
             }
         };
 
@@ -247,8 +230,7 @@ public class SearchTree extends JPanel {
     private final FocusListener searchTextFieldFocusListener = new FocusListener() {
         @Override
         public void focusGained(FocusEvent e) {
-            String tempString = searchTextField.getText();
-            if (tempString.equals(languageBundle.getString(Resources.TEXT_SEARCH_HINT))) {
+            if (searchTextField.getText().equals(languageBundle.getString(Resources.TEXT_SEARCH_HINT))) {
                 searchTextField.setText("");
                 searchTextField.setForeground(Color.BLACK);
             }
@@ -256,10 +238,9 @@ public class SearchTree extends JPanel {
 
         @Override
         public void focusLost(FocusEvent e) {
-            String tempString = searchTextField.getText();
-            if (tempString.equals("")) {
-                searchTextField.setForeground(Color.GRAY);
+            if (searchTextField.getText().equals("")) {
                 searchTextField.setText(languageBundle.getString(Resources.TEXT_SEARCH_HINT));
+                searchTextField.setForeground(Color.GRAY);
             }
         }
     };
@@ -268,7 +249,7 @@ public class SearchTree extends JPanel {
         private static final int DELAY_TIME = 300;
 
         private ScheduledFuture<?> schedule = null;
-
+      
         private final Runnable task = new Runnable() {
             public void run() {
                 updateSearchTreeModel();
@@ -278,12 +259,11 @@ public class SearchTree extends JPanel {
         private void delayUpdateSearchTreeModel() {
             Utilities.stopSchedule(schedule);
             ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-            schedule = scheduler.schedule(task, DELAY_TIME, TimeUnit.MILLISECONDS);
-
+            schedule = scheduler.schedule(task, DELAY_TIME, TimeUnit.MILLISECONDS);                
         }
 
         @Override
-        public void insertUpdate(DocumentEvent e) {
+        public void insertUpdate(DocumentEvent e) {  
             delayUpdateSearchTreeModel();
         }
 
@@ -322,6 +302,16 @@ public class SearchTree extends JPanel {
     public SearchTree(XReference xref) {
         this.xref = xref;
 
+        browseTree.setCellRenderer(new SymbolTreeRenderer());
+        browseTree.setBorder(BorderFactory.createEmptyBorder(5, -5, 0, 0));
+        browseTree.setRootVisible(false);
+        browseTree.setScrollsOnExpand(false);
+        browseTree.setShowsRootHandles(true);
+        browseTree.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        browseTree.setModel(new SymbolTreeModel());
+        browseTree.addMouseListener(browseTreeMouseAdapter);
+        browseTree.setUI(browseTreeUI);
+
         searchTree.setCellRenderer(new SymbolTreeRenderer());
         searchTree.setBorder(BorderFactory.createEmptyBorder(5, -5, 0, 0));
         searchTree.setRootVisible(false);
@@ -329,14 +319,13 @@ public class SearchTree extends JPanel {
         searchTree.setShowsRootHandles(true);
         searchTree.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         searchTree.setModel(new SymbolTreeModel());
-        searchTree.addMouseListener(acquisitionTreeMouseAdapter);
-        searchTree.setUI(acquisitionTreeBasicUI);
+        searchTree.addMouseListener(searchTreeMouseAdapter);
+        searchTree.setUI(searchTreeUI);
 
-        JScrollPane treePanel = new JScrollPane();
         treePanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         treePanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         treePanel.setBorder(BorderFactory.createEmptyBorder());
-        treePanel.setViewportView(searchTree);
+        treePanel.setViewportView(browseTree);
 
         Border routeBorderInside = BorderFactory.createLoweredBevelBorder();
         Border routeBorderOutside = BorderFactory.createEmptyBorder(0, 0, 0, 1);
@@ -383,8 +372,6 @@ public class SearchTree extends JPanel {
         acquisitionToolbar.add(routeToolBar);
         acquisitionToolbar.add(searchToolBar);
 
-        // TODO : replace with axis panel button
-        
         JButton applyButton = new JButton(languageBundle.getString(Resources.TEXT_SEARCH_APPLY));
         applyButton.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         applyButton.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
@@ -490,8 +477,8 @@ public class SearchTree extends JPanel {
 
         routeSymbolLoader.loadRouteSymbolDataList();
 
-        SymbolTreeNode rootBrowseTreeNode = (SymbolTreeNode) browseTreeModel.getRoot();
-        SymbolTreeNode rootSearchTreeNode = (SymbolTreeNode) searchTreeModel.getRoot();
+        SymbolTreeNode rootBrowseTreeNode = (SymbolTreeNode) browseTree.getModel().getRoot();
+        SymbolTreeNode rootSearchTreeNode = (SymbolTreeNode) searchTree.getModel().getRoot();
 
         for (RouteSymbolData routeSymbolData : routeSymbolLoader.getRouteSymbolDataList()) {
             SymbolLoader symbolLoader = routeSymbolData.getSymbolLoader();
@@ -516,10 +503,13 @@ public class SearchTree extends JPanel {
             }
         }
 
-        browseTreeModel.setFilterLevel(Filter.NODE);
-        searchTreeModel.setFilterLevel(Filter.ALL);
+        SymbolTreeModel browseSymbolTreeModel = (SymbolTreeModel) browseTree.getModel();
+        SymbolTreeModel searchSymbolTreeModel = (SymbolTreeModel) searchTree.getModel();
+        
+        browseSymbolTreeModel.setFilterLevel(Filter.NODE);
+        searchSymbolTreeModel.setFilterLevel(Filter.ALL);
 
-        reloadBrowseTreeModel();
+        reloadAndExpandBrowseTree();
 
         String allRoutes = languageBundle.getString(Resources.TEXT_SEARCH_ALL_ROUTES);
         String allPorts = languageBundle.getString(Resources.TEXT_SEARCH_ALL_PORTS);
@@ -558,36 +548,39 @@ public class SearchTree extends JPanel {
         portComboBox.addItemListener(comboBoxItemListener);
     }
 
-    private void reloadSearchTreeModel() {
+    private void reloadAndExpandSearchTree() {
+        // hide tree
         setSearchPanel(Search.LOADING);
         searchTextField.setEnabled(false);
         loadingState.setText("Reload Tree");
 
-        searchTree.setModel(searchTreeModel);
-        searchTreeModel.reload();
+        // reload tree model
+        SymbolTreeModel searchSymbolTreeModel = (SymbolTreeModel) searchTree.getModel();
+        searchSymbolTreeModel.reload();
 
         // expand tree nodes
         for (int i = 0; i < searchTree.getRowCount(); i++) {
             searchTree.expandRow(i);
         }
 
+        // show tree
         setSearchPanel(Search.TREE);
         searchTextField.setEnabled(true);
-        searchTextField.requestFocus();
     }
 
-    private void reloadBrowseTreeModel() {
-        searchTree.setModel(browseTreeModel);
-        browseTreeModel.reload();
+    private void reloadAndExpandBrowseTree() {
+        // reload tree model
+        SymbolTreeModel browseSymbolTreeModel = (SymbolTreeModel) browseTree.getModel();
+        browseSymbolTreeModel.reload();
 
         // expand tree nodes
-        SymbolTreeNode rootSymbolTreeNode = (SymbolTreeNode) searchTree.getModel().getRoot();
+        SymbolTreeNode rootSymbolTreeNode = (SymbolTreeNode) browseTree.getModel().getRoot();
         for (int i = 0; i < rootSymbolTreeNode.getChildCount(); i++) {
             SymbolTreeNode routeSymbolTreeNode = (SymbolTreeNode) rootSymbolTreeNode.getChildAt(i);
             for (int x = 0; x < routeSymbolTreeNode.getChildCount(); x++) {
                 SymbolTreeNode portSymbolTreeNode = (SymbolTreeNode) routeSymbolTreeNode.getChildAt(x);
                 TreePath symbolTreePath = new TreePath(portSymbolTreeNode.getPath());
-                searchTree.setSelectionPath(symbolTreePath);
+                browseTree.setSelectionPath(symbolTreePath);
             }
         }
     }
@@ -636,18 +629,18 @@ public class SearchTree extends JPanel {
         portComboBox.addItemListener(comboBoxItemListener);
     }
 
-    private void updateTreeModel() {
-        updateTreeModelVisibility(browseTreeModel);
-        updateTreeModelVisibility(searchTreeModel);
+    private void updateTreeView() {
+        SymbolTreeNode browseSymbolTreeNode = (SymbolTreeNode) browseTree.getModel().getRoot();
+        SymbolTreeNode searchSymbolTreeNode = (SymbolTreeNode) searchTree.getModel().getRoot();
+        
+        updateTreeNodeVisibility(browseSymbolTreeNode);
+        updateTreeNodeVisibility(searchSymbolTreeNode);
 
-        if (searchTree.getModel().equals(browseTreeModel)) {
-            reloadBrowseTreeModel();
-        } else {
-            reloadSearchTreeModel();
-        }
+        reloadAndExpandBrowseTree();
+        reloadAndExpandSearchTree();
     }
 
-    private void updateTreeModelVisibility(SymbolTreeModel symbolTreeModel) {
+    private void updateTreeNodeVisibility(SymbolTreeNode rootSymbolTreeNode) {
         String allRoutes = languageBundle.getString(Resources.TEXT_SEARCH_ALL_ROUTES);
         String allPorts = languageBundle.getString(Resources.TEXT_SEARCH_ALL_PORTS);
 
@@ -656,8 +649,6 @@ public class SearchTree extends JPanel {
 
         String selectedRoute = selectedItemRoute != null ? selectedItemRoute.toString() : allRoutes;
         String selectedPort = selectedItemPort != null ? selectedItemPort.toString() : allPorts;
-
-        SymbolTreeNode rootSymbolTreeNode = (SymbolTreeNode) symbolTreeModel.getRoot();
 
         for (int i = 0; i < rootSymbolTreeNode.getChildCount(); i++) {
             SymbolTreeNode routeSymbolTreeNode = (SymbolTreeNode) rootSymbolTreeNode.getChildAt(i);
@@ -681,8 +672,8 @@ public class SearchTree extends JPanel {
             }
         }
     }
-
-    private void updateSearchTreeModel() {
+    
+    private void updateSearchTreeModel() { 
         String inputText = searchTextField.getText();
         String searchHint = languageBundle.getString(Resources.TEXT_SEARCH_HINT);
 
@@ -700,10 +691,58 @@ public class SearchTree extends JPanel {
                     symbolNode.setVisible(false);
                 }
             }
-
-            reloadSearchTreeModel();
+            
+            reloadAndExpandSearchTree();
+            treePanel.setViewportView(searchTree);
+            searchTextField.requestFocus();
         } else {
-            reloadBrowseTreeModel();
+            treePanel.setViewportView(browseTree);
+        }
+    }
+    
+    private void symbolTreeNodeSelected(TreePath treePath) {
+        SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();
+        Object userObject = symbolTreeNode.getUserObject();
+
+        if (userObject instanceof SymbolNode) {
+            SymbolNode symbolNode = (SymbolNode) userObject;
+            Symbol selectedSymbol = symbolNode.getSymbol();
+            SymbolLoader symbolLoader = symbolNode.getSymbolLoader();
+            
+            if (selectedSymbol.getDataType().equals(DataType.BIGTYPE)) {
+                // add symbol node
+                List<Symbol> symbolList = symbolLoader.getSymbolList(selectedSymbol);
+                for (Symbol symbol : symbolList) {
+                    if (treePanel.getViewport().getView().equals(searchTree)) {
+                        // add symbol node to search tree
+                        SymbolNode symbolNodeChild = new SymbolNode(symbol, symbolLoader, true);
+                        symbolTreeNode.addSymbolNodeFullName(symbolNode, symbolNodeChild);
+                        searchSymbolNodeList.add(symbolNodeChild);
+                    } else {
+                        // add symbol node to browse tree
+                        SymbolNode symbolNodeChild = new SymbolNode(symbol, symbolLoader, false);
+                        symbolTreeNode.addSymbolNodeSplitName(symbolNode, symbolNodeChild);
+                    }
+                }
+
+                // snapshot of symbol tree node path
+                TreePath symbolTreePath = new TreePath(symbolTreeNode.getPath());
+
+                // update search tree model
+                if (treePanel.getViewport().getView().equals(searchTree)) {
+                    symbolTreeNode.removeFromParent();
+                    SymbolTreeModel searchSymbolTreeModel = (SymbolTreeModel) searchTree.getModel();
+                    searchSymbolTreeModel.reload();
+                }
+
+                // set view to symbol tree not path snapshot
+                searchTree.setSelectionPath(symbolTreePath);
+            } else {
+                xref.consolePanel.setClipboard(selectedSymbol.getSymbolName());
+                xref.consolePanel.getCommandLine().getAdsClient().setAmsNetId(symbolLoader.getAmsNetId());
+                xref.consolePanel.getCommandLine().getAdsClient().setAmsPort(symbolLoader.getAmsPort());
+                logger.info(selectedSymbol.getSymbolName());
+            }
         }
     }
 }

@@ -51,42 +51,42 @@ public class STRING extends Variable {
 
 	@Override
 	public boolean toBoolean() {
-		return !STRING.arrayToValue(data).isEmpty() ? true : false;
+		return !STRING.arrayToString(data).isEmpty() ? true : false;
 	}
 
 	@Override
 	public byte toByte() {
-		return (byte) (!STRING.arrayToValue(data).isEmpty() ? 1 : 0);
+		return (byte) (!STRING.arrayToString(data).isEmpty() ? 1 : 0);
 	}
 
 	@Override
 	public short toShort() {
-		return (short) (!STRING.arrayToValue(data).isEmpty() ? 1 : 0);
+		return (short) (!STRING.arrayToString(data).isEmpty() ? 1 : 0);
 	}
 
 	@Override
 	public int toInteger() {
-		return (int) (!STRING.arrayToValue(data).isEmpty() ? 1 : 0);
+		return (int) (!STRING.arrayToString(data).isEmpty() ? 1 : 0);
 	}
 
 	@Override
 	public long toLong() {
-		return (long) (!STRING.arrayToValue(data).isEmpty() ? 1 : 0);
+		return (long) (!STRING.arrayToString(data).isEmpty() ? 1 : 0);
 	}
 
 	@Override
 	public float toFloat() {
-		return (float) (!STRING.arrayToValue(data).isEmpty() ? 1 : 0);
+		return (float) (!STRING.arrayToString(data).isEmpty() ? 1 : 0);
 	}
 
 	@Override
 	public double toDouble() {
-		return (double) (!STRING.arrayToValue(data).isEmpty() ? 1 : 0);
+		return (double) (!STRING.arrayToString(data).isEmpty() ? 1 : 0);
 	}
 
 	@Override
 	public String toString() {
-		return STRING.arrayToValue(data);
+		return STRING.arrayToString(data);
 	}
 
 	@Override
@@ -142,14 +142,14 @@ public class STRING extends Variable {
     /** public static final method ***/
     /*********************************/
 
-	public static final String arrayToValue(byte[] data) {
+	public static final String arrayToString(byte[] data) {
 		String value = new String();
 		for (int i = 0; i < data.length && data[i] != 0; ++i)
 			value += (char) data[i];
 		return value;
 	}
 
-	public static final byte[] valueToArray(String data) {
+	public static final byte[] stringToArray(String data) {
 		return STRING.valueToArray(data, false);
 	}
 

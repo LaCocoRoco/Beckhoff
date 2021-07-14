@@ -32,10 +32,16 @@ public class ConsolePanel extends JPanel {
     private static final int MAX_LINE_COUNT = 2000;
 
     /*********************************/
-    /******** local variable *********/
+    /******** global variable ********/
+    /*********************************/
+    
+    private String clipboard = new String();
+
+    /*********************************/
+    /***** global final variable *****/
     /*********************************/
 
-    private String clipboard = new String();
+    private final CommandLine commandLine = new CommandLine();
 
     /*********************************/
     /********** constructor **********/
@@ -75,7 +81,6 @@ public class ConsolePanel extends JPanel {
         consolePanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         consolePanel.setViewportView(textArea);
 
-        CommandLine adsCmd = new CommandLine();
         JTextField consoleInput = new JTextField();
         consoleInput.setMargin(new Insets(2, 2, 2, 2));
         consoleInput.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -89,7 +94,7 @@ public class ConsolePanel extends JPanel {
 
                     if (!input.isEmpty()) {
                         clipboard = input;
-                        adsCmd.send(input);
+                        commandLine.send(input);
                     }
                 }
 
@@ -121,5 +126,21 @@ public class ConsolePanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.add(consoleInput, BorderLayout.PAGE_START);
         this.add(consolePanel, BorderLayout.CENTER);
+    }
+
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
+
+    public String getClipboard() {
+        return clipboard;
+    }
+
+    public void setClipboard(String clipboard) {
+        this.clipboard = clipboard;
+    }
+ 
+    public CommandLine getCommandLine() {
+        return commandLine;
     }
 }

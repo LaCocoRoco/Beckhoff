@@ -13,14 +13,14 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 import twincat.TwincatLogger;
+import twincat.ads.common.RouteSymbolData;
+import twincat.ads.common.Symbol;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
 import twincat.ads.constant.DataType;
-import twincat.ads.container.RouteSymbolData;
-import twincat.ads.container.Symbol;
 import twincat.ads.worker.RouteSymbolLoader;
 import twincat.ads.worker.SymbolLoader;
-import twincat.app.container.AxisAcquisition;
+import twincat.app.common.AxisAcquisition;
 import twincat.java.basic.ScrollablePanel;
 import twincat.java.basic.WrapLayout;
 import twincat.scope.Acquisition;
@@ -35,12 +35,15 @@ public class AxisPanel extends JScrollPane {
     private static final long serialVersionUID = 1L;
 
     /*********************************/
-    /******** cross reference ********/
+    /**** local constant variable ****/
     /*********************************/
 
-    @SuppressWarnings("unused")
-    private final XReference xref;
+    private static final int MAX_TEXT_LENGTH = 40;
+    
+    private static final String HTML_PREPEND = "<html><div style='text-align: center;'>";
 
+    private static final String HTML_APPEND = "</div></html>";
+    
     /*********************************/
     /****** local final variable *****/
     /*********************************/
@@ -54,8 +57,6 @@ public class AxisPanel extends JScrollPane {
     /*********************************/
 
     public AxisPanel(XReference xref) {
-        this.xref = xref;
-        
         ScrollablePanel scrollablePanel = new ScrollablePanel(new WrapLayout(FlowLayout.LEADING));
         scrollablePanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
 
@@ -92,9 +93,21 @@ public class AxisPanel extends JScrollPane {
                 }
             }
 
+            
             for (AxisAcquisition axisAcquisition : axisAcquisitionList) {
                 JButton axisButton = new JButton();
-                axisButton.setText(axisAcquisition.getAxisName());
+                
+                String axisName = axisAcquisition.getAxisName();
+                StringBuilder stringBuilder = new StringBuilder(axisName);
+
+                if (stringBuilder.length() > MAX_TEXT_LENGTH)  {
+                    stringBuilder.delete(MAX_TEXT_LENGTH, stringBuilder.length());
+                }
+                
+                stringBuilder.insert(0, HTML_PREPEND);
+                stringBuilder.append(HTML_APPEND);  
+ 
+                axisButton.setText(stringBuilder.toString());
                 axisButton.setFocusPainted(false);
                 axisButton.setContentAreaFilled(false);
                 axisButton.setPreferredSize(new Dimension(150, 50));

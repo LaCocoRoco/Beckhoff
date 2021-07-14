@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import twincat.ads.constant.DataType;
+import twincat.ads.common.DataTypeInfo;
+import twincat.ads.common.DeviceInfo;
+import twincat.ads.common.DeviceState;
+import twincat.ads.common.Route;
+import twincat.ads.common.SymbolInfo;
+import twincat.ads.common.UploadInfo;
 import twincat.ads.constant.AdsError;
 import twincat.ads.constant.IndexGroup;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.container.DataTypeInfo;
-import twincat.ads.container.DeviceInfo;
-import twincat.ads.container.DeviceState;
-import twincat.ads.container.Route;
-import twincat.ads.container.SymbolInfo;
-import twincat.ads.container.UploadInfo;
 import twincat.ads.datatype.BIT;
 import twincat.ads.datatype.BOOL;
 import twincat.ads.datatype.BYTE;
@@ -31,6 +31,7 @@ import twincat.ads.datatype.REAL32;
 import twincat.ads.datatype.REAL64;
 import twincat.ads.datatype.SINT;
 import twincat.ads.datatype.STRING;
+import twincat.ads.datatype.TIME;
 import twincat.ads.datatype.UDINT;
 import twincat.ads.datatype.UINT;
 import twincat.ads.datatype.UINT16;
@@ -140,7 +141,7 @@ public class AdsClient extends AdsNative {
     public String readLocalHostName() throws AdsException {
         byte[] readBuffer = new byte[IndexGroup.SYSTEM_IP_HOST_NAME.size];
         read(IndexGroup.SYSTEM_IP_HOST_NAME.value, 0, readBuffer);
-        return STRING.arrayToValue(readBuffer);
+        return STRING.arrayToString(readBuffer);
     }
     
     public void readBySymbolHandle(int symbolHandle, byte[] readBuffer) throws AdsException {
@@ -156,19 +157,19 @@ public class AdsClient extends AdsNative {
     }
 
     public void writeReleaseSymbolHandle(int symbolHandle) throws AdsException {
-        byte[] writeBuffer = INT32.valueToArray(symbolHandle);
+        byte[] writeBuffer = INT32.integerToArray(symbolHandle);
         write(IndexGroup.SYMBOL_RELEASE_HANDLE.value, 0, writeBuffer);
     }
 
     public int readHandleOfSymbolName(String symbolName) throws AdsException {
-        byte[] writeBuffer = STRING.valueToArray(symbolName);
+        byte[] writeBuffer = STRING.stringToArray(symbolName);
         byte[] readBuffer = new byte[Integer.SIZE / Byte.SIZE];
         readWrite(IndexGroup.SYMBOL_HANDLE_BY_NAME.value, 0, readBuffer, writeBuffer);
-        return INT32.arrayToValue(readBuffer);
+        return INT32.arrayToInteger(readBuffer);
     }
 
     public void readBySymbolName(byte[] readBuffer, String symbolName) throws AdsException {
-        byte[] writeBuffer = STRING.valueToArray(symbolName);
+        byte[] writeBuffer = STRING.stringToArray(symbolName);
         readWrite(IndexGroup.SYMBOL_VALUE_BY_NAME.value, 0, readBuffer, writeBuffer);
     }
  
@@ -182,7 +183,7 @@ public class AdsClient extends AdsNative {
     }
 
     public DataTypeInfo readDataTypeInfoByDataTypeName(String dataTypeName) throws AdsException {
-        byte[] writeBuffer = STRING.valueToArray(dataTypeName);
+        byte[] writeBuffer = STRING.stringToArray(dataTypeName);
         byte[] readBuffer = new byte[IndexGroup.DATA_TYPE_INFO_BY_NAME_EX.size];
         readWrite(IndexGroup.DATA_TYPE_INFO_BY_NAME_EX.value, 0, readBuffer, writeBuffer);
         DataTypeInfo dataTypeInfo = new DataTypeInfo();
@@ -283,6 +284,7 @@ public class AdsClient extends AdsNative {
             case UINT32:    return new UINT32(this, idxGrp, idxOffs);
             case UDINT:     return new UDINT(this, idxGrp, idxOffs);
             case DWORD:     return new DWORD(this, idxGrp, idxOffs);
+            case TIME:      return new TIME(this, idxGrp, idxOffs);
             case REAL32:    return new REAL32(this, idxGrp, idxOffs);
             case REAL:      return new REAL(this, idxGrp, idxOffs);
             case REAL64:    return new REAL64(this, idxGrp, idxOffs);
@@ -315,6 +317,7 @@ public class AdsClient extends AdsNative {
             case UINT32:    return new UINT32(this, symbolName);
             case UDINT:     return new UDINT(this, symbolName);
             case DWORD:     return new DWORD(this, symbolName);
+            case TIME:      return new TIME(this, symbolName);
             case REAL32:    return new REAL32(this, symbolName);
             case REAL:      return new REAL(this, symbolName);
             case REAL64:    return new REAL64(this, symbolName);

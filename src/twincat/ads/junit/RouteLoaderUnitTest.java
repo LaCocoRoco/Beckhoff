@@ -9,8 +9,8 @@ import org.junit.Test;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
+import twincat.ads.common.RouteSymbolData;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.container.RouteSymbolData;
 import twincat.ads.worker.RouteSymbolLoader;
 import twincat.ads.worker.SymbolLoader;
 
@@ -19,12 +19,12 @@ public class RouteLoaderUnitTest {
     private final Logger logger = TwincatLogger.getLogger();
 
     @Before
-    public void startAdsClient() {
+    public void start() {
         adsClient.open();
     }
     
     @Test
-    public void routeLoaderUnitTest() {
+    public void test() {
         RouteSymbolLoader routeSymbolLoader = new RouteSymbolLoader();       
         routeSymbolLoader.loadRouteSymbolDataList();
         
@@ -47,7 +47,7 @@ public class RouteLoaderUnitTest {
     }
     
     @After
-    public void stopAdsClient() throws AdsException {
+    public void stop() throws AdsException {
         adsClient.close();
     }  
 }

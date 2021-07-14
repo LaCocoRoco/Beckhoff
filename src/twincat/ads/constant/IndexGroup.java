@@ -23,7 +23,7 @@ public enum IndexGroup {
     SYMBOL_RELEASE_HANDLE       (0xF006, 0xFFFF),   // 61446
     SYMBOL_INFO_BY_NAME         (0xF007, 0xFFFF),   // 61447
     SYMBOL_VERSION              (0xF008, 0xFFFF),   // 61448
-    SYMBOL_INFO_BYNAME_EX       (0xF009, 0xFFFF),   // 61449
+    SYMBOL_INFO_BYNAME_EX       (0xF009, 0x041E),   // 61449
     SYMBOL_DOWNLOAD             (0xF00A, 0xFFFF),   // 61450
     SYMBOL_UPLOAD               (0xF00B, 0xFFFF),   // 61451
     SYMBOL_UPLOAD_INFO          (0xF00C, 0x0008),   // 61452

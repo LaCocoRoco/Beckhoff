@@ -6,5 +6,5 @@ public enum Properties {
     /*********************************/
     
     EMPTY, TRIGGER_GROUP, TRIGGER_CHANNEL,
-    CHART, AXIS, CHANNEL, ACQUISITION
+    CHART, AXIS, CHANNEL, ACQUISITION, SCOPE
 }

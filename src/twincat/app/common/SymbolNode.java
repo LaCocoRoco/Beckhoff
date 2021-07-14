@@ -1,6 +1,6 @@
-package twincat.app.container;
+package twincat.app.common;
 
-import twincat.ads.container.Symbol;
+import twincat.ads.common.Symbol;
 import twincat.ads.worker.SymbolLoader;
 
 public class SymbolNode {

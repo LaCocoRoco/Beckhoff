@@ -11,26 +11,30 @@ import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
+import twincat.ads.wrapper.Variable;
 
-public class AmsNetIdUnitTest {
+public class VariableWriteUnitTest {
     private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getLogger();
-     
-    @Before
-    public void start() {
-        adsClient.open();
-    }
     
+    private final String symbolName = ".JUNIT_TIME";
+    private final String value = "t#10ms";
+    
+    @Before
+    public void start() throws AdsException {
+        adsClient.open();
+        adsClient.setAmsNetId(AmsNetId.LOCAL);
+        adsClient.setAmsPort(AmsPort.TC2PLC1);
+    }
+
     @Test
-    public void test() {  
+    public void test() {
         try {
-            adsClient.setAmsNetId(AmsNetId.LOCAL);
-            adsClient.setAmsPort(AmsPort.TC2PLC1);
-            
-            logger.info(adsClient.readLocalAmsNetId());
+            Variable variable = adsClient.getVariableBySymbolName(symbolName);
+            variable.write(value);
         } catch (AdsException e) {
             logger.info(e.getAdsErrorMessage());
-        }
+        }  
     }
 
     @After

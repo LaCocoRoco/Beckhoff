@@ -7,13 +7,13 @@ import java.util.logging.Logger;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
+import twincat.ads.common.DataTypeInfo;
+import twincat.ads.common.Symbol;
+import twincat.ads.common.SymbolInfo;
+import twincat.ads.common.TypeInfo;
+import twincat.ads.common.UploadInfo;
 import twincat.ads.constant.DataType;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.container.DataTypeInfo;
-import twincat.ads.container.Symbol;
-import twincat.ads.container.SymbolInfo;
-import twincat.ads.container.TypeInfo;
-import twincat.ads.container.UploadInfo;
 
 public class SymbolLoader {
     /*********************************/

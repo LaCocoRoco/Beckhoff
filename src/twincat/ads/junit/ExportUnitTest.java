@@ -22,18 +22,18 @@ public class ExportUnitTest {
     private final Logger logger = TwincatLogger.getLogger();
     
     private final String netId    = AmsNetId.LOCAL;
-    private final AmsPort amsPort = AmsPort.SYSTEMSERVICE;
-    private final int readSize    = IndexGroup.SYSTEM_ENUM_REMOTE.size;
-    private final int indexGroup  = IndexGroup.SYSTEM_ENUM_REMOTE.value;
+    private final AmsPort amsPort = AmsPort.NCSAF;
+    private final int readSize    = IndexGroup.SYMBOL_UPLOAD.size;
+    private final int indexGroup  = IndexGroup.SYMBOL_UPLOAD.value;
     private final int indexOffset = 0;
 
     @Before
-    public void startAdsClient() {
+    public void start() {
         adsClient.open();
     }
 
     @Test
-    public void exportUnitTest() {
+    public void test() {
         try {
             adsClient.setAmsNetId(netId);
             adsClient.setAmsPort(amsPort);
@@ -50,7 +50,7 @@ public class ExportUnitTest {
     }
 
     @After
-    public void stopAdsClient() throws AdsException {
+    public void stop() throws AdsException {
         adsClient.close();
     }
 }

@@ -6,16 +6,16 @@ import org.junit.Test;
 
 import twincat.TwincatLogger;
 import twincat.ads.constant.DataType;
+import twincat.ads.common.Symbol;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.container.Symbol;
 import twincat.ads.worker.SymbolLoader;
 
 public class SymbolLoaderFullUnitTest {
     private final Logger logger = TwincatLogger.getLogger();
 
     @Test
-    public void symbolLoaderFullUnitTest() {
+    public void test() {
         SymbolLoader symbolLoader = new SymbolLoader();
         symbolLoader.setAmsNetId(AmsNetId.LOCAL);
         symbolLoader.setAmsPort(AmsPort.TC2PLC1);

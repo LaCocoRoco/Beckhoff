@@ -4,7 +4,7 @@
 	<ProjectInfo>
 		<Path>C:\Workspace\Eclipse\Beckhoff\twc\pro\ads.pro</Path>
 		<IsLibrary>false</IsLibrary>
-		<ChangeDate>2021-07-14T06:14:57</ChangeDate>
+		<ChangeDate>2021-07-14T16:10:20</ChangeDate>
 		<Library>
 			<Name>STANDARD.LIB</Name>
 			<Path>C:\TWINCAT\PLC\LIB\STANDARD.LIB</Path>
@@ -181,6 +181,24 @@
 			<ArrayInfo>
 				<LBound>4</LBound>
 				<Elements>5</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name Decoration="2002010C">ARRAY [2..5, 3..20] OF INT</Name>
+			<Type>INT</Type>
+			<Comment>
+				<![CDATA[disabled
+	juinit_p_simple			:POINTER TO LREAL;
+	juinit_p_complex			:POINTER TO junit_st;]]>
+			</Comment>
+			<BitSize>1152</BitSize>
+			<ArrayInfo>
+				<LBound>2</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+			<ArrayInfo>
+				<LBound>3</LBound>
+				<Elements>18</Elements>
 			</ArrayInfo>
 		</DataType>
 		<DataType>
@@ -944,7 +962,7 @@
 	</Functions>
 	<Programs>
 		<Program>
-			<Name Decoration="1002F460" Crc32="3342212623" LastChange="2021-07-11T15:27:41">main</Name>
+			<Name Decoration="1002F460" Crc32="3342212623" LastChange="2021-07-14T16:07:29">main</Name>
 			<PrgInfo>
 				<CodeIndex>51</CodeIndex>
 				<Symbol>
@@ -972,10 +990,31 @@
 			<BitSize>624</BitSize>
 		</Symbol>
 		<Symbol>
+			<Name Constant="1">.junit_a</Name>
+			<Type>INT</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>1568</IOffset>
+			<BitSize>16</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name Constant="1">.junit_b</Name>
+			<Type>INT</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>1570</IOffset>
+			<BitSize>16</BitSize>
+		</Symbol>
+		<Symbol>
 			<Name Constant="1">.junit_c</Name>
 			<Type>INT</Type>
 			<IGroup>16448</IGroup>
 			<IOffset>0</IOffset>
+			<BitSize>16</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name Constant="1">.junit_d</Name>
+			<Type>INT</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>1572</IOffset>
 			<BitSize>16</BitSize>
 		</Symbol>
 		<Symbol>
@@ -1042,6 +1081,13 @@
 			<BitSize>64</BitSize>
 		</Symbol>
 		<Symbol>
+			<Name>.junit_time</Name>
+			<Type>TIME</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>1564</IOffset>
+			<BitSize>32</BitSize>
+		</Symbol>
+		<Symbol>
 			<Name>.junit_string</Name>
 			<Type Decoration="40000065">STRING(100)</Type>
 			<Comment>
@@ -1082,25 +1128,27 @@
 		<Symbol>
 			<Name>.juint_struct</Name>
 			<Type Decoration="100223F2">junit_st</Type>
-			<Comment>
-				<![CDATA[disabled]]>
-			</Comment>
 			<IGroup>16448</IGroup>
 			<IOffset>1470</IOffset>
 			<BitSize>128</BitSize>
 		</Symbol>
 		<Symbol>
-			<Name>.junit_time</Name>
-			<Type>TIME</Type>
+			<Name>.junit_array_index_var</Name>
+			<Type Decoration="2002010C">ARRAY [2..5, 3..20] OF INT</Type>
 			<Comment>
-				<![CDATA[
-.	junit_array_index_var		:ARRAY[0..junit_c] OF INT;
+				<![CDATA[disabled
 	juinit_p_simple			:POINTER TO LREAL;
-	juinit_p_complex			:POINTER TO junit_st;
-	juinit_p_complex_array 	:POINTER TO ARRAY [0..2] OF junit_st;]]>
+	juinit_p_complex			:POINTER TO junit_st;]]>
 			</Comment>
 			<IGroup>16448</IGroup>
-			<IOffset>1564</IOffset>
+			<IOffset>1587</IOffset>
+			<BitSize>1152</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name>.juinit_p_complex_array</Name>
+			<Type Decoration="20013686" Pointer="1">ARRAY [0..2] OF junit_st</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>1574</IOffset>
 			<BitSize>32</BitSize>
 		</Symbol>
 	</Symbols>

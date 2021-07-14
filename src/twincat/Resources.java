@@ -72,6 +72,8 @@ public class Resources {
     public static final String PATH_ICON_DATATYPE_STRING = "/resources/images/datatype_string.png";
           
     public static final String PATH_ICON_DATATYPE_BIGTYPE = "/resources/images/datatype_bigtype.png";
+    
+    public static final String PATH_ICON_DATATYPE_TIME = "/resources/images/datatype_time.png";   
        
     /*********************************/
     /********* localization **********/

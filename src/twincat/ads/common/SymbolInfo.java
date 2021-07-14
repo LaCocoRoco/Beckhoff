@@ -1,4 +1,4 @@
-package twincat.ads.container;
+package twincat.ads.common;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -145,19 +145,26 @@ public class SymbolInfo {
                 if (byteBuffer.remaining() >= nameLength) {
                     byte[] readBuffer = new byte[nameLength];
                     byteBuffer.get(readBuffer, 0, nameLength);
-                    symbolName = STRING.arrayToValue(readBuffer);
+                    symbolName = STRING.arrayToString(readBuffer);
                 }
 
                 if (byteBuffer.remaining() >= typeLength) {
                     byte[] readBuffer = new byte[typeLength];
                     byteBuffer.get(readBuffer, 0, typeLength);
-                    type = STRING.arrayToValue(readBuffer); 
+                    type = STRING.arrayToString(readBuffer); 
                 }
 
                 if (byteBuffer.remaining() >= commentLength) {
                     byte[] readBuffer = new byte[commentLength];
                     byteBuffer.get(readBuffer, 0, commentLength);
-                    comment = STRING.arrayToValue(readBuffer);
+                    comment = STRING.arrayToString(readBuffer);
+                }
+                
+                TypeInfo typeInfo = new TypeInfo();
+                typeInfo.parseTypeInfo(type);
+                
+                if (typeInfo.getType().equals(DataType.TIME.toString())) {
+                    this.dataType = DataType.TIME;
                 }
             }
         }

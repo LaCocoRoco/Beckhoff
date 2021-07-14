@@ -4,6 +4,8 @@ public class XReference {
     /*********************************/
     /************ layer 6 ************/
     /*********************************/
+    
+    public final ScopeProperties scopeProperties = new ScopeProperties(this);
 
     public final AcquisitionProperties acquisitionProperties = new AcquisitionProperties(this);
 
@@ -53,7 +55,7 @@ public class XReference {
     /************ layer 2 ************/
     /*********************************/
 
-    public final ConsolePanel panelConsole = new ConsolePanel(this);
+    public final ConsolePanel consolePanel = new ConsolePanel(this);
 
     public final WindowPanel windowPanel = new WindowPanel(this);
 

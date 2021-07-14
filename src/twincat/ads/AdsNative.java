@@ -11,10 +11,10 @@ import de.beckhoff.jni.tcads.AdsNotificationAttrib;
 import de.beckhoff.jni.tcads.AdsState;
 import de.beckhoff.jni.tcads.AdsVersion;
 import de.beckhoff.jni.tcads.AmsAddr;
+import twincat.ads.common.DeviceInfo;
+import twincat.ads.common.DeviceState;
 import twincat.ads.constant.AdsError;
 import twincat.ads.constant.State;
-import twincat.ads.container.DeviceInfo;
-import twincat.ads.container.DeviceState;
 
 public class AdsNative {
     /*********************************/

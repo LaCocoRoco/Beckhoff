@@ -12,7 +12,7 @@ public class VersionUnitTest {
     private final Logger logger = TwincatLogger.getLogger();
     
 	@Test
-	public void versionUnitTest() {	
+	public void test() {	
         logger.info("AdsVersion: " + adsClient.getVersion());
 	}
 }

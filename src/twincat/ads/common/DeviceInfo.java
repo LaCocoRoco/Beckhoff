@@ -1,4 +1,4 @@
-package twincat.ads.container;
+package twincat.ads.common;
 
 public class DeviceInfo {
     /*********************************/

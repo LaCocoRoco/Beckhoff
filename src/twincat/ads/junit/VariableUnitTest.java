@@ -10,6 +10,7 @@ import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.constant.DataType;
+import twincat.ads.datatype.TIME;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
 import twincat.ads.wrapper.Variable;
@@ -19,7 +20,7 @@ public class VariableUnitTest {
     private final Logger logger = TwincatLogger.getLogger();
 
 	@Before
-	public void startAds() throws AdsException {
+	public void start() throws AdsException {
 		adsClient.open();
         adsClient.setAmsNetId(AmsNetId.LOCAL);
         adsClient.setAmsPort(AmsPort.TC2PLC1);
@@ -283,7 +284,44 @@ public class VariableUnitTest {
 			logger.info("UINT32: " + e.getAdsErrorMessage());
 		}
 	}
-
+	
+    @Test
+    public void time() {
+        try {
+            String name = ".junit_time";
+            
+            long valueMin = 0;
+            Variable variableMin = adsClient.getVariableBySymbolName(name);
+            variableMin.write(valueMin).read().close();
+            
+            assert DataType.TIME == variableMin.getDataType();
+            assert variableMin.toBoolean() == false;
+            assert variableMin.toByte()    == (byte) valueMin;
+            assert variableMin.toShort(  ) == (short) valueMin;
+            assert variableMin.toInteger() == (int) valueMin;
+            assert variableMin.toLong()    == (long) valueMin;
+            assert variableMin.toFloat()   == (float) valueMin;
+            assert variableMin.toDouble()  == (double) valueMin;
+            assert variableMin.toString().equals(TIME.longToString(valueMin));
+        
+            long valueMax = 4294967295L;
+            Variable variableMax = adsClient.getVariableBySymbolName(name);
+            variableMax.write(valueMax).read().close();
+            
+            assert DataType.TIME == variableMin.getDataType();
+            assert variableMax.toBoolean() == true;
+            assert variableMax.toByte()    == (byte) valueMax;
+            assert variableMax.toShort()   == (short) valueMax;
+            assert variableMax.toInteger() == (int) valueMax;
+            assert variableMax.toLong()    == (long) valueMax;
+            assert variableMax.toFloat()   == (float) valueMax;
+            assert variableMax.toDouble()  == (double) valueMax;
+            assert variableMax.toString().equals(TIME.longToString(valueMax));
+        } catch (AdsException e) {
+            logger.info("TIME: " + e.getAdsErrorMessage());
+        }
+    }
+    
 	@Test
 	public void real32() {
 		try {
@@ -381,7 +419,7 @@ public class VariableUnitTest {
 	}
 
 	@After
-	public void stopAds() throws AdsException {
+	public void stop() throws AdsException {
 		adsClient.close();
 	}
 }

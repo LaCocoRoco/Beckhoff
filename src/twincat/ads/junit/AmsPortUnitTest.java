@@ -17,12 +17,12 @@ public class AmsPortUnitTest {
     private final Logger logger = TwincatLogger.getLogger();
 
 	@Before
-	public void startAdsClient() {
+	public void start() {
 		adsClient.open();
 	}
 	
 	@Test
-	public void amsPortUnitTest() {	    
+	public void test() {	    
         for (AmsPort amsPort : AmsPort.values()) {
     		try {
     	        adsClient.setAmsNetId(AmsNetId.LOCAL);
@@ -37,7 +37,7 @@ public class AmsPortUnitTest {
 	}
 
 	@After
-	public void stopAdsClient() throws AdsException {
+	public void stop() throws AdsException {
 		adsClient.close();
 	}
 }
