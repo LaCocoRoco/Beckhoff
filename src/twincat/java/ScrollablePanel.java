@@ -1,4 +1,4 @@
-package twincat.java.basic;
+package twincat.java;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;

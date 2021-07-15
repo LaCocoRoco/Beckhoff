@@ -221,8 +221,13 @@ public class Channel extends Observable implements Observer {
     }
 
     /*********************************/
-    /********* public method *********/
+    /******** override method ********/
     /*********************************/
+    
+    @Override
+    public String toString() {
+        return channelName;
+    }
 
     @Override
     public void update(Observable observable, Object object) {
@@ -230,7 +235,11 @@ public class Channel extends Observable implements Observer {
         notificationTimeout = System.currentTimeMillis();
         setChanged();
         notifyObservers();
-    }
+    }    
+
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
 
     public void start() {
         startChannel();

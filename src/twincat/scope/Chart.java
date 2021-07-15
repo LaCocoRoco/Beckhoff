@@ -37,6 +37,8 @@ public class Chart extends Observable {
     /**** local constant variable ****/
     /*********************************/
 
+    private static final int DEFAULT_FPS = 20;
+    
     private static final int CHART_PADDING = 5;
 
     private static final int CHART_MARGIN = 30;
@@ -156,6 +158,13 @@ public class Chart extends Observable {
     /********** constructor **********/
     /*********************************/
 
+    public Chart() {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
+        long refreshTime = 1000 / DEFAULT_FPS;
+        schedule = scheduler.scheduleAtFixedRate(task, 0, refreshTime, TimeUnit.MILLISECONDS);
+        Chart.accelerateTranslucentVolatileImage();   
+    }
+    
     public Chart(int framesPerSecond) {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
         long refreshTime = 1000 / framesPerSecond;
@@ -163,6 +172,7 @@ public class Chart extends Observable {
         Chart.accelerateTranslucentVolatileImage();
     }
 
+    
     /*********************************/
     /******** setter & getter ********/
     /*********************************/
@@ -310,6 +320,15 @@ public class Chart extends Observable {
         return triggerGroupList;
     }
 
+    /*********************************/
+    /******** override method ********/
+    /*********************************/
+
+    @Override
+    public String toString() {
+        return chartName;
+    }
+  
     /*********************************/
     /********* public method *********/
     /*********************************/

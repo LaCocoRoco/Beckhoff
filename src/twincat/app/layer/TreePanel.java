@@ -21,8 +21,8 @@ public class TreePanel extends JPanel {
 
     public TreePanel(XReference xref) {
         this.setLayout(new CardLayout());
-        this.add(xref.browserTree, Browser.BROWSER.toString());
-        this.add(xref.searchTree, Browser.SEARCH.toString());
+        this.add(xref.scopeTree, Browser.BROWSER.toString());
+        this.add(xref.symbolTree, Browser.SEARCH.toString());
         this.setCard(browser);
     }
 

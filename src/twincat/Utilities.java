@@ -1,6 +1,9 @@
 package twincat;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,6 +23,25 @@ public class Utilities {
     /** public static final method ***/
     /*********************************/
 
+    public static final Image getScaledIamgeFromFilePath(String path, double scale) {
+        Image image = new ImageIcon(Utilities.class.getResource(path)).getImage();
+  
+        int sourceWidth = image.getWidth(null);
+        int sourceHeight = image.getHeight(null);
+
+        int targetWidth = (int) (sourceWidth * scale);
+        int targetHeight = (int) (sourceHeight * scale);
+
+        BufferedImage bufferedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
+        
+        Graphics2D graphics = bufferedImage.createGraphics();
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        graphics.drawImage(image, 0, 0, targetWidth, targetHeight, null);
+        graphics.dispose();
+
+        return bufferedImage;   
+    }
+    
     public static final Image getImageFromFilePath(String path) {
         return new ImageIcon(Utilities.class.getResource(path)).getImage();
     }

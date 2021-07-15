@@ -4,10 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import twincat.LoremIpsum;
 import twincat.Resources;
 
 public class ScopeProperties extends JPanel {
@@ -21,7 +21,7 @@ public class ScopeProperties extends JPanel {
         JScrollPane propertiesPanel = new JScrollPane();
         propertiesPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         propertiesPanel.setBorder(BorderFactory.createEmptyBorder());
-        propertiesPanel.setViewportView(new LoremIpsum());
+        propertiesPanel.setViewportView(new JLabel("ScopeProperties"));
 
         this.setLayout(new BorderLayout());
         this.add(propertiesPanel, BorderLayout.CENTER);

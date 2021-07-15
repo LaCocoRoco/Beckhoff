@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
@@ -18,14 +20,22 @@ import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 import twincat.Resources;
 import twincat.Utilities;
-import twincat.app.common.SymbolTreeModel;
-import twincat.app.common.SymbolTreeNode;
-import twincat.app.common.SymbolTreeRenderer;
+import twincat.app.common.ScopeTreeModel;
+import twincat.app.common.ScopeTreeNode;
+import twincat.app.common.ScopeTreeRenderer;
+import twincat.app.constant.Properties;
+import twincat.scope.Axis;
+import twincat.scope.Channel;
+import twincat.scope.Chart;
+import twincat.scope.Scope;
+import twincat.scope.TriggerChannel;
+import twincat.scope.TriggerGroup;
 
-public class BrowserTree extends JPanel {
+public class ScopeTree extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*********************************/
@@ -49,21 +59,21 @@ public class BrowserTree extends JPanel {
     private final ActionListener addScopeActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            addScopeTreeNode();
         }
     };
 
     private final ActionListener addChartActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            addChartTreeNode();
         }
     };
 
     private final ActionListener addAxisActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            addAxisTreeNode();
         }
     };
 
@@ -84,7 +94,7 @@ public class BrowserTree extends JPanel {
     private final ActionListener deleteButtonActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            deleteTreeNode();
         }
     };
 
@@ -97,15 +107,14 @@ public class BrowserTree extends JPanel {
 
     private final MouseAdapter browseTreeMouseAdapter = new MouseAdapter() {
         public void mousePressed(MouseEvent mouseEvent) {
-            if (mouseEvent.getClickCount() == 2) {
-                int x = mouseEvent.getX();
-                int y = mouseEvent.getY();
+            int x = mouseEvent.getX();
+            int y = mouseEvent.getY();
+            
+            TreePath treePath = browseTree.getPathForLocation(x, y);
 
-                TreePath treePath = browseTree.getPathForLocation(x, y);
-
-                if (treePath != null) {
-                    scopeTreeNodeSelected(treePath);
-                }
+            if (treePath != null) {
+                ScopeTreeNode scopeTreeNode = (ScopeTreeNode) treePath.getLastPathComponent();
+                selectTreeNode(scopeTreeNode);
             }
         }
     };
@@ -114,19 +123,20 @@ public class BrowserTree extends JPanel {
     /********** constructor **********/
     /*********************************/
 
-    public BrowserTree(XReference xref) {
+    public ScopeTree(XReference xref) {
         this.xref = xref;
 
-        browseTree.setCellRenderer(new SymbolTreeRenderer());
+        browseTree.setCellRenderer(new ScopeTreeRenderer());
         browseTree.setBorder(BorderFactory.createEmptyBorder(5, -5, 0, 0));
         browseTree.setRootVisible(false);
         browseTree.setScrollsOnExpand(false);
         browseTree.setShowsRootHandles(true);
         browseTree.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        browseTree.setModel(new SymbolTreeModel());
+        browseTree.setModel(new ScopeTreeModel(new ScopeTreeNode()));
         browseTree.addMouseListener(browseTreeMouseAdapter);
         browseTree.setUI(browseTreeUI);
-
+        browseTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        
         JScrollPane treePanel = new JScrollPane();
         treePanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         treePanel.setBorder(BorderFactory.createEmptyBorder());
@@ -195,17 +205,170 @@ public class BrowserTree extends JPanel {
     /*********************************/
 
     public void addScopeToTree() {
-        
+
     }
-    
+
     /*********************************/
     /******** private method *********/
     /*********************************/
 
-    private void scopeTreeNodeSelected(TreePath treePath) {
-        SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();
-        Object userObject = symbolTreeNode.getUserObject();
+    private void selectTreeNode(ScopeTreeNode treeNode) {
+        Object userObject = treeNode.getUserObject();
 
-        System.out.println(userObject);
+        if (userObject instanceof Scope) {
+            xref.propertiesPanel.setCard(Properties.SCOPE);
+        }
+
+        if (userObject instanceof Chart) {
+            xref.propertiesPanel.setCard(Properties.CHART);
+        }
+
+        if (userObject instanceof Axis) {
+            xref.propertiesPanel.setCard(Properties.AXIS);
+        }
+
+        if (userObject instanceof Channel) {
+            xref.propertiesPanel.setCard(Properties.CHANNEL);
+        }
+
+        if (userObject instanceof TriggerGroup) {
+            xref.propertiesPanel.setCard(Properties.TRIGGER_GROUP);
+        }
+
+        if (userObject instanceof TriggerChannel) {
+            xref.propertiesPanel.setCard(Properties.TRIGGER_CHANNEL);
+        }
     }
+
+    private void expandTreeNode(ScopeTreeNode treeNode) {
+        // expand tree node
+        TreePath treePath = new TreePath(treeNode.getPath());
+        browseTree.setSelectionPath(treePath);
+        
+        // save path of all expanded nodes
+        List<TreePath> expandedPath = new ArrayList<>();
+        for (int i = 0; i < browseTree.getRowCount() - 1; i++) {
+            TreePath currPath = browseTree.getPathForRow(i);
+            TreePath nextPath = browseTree.getPathForRow(i + 1);
+            if (currPath.isDescendant(nextPath)) {
+                expandedPath.add(currPath);
+            }
+        }
+        
+        // reload tree model
+        ScopeTreeModel treeModel = (ScopeTreeModel) browseTree.getModel();
+        treeModel.reload();
+        
+        // expand all nodes
+        for (TreePath path : expandedPath) {
+            browseTree.expandPath(path);
+        }
+        
+        // set tree node selected
+        browseTree.setSelectionPath(treePath);
+        selectTreeNode(treeNode);
+    }
+    
+    private void deleteTreeNode() {
+        // get selected tree node
+        ScopeTreeNode scopeTreeNode = (ScopeTreeNode) browseTree.getLastSelectedPathComponent();
+        
+        // remove selected tree node
+        if (scopeTreeNode != null) {
+            ScopeTreeNode parentScopeTreeNode = (ScopeTreeNode) scopeTreeNode.getParent();
+            scopeTreeNode.removeFromParent();
+            expandTreeNode(parentScopeTreeNode);
+        }       
+    }
+    
+    private ScopeTreeNode addScopeTreeNode() {
+        // add scope
+        Scope scope = new Scope();
+        
+        // add chart node
+        ScopeTreeModel treeModel = (ScopeTreeModel) browseTree.getModel();
+        ScopeTreeNode rootTreeNode = (ScopeTreeNode) treeModel.getRoot();
+        ScopeTreeNode scopeTreeNode = new ScopeTreeNode();
+        scopeTreeNode.setUserObject(scope);
+        rootTreeNode.add(scopeTreeNode);
+        
+        // expand path
+        expandTreeNode(scopeTreeNode);
+        return scopeTreeNode;
+    }
+
+    private ScopeTreeNode getScopeTreeNode() {
+        // get scope node from this tree path
+        TreePath selectedTreePath = browseTree.getSelectionPath();
+        
+        if (selectedTreePath != null) {
+            Object[] selectedObjectArray = (Object[]) selectedTreePath.getPath();
+            
+            for (Object selectedObject : selectedObjectArray) {
+                ScopeTreeNode selectedTreeNode = (ScopeTreeNode) selectedObject;
+                Object userObject = selectedTreeNode.getUserObject();
+                
+                if (userObject instanceof Scope) {
+                    return selectedTreeNode;
+                }   
+            }     
+        }
+
+        // add new scope if no node present
+        ScopeTreeNode scopeTreeNode = addScopeTreeNode();
+        return scopeTreeNode;      
+    }
+      
+    private ScopeTreeNode addChartTreeNode() {  
+        // add chart
+        Chart chart = new Chart();
+        
+        // add scope node
+        ScopeTreeNode scopeTreeNode = getScopeTreeNode();
+        ScopeTreeNode chartTreeNode = new ScopeTreeNode();
+        chartTreeNode.setUserObject(chart);
+        scopeTreeNode.add(chartTreeNode);
+
+        // expand path
+        expandTreeNode(chartTreeNode);
+        return chartTreeNode;
+    }
+
+    private ScopeTreeNode getChartTreeNode() {
+        // get chart node from this tree path
+        TreePath selectedTreePath = browseTree.getSelectionPath();
+        
+        if (selectedTreePath != null) {
+            Object[] selectedObjectArray = (Object[]) selectedTreePath.getPath();
+            
+            for (Object selectedObject : selectedObjectArray) {
+                ScopeTreeNode selectedTreeNode = (ScopeTreeNode) selectedObject;
+                Object userObject = selectedTreeNode.getUserObject();
+                
+                if (userObject instanceof Chart) {
+                    return selectedTreeNode;
+                }   
+            }     
+        }
+        
+        // add new scope if no node present
+        ScopeTreeNode chartTreeNode = addChartTreeNode();
+        return chartTreeNode;      
+    }
+    
+  private ScopeTreeNode addAxisTreeNode() {  
+      // add chart
+      Axis axis = new Axis();
+      
+      // add scope node
+      ScopeTreeNode chartTreeNode = getChartTreeNode();
+      ScopeTreeNode axisTreeNode = new ScopeTreeNode();
+      axisTreeNode.setUserObject(axis);
+      chartTreeNode.add(axisTreeNode);
+
+      // expand path
+      expandTreeNode(axisTreeNode);
+      return axisTreeNode;
+  }
+    
 }

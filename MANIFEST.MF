@@ -5,7 +5,7 @@ Title: Beckhoff
 Author: Deiring Andreas
 Version: 1.0
 Build: ${build.number}
-Date: 14.07.2021
-Time: 17:10:56
+Date: 15.07.2021
+Time: 10:20:59
 Main-Class: twincat.app.ScopeApp
 

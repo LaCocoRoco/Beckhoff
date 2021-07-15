@@ -22,10 +22,6 @@ public class SymbolTreeModel extends DefaultTreeModel {
     /********** constructor **********/
     /*********************************/
 
-    public SymbolTreeModel() {
-        super(new SymbolTreeNode());
-    }
-
     public SymbolTreeModel(TreeNode root) {
         super(root);
     }

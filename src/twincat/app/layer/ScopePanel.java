@@ -2,11 +2,14 @@ package twincat.app.layer;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
 import twincat.Resources;
+import twincat.scope.Scope;
 
 public class ScopePanel extends JSplitPane {
     private static final long serialVersionUID = 1L;
@@ -16,6 +19,13 @@ public class ScopePanel extends JSplitPane {
     /*********************************/
 
     private static final double DIVIDER_LOCATION = 0.5;
+
+
+    /*********************************/
+    /***** global final variable *****/
+    /*********************************/
+
+    private final List<Scope> scopeList = new ArrayList<Scope>();
 
     /*********************************/
     /********** constructor **********/
@@ -40,5 +50,13 @@ public class ScopePanel extends JSplitPane {
                 setDividerLocation(DIVIDER_LOCATION);
             }
         });
+    }
+    
+    /*********************************/
+    /******** setter & getter ********/
+    /*********************************/
+    
+    public List<Scope> getScopeList() {
+        return scopeList;
     }
 }

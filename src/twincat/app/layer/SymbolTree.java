@@ -53,6 +53,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 import twincat.Resources;
 import twincat.TwincatLogger;
@@ -68,7 +69,9 @@ import twincat.app.common.SymbolTreeNode;
 import twincat.app.common.SymbolTreeRenderer;
 import twincat.app.constant.Filter;
 
-public class SearchTree extends JPanel {
+// TODO : remove symbol from names
+
+public class SymbolTree extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*********************************/
@@ -81,8 +84,8 @@ public class SearchTree extends JPanel {
     /**** local constant variable ****/
     /*********************************/
 
-    private static enum Search {
-        LOADING, TREE
+    private static enum Tree {
+        LOADING, SEARCH
     };
 
     /*********************************/
@@ -122,9 +125,9 @@ public class SearchTree extends JPanel {
             if (mouseEvent.getClickCount() == 2) {
                 int x = mouseEvent.getX();
                 int y = mouseEvent.getY();
-
+                
                 TreePath treePath = browseTree.getPathForLocation(x, y);
-
+                
                 if (treePath != null) {
                     symbolTreeNodeSelected(treePath);
                 }
@@ -137,9 +140,9 @@ public class SearchTree extends JPanel {
             if (mouseEvent.getClickCount() == 2) {
                 int x = mouseEvent.getX();
                 int y = mouseEvent.getY();
-
-                TreePath treePath = searchTree.getPathForLocation(x, y);
-
+                
+                TreePath treePath = browseTree.getPathForLocation(x, y);
+                
                 if (treePath != null) {
                     symbolTreeNodeSelected(treePath);
                 }
@@ -299,7 +302,7 @@ public class SearchTree extends JPanel {
     /********** constructor **********/
     /*********************************/
 
-    public SearchTree(XReference xref) {
+    public SymbolTree(XReference xref) {
         this.xref = xref;
 
         browseTree.setCellRenderer(new SymbolTreeRenderer());
@@ -308,20 +311,22 @@ public class SearchTree extends JPanel {
         browseTree.setScrollsOnExpand(false);
         browseTree.setShowsRootHandles(true);
         browseTree.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        browseTree.setModel(new SymbolTreeModel());
+        browseTree.setModel(new SymbolTreeModel(new SymbolTreeNode()));
         browseTree.addMouseListener(browseTreeMouseAdapter);
         browseTree.setUI(browseTreeUI);
-
+        browseTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        
         searchTree.setCellRenderer(new SymbolTreeRenderer());
         searchTree.setBorder(BorderFactory.createEmptyBorder(5, -5, 0, 0));
         searchTree.setRootVisible(false);
         searchTree.setScrollsOnExpand(false);
         searchTree.setShowsRootHandles(true);
         searchTree.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        searchTree.setModel(new SymbolTreeModel());
+        searchTree.setModel(new SymbolTreeModel(new SymbolTreeNode()));
         searchTree.addMouseListener(searchTreeMouseAdapter);
         searchTree.setUI(searchTreeUI);
-
+        searchTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        
         treePanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         treePanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         treePanel.setBorder(BorderFactory.createEmptyBorder());
@@ -411,8 +416,8 @@ public class SearchTree extends JPanel {
         loadingPanel.add(Box.createVerticalGlue());
 
         searchPanel.setLayout(new CardLayout());
-        searchPanel.add(loadingPanel, Search.LOADING.toString());
-        searchPanel.add(treePanel, Search.TREE.toString());
+        searchPanel.add(loadingPanel, Tree.LOADING.toString());
+        searchPanel.add(treePanel, Tree.SEARCH.toString());
 
         backgroundTask.execute();
 
@@ -427,13 +432,13 @@ public class SearchTree extends JPanel {
     /******** private function *********/
     /***********************************/
 
-    private void setSearchPanel(Search card) {
+    private void setSearchPanel(Tree card) {
         CardLayout cardLayout = (CardLayout) (searchPanel.getLayout());
         cardLayout.show(searchPanel, card.toString());
     }
 
     private void disableSearchTree() {
-        setSearchPanel(Search.LOADING);
+        setSearchPanel(Tree.LOADING);
 
         portComboBox.setEditable(true);
         ComboBoxEditor portComboBoxEditor = portComboBox.getEditor();
@@ -456,7 +461,7 @@ public class SearchTree extends JPanel {
     }
 
     private void enableSearchTree() {
-        setSearchPanel(Search.TREE);
+        setSearchPanel(Tree.SEARCH);
 
         portComboBox.setEditable(false);
         portComboBox.setEnabled(true);
@@ -550,7 +555,7 @@ public class SearchTree extends JPanel {
 
     private void reloadAndExpandSearchTree() {
         // hide tree
-        setSearchPanel(Search.LOADING);
+        setSearchPanel(Tree.LOADING);
         searchTextField.setEnabled(false);
         loadingState.setText("Reload Tree");
 
@@ -564,7 +569,7 @@ public class SearchTree extends JPanel {
         }
 
         // show tree
-        setSearchPanel(Search.TREE);
+        setSearchPanel(Tree.SEARCH);
         searchTextField.setEnabled(true);
     }
 

@@ -4,7 +4,7 @@
 	<ProjectInfo>
 		<Path>C:\Workspace\Eclipse\Beckhoff\twc\pro\ads.pro</Path>
 		<IsLibrary>false</IsLibrary>
-		<ChangeDate>2021-07-14T16:10:20</ChangeDate>
+		<ChangeDate>2021-07-15T11:09:28</ChangeDate>
 		<Library>
 			<Name>STANDARD.LIB</Name>
 			<Path>C:\TWINCAT\PLC\LIB\STANDARD.LIB</Path>
@@ -189,7 +189,8 @@
 			<Comment>
 				<![CDATA[disabled
 	juinit_p_simple			:POINTER TO LREAL;
-	juinit_p_complex			:POINTER TO junit_st;]]>
+	juinit_p_complex			:POINTER TO junit_st;
+	juinit_p_complex_array 	:POINTER TO ARRAY [0..2] OF junit_st;]]>
 			</Comment>
 			<BitSize>1152</BitSize>
 			<ArrayInfo>
@@ -1138,18 +1139,12 @@
 			<Comment>
 				<![CDATA[disabled
 	juinit_p_simple			:POINTER TO LREAL;
-	juinit_p_complex			:POINTER TO junit_st;]]>
+	juinit_p_complex			:POINTER TO junit_st;
+	juinit_p_complex_array 	:POINTER TO ARRAY [0..2] OF junit_st;]]>
 			</Comment>
 			<IGroup>16448</IGroup>
 			<IOffset>1587</IOffset>
 			<BitSize>1152</BitSize>
-		</Symbol>
-		<Symbol>
-			<Name>.juinit_p_complex_array</Name>
-			<Type Decoration="20013686" Pointer="1">ARRAY [0..2] OF junit_st</Type>
-			<IGroup>16448</IGroup>
-			<IOffset>1574</IOffset>
-			<BitSize>32</BitSize>
 		</Symbol>
 	</Symbols>
 	<VarConfigs/>

@@ -10,7 +10,9 @@ public final class Scope {
     /******** global variable ********/
     /*********************************/
 
-	private long recordTime = 0;
+    private String scopeName = "Scope";
+
+    private long recordTime = 0;
 	
     /*********************************/
     /***** global final variable *****/
@@ -21,6 +23,14 @@ public final class Scope {
     /*********************************/
     /******** setter & getter ********/
     /*********************************/
+
+    public String getScopeName() {
+        return scopeName;
+    }
+
+    public void setScopeName(String scopeName) {
+        this.scopeName = scopeName;
+    }
 	
 	public long getRecordTime() {
 		return recordTime;
@@ -35,14 +45,23 @@ public final class Scope {
 	}
 
     /*********************************/
+    /******** override method ********/
+    /*********************************/
+
+    @Override
+    public String toString() {
+        return scopeName;
+    }
+	
+    /*********************************/
     /********* public method *********/
     /*********************************/
 
 	public void setRecordTime(String recordTime) {
 		this.recordTime = Utilities.stringTimeToMilliseconds(recordTime);
 	}
-	
-	public void addChart(Chart chart) {
+
+    public void addChart(Chart chart) {
 		chartList.add(chart);
 	}
 

@@ -10,11 +10,11 @@ public class ScopeTreeModel extends DefaultTreeModel {
     /********** constructor **********/
     /*********************************/
 
+    public ScopeTreeModel(TreeNode root) {
+        super(root);
+    }
     public ScopeTreeModel(TreeNode root, boolean asksAllowsChildren) {
         super(root, asksAllowsChildren);
     }
 
-    public ScopeTreeModel(TreeNode root) {
-        super(root);
-    }
 }

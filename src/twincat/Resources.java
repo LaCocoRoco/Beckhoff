@@ -36,13 +36,15 @@ public class Resources {
     public static final String PATH_ICON_CONTROL_STOP = "/resources/images/control_stop.png";
     
     public static final String PATH_ICON_NAVIGATE_SCOPE = "/resources/images/navigate_scope.png";
-    
+
     public static final String PATH_ICON_NAVIGATE_CHART = "/resources/images/navigate_chart.png";
     
     public static final String PATH_ICON_NAVIGATE_AXIS = "/resources/images/navigate_axis.png";
     
     public static final String PATH_ICON_NAVIGATE_CHANNEL = "/resources/images/navigate_channel.png";
     
+    public static final String PATH_ICON_NAVIGATE_GROUP = "/resources/images/navigate_group.png";
+       
     public static final String PATH_ICON_NAVIGATE_DELETE = "/resources/images/navigate_delete.png";
     
     public static final String PATH_ICON_NAVIGATE_SEARCH = "/resources/images/navigate_search.png";

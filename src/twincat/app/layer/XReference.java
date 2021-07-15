@@ -19,9 +19,9 @@ public class XReference {
 
     public final TriggerGroupProperties triggerGroupProperties = new TriggerGroupProperties(this);
 
-    public final BrowserTree browserTree = new BrowserTree(this);
+    public final ScopeTree scopeTree = new ScopeTree(this);
 
-    public final SearchTree searchTree = new SearchTree(this);
+    public final SymbolTree symbolTree = new SymbolTree(this);
 
     /*********************************/
     /************ layer 5 ************/
