@@ -233,7 +233,7 @@ public class SymbolTree extends JPanel {
     private final FocusListener searchTextFieldFocusListener = new FocusListener() {
         @Override
         public void focusGained(FocusEvent e) {
-            if (searchTextField.getText().equals(languageBundle.getString(Resources.TEXT_SEARCH_HINT))) {
+            if (searchTextField.getText().equals(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_HINT))) {
                 searchTextField.setText("");
                 searchTextField.setForeground(Color.BLACK);
             }
@@ -242,7 +242,7 @@ public class SymbolTree extends JPanel {
         @Override
         public void focusLost(FocusEvent e) {
             if (searchTextField.getText().equals("")) {
-                searchTextField.setText(languageBundle.getString(Resources.TEXT_SEARCH_HINT));
+                searchTextField.setText(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_HINT));
                 searchTextField.setForeground(Color.GRAY);
             }
         }
@@ -340,13 +340,13 @@ public class SymbolTree extends JPanel {
         routeComboBox.setBorder(routeCompoundBorder);
         routeComboBox.setUI(routeComboBoxBasicUI);
         routeComboBox.setRenderer(routeComboBoxDefaultListCellRenderer);
-        routeComboBox.addItem(languageBundle.getString(Resources.TEXT_SEARCH_LOADING));
+        routeComboBox.addItem(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_LOADING));
 
         portComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         portComboBox.setBorder(BorderFactory.createLoweredBevelBorder());
         portComboBox.setUI(portComboBoxBasicUI);
         portComboBox.setRenderer(portComboBoxDefaultListCellRenderer);
-        portComboBox.addItem(languageBundle.getString(Resources.TEXT_SEARCH_LOADING));
+        portComboBox.addItem(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_LOADING));
 
         JToolBar routeToolBar = new JToolBar();
         routeToolBar.setFloatable(false);
@@ -362,7 +362,7 @@ public class SymbolTree extends JPanel {
 
         searchTextField.setBorder(searchCompoundBorder);
         searchTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        searchTextField.setText(languageBundle.getString(Resources.TEXT_SEARCH_HINT));
+        searchTextField.setText(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_HINT));
         searchTextField.setForeground(Color.GRAY);
         searchTextField.addFocusListener(searchTextFieldFocusListener);
         searchTextField.getDocument().addDocumentListener(searchTextDocumentListener);
@@ -377,7 +377,7 @@ public class SymbolTree extends JPanel {
         acquisitionToolbar.add(routeToolBar);
         acquisitionToolbar.add(searchToolBar);
 
-        JButton applyButton = new JButton(languageBundle.getString(Resources.TEXT_SEARCH_APPLY));
+        JButton applyButton = new JButton(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_APPLY));
         applyButton.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         applyButton.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         applyButton.setFocusable(false);
@@ -391,7 +391,7 @@ public class SymbolTree extends JPanel {
         applyToolBar.add(applyButton);
 
         JLabel loadingText = new JLabel();
-        loadingText.setText(languageBundle.getString(Resources.TEXT_SEARCH_LOADING));
+        loadingText.setText(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_LOADING));
         loadingText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_BIG));
         loadingState.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
 
@@ -516,8 +516,8 @@ public class SymbolTree extends JPanel {
 
         reloadAndExpandBrowseTree();
 
-        String allRoutes = languageBundle.getString(Resources.TEXT_SEARCH_ALL_ROUTES);
-        String allPorts = languageBundle.getString(Resources.TEXT_SEARCH_ALL_PORTS);
+        String allRoutes = languageBundle.getString(Resources.TEXT_SYMBOL_TREE_ALL_ROUTES);
+        String allPorts = languageBundle.getString(Resources.TEXT_SYMBOL_TREE_ALL_PORTS);
 
         List<String> routeList = new ArrayList<String>();
         List<String> portList = new ArrayList<String>();
@@ -591,8 +591,8 @@ public class SymbolTree extends JPanel {
     }
 
     private void updateRouteComboBox() {
-        String allRoutes = languageBundle.getString(Resources.TEXT_SEARCH_ALL_ROUTES);
-        String allPorts = languageBundle.getString(Resources.TEXT_SEARCH_ALL_PORTS);
+        String allRoutes = languageBundle.getString(Resources.TEXT_SYMBOL_TREE_ALL_ROUTES);
+        String allPorts = languageBundle.getString(Resources.TEXT_SYMBOL_TREE_ALL_PORTS);
 
         Object selectedItemRoute = routeComboBox.getSelectedItem();
         Object selectedItemPort = portComboBox.getSelectedItem();
@@ -646,8 +646,8 @@ public class SymbolTree extends JPanel {
     }
 
     private void updateTreeNodeVisibility(SymbolTreeNode rootSymbolTreeNode) {
-        String allRoutes = languageBundle.getString(Resources.TEXT_SEARCH_ALL_ROUTES);
-        String allPorts = languageBundle.getString(Resources.TEXT_SEARCH_ALL_PORTS);
+        String allRoutes = languageBundle.getString(Resources.TEXT_SYMBOL_TREE_ALL_ROUTES);
+        String allPorts = languageBundle.getString(Resources.TEXT_SYMBOL_TREE_ALL_PORTS);
 
         Object selectedItemRoute = routeComboBox.getSelectedItem();
         Object selectedItemPort = portComboBox.getSelectedItem();
@@ -680,7 +680,7 @@ public class SymbolTree extends JPanel {
     
     private void updateSearchTreeModel() { 
         String inputText = searchTextField.getText();
-        String searchHint = languageBundle.getString(Resources.TEXT_SEARCH_HINT);
+        String searchHint = languageBundle.getString(Resources.TEXT_SYMBOL_TREE_HINT);
 
         if (!inputText.isEmpty() && !inputText.equals(searchHint)) {
             String regex = "(.*)(" + inputText.replace(" ", ".*") + ")(.*)";

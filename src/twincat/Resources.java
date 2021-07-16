@@ -88,29 +88,32 @@ public class Resources {
     public static final String TEXT_CHART_STOP = "chartStop";
     
     
-    public static final String TEXT_BROWSER_ADD_SCOPE = "treeAddScope";
+    public static final String TEXT_SCOPE_TREE_ADD_SCOPE = "scopeTreeAddScope";
 
-    public static final String TEXT_BROWSER_ADD_CHART = "treeAddChart";
+    public static final String TEXT_SCOPE_TREE_ADD_CHART = "scopeTreeAddChart";
     
-    public static final String TEXT_BROWSER_ADD_AXIS = "treeAddAxis";
+    public static final String TEXT_SCOPE_TREE_ADD_AXIS = "scopeTreeAddAxis";
     
-    public static final String TEXT_BROWSER_ADD_CHANNEL = "treeAddChannel";
+    public static final String TEXT_SCOPE_TREE_ADD_CHANNEL = "scopeTreeAddChannel";
     
-    public static final String TEXT_BROWSER_SEARCH = "treeSearch";
+    public static final String TEXT_SCOPE_TREE_SEARCH = "scopeTreeSearch";
     
-    public static final String TEXT_BROWSER_DELETE = "treeDelete";
-            
-    
-    public static final String TEXT_SEARCH_APPLY = "searchApply";
-    
-    public static final String TEXT_SEARCH_ALL_ROUTES = "searchAllRoutes";
-    
-    public static final String TEXT_SEARCH_ALL_PORTS = "searchAllPorts";
+    public static final String TEXT_SCOPE_TREE_DELETE = "scopeTreeDelete";
 
-    public static final String TEXT_SEARCH_HINT = "searchHint";
     
-    public static final String TEXT_SEARCH_LOADING = "searchLoading";
+    public static final String TEXT_SYMBOL_TREE_APPLY = "symbolTreeApply";
     
+    public static final String TEXT_SYMBOL_TREE_ALL_ROUTES = "symbolTreeAllRoutes";
+    
+    public static final String TEXT_SYMBOL_TREE_ALL_PORTS = "symbolTreeAllPorts";
+
+    public static final String TEXT_SYMBOL_TREE_HINT = "symbolTreeHint";
+    
+    public static final String TEXT_SYMBOL_TREE_LOADING = "symbolTreeLoading";
+ 
+    
+    public static final String TEXT_SCOPE_PROPERTIES_RECORD_TIME = "scopePropertiesRecordTime";
+
     
     public static final String TEXT_WINDOW = "window";
            

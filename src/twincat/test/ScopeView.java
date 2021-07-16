@@ -59,7 +59,7 @@ public class ScopeView {
         Chart chart = new Chart(20);
         chart.setHeight(FRAME_HEIGHT);
         chart.setWidth(FRAME_WIDTH);
-        chart.setDisplayTime(500);
+        chart.setDisplayTime(100);
         chart.setDebug(true);
 
         // axis 1

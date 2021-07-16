@@ -158,6 +158,8 @@ public class Chart extends Observable {
     /********** constructor **********/
     /*********************************/
 
+    // TODO : remove from constructor
+    
     public Chart() {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
         long refreshTime = 1000 / DEFAULT_FPS;

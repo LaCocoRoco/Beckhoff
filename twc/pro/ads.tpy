@@ -4,7 +4,7 @@
 	<ProjectInfo>
 		<Path>C:\Workspace\Eclipse\Beckhoff\twc\pro\ads.pro</Path>
 		<IsLibrary>false</IsLibrary>
-		<ChangeDate>2021-07-15T11:09:28</ChangeDate>
+		<ChangeDate>2021-07-15T13:29:57</ChangeDate>
 		<Library>
 			<Name>STANDARD.LIB</Name>
 			<Path>C:\TWINCAT\PLC\LIB\STANDARD.LIB</Path>
@@ -991,34 +991,6 @@
 			<BitSize>624</BitSize>
 		</Symbol>
 		<Symbol>
-			<Name Constant="1">.junit_a</Name>
-			<Type>INT</Type>
-			<IGroup>16448</IGroup>
-			<IOffset>1568</IOffset>
-			<BitSize>16</BitSize>
-		</Symbol>
-		<Symbol>
-			<Name Constant="1">.junit_b</Name>
-			<Type>INT</Type>
-			<IGroup>16448</IGroup>
-			<IOffset>1570</IOffset>
-			<BitSize>16</BitSize>
-		</Symbol>
-		<Symbol>
-			<Name Constant="1">.junit_c</Name>
-			<Type>INT</Type>
-			<IGroup>16448</IGroup>
-			<IOffset>0</IOffset>
-			<BitSize>16</BitSize>
-		</Symbol>
-		<Symbol>
-			<Name Constant="1">.junit_d</Name>
-			<Type>INT</Type>
-			<IGroup>16448</IGroup>
-			<IOffset>1572</IOffset>
-			<BitSize>16</BitSize>
-		</Symbol>
-		<Symbol>
 			<Name>.junit_bit</Name>
 			<Type>BOOL</Type>
 			<IGroup>16448</IGroup>
@@ -1145,6 +1117,34 @@
 			<IGroup>16448</IGroup>
 			<IOffset>1587</IOffset>
 			<BitSize>1152</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name Constant="1">.junit_a</Name>
+			<Type>INT</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>1568</IOffset>
+			<BitSize>16</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name Constant="1">.junit_b</Name>
+			<Type>INT</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>1570</IOffset>
+			<BitSize>16</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name Constant="1">.junit_c</Name>
+			<Type>INT</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>0</IOffset>
+			<BitSize>16</BitSize>
+		</Symbol>
+		<Symbol>
+			<Name Constant="1">.junit_d</Name>
+			<Type>INT</Type>
+			<IGroup>16448</IGroup>
+			<IOffset>1572</IOffset>
+			<BitSize>16</BitSize>
 		</Symbol>
 	</Symbols>
 	<VarConfigs/>
