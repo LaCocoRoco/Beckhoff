@@ -4,7 +4,7 @@ import java.awt.CardLayout;
 
 import javax.swing.JPanel;
 
-import twincat.app.constant.Browser;
+import twincat.app.constant.Tree;
 
 public class TreePanel extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -13,7 +13,7 @@ public class TreePanel extends JPanel {
     /******** global variable ********/
     /*********************************/
 
-    private Browser browser = Browser.BROWSER;
+    private Tree card = Tree.SCOPE;
 
     /*********************************/
     /********** constructor **********/
@@ -21,22 +21,22 @@ public class TreePanel extends JPanel {
 
     public TreePanel(XReference xref) {
         this.setLayout(new CardLayout());
-        this.add(xref.scopeTree, Browser.BROWSER.toString());
-        this.add(xref.symbolTree, Browser.SEARCH.toString());
-        this.setCard(browser);
+        this.add(xref.scopeTree, Tree.SCOPE.toString());
+        this.add(xref.symbolTree, Tree.SYMBOL.toString());
+        this.setCard(card);
     }
 
     /*********************************/
     /********* public method *********/
     /*********************************/
 
-    public Browser getCard() {
-        return browser;
+    public Tree getCard() {
+        return card;
     }
 
-    public void setCard(Browser card) {
+    public void setCard(Tree card) {
         CardLayout cardLayout = (CardLayout) (this.getLayout());
         cardLayout.show(this, card.toString());
-        this.browser = card;
+        this.card = card;
     }
 }

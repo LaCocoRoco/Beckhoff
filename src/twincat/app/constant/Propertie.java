@@ -1,6 +1,6 @@
 package twincat.app.constant;
 
-public enum Properties {
+public enum Propertie {
     /*********************************/
     /*** global constant variable ****/
     /*********************************/

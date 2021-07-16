@@ -30,6 +30,8 @@ public class Channel extends Observable implements Observer {
 
     private String channelName = "Channel";
 
+    private Acquisition acquisition = new Acquisition();
+
     private boolean channelVisible = true;
 
     private boolean antialias = false;
@@ -62,8 +64,6 @@ public class Channel extends Observable implements Observer {
     /******** local variable *********/
     /*********************************/
 
-    private Acquisition acquisition = null;
-
     private boolean notificationStarted = false;
 
     private boolean watchdogStarted = false;
@@ -89,14 +89,6 @@ public class Channel extends Observable implements Observer {
     };
 
     /*********************************/
-    /********** constructor **********/
-    /*********************************/
-
-    public Channel(Acquisition acquisition) {
-        this.acquisition = acquisition;
-    }
-
-    /*********************************/
     /******** setter & getter ********/
     /*********************************/
 
@@ -115,6 +107,14 @@ public class Channel extends Observable implements Observer {
     public void setChannelName(String channelName) {
         this.channelName = channelName;
         this.refresh = true;
+    }
+
+    public Acquisition getAcquisition() {
+        return acquisition;
+    }
+
+    public void setAcquisition(Acquisition acquisition) {
+        this.acquisition = acquisition;
     }
 
     public boolean isAntialias() {

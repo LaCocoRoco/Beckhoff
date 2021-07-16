@@ -163,7 +163,8 @@ public class ScopeView {
         acquisition8.setAmsPort(AmsPort.TC2PLC1);
 
         // channel 1
-        Channel channel1 = new Channel(acquisition1);
+        Channel channel1 = new Channel();
+        channel1.setAcquisition(acquisition1);
         channel1.setChannelName("Channel1");
         channel1.setChannelVisible(true);
         channel1.setAntialias(true);
@@ -176,7 +177,8 @@ public class ScopeView {
         channel1.setWatchdogEnabled(true);
 
         // channel 2
-        Channel channel2 = new Channel(acquisition2);
+        Channel channel2 = new Channel();
+        channel2.setAcquisition(acquisition2);
         channel2.setChannelName("Channel2");
         channel2.setChannelVisible(true);
         channel2.setAntialias(true);
@@ -189,7 +191,8 @@ public class ScopeView {
         channel2.setWatchdogEnabled(true);
 
         // channel 3
-        Channel channel3 = new Channel(acquisition3);
+        Channel channel3 = new Channel();
+        channel3.setAcquisition(acquisition3);
         channel3.setChannelName("Channel3");
         channel3.setChannelVisible(true);
         channel3.setAntialias(true);
@@ -202,7 +205,8 @@ public class ScopeView {
         channel3.setWatchdogEnabled(true);
 
         // channel 4
-        Channel channel4 = new Channel(acquisition4);
+        Channel channel4 = new Channel();
+        channel4.setAcquisition(acquisition4);
         channel4.setChannelName("Channel4");
         channel4.setChannelVisible(true);
         channel4.setAntialias(true);
@@ -215,7 +219,8 @@ public class ScopeView {
         channel4.setWatchdogEnabled(true);
 
         // channel 5
-        Channel channel5 = new Channel(acquisition5);
+        Channel channel5 = new Channel();
+        channel5.setAcquisition(acquisition5);
         channel5.setChannelName("Channel5");
         channel5.setChannelVisible(true);
         channel5.setAntialias(false);
@@ -228,7 +233,8 @@ public class ScopeView {
         channel5.setWatchdogEnabled(true);
 
         // channel 6
-        Channel channel6 = new Channel(acquisition6);
+        Channel channel6 = new Channel();
+        channel6.setAcquisition(acquisition6);
         channel6.setChannelName("Channel6");
         channel2.setChannelVisible(true);
         channel6.setAntialias(false);
@@ -241,7 +247,8 @@ public class ScopeView {
         channel6.setWatchdogEnabled(true);
 
         // channel 7
-        Channel channel7 = new Channel(acquisition7);
+        Channel channel7 = new Channel();
+        channel7.setAcquisition(acquisition7);
         channel7.setChannelName("Channel7");
         channel7.setChannelVisible(true);
         channel7.setAntialias(false);
@@ -254,7 +261,8 @@ public class ScopeView {
         channel7.setWatchdogEnabled(true);
 
         // channel 8
-        Channel channel8 = new Channel(acquisition8);
+        Channel channel8 = new Channel();
+        channel8.setAcquisition(acquisition8);
         channel8.setChannelName("Channel8");
         channel8.setChannelVisible(true);
         channel8.setAntialias(false);

@@ -42,7 +42,6 @@ public class ScopeProperties extends JPanel {
     /*********************************/
 
     private final DocumentListener recordTimeTextFieldDocumentListener = new DocumentListener() {
-
         private String recordTimeText = Scope.TIME_FORMAT_TEMPLATE;
 
         private final Runnable task = new Runnable() {
@@ -156,13 +155,11 @@ public class ScopeProperties extends JPanel {
     /******** setter & getter ********/
     /*********************************/
 
-    public void setScope(Scope scope) {
-        this.scope = scope;
+    public Scope getScope() {
+        return scope;
     }
 
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
-
-    
+    public void setScope(Scope scope) {
+        this.scope = scope;
+    }  
 }

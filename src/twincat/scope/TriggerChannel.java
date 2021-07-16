@@ -34,6 +34,10 @@ public class TriggerChannel extends Observable implements Observer {
     /********** constructor **********/
     /*********************************/
 
+	public TriggerChannel() {
+        /* empty */
+	}
+	
 	public TriggerChannel(Channel channel) {
 		channel.addObserver(this);
 	}

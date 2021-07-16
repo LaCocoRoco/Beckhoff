@@ -1,9 +1,9 @@
 package twincat.app.constant;
 
-public enum Browser {
+public enum Tree {
     /*********************************/
     /*** global constant variable ****/
     /*********************************/
     
-    BROWSER, SEARCH
+    SCOPE, SYMBOL
 }

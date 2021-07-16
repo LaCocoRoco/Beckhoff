@@ -8,10 +8,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
-import twincat.LoremIpsum;
 import twincat.Resources;
 import twincat.Utilities;
 
@@ -29,11 +27,6 @@ public class ChartPanel extends JPanel {
     /*********************************/
 
     public ChartPanel(XReference xref) {
-        JScrollPane graphPanel = new JScrollPane();
-        graphPanel.setViewportView(new LoremIpsum());
-        graphPanel.setBorder(BorderFactory.createEmptyBorder());
-        graphPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
-
         JButton buttonChartPlay = new JButton();
         buttonChartPlay.setToolTipText(languageBundle.getString(Resources.TEXT_CHART_PLAY));
         buttonChartPlay.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PLAY)));
@@ -60,7 +53,6 @@ public class ChartPanel extends JPanel {
         chartToolBar.add(buttonChartStop);
 
         this.setLayout(new BorderLayout());
-        this.add(graphPanel, BorderLayout.CENTER);
         this.add(chartToolBar, BorderLayout.PAGE_END);
         this.setBorder(BorderFactory.createEmptyBorder());
     }

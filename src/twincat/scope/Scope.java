@@ -22,6 +22,8 @@ public final class Scope {
     /**** local constant variable ****/
     /*********************************/
 
+    private static final String TIME_FORMAT_PATTERN = "hh:mm:ss.SSS";
+    
     private static final int TIME_FORMAT_SIZE = 4;
 
     private static final int INDEX_MILLISECONDS = 0;
@@ -84,7 +86,7 @@ public final class Scope {
     /*********************************/
 
     public void setRecordTime(String recordTime) {
-        this.recordTime = Scope.formatedTimeToMilliseconds(recordTime);
+        this.recordTime = Scope.formatTimeStringToLong(recordTime);
     }
 
     public void addChart(Chart chart) {
@@ -132,8 +134,14 @@ public final class Scope {
     /** public static final method ***/
     /*********************************/
 
-    public static final long formatedTimeToMilliseconds(String time) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss.SSS");
+    public static final String formatTimeLongToString(long time) {
+        Date date = new Date(time);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(TIME_FORMAT_PATTERN);
+        return dateFormat.format(date);
+    }
+    
+    public static final long formatTimeStringToLong(String time) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(TIME_FORMAT_PATTERN);
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         try {

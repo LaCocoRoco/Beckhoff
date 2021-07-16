@@ -8,17 +8,9 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
 import twincat.Resources;
-import twincat.app.constant.Browser;
-import twincat.app.constant.Properties;
 
 public class ControlPanel extends JSplitPane {
     private static final long serialVersionUID = 1L;
-
-    /*********************************/
-    /******** cross reference ********/
-    /*********************************/
-
-    private final XReference xref;
 
     /*********************************/
     /**** local constant variable ****/
@@ -27,18 +19,10 @@ public class ControlPanel extends JSplitPane {
     private static final double DIVIDER_LOCATION = 0.5;
 
     /*********************************/
-    /******** local variable *********/
-    /*********************************/
-
-    private Properties properties = Properties.EMPTY;
-
-    /*********************************/
     /********** constructor **********/
     /*********************************/
 
     public ControlPanel(XReference xref) {
-        this.xref = xref;
-
         this.setLeftComponent(xref.treePanel);
         this.setRightComponent(xref.propertiesPanel);
         this.setDividerSize(Resources.DEFAULT_DIVIDER_SIZE);
@@ -58,20 +42,5 @@ public class ControlPanel extends JSplitPane {
                 setDividerLocation(DIVIDER_LOCATION);
             }
         });
-    }
-
-    /*********************************/
-    /********* public method *********/
-    /*********************************/
-
-    public void displaySearch() {
-        properties = xref.propertiesPanel.getCard();
-        xref.treePanel.setCard(Browser.SEARCH);
-        xref.propertiesPanel.setCard(Properties.ACQUISITION);
-    }
-
-    public void displayBrowser() {
-        xref.treePanel.setCard(Browser.BROWSER);
-        xref.propertiesPanel.setCard(properties);
     }
 }

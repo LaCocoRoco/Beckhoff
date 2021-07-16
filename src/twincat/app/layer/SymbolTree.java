@@ -60,6 +60,7 @@ import twincat.TwincatLogger;
 import twincat.Utilities;
 import twincat.ads.common.RouteSymbolData;
 import twincat.ads.common.Symbol;
+import twincat.ads.constant.AmsPort;
 import twincat.ads.constant.DataType;
 import twincat.ads.worker.RouteSymbolLoader;
 import twincat.ads.worker.SymbolLoader;
@@ -68,8 +69,6 @@ import twincat.app.common.SymbolTreeModel;
 import twincat.app.common.SymbolTreeNode;
 import twincat.app.common.SymbolTreeRenderer;
 import twincat.app.constant.Filter;
-
-// TODO : remove symbol from names
 
 public class SymbolTree extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -84,7 +83,7 @@ public class SymbolTree extends JPanel {
     /**** local constant variable ****/
     /*********************************/
 
-    private static enum Tree {
+    private static enum View {
         LOADING, SEARCH
     };
 
@@ -122,14 +121,19 @@ public class SymbolTree extends JPanel {
 
     private final MouseAdapter browseTreeMouseAdapter = new MouseAdapter() {
         public void mousePressed(MouseEvent mouseEvent) {
-            if (mouseEvent.getClickCount() == 2) {
-                int x = mouseEvent.getX();
-                int y = mouseEvent.getY();
-                
-                TreePath treePath = browseTree.getPathForLocation(x, y);
+            if (mouseEvent.getClickCount() == 1) {
+                TreePath treePath = browseTree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
                 
                 if (treePath != null) {
-                    symbolTreeNodeSelected(treePath);
+                    treeNodeSelectedSingleClick(treePath);   
+                }
+            }
+             
+            if (mouseEvent.getClickCount() == 2) {
+                TreePath treePath = browseTree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
+                
+                if (treePath != null) {
+                    treeNodeSelectedDoubleClick(treePath);
                 }
             }
         }
@@ -137,14 +141,19 @@ public class SymbolTree extends JPanel {
  
     private final MouseAdapter searchTreeMouseAdapter = new MouseAdapter() {
         public void mousePressed(MouseEvent mouseEvent) {
-            if (mouseEvent.getClickCount() == 2) {
-                int x = mouseEvent.getX();
-                int y = mouseEvent.getY();
-                
-                TreePath treePath = browseTree.getPathForLocation(x, y);
+            if (mouseEvent.getClickCount() == 1) {
+                TreePath treePath = searchTree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
                 
                 if (treePath != null) {
-                    symbolTreeNodeSelected(treePath);
+                    treeNodeSelectedSingleClick(treePath);   
+                }
+            }
+            
+            if (mouseEvent.getClickCount() == 2) {
+                TreePath treePath = searchTree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
+                
+                if (treePath != null) {
+                    treeNodeSelectedDoubleClick(treePath);
                 }
             }
         }
@@ -281,10 +290,10 @@ public class SymbolTree extends JPanel {
         }
     };
 
-    private final ActionListener applyButtonActionListener = new ActionListener() {
+    private final ActionListener abortButtonActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            xref.controlPanel.displayBrowser();
+            xref.scopeTree.abortSymbolAcquisition();
         }
     };
 
@@ -377,18 +386,18 @@ public class SymbolTree extends JPanel {
         acquisitionToolbar.add(routeToolBar);
         acquisitionToolbar.add(searchToolBar);
 
-        JButton applyButton = new JButton(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_APPLY));
-        applyButton.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        applyButton.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        applyButton.setFocusable(false);
-        applyButton.addActionListener(applyButtonActionListener);
+        JButton abortButton = new JButton(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_ABORT));
+        abortButton.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        abortButton.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        abortButton.setFocusable(false);
+        abortButton.addActionListener(abortButtonActionListener);
 
-        JToolBar applyToolBar = new JToolBar();
-        applyToolBar.setLayout(new BorderLayout());
-        applyToolBar.setFloatable(false);
-        applyToolBar.setRollover(false);
-        applyToolBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        applyToolBar.add(applyButton);
+        JToolBar abortToolBar = new JToolBar();
+        abortToolBar.setLayout(new BorderLayout());
+        abortToolBar.setFloatable(false);
+        abortToolBar.setRollover(false);
+        abortToolBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        abortToolBar.add(abortButton);
 
         JLabel loadingText = new JLabel();
         loadingText.setText(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_LOADING));
@@ -416,15 +425,15 @@ public class SymbolTree extends JPanel {
         loadingPanel.add(Box.createVerticalGlue());
 
         searchPanel.setLayout(new CardLayout());
-        searchPanel.add(loadingPanel, Tree.LOADING.toString());
-        searchPanel.add(treePanel, Tree.SEARCH.toString());
+        searchPanel.add(loadingPanel, View.LOADING.toString());
+        searchPanel.add(treePanel, View.SEARCH.toString());
 
         backgroundTask.execute();
 
         this.setLayout(new BorderLayout());
         this.add(acquisitionToolbar, BorderLayout.PAGE_START);
         this.add(searchPanel, BorderLayout.CENTER);
-        this.add(applyToolBar, BorderLayout.PAGE_END);
+        this.add(abortToolBar, BorderLayout.PAGE_END);
         this.setBorder(BorderFactory.createEmptyBorder());
     }
 
@@ -432,13 +441,13 @@ public class SymbolTree extends JPanel {
     /******** private function *********/
     /***********************************/
 
-    private void setSearchPanel(Tree card) {
+    private void setSearchPanel(View card) {
         CardLayout cardLayout = (CardLayout) (searchPanel.getLayout());
         cardLayout.show(searchPanel, card.toString());
     }
 
     private void disableSearchTree() {
-        setSearchPanel(Tree.LOADING);
+        setSearchPanel(View.LOADING);
 
         portComboBox.setEditable(true);
         ComboBoxEditor portComboBoxEditor = portComboBox.getEditor();
@@ -461,7 +470,7 @@ public class SymbolTree extends JPanel {
     }
 
     private void enableSearchTree() {
-        setSearchPanel(Tree.SEARCH);
+        setSearchPanel(View.SEARCH);
 
         portComboBox.setEditable(false);
         portComboBox.setEnabled(true);
@@ -555,7 +564,7 @@ public class SymbolTree extends JPanel {
 
     private void reloadAndExpandSearchTree() {
         // hide tree
-        setSearchPanel(Tree.LOADING);
+        setSearchPanel(View.LOADING);
         searchTextField.setEnabled(false);
         loadingState.setText("Reload Tree");
 
@@ -569,7 +578,7 @@ public class SymbolTree extends JPanel {
         }
 
         // show tree
-        setSearchPanel(Tree.SEARCH);
+        setSearchPanel(View.SEARCH);
         searchTextField.setEnabled(true);
     }
 
@@ -705,7 +714,7 @@ public class SymbolTree extends JPanel {
         }
     }
     
-    private void symbolTreeNodeSelected(TreePath treePath) {
+    private void treeNodeSelectedSingleClick(TreePath treePath) {
         SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();
         Object userObject = symbolTreeNode.getUserObject();
 
@@ -715,7 +724,6 @@ public class SymbolTree extends JPanel {
             SymbolLoader symbolLoader = symbolNode.getSymbolLoader();
             
             if (selectedSymbol.getDataType().equals(DataType.BIGTYPE)) {
-                // add symbol node
                 List<Symbol> symbolList = symbolLoader.getSymbolList(selectedSymbol);
                 for (Symbol symbol : symbolList) {
                     if (treePanel.getViewport().getView().equals(searchTree)) {
@@ -743,11 +751,33 @@ public class SymbolTree extends JPanel {
                 // set view to symbol tree not path snapshot
                 searchTree.setSelectionPath(symbolTreePath);
             } else {
-                xref.consolePanel.setClipboard(selectedSymbol.getSymbolName());
-                xref.consolePanel.getCommandLine().getAdsClient().setAmsNetId(symbolLoader.getAmsNetId());
-                xref.consolePanel.getCommandLine().getAdsClient().setAmsPort(symbolLoader.getAmsPort());
+                String symbolName = selectedSymbol.getSymbolName();
+                String amsNetId = symbolLoader.getAmsNetId();
+                AmsPort amsPort = symbolLoader.getAmsPort();
+                
+                // set symbol acquisition data
+                xref.acquisitionProperties.getAcquisition().setSymbolName(symbolName);
+                xref.acquisitionProperties.getAcquisition().setAmsNetId(amsNetId);
+                xref.acquisitionProperties.getAcquisition().setAmsPort(amsPort);
+                
+                // send symbol acquisition data to console
+                xref.consolePanel.setClipboard(symbolName);
+                xref.consolePanel.getCommandLine().getAdsClient().setAmsNetId(amsNetId);
+                xref.consolePanel.getCommandLine().getAdsClient().setAmsPort(amsPort);
+                
                 logger.info(selectedSymbol.getSymbolName());
             }
         }
     }
+
+    private void treeNodeSelectedDoubleClick(TreePath treePath) {
+        SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();
+        Object userObject = symbolTreeNode.getUserObject();
+
+        if (userObject instanceof SymbolNode) {
+            // apply acquisition data
+            xref.acquisitionProperties.applyAcquisition();
+        }
+    }
+
 }

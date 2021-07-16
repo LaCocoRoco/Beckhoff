@@ -7,17 +7,17 @@ public class XReference {
     
     public final ScopeProperties scopeProperties = new ScopeProperties(this);
 
-    public final AcquisitionProperties acquisitionProperties = new AcquisitionProperties(this);
-
+    public final ChartProperties chartProperties = new ChartProperties(this);
+    
     public final AxisProperties axisProperties = new AxisProperties(this);
 
     public final ChannelProperties channelProperties = new ChannelProperties(this);
 
-    public final ChartProperties chartProperties = new ChartProperties(this);
+    public final AcquisitionProperties acquisitionProperties = new AcquisitionProperties(this);
+ 
+    public final TriggerGroupProperties triggerGroupProperties = new TriggerGroupProperties(this);
 
     public final TriggerChannelProperties triggerChannelProperties = new TriggerChannelProperties(this);
-
-    public final TriggerGroupProperties triggerGroupProperties = new TriggerGroupProperties(this);
 
     public final ScopeTree scopeTree = new ScopeTree(this);
 

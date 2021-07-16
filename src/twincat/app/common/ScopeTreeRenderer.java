@@ -1,10 +1,7 @@
 package twincat.app.common;
 
 import java.awt.Component;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -55,6 +52,7 @@ public class ScopeTreeRenderer extends DefaultTreeCellRenderer {
 
         if (userObject instanceof Scope) {
             this.setIcon(ICON_SCOPE);
+
         }
         
         if (userObject instanceof Chart) {
@@ -62,10 +60,14 @@ public class ScopeTreeRenderer extends DefaultTreeCellRenderer {
         }
         
         if (userObject instanceof Axis) {
+            Axis axis = (Axis) userObject;
+            this.setForeground(axis.getAxisColor());
             this.setIcon(ICON_AXIS);
         }
         
         if (userObject instanceof Channel) {
+            Channel channel = (Channel) userObject;
+            this.setForeground(channel.getLineColor());
             this.setIcon(ICON_CHANNEL);
         }
   
@@ -78,22 +80,5 @@ public class ScopeTreeRenderer extends DefaultTreeCellRenderer {
         }
       
         return this;
-    }
-
-    static Icon scale(Icon icon, double scaleFactor, JTree tree) {
-        int width = icon.getIconWidth();
-        int height = icon.getIconHeight();
-
-        width = (int) Math.ceil(width * scaleFactor);
-        height = (int) Math.ceil(height * scaleFactor);
-
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D g = image.createGraphics();
-        g.scale(scaleFactor, scaleFactor);
-        icon.paintIcon(tree, g, 0, 0);
-        g.dispose();
-
-        return new ImageIcon(image);
     }
 }

@@ -101,7 +101,7 @@ public class Resources {
     public static final String TEXT_SCOPE_TREE_DELETE = "scopeTreeDelete";
 
     
-    public static final String TEXT_SYMBOL_TREE_APPLY = "symbolTreeApply";
+    public static final String TEXT_SYMBOL_TREE_ABORT = "symbolTreeAbort";
     
     public static final String TEXT_SYMBOL_TREE_ALL_ROUTES = "symbolTreeAllRoutes";
     
@@ -115,6 +115,27 @@ public class Resources {
     public static final String TEXT_SCOPE_PROPERTIES_RECORD_TIME = "scopePropertiesRecordTime";
     
     public static final String TEXT_SCOPE_PROPERTIES_TITLE = "scopePropertiesTitle";
+
+    
+    public static final String TEXT_CHART_PROPERTIES_TITLE = "chartPropertiesTitle";
+
+    
+    public static final String TEXT_AXIS_PROPERTIES_TITLE = "axisPropertiesTitle";
+
+    
+    public static final String TEXT_CHANNEL_PROPERTIES_TITLE = "channelPropertiesTitle";
+
+
+    public static final String TEXT_ACQUISITION_PROPERTIES_TITLE = "acquisitionPropertiesTitle";
+
+    public static final String TEXT_ACQUISITION_PROPERTIES_APPLY = "acquisitionPropertiesApply";
+   
+    
+    
+    public static final String TEXT_TRIGGER_GROUP_PROPERTIES_TITLE = "triggerGroupPropertiesTitle";
+
+    
+    public static final String TEXT_TRIGGER_CHANNEL_PROPERTIES_TITLE = "triggerChannelPropertiesTitle";
 
     
     public static final String TEXT_WINDOW = "window";
