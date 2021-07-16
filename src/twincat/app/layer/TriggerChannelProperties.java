@@ -48,11 +48,10 @@ public class TriggerChannelProperties extends JPanel {
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         
-        this.setBorder(BorderFactory.createEmptyBorder());
+        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         this.setLayout(new BorderLayout());
         this.add(textHeader, BorderLayout.PAGE_START);
         this.add(scrollPanel, BorderLayout.CENTER);
-        this.setBorder(BorderFactory.createEmptyBorder());
     }
 
     /*********************************/

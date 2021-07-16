@@ -184,8 +184,8 @@ public class SymbolTree extends JPanel {
         };
 
         @Override
-        public void itemStateChanged(ItemEvent e) {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
+        public void itemStateChanged(ItemEvent itemEvent) {
+            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
                 Utilities.stopSchedule(schedule);
                 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
                 schedule = scheduler.schedule(task, 0, TimeUnit.MILLISECONDS);
@@ -241,7 +241,7 @@ public class SymbolTree extends JPanel {
 
     private final FocusListener searchTextFieldFocusListener = new FocusListener() {
         @Override
-        public void focusGained(FocusEvent e) {
+        public void focusGained(FocusEvent focusEvent) {
             if (searchTextField.getText().equals(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_HINT))) {
                 searchTextField.setText("");
                 searchTextField.setForeground(Color.BLACK);
@@ -249,7 +249,7 @@ public class SymbolTree extends JPanel {
         }
 
         @Override
-        public void focusLost(FocusEvent e) {
+        public void focusLost(FocusEvent focusEvent) {
             if (searchTextField.getText().equals("")) {
                 searchTextField.setText(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_HINT));
                 searchTextField.setForeground(Color.GRAY);
@@ -275,24 +275,24 @@ public class SymbolTree extends JPanel {
         }
 
         @Override
-        public void insertUpdate(DocumentEvent e) {  
+        public void insertUpdate(DocumentEvent documentEvent) {  
             delayUpdateSearchTreeModel();
         }
 
         @Override
-        public void removeUpdate(DocumentEvent e) {
+        public void removeUpdate(DocumentEvent documentEvent) {
             delayUpdateSearchTreeModel();
         }
 
         @Override
-        public void changedUpdate(DocumentEvent e) {
+        public void changedUpdate(DocumentEvent documentEvent) {
             delayUpdateSearchTreeModel();
         }
     };
 
     private final ActionListener abortButtonActionListener = new ActionListener() {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent actionEvent) {
             xref.scopeTree.abortSymbolAcquisition();
         }
     };

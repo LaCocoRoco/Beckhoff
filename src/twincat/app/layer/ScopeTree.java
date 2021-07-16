@@ -50,6 +50,8 @@ public class ScopeTree extends JPanel {
     /****** local final variable *****/
     /*********************************/
 
+    private Propertie card = Propertie.EMPTY;
+    
     private final JTree browseTree = new JTree();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
@@ -60,42 +62,42 @@ public class ScopeTree extends JPanel {
 
     private final ActionListener addScopeActionListener = new ActionListener() {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent actionEvent) {
             addScopeTreeNode();
         }
     };
 
     private final ActionListener addChartActionListener = new ActionListener() {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent actionEvent) {
             addChartTreeNode();
         }
     };
 
     private final ActionListener addAxisActionListener = new ActionListener() {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent actionEvent) {
             addAxisTreeNode();
         }
     };
 
     private final ActionListener addChannelActionListener = new ActionListener() {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent actionEvent) {
             addChannelTreeNode();
         }
     };
 
     private final ActionListener searchButtonActionListener = new ActionListener() {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent actionEvent) {
             searchSymbolAcquisition();
         }
     };
 
     private final ActionListener deleteButtonActionListener = new ActionListener() {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent actionEvent) {
             deleteTreeNode();
         }
     };
@@ -134,7 +136,7 @@ public class ScopeTree extends JPanel {
         browseTree.addMouseListener(browseTreeMouseAdapter);
         browseTree.setUI(browseTreeUI);
         browseTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-
+        
         JScrollPane treePanel = new JScrollPane();
         treePanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         treePanel.setBorder(BorderFactory.createEmptyBorder());
@@ -202,8 +204,6 @@ public class ScopeTree extends JPanel {
     /********* public method *********/
     /*********************************/
 
-    private Propertie card = Propertie.EMPTY;
-    
     public void abortSymbolAcquisition() {
         xref.treePanel.setCard(Tree.SCOPE);
         xref.propertiesPanel.setCard(card);
@@ -236,7 +236,21 @@ public class ScopeTree extends JPanel {
         xref.treePanel.setCard(Tree.SCOPE);
         xref.propertiesPanel.setCard(Propertie.CHANNEL);
     }
+
+    public void reloadSelectedTreeNode() {
+        // get selected tree node
+        ScopeTreeNode selectedTreeNode = (ScopeTreeNode) browseTree.getLastSelectedPathComponent();
+
+        // refresh selected tree node
+        if (selectedTreeNode != null) {
+            expandTreeNode(selectedTreeNode);
+        }
+    }   
     
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+
     private void searchSymbolAcquisition() {
         // get selected tree node
         ScopeTreeNode selectedTreeNode = (ScopeTreeNode) browseTree.getLastSelectedPathComponent();
@@ -259,11 +273,6 @@ public class ScopeTree extends JPanel {
         xref.treePanel.setCard(Tree.SYMBOL);
         xref.propertiesPanel.setCard(Propertie.ACQUISITION);
     }
-    
-    
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
 
     private void treeNodeSelectedSingleClick(TreePath treePath) {  
         ScopeTreeNode treeNode = (ScopeTreeNode) treePath.getLastPathComponent();
@@ -279,6 +288,7 @@ public class ScopeTree extends JPanel {
             Chart chart = (Chart) userObject;
             xref.propertiesPanel.setCard(Propertie.CHART);
             xref.chartProperties.setChart(chart);
+            xref.chartPanel.setChart(chart);
         }
 
         if (userObject instanceof Axis) {
@@ -403,7 +413,10 @@ public class ScopeTree extends JPanel {
         ScopeTreeNode chartTreeNode = new ScopeTreeNode();
         chartTreeNode.setUserObject(chart);
         scopeTreeNode.add(chartTreeNode);
-
+        
+        // set chart
+        xref.chartPanel.setChart(chart);
+        
         // expand path
         expandTreeNode(chartTreeNode);
         return chartTreeNode;
@@ -434,7 +447,8 @@ public class ScopeTree extends JPanel {
     private ScopeTreeNode addAxisTreeNode() {
         // add chart
         Axis axis = new Axis();
-
+        axis.setAxisColor(Utilities.getRandomColor());
+        
         // add scope node
         ScopeTreeNode chartTreeNode = getChartTreeNode();
         ScopeTreeNode axisTreeNode = new ScopeTreeNode();
@@ -471,6 +485,7 @@ public class ScopeTree extends JPanel {
     private ScopeTreeNode addChannelTreeNode() {
         // add chart
         Channel channel = new Channel();
+        channel.setLineColor(Utilities.getRandomColor());
 
         // add scope node
         ScopeTreeNode axisTreeNode = getAxisTreeNode();

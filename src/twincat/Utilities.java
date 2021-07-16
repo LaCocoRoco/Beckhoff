@@ -1,5 +1,6 @@
 package twincat;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -9,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
@@ -75,5 +77,10 @@ public class Utilities {
                 schedule.cancel(true);
             }
         }   
+    }
+    
+    public static final Color getRandomColor() {
+        Random random = new Random();
+        return Color.getHSBColor(random.nextFloat(), 0.9F, 0.9F);
     }
 }

@@ -27,6 +27,8 @@ public class Axis implements Observer {
 
     private boolean axisVisible = true;
 
+    private boolean axisNameVisible = true;
+
     private int lineWidth = 1;
 
     private double valueMin = 0;
@@ -88,6 +90,14 @@ public class Axis implements Observer {
     public void setAxisVisible(boolean axisVisible) {
         this.axisVisible = axisVisible;
         this.refresh = true;
+    }
+    
+    public boolean isAxisNameVisible() {
+        return axisNameVisible;
+    }
+
+    public void setAxisNameVisible(boolean axisNameVisible) {
+        this.axisNameVisible = axisNameVisible;
     }
 
     public int getLineWidth() {

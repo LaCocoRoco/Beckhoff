@@ -2,29 +2,22 @@ package twincat.app.layer;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import twincat.Resources;
 import twincat.app.constant.Propertie;
 
 public class PropertiesPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*********************************/
-    /**** local constant variable ****/
+    /*** global constant variable ****/
     /*********************************/
 
-    private static final int TEMPLATE_BORDER_WIDTH = 200;
-    
-    private static final int TEMPATE_BORDER_HEIGHT = 100;
+    public static final int TEMPLATE_WIDTH = 180;
     
     /*********************************/
     /******** global variable ********/
@@ -66,16 +59,12 @@ public class PropertiesPanel extends JPanel {
     /** public static final method ***/
     /*********************************/
     
-    public static final JPanel buildTemplate(String languageBundleText) {
-        ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
-        String borderTitle = languageBundle.getString(languageBundleText);
+    public static final JPanel buildTemplate(String borderTitle) {
         LineBorder lineBorder = new LineBorder(Color.BLACK);
         TitledBorder titleBorder = BorderFactory.createTitledBorder(lineBorder, borderTitle);
-        Border border = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-        CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(titleBorder, border);
         JPanel panel = new JPanel();
-        panel.setBorder(compoundBorder);
-        panel.setPreferredSize(new Dimension(TEMPLATE_BORDER_WIDTH, TEMPATE_BORDER_HEIGHT));
+        panel.setBorder(titleBorder);
+        panel.setLayout(null);
         return panel;
     }
 }

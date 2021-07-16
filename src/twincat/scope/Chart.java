@@ -327,6 +327,10 @@ public class Chart extends Observable {
     /********* public method *********/
     /*********************************/
 
+    public void setDisplayTime(String displayTime) {
+        this.displayTime = Scope.timeFormaterToLong(displayTime);
+    }
+
     public void play() {
         pauseTimeStamp = 0;
     }

@@ -4,7 +4,7 @@ public class Resources {
     /*********************************/
     /*********** defaults ************/
     /*********************************/
-    
+
     public static final String DEFAULT_FONT_MONO = "Consolas";
 
     public static final String DEFAULT_FONT = "Dialog";
@@ -88,6 +88,7 @@ public class Resources {
     public static final String TEXT_CHART_STOP = "chartStop";
     
     
+    
     public static final String TEXT_SCOPE_TREE_ADD_SCOPE = "scopeTreeAddScope";
 
     public static final String TEXT_SCOPE_TREE_ADD_CHART = "scopeTreeAddChart";
@@ -101,6 +102,7 @@ public class Resources {
     public static final String TEXT_SCOPE_TREE_DELETE = "scopeTreeDelete";
 
     
+    
     public static final String TEXT_SYMBOL_TREE_ABORT = "symbolTreeAbort";
     
     public static final String TEXT_SYMBOL_TREE_ALL_ROUTES = "symbolTreeAllRoutes";
@@ -112,19 +114,27 @@ public class Resources {
     public static final String TEXT_SYMBOL_TREE_LOADING = "symbolTreeLoading";
  
     
+    
+
+    public static final String TEXT_SCOPE_PROPERTIES_TITLE = "scopePropertiesTitle";
+    
     public static final String TEXT_SCOPE_PROPERTIES_RECORD_TIME = "scopePropertiesRecordTime";
     
-    public static final String TEXT_SCOPE_PROPERTIES_TITLE = "scopePropertiesTitle";
-
+    
     
     public static final String TEXT_CHART_PROPERTIES_TITLE = "chartPropertiesTitle";
-
+    
+    public static final String TEXT_CHART_PROPERTIES_DISPLAY_TIME = "chartPropertiesDisplayTime";
+    
+    
     
     public static final String TEXT_AXIS_PROPERTIES_TITLE = "axisPropertiesTitle";
 
     
+    
     public static final String TEXT_CHANNEL_PROPERTIES_TITLE = "channelPropertiesTitle";
 
+    
 
     public static final String TEXT_ACQUISITION_PROPERTIES_TITLE = "acquisitionPropertiesTitle";
 
@@ -135,8 +145,10 @@ public class Resources {
     public static final String TEXT_TRIGGER_GROUP_PROPERTIES_TITLE = "triggerGroupPropertiesTitle";
 
     
+    
     public static final String TEXT_TRIGGER_CHANNEL_PROPERTIES_TITLE = "triggerChannelPropertiesTitle";
 
+    
     
     public static final String TEXT_WINDOW = "window";
            
@@ -147,6 +159,7 @@ public class Resources {
     public static final String TEXT_WINDOW_ADS = "windowAds";
 
     
+    
     public static final String TEXT_EXTRAS = "extras";
     
     public static final String TEXT_EXTRAS_SETTINGS = "extrasSettings";
@@ -154,9 +167,16 @@ public class Resources {
     public static final String TEXT_EXTRAS_CONSOLE = "extrasConsole";
     
     
+    
     public static final String TEXT_FILE = "file";
         
     public static final String TEXT_FILE_NEW = "fileNew";
     
     public static final String TEXT_FILE_OPEN = "fileOpen";
+    
+    
+
+    public static final String TEXT_COMMON_NAME = "commonName";
+    
+    public static final String TEXT_COMMON_SHOW_NAME = "commonShowName";
 }

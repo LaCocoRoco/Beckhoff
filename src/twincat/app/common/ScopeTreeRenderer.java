@@ -1,5 +1,6 @@
 package twincat.app.common;
 
+import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.ImageIcon;
@@ -22,33 +23,39 @@ public class ScopeTreeRenderer extends DefaultTreeCellRenderer {
     /**** local constant variable ****/
     /*********************************/
 
-    private static final ImageIcon ICON_SCOPE = new ImageIcon(Utilities
-            .getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_SCOPE, 0.8));
+    private static final Color BORDER_SELECTION_COLOR = new Color(150, 150, 150);
+    
+    private static final Color BACKGROUND_SELECTION_COLOR = new Color(234, 234, 234);
+    
+    private static final ImageIcon ICON_SCOPE = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_SCOPE, 0.8));
 
-    private static final ImageIcon ICON_CHART = new ImageIcon(Utilities
-            .getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_CHART, 0.8));
+    private static final ImageIcon ICON_CHART = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_CHART, 0.8));
     
-    private static final ImageIcon ICON_AXIS = new ImageIcon(Utilities
-            .getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_AXIS, 0.8));    
+    private static final ImageIcon ICON_AXIS = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_AXIS, 0.8));    
     
-    private static final ImageIcon ICON_CHANNEL = new ImageIcon(Utilities
-            .getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_CHANNEL, 0.8));    
+    private static final ImageIcon ICON_CHANNEL = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_CHANNEL, 0.8));    
     
-    private static final ImageIcon ICON_GROUP = new ImageIcon(Utilities
-            .getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_GROUP, 0.8));    
+    private static final ImageIcon ICON_GROUP = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_GROUP, 0.8));    
 
     /*********************************/
     /******** override method ********/
     /*********************************/
 
     @Override
-    public Component getTreeCellRendererComponent(JTree t, Object v,
-            boolean s, boolean e, boolean l, int r, boolean hF) {
+    public Component getTreeCellRendererComponent(JTree tree, Object value,
+            boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+        super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 
-        super.getTreeCellRendererComponent(t, v, s, e, l, r, hF);
-
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) v;
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
         Object userObject = node.getUserObject();
+
+        if (userObject instanceof TriggerChannel) {
+            this.setIcon(ICON_CHANNEL);
+        }
+        
+        if (userObject instanceof TriggerGroup) {
+            this.setIcon(ICON_GROUP);
+        }
 
         if (userObject instanceof Scope) {
             this.setIcon(ICON_SCOPE);
@@ -58,7 +65,7 @@ public class ScopeTreeRenderer extends DefaultTreeCellRenderer {
         if (userObject instanceof Chart) {
             this.setIcon(ICON_CHART);
         }
-        
+       
         if (userObject instanceof Axis) {
             Axis axis = (Axis) userObject;
             this.setForeground(axis.getAxisColor());
@@ -71,14 +78,16 @@ public class ScopeTreeRenderer extends DefaultTreeCellRenderer {
             this.setIcon(ICON_CHANNEL);
         }
   
-        if (userObject instanceof TriggerChannel) {
-            this.setIcon(ICON_CHANNEL);
-        }
-        
-        if (userObject instanceof TriggerGroup) {
-            this.setIcon(ICON_GROUP);
-        }
-      
         return this;
+    }
+
+    @Override
+    public void setBorderSelectionColor(Color newColor) {
+        super.setBorderSelectionColor(BORDER_SELECTION_COLOR);
+    }
+    
+    @Override
+    public void setBackgroundSelectionColor(Color newColor) {
+        super.setBackgroundSelectionColor(BACKGROUND_SELECTION_COLOR);
     }
 }
