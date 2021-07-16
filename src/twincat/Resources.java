@@ -113,6 +113,8 @@ public class Resources {
  
     
     public static final String TEXT_SCOPE_PROPERTIES_RECORD_TIME = "scopePropertiesRecordTime";
+    
+    public static final String TEXT_SCOPE_PROPERTIES_TITLE = "scopePropertiesTitle";
 
     
     public static final String TEXT_WINDOW = "window";

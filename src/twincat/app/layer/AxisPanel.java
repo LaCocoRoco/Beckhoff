@@ -38,6 +38,10 @@ public class AxisPanel extends JScrollPane {
     /**** local constant variable ****/
     /*********************************/
 
+    private static final int BUTTON_WIDTH = 150;
+    
+    private static final int BUTTON_HEIGHT = 60;
+    
     private static final int MAX_TEXT_LENGTH = 40;
     
     private static final String HTML_PREPEND = "<html><div style='text-align: center;'>";
@@ -110,7 +114,7 @@ public class AxisPanel extends JScrollPane {
                 axisButton.setText(stringBuilder.toString());
                 axisButton.setFocusPainted(false);
                 axisButton.setContentAreaFilled(false);
-                axisButton.setPreferredSize(new Dimension(150, 50));
+                axisButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 
                 axisButton.addActionListener(new ActionListener() {
                     @Override

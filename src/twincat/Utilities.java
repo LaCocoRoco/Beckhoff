@@ -9,10 +9,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
@@ -79,19 +75,5 @@ public class Utilities {
                 schedule.cancel(true);
             }
         }   
-    }
- 
-    public static final long stringTimeToMilliseconds(String time)  {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss.SSS");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-        try {
-            Date date = dateFormat.parse(time);
-            return (int) date.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        
-        return 0;
     }
 }

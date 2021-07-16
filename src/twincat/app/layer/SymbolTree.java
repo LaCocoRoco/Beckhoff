@@ -248,7 +248,7 @@ public class SymbolTree extends JPanel {
         }
     };
 
-    private final DocumentListener searchTextDocumentListener = new DocumentListener() {
+    private final DocumentListener searchTextFieldDocumentListener = new DocumentListener() {
         private static final int DELAY_TIME = 300;
 
         private ScheduledFuture<?> schedule = null;
@@ -365,7 +365,7 @@ public class SymbolTree extends JPanel {
         searchTextField.setText(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_HINT));
         searchTextField.setForeground(Color.GRAY);
         searchTextField.addFocusListener(searchTextFieldFocusListener);
-        searchTextField.getDocument().addDocumentListener(searchTextDocumentListener);
+        searchTextField.getDocument().addDocumentListener(searchTextFieldDocumentListener);
 
         JToolBar searchToolBar = new JToolBar();
         searchToolBar.setFloatable(false);

@@ -202,17 +202,11 @@ public class ScopeTree extends JPanel {
     }
 
     /*********************************/
-    /********* public method *********/
-    /*********************************/
-
-    public void addScopeToTree() {
-
-    }
-
-    /*********************************/
     /******** private method *********/
     /*********************************/
 
+    // TODO : nothing selected hide properties panel empty
+    
     private void selectTreeNode(ScopeTreeNode treeNode) {
         Object userObject = treeNode.getUserObject();
 
