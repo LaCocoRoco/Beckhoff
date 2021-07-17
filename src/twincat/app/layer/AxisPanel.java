@@ -371,13 +371,13 @@ public class AxisPanel extends JScrollPane {
         TriggerGroup triggerGroup = new TriggerGroup();
         triggerGroup.setTriggerOffset(0);
         triggerGroup.setEnabled(true);
-        triggerGroup.addTrigger(triggerChannel);
+        triggerGroup.addTriggerChannel(triggerChannel);
 
         // scope add chart
         scope.addChart(chart);
 
         // chart add trigger group
-        chart.addTrigger(triggerGroup);
+        chart.addTriggerGroup(triggerGroup);
 
         // chart add axis
         chart.addAxis(axis1);

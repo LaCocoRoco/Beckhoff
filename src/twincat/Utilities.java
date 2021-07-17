@@ -18,11 +18,17 @@ import javax.swing.ImageIcon;
 
 public class Utilities {
     /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
+    
+    private static final String PATH_PATTERN = "/";
+    
+    /*********************************/
     /** public static final method ***/
     /*********************************/
 
     public static final Image getScaledIamgeFromFilePath(String path, double scale) {
-        Image image = new ImageIcon(Utilities.class.getResource(path)).getImage();
+        Image image = new ImageIcon(Utilities.class.getResource(PATH_PATTERN + path)).getImage();
   
         int sourceWidth = image.getWidth(null);
         int sourceHeight = image.getHeight(null);
@@ -41,11 +47,11 @@ public class Utilities {
     }
     
     public static final Image getImageFromFilePath(String path) {
-        return new ImageIcon(Utilities.class.getResource(path)).getImage();
+        return new ImageIcon(Utilities.class.getResource(PATH_PATTERN + path)).getImage();
     }
     
     public static final String getStringFromFilePath(String path) {
-        InputStream inputStream = Utilities.class.getResourceAsStream(path);
+        InputStream inputStream = Utilities.class.getResourceAsStream(PATH_PATTERN + path);
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferReader = new BufferedReader(inputStreamReader);
         String lineSeperator = System.getProperty("line.separator");
@@ -81,6 +87,6 @@ public class Utilities {
     
     public static final Color getRandomColor() {
         Random random = new Random();
-        return Color.getHSBColor(random.nextFloat(), 0.9F, 0.9F);
+        return Color.getHSBColor(random.nextFloat(), 1F, 1F);
     }
 }

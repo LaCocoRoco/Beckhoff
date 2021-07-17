@@ -58,7 +58,6 @@
     </jar>
   </target>
 
-
   <target name="clean" depends="build">
     <delete dir="${bin.dir}"/>
   </target>

@@ -10,7 +10,9 @@ public class TriggerGroup implements Observer {
     /******** global variable ********/
     /*********************************/
 
-	private boolean enabled = true;
+    private String triggerGroupName = "TriggerGroup";
+
+    private boolean enabled = true;
 
 	private int triggerOffset = 0;
 	
@@ -25,6 +27,14 @@ public class TriggerGroup implements Observer {
     /*********************************/
     /******** setter & getter ********/
     /*********************************/
+    
+    public String getTriggerGroupName() {
+        return triggerGroupName;
+    }
+
+    public void setTriggerGroupName(String triggerGroupName) {
+        this.triggerGroupName = triggerGroupName;
+    }
 	
 	public boolean isEnabled() {
 		return enabled;
@@ -53,6 +63,11 @@ public class TriggerGroup implements Observer {
     /*********************************/
     /******** override method ********/
     /*********************************/
+    
+    @Override
+    public String toString() {
+        return triggerGroupName;
+    }
 
 	@Override
 	public void update(Observable observable, Object object) {
@@ -61,7 +76,7 @@ public class TriggerGroup implements Observer {
 			triggerTimeStampList.add(triggerChannel.getReleaseTimeStamp());
 		}
 	}
-	
+
     /*********************************/
     /********* public method *********/
     /*********************************/
@@ -86,9 +101,9 @@ public class TriggerGroup implements Observer {
 		return 0;
 	}
 	
-	public void addTrigger(TriggerChannel trigger) {
-		trigger.addObserver(this);
-		triggerChannelList.add(trigger);
+	public void addTriggerChannel(TriggerChannel triggerChannel) {
+		triggerChannel.addObserver(this);
+		triggerChannelList.add(triggerChannel);
 	}
 
 	public void removeTrigger(TriggerChannel remove) {

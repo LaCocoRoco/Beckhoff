@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.event.DocumentEvent;
@@ -80,9 +81,9 @@ public class ChannelProperties extends JPanel {
         Border channelNameInnerBorder = BorderFactory.createEmptyBorder(0, 4, 0, 4);
         CompoundBorder channelNameCompoundBorder = BorderFactory.createCompoundBorder(channelNameOuterBorder, channelNameInnerBorder);
 
+        channelNameTextField.setText(channel.getChannelName());
         channelNameTextField.setBorder(channelNameCompoundBorder);
         channelNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));       
-        channelNameTextField.setText(channel.getChannelName());
         channelNameTextField.getDocument().addDocumentListener(channelNameTextFieldDocumentListener); 
         channelNameTextField.setBounds(15, 25, 140, 25);
 
@@ -121,5 +122,29 @@ public class ChannelProperties extends JPanel {
 
     public void setChannel(Channel channel) {
         this.channel = channel;
-    }       
+    }
+    
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
+
+    public void reloadChannel() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                reload();
+            }
+        });
+    }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+ 
+    private void reload() {
+        // reload common properties
+        channelNameTextField.getDocument().removeDocumentListener(channelNameTextFieldDocumentListener);
+        channelNameTextField.setText(channel.getChannelName());   
+        channelNameTextField.getDocument().addDocumentListener(channelNameTextFieldDocumentListener);
+    }    
 }

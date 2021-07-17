@@ -39,6 +39,8 @@ import twincat.scope.Scope;
 import twincat.scope.TriggerChannel;
 import twincat.scope.TriggerGroup;
 
+// TODO : remove elements from list
+
 public class ScopeTree extends JPanel {
     private static final long serialVersionUID = 1L;
 
@@ -53,9 +55,11 @@ public class ScopeTree extends JPanel {
     /*********************************/
 
     private Propertie card = Propertie.EMPTY;
-    
+
     private final JTree browseTree = new JTree();
 
+    private final List<Scope> scopeList = new ArrayList<Scope>();
+    
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
     /*********************************/
@@ -90,7 +94,7 @@ public class ScopeTree extends JPanel {
         }
     };
 
-    private final ActionListener addTriggerActionListener = new ActionListener() {
+    private final ActionListener addTriggerChannelActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             addTriggerChannelTreeNode();
@@ -107,7 +111,7 @@ public class ScopeTree extends JPanel {
     private final ActionListener deleteButtonActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            deleteTreeNode();
+            removeTreeNode();
         }
     };
 
@@ -121,9 +125,9 @@ public class ScopeTree extends JPanel {
     private final MouseAdapter browseTreeMouseAdapter = new MouseAdapter() {
         public void mousePressed(MouseEvent mouseEvent) {
             TreePath treePath = browseTree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
-            
+
             if (treePath != null) {
-                treeNodeSelectedSingleClick(treePath);      
+                treeNodeSelectedSingleClick(treePath);
             }
         }
     };
@@ -137,7 +141,7 @@ public class ScopeTree extends JPanel {
         @Override
         public void keyPressed(KeyEvent keyEvent) {
             if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
-                deleteTreeNode(); 
+                removeTreeNode();
             }
         }
 
@@ -146,7 +150,7 @@ public class ScopeTree extends JPanel {
             /* empty */
         }
     };
-    
+
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -195,11 +199,11 @@ public class ScopeTree extends JPanel {
         addChannelButton.setFocusable(false);
         addChannelButton.addActionListener(addChannelActionListener);
 
-        JButton addTriggerButton = new JButton();
-        addTriggerButton.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_ADD_TRIGGER));
-        addTriggerButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_TRIGGER)));
-        addTriggerButton.setFocusable(false);
-        addTriggerButton.addActionListener(addTriggerActionListener);
+        JButton addTriggerChannelButton = new JButton();
+        addTriggerChannelButton.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_ADD_TRIGGER));
+        addTriggerChannelButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_TRIGGER_CHANNEL)));
+        addTriggerChannelButton.setFocusable(false);
+        addTriggerChannelButton.addActionListener(addTriggerChannelActionListener);
 
         JButton searchButton = new JButton();
         searchButton.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_SEARCH));
@@ -225,7 +229,7 @@ public class ScopeTree extends JPanel {
         browserToolBar.addSeparator(new Dimension(5, 0));
         browserToolBar.add(addChannelButton);
         browserToolBar.addSeparator(new Dimension(5, 0));
-        browserToolBar.add(addTriggerButton);
+        browserToolBar.add(addTriggerChannelButton);
         browserToolBar.addSeparator(new Dimension(30, 0));
         browserToolBar.add(searchButton);
         browserToolBar.addSeparator(new Dimension(30, 0));
@@ -257,19 +261,19 @@ public class ScopeTree extends JPanel {
             if (userObject instanceof Channel) {
                 Channel Channel = (Channel) userObject;
                 xref.channelProperties.setChannel(Channel);
-            } 
+            }
         }
-        
+
         // set channel acquisition
         ScopeTreeNode channelTreeNode = getChannelTreeNode();
         Object userObject = channelTreeNode.getUserObject();
         Channel channel = (Channel) userObject;
         channel.setAcquisition(acquisition);
         channel.setChannelName(acquisition.getChannelName());
-        
+
         // expand path
-        expandTreeNode(channelTreeNode);
-        
+        expandAndSelectTreeNode(channelTreeNode);
+
         // display scope tree view
         xref.treePanel.setCard(Tree.SCOPE);
         xref.propertiesPanel.setCard(Propertie.CHANNEL);
@@ -281,10 +285,10 @@ public class ScopeTree extends JPanel {
 
         // refresh selected tree node
         if (selectedTreeNode != null) {
-            expandTreeNode(selectedTreeNode);
+            expandAndSelectTreeNode(selectedTreeNode);
         }
-    }   
-    
+    }
+
     /*********************************/
     /******** private method *********/
     /*********************************/
@@ -292,7 +296,7 @@ public class ScopeTree extends JPanel {
     private void searchSymbolAcquisition() {
         // get selected tree node
         ScopeTreeNode selectedTreeNode = (ScopeTreeNode) browseTree.getLastSelectedPathComponent();
-        
+
         if (selectedTreeNode != null) {
             Object userObject = selectedTreeNode.getUserObject();
 
@@ -300,12 +304,12 @@ public class ScopeTree extends JPanel {
                 // use channel acquisition data
                 Channel channel = (Channel) userObject;
                 xref.acquisitionProperties.cloneAcquisition(channel.getAcquisition());
-            } 
+            }
         } else {
             // use new acquisition data
             xref.acquisitionProperties.cloneAcquisition(new Acquisition());
         }
-        
+
         // display symbol acquisition view
         card = xref.propertiesPanel.getCard();
         xref.acquisitionProperties.reloadAcquisition();
@@ -313,7 +317,7 @@ public class ScopeTree extends JPanel {
         xref.propertiesPanel.setCard(Propertie.ACQUISITION);
     }
 
-    private void treeNodeSelectedSingleClick(TreePath treePath) {  
+    private void treeNodeSelectedSingleClick(TreePath treePath) {
         ScopeTreeNode treeNode = (ScopeTreeNode) treePath.getLastPathComponent();
         Object userObject = treeNode.getUserObject();
 
@@ -337,28 +341,32 @@ public class ScopeTree extends JPanel {
             Axis axis = (Axis) userObject;
             xref.propertiesPanel.setCard(Propertie.AXIS);
             xref.axisProperties.setAxis(axis);
+            xref.axisProperties.reloadAxis();
         }
 
         if (userObject instanceof Channel) {
             Channel Channel = (Channel) userObject;
             xref.propertiesPanel.setCard(Propertie.CHANNEL);
             xref.channelProperties.setChannel(Channel);
+            xref.channelProperties.reloadChannel();
         }
 
         if (userObject instanceof TriggerGroup) {
             TriggerGroup tgriggerGroup = (TriggerGroup) userObject;
             xref.propertiesPanel.setCard(Propertie.TRIGGER_GROUP);
             xref.triggerGroupProperties.setTriggerGroup(tgriggerGroup);
+            xref.triggerGroupProperties.reloadTriggerGroup();
         }
 
         if (userObject instanceof TriggerChannel) {
             TriggerChannel triggerChannel = (TriggerChannel) userObject;
             xref.propertiesPanel.setCard(Propertie.TRIGGER_CHANNEL);
             xref.triggerChannelProperties.setTriggerChannel(triggerChannel);
+            xref.triggerChannelProperties.reloadTriggerChannel();
         }
     }
 
-    private void expandTreeNode(ScopeTreeNode treeNode) {
+    private void expandAndSelectTreeNode(ScopeTreeNode treeNode) {
         // expand tree node
         TreePath treePath = new TreePath(treeNode.getPath());
         browseTree.setSelectionPath(treePath);
@@ -387,41 +395,92 @@ public class ScopeTree extends JPanel {
         treeNodeSelectedSingleClick(treePath);
     }
 
-    private void deleteTreeNode() {
+    private void removeTreeNode() {
         // get selected tree node
         ScopeTreeNode selectedTreeNode = (ScopeTreeNode) browseTree.getLastSelectedPathComponent();
 
-        // remove selected tree node
         if (selectedTreeNode != null) {
-            ScopeTreeNode selectedParentTreeNode = (ScopeTreeNode) selectedTreeNode.getParent();
-            selectedTreeNode.removeFromParent();
+            Object selectedObject = selectedTreeNode.getUserObject();
             
-            if (selectedParentTreeNode != null) {
-                expandTreeNode(selectedParentTreeNode);       
+            if (selectedObject instanceof Scope) {
+                selectedTreeNode = removeScopeTreeNode(selectedTreeNode);   
             }
+            
+            if (selectedObject instanceof Chart) {
+                selectedTreeNode = removeChartTreeNode(selectedTreeNode);
+            }
+
+            if (selectedObject instanceof Axis) {
+                selectedTreeNode = removeAxisTreeNode(selectedTreeNode);
+            }
+
+            if (selectedObject instanceof TriggerGroup) {
+                selectedTreeNode = removeTriggerGroupTreeNode(selectedTreeNode);
+            }
+            
+            if (selectedObject instanceof TriggerChannel) {
+                selectedTreeNode = removeTriggerChannelTreeNode(selectedTreeNode);
+                
+                // remove trigger group if empty
+                if (selectedTreeNode.getChildCount() == 0)  {
+                    selectedTreeNode = removeTriggerGroupTreeNode(selectedTreeNode);
+                }
+            }
+          
+            if (selectedObject instanceof Channel) {
+                Channel channel = (Channel) selectedObject;
+                TreePath treePath = browseTree.getSelectionPath();
+                Object[] objectArray = (Object[]) treePath.getPath();
+
+                // lookup for trigger channel
+                for (Object object : objectArray) {
+                    ScopeTreeNode chartTreeNode = (ScopeTreeNode) object;
+                    Object chartUserObject = chartTreeNode.getUserObject();
+   
+                    // get chart from channel
+                    if (chartUserObject instanceof Chart) {
+                        for (int i = 0; i < chartTreeNode.getChildCount(); i++) {
+                            ScopeTreeNode triggerGroupTreeNode = (ScopeTreeNode) chartTreeNode.getChildAt(i);
+                            Object triggerGroupUserObject = triggerGroupTreeNode.getUserObject();
+
+                            // get trigger group from chart
+                            if (triggerGroupUserObject instanceof TriggerGroup) {
+                                for (int x = 0; x < triggerGroupTreeNode.getChildCount(); x++) {
+                                    ScopeTreeNode triggerChannelTreeNode = (ScopeTreeNode) triggerGroupTreeNode.getChildAt(x);
+                                    Object triggerChannelUserObject = triggerChannelTreeNode.getUserObject();
+                                    TriggerChannel triggerChannel = (TriggerChannel) triggerChannelUserObject;
+                                    
+                                    // remove trigger channel
+                                    if (triggerChannel.getChannel().equals(channel)) {
+                                        removeTriggerChannelTreeNode(triggerChannelTreeNode);
+                                        break;
+                                    }     
+                                }
+                            }
+                            
+                            // remove trigger group if empty
+                            if (triggerGroupTreeNode.getChildCount() == 0)  {
+                                removeTriggerGroupTreeNode(triggerGroupTreeNode);
+                            }
+                        }
+                    }
+                }
+                
+                // remove channel
+                selectedTreeNode = removeChannelTreeNode(selectedTreeNode);
+            }
+
+            // expand tree node
+            if (selectedTreeNode != null) {
+                expandAndSelectTreeNode(selectedTreeNode); 
+            }
+            
+            // display nothing if tree is empty
+            ScopeTreeNode rootTreeNode = (ScopeTreeNode) browseTree.getModel().getRoot();
+            if (rootTreeNode.getChildCount() == 0) {
+                xref.propertiesPanel.setCard(Propertie.EMPTY);
+            }   
         }
-        
-        // nothing to display
-        ScopeTreeNode rootTreeNode = (ScopeTreeNode) browseTree.getModel().getRoot();
-        if (rootTreeNode.getChildCount() == 0) {
-            xref.propertiesPanel.setCard(Propertie.EMPTY);
-        }
-    }
-
-    private ScopeTreeNode addScopeTreeNode() {
-        // add scope
-        Scope scope = new Scope();
-
-        // add chart node
-        ScopeTreeModel treeModel = (ScopeTreeModel) browseTree.getModel();
-        ScopeTreeNode rootTreeNode = (ScopeTreeNode) treeModel.getRoot();
-        ScopeTreeNode scopeTreeNode = new ScopeTreeNode();
-        scopeTreeNode.setUserObject(scope);
-        rootTreeNode.add(scopeTreeNode);
-
-        // expand path
-        expandTreeNode(scopeTreeNode);
-        return scopeTreeNode;
     }
 
     private ScopeTreeNode getScopeTreeNode() {
@@ -431,10 +490,12 @@ public class ScopeTree extends JPanel {
         if (selectedTreePath != null) {
             Object[] selectedObjectArray = (Object[]) selectedTreePath.getPath();
 
+            // loop through tree path
             for (Object selectedObject : selectedObjectArray) {
                 ScopeTreeNode selectedTreeNode = (ScopeTreeNode) selectedObject;
                 Object userObject = selectedTreeNode.getUserObject();
 
+                // get scope
                 if (userObject instanceof Scope) {
                     return selectedTreeNode;
                 }
@@ -445,20 +506,30 @@ public class ScopeTree extends JPanel {
         ScopeTreeNode scopeTreeNode = addScopeTreeNode();
         return scopeTreeNode;
     }
-
-    private ScopeTreeNode addChartTreeNode() {
-        // add chart
-        Chart chart = new Chart();
-
+    
+    private ScopeTreeNode addScopeTreeNode() {
+        // initialize scope
+        Scope scope = new Scope();
+        
         // add scope node
-        ScopeTreeNode scopeTreeNode = getScopeTreeNode();
-        ScopeTreeNode chartTreeNode = new ScopeTreeNode();
-        chartTreeNode.setUserObject(chart);
-        scopeTreeNode.add(chartTreeNode);
-
+        ScopeTreeModel treeModel = (ScopeTreeModel) browseTree.getModel();
+        ScopeTreeNode rootTreeNode = (ScopeTreeNode) treeModel.getRoot();
+        ScopeTreeNode scopeTreeNode = new ScopeTreeNode();
+        scopeTreeNode.setUserObject(scope);
+        rootTreeNode.add(scopeTreeNode);
+        
+        // add scope to list
+        scopeList.add(scope);
+        
         // expand path
-        expandTreeNode(chartTreeNode);
-        return chartTreeNode;
+        expandAndSelectTreeNode(scopeTreeNode);
+        return scopeTreeNode;
+    }
+
+    private ScopeTreeNode removeScopeTreeNode(ScopeTreeNode treeNode) {
+        ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
+        treeNode.removeFromParent();
+        return parentTreeNode;    
     }
 
     private ScopeTreeNode getChartTreeNode() {
@@ -468,10 +539,12 @@ public class ScopeTree extends JPanel {
         if (selectedTreePath != null) {
             Object[] selectedObjectArray = (Object[]) selectedTreePath.getPath();
 
+            // loop through tree path
             for (Object selectedObject : selectedObjectArray) {
                 ScopeTreeNode selectedTreeNode = (ScopeTreeNode) selectedObject;
                 Object userObject = selectedTreeNode.getUserObject();
 
+                // get chart
                 if (userObject instanceof Chart) {
                     return selectedTreeNode;
                 }
@@ -482,21 +555,30 @@ public class ScopeTree extends JPanel {
         ScopeTreeNode chartTreeNode = addChartTreeNode();
         return chartTreeNode;
     }
+    
+    private ScopeTreeNode addChartTreeNode() {
+        // initialize chart
+        Chart chart = new Chart();
 
-    private ScopeTreeNode addAxisTreeNode() {
-        // add chart
-        Axis axis = new Axis();
-        axis.setAxisColor(Utilities.getRandomColor());
+        // add chart node
+        ScopeTreeNode scopeTreeNode = getScopeTreeNode();
+        ScopeTreeNode chartTreeNode = new ScopeTreeNode();
+        chartTreeNode.setUserObject(chart);
+        scopeTreeNode.add(chartTreeNode);
+
+        // add chart to scope
+        Scope scope = (Scope) scopeTreeNode.getUserObject();
+        scope.addChart(chart);
         
-        // add scope node
-        ScopeTreeNode chartTreeNode = getChartTreeNode();
-        ScopeTreeNode axisTreeNode = new ScopeTreeNode();
-        axisTreeNode.setUserObject(axis);
-        chartTreeNode.add(axisTreeNode);
-
         // expand path
-        expandTreeNode(axisTreeNode);
-        return axisTreeNode;
+        expandAndSelectTreeNode(chartTreeNode);
+        return chartTreeNode;
+    }
+
+    private ScopeTreeNode removeChartTreeNode(ScopeTreeNode treeNode) {
+        ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
+        treeNode.removeFromParent();
+        return parentTreeNode;    
     }
 
     private ScopeTreeNode getAxisTreeNode() {
@@ -506,10 +588,12 @@ public class ScopeTree extends JPanel {
         if (selectedTreePath != null) {
             Object[] selectedObjectArray = (Object[]) selectedTreePath.getPath();
 
+            // loop through tree path
             for (Object selectedObject : selectedObjectArray) {
                 ScopeTreeNode selectedTreeNode = (ScopeTreeNode) selectedObject;
                 Object userObject = selectedTreeNode.getUserObject();
 
+                // get axis
                 if (userObject instanceof Axis) {
                     return selectedTreeNode;
                 }
@@ -520,21 +604,31 @@ public class ScopeTree extends JPanel {
         ScopeTreeNode chartTreeNode = addAxisTreeNode();
         return chartTreeNode;
     }
+    
+    private ScopeTreeNode addAxisTreeNode() {
+        // initialize axis
+        Axis axis = new Axis();
+        axis.setAxisColor(Utilities.getRandomColor());
 
-    private ScopeTreeNode addChannelTreeNode() {
-        // add chart
-        Channel channel = new Channel();
-        channel.setLineColor(Utilities.getRandomColor());
+        // add axis node
+        ScopeTreeNode chartTreeNode = getChartTreeNode();
+        ScopeTreeNode axisTreeNode = new ScopeTreeNode();
+        axisTreeNode.setUserObject(axis);
+        chartTreeNode.add(axisTreeNode);
 
-        // add scope node
-        ScopeTreeNode axisTreeNode = getAxisTreeNode();
-        ScopeTreeNode channelTreeNode = new ScopeTreeNode();
-        channelTreeNode.setUserObject(channel);
-        axisTreeNode.add(channelTreeNode);
-
+        // add axis to chart
+        Chart chart = (Chart) chartTreeNode.getUserObject();
+        chart.addAxis(axis);
+        
         // expand path
-        expandTreeNode(channelTreeNode);
-        return channelTreeNode;
+        expandAndSelectTreeNode(axisTreeNode);
+        return axisTreeNode;
+    }
+
+    private ScopeTreeNode removeAxisTreeNode(ScopeTreeNode treeNode) {
+        ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
+        treeNode.removeFromParent();
+        return parentTreeNode;    
     }
 
     private ScopeTreeNode getChannelTreeNode() {
@@ -544,10 +638,12 @@ public class ScopeTree extends JPanel {
         if (selectedTreePath != null) {
             Object[] selectedObjectArray = (Object[]) selectedTreePath.getPath();
 
+            // loop through tree path
             for (Object selectedObject : selectedObjectArray) {
                 ScopeTreeNode selectedTreeNode = (ScopeTreeNode) selectedObject;
                 Object userObject = selectedTreeNode.getUserObject();
 
+                // get channel
                 if (userObject instanceof Channel) {
                     return selectedTreeNode;
                 }
@@ -558,14 +654,116 @@ public class ScopeTree extends JPanel {
         ScopeTreeNode channelTreeNode = addChannelTreeNode();
         return channelTreeNode;
     }
-    
-    // TODO : trigger to trigger channel!
-    
-    private ScopeTreeNode addTriggerChannelTreeNode() {
-        return null;
+ 
+    private ScopeTreeNode addChannelTreeNode() {
+        // initialize channel
+        Channel channel = new Channel();
+        channel.setLineColor(Utilities.getRandomColor());
+
+        // add channel node
+        ScopeTreeNode axisTreeNode = getAxisTreeNode();
+        ScopeTreeNode channelTreeNode = new ScopeTreeNode();
+        channelTreeNode.setUserObject(channel);
+        axisTreeNode.add(channelTreeNode);
+
+        // add axis to chart
+        Axis axis = (Axis) axisTreeNode.getUserObject();
+        axis.addChannel(channel);
+               
+        // expand path
+        expandAndSelectTreeNode(channelTreeNode);
+        return channelTreeNode;
     }
-    
-    private ScopeTreeNode getTriggerChannelTreeNode() {
-        return null;
+
+    private ScopeTreeNode removeChannelTreeNode(ScopeTreeNode treeNode) {
+        ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
+        treeNode.removeFromParent();
+        return parentTreeNode;  
     }
+
+    private void addTriggerChannelTreeNode() {
+        // get selected tree node
+        ScopeTreeNode selectedTreeNode = (ScopeTreeNode) browseTree.getLastSelectedPathComponent();
+
+        if (selectedTreeNode != null) {
+            Object selectedUserObject = selectedTreeNode.getUserObject();
+
+            // is channel
+            if (selectedUserObject instanceof Channel) {
+                Channel channel = (Channel) selectedUserObject;
+                TreePath treePath = browseTree.getSelectionPath();
+                Object[] objectArray = (Object[]) treePath.getPath();
+
+                // loop through tree path
+                for (Object object : objectArray) {
+                    ScopeTreeNode treeNode = (ScopeTreeNode) object;
+                    Object userObject = treeNode.getUserObject();
+
+                    // get chart from channel
+                    if (userObject instanceof Chart) {
+                        Chart chart = (Chart) userObject;
+                        ScopeTreeNode triggerGroupTreeNode = new ScopeTreeNode();
+
+                        for (int i = 0; i < treeNode.getChildCount(); i++) {
+                            ScopeTreeNode childTreeNode = (ScopeTreeNode) treeNode.getChildAt(i);
+                            Object childUserObject = childTreeNode.getUserObject();
+
+                            if (childUserObject instanceof TriggerGroup) {
+                                // use existing trigger group tree node
+                                triggerGroupTreeNode = childTreeNode;
+                                break;
+                            }
+                        }
+
+                        if (triggerGroupTreeNode.getUserObject() == null) {
+                            // initialize trigger group
+                            TriggerGroup triggerGroup = new TriggerGroup();
+                            
+                            // add trigger group node
+                            triggerGroupTreeNode.setUserObject(triggerGroup);
+                            treeNode.insert(triggerGroupTreeNode, 0);
+                            
+                            // add trigger group to chart
+                            chart.addTriggerGroup(triggerGroup);
+                        }
+
+                        for (int i = 0; i < triggerGroupTreeNode.getChildCount(); i++) {
+                            ScopeTreeNode childTreeNode = (ScopeTreeNode) triggerGroupTreeNode.getChildAt(i);
+                            TriggerChannel triggerChannel = (TriggerChannel) childTreeNode.getUserObject();
+
+                            // do not add same trigger channel twice
+                            if (triggerChannel.getChannel().equals(channel)) {
+                                return;
+                            } 
+                        }
+
+                        // initialize trigger channel
+                        TriggerChannel triggerChannel = new TriggerChannel(channel);
+                        
+                        // add trigger channel node
+                        ScopeTreeNode triggerChannelTreeNode = new ScopeTreeNode();
+                        triggerChannelTreeNode.setUserObject(triggerChannel);
+                        triggerGroupTreeNode.add(triggerChannelTreeNode);
+                        expandAndSelectTreeNode(triggerChannelTreeNode);
+                        
+                        // add trigger channel
+                        TriggerGroup triggerGroup = chart.getTriggerGroupList().get(0);
+                        triggerGroup.addTriggerChannel(triggerChannel);
+                    }
+                }
+            }
+        }
+    }
+
+    private ScopeTreeNode removeTriggerChannelTreeNode(ScopeTreeNode treeNode) {
+        ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
+        treeNode.removeFromParent();
+        return parentTreeNode;
+    }
+       
+    private ScopeTreeNode removeTriggerGroupTreeNode(ScopeTreeNode treeNode)  {
+        ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
+        treeNode.removeFromParent();
+        return parentTreeNode;    
+    } 
 }

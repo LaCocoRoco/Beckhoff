@@ -24,6 +24,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.basic.BasicComboBoxUI;
@@ -258,11 +259,23 @@ public class AcquisitionProperties extends JPanel {
         this.acquisition.setSymbolBased(acquisition.isSymbolBased());
         this.acquisition.setSymbolName(acquisition.getSymbolName());
         this.acquisition.setSampleTime(acquisition.getSampleTime());
-        
-        System.out.println("Test: " + acquisition.getSymbolName());
     }
 
     public void reloadAcquisition() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                reload();
+            }
+        });
+    }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+ 
+    private void reload() {
+        // reload target properties
         for (int i = 0; i < targetSystemComboBox.getItemCount(); i++) {
             String system = targetSystemComboBox.getItemAt(i);
 
@@ -279,11 +292,7 @@ public class AcquisitionProperties extends JPanel {
             }
         }
     }
-
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
-   
+    
     private void buildTargetComboBoxItemList() {
         List<Route> routeList = routeLoader.loadRouteList();
         List<String> systemList = new ArrayList<String>();

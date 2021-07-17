@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import twincat.Resources;
 import twincat.java.ScrollablePanel;
@@ -31,21 +32,20 @@ public class TriggerChannelProperties extends JPanel {
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
     /*********************************/
+    /****** predefined variable ******/
+    /*********************************/
+    
+    /*********************************/
     /********** constructor **********/
     /*********************************/
 
     public TriggerChannelProperties(XReference xref) {
-        
-        
-        
-        
-        
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new WrapLayout(FlowLayout.LEADING));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
-
+        
         JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
@@ -70,5 +70,26 @@ public class TriggerChannelProperties extends JPanel {
 
     public void setTriggerChannel(TriggerChannel triggerChannel) {
         this.triggerChannel = triggerChannel;
-    }        
+    }
+
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
+
+    public void reloadTriggerChannel() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                reload();
+            }
+        });
+    }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+
+    private void reload() {
+
+    }    
 }

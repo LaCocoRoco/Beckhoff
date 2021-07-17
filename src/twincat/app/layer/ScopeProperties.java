@@ -42,7 +42,7 @@ public class ScopeProperties extends JPanel {
     /*********************************/
 
     private final JTextField scopeNameTextField = new JTextField();
-    
+
     private final JTextField recordTimeTextField = new JTextField();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
@@ -86,20 +86,20 @@ public class ScopeProperties extends JPanel {
                             } else {
                                 builder.insert(caret, "0");
                                 input = builder.toString();
-                            }     
+                            }
                         }
-                    }   
-                    
-                    // format time 
+                    }
+
+                    // format time
                     String formatedInput = Scope.timeFormaterParse(input);
-                 
+
                     // update record time
                     if (formatedInput.length() > Scope.TIME_FORMAT_TEMPLATE.length()) {
                         time = formatedInput.substring(1);
                     } else {
                         time = formatedInput;
                     }
-                    
+
                     // set record time
                     scope.setRecordTime(time);
                     recordTimeTextField.setText(time);
@@ -156,23 +156,23 @@ public class ScopeProperties extends JPanel {
         Border scopeNameInnerBorder = BorderFactory.createEmptyBorder(0, 4, 0, 4);
         CompoundBorder scopeNameCompoundBorder = BorderFactory.createCompoundBorder(scopeNameOuterBorder, scopeNameInnerBorder);
 
-        scopeNameTextField.setBorder(scopeNameCompoundBorder);
-        scopeNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));       
         scopeNameTextField.setText(scope.getScopeName());
-        scopeNameTextField.getDocument().addDocumentListener(scopeNameTextFieldDocumentListener); 
+        scopeNameTextField.setBorder(scopeNameCompoundBorder);
+        scopeNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        scopeNameTextField.getDocument().addDocumentListener(scopeNameTextFieldDocumentListener);
         scopeNameTextField.setBounds(15, 25, 140, 25);
 
         JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
         commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 70));
         commonPanel.add(scopeNameTextField);
 
-        // record time properties
+        // record mode properties
         recordTimeTextField.setText(Scope.TIME_FORMAT_TEMPLATE);
         recordTimeTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         recordTimeTextField.setHorizontalAlignment(JTextField.CENTER);
         recordTimeTextField.getDocument().addDocumentListener(recordTimeTextFieldDocumentListener);
         recordTimeTextField.setBounds(10, 25, 100, 25);
-        
+
         JPanel recordTimePanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_RECORD_TIME));
         recordTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 70));
         recordTimePanel.add(recordTimeTextField);
@@ -192,7 +192,7 @@ public class ScopeProperties extends JPanel {
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-        
+
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this.add(textHeader, BorderLayout.PAGE_START);
@@ -215,7 +215,28 @@ public class ScopeProperties extends JPanel {
     /********* public method *********/
     /*********************************/
 
-    public void reloadScope()  {
+    public void reloadScope() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                reload();
+            }
+        });
+    }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+
+    private void reload() {
+        // reload common properties
+        if (!scopeNameTextField.getText().equals(scope.getScopeName())) {
+            scopeNameTextField.getDocument().removeDocumentListener(scopeNameTextFieldDocumentListener);
+            scopeNameTextField.setText(scope.getScopeName());
+            scopeNameTextField.getDocument().addDocumentListener(scopeNameTextFieldDocumentListener);         
+        }
+
+        // reload record mode properties
         recordTimeTextField.setText(Scope.timeFormaterToString(scope.getRecordTime()));
     }
 }

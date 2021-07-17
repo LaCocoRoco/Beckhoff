@@ -35,7 +35,9 @@ public class ScopeTreeRenderer extends DefaultTreeCellRenderer {
     
     private static final ImageIcon ICON_CHANNEL = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_CHANNEL, 0.8));    
     
-    private static final ImageIcon ICON_GROUP = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_GROUP, 0.8));    
+    private static final ImageIcon ICON_TRIGGER_GROUP = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_TRIGGER_GROUP, 0.8));    
+
+    private static final ImageIcon ICON_TRIGGER_CHANNEL = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_TRIGGER_CHANNEL, 0.8));   
 
     /*********************************/
     /******** override method ********/
@@ -49,17 +51,30 @@ public class ScopeTreeRenderer extends DefaultTreeCellRenderer {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
         Object userObject = node.getUserObject();
 
+        // remove trailing space
+        if (this.getText().length() > 0) {
+            if (this.getText().charAt(0) == ' ') {
+                this.setText(this.getText().trim());
+            }
+        }
+        
+        // placeholder
+        if (this.getText().length() == 0) {
+            this.setText(" ");
+        }
+        
         if (userObject instanceof TriggerChannel) {
-            this.setIcon(ICON_CHANNEL);
+            TriggerChannel triggerChannel = (TriggerChannel) userObject;
+            this.setForeground(triggerChannel.getChannel().getLineColor());
+            this.setIcon(ICON_TRIGGER_CHANNEL);
         }
         
         if (userObject instanceof TriggerGroup) {
-            this.setIcon(ICON_GROUP);
+            this.setIcon(ICON_TRIGGER_GROUP);
         }
 
         if (userObject instanceof Scope) {
             this.setIcon(ICON_SCOPE);
-
         }
         
         if (userObject instanceof Chart) {

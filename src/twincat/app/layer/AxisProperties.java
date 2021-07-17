@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.event.DocumentEvent;
@@ -43,7 +44,9 @@ public class AxisProperties extends JPanel {
     /****** local final variable *****/
     /*********************************/
 
-    private final JTextField aixsNameTextField = new JTextField();
+    private final JCheckBox axisNameCheckBox = new JCheckBox();
+    
+    private final JTextField axisNameTextField = new JTextField();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
@@ -54,19 +57,19 @@ public class AxisProperties extends JPanel {
     private final DocumentListener axisNameTextFieldDocumentListener = new DocumentListener() {
         @Override
         public void insertUpdate(DocumentEvent documentEvent) {
-            axis.setAxisName(aixsNameTextField.getText());
+            axis.setAxisName(axisNameTextField.getText());
             xref.scopeTree.reloadSelectedTreeNode();
         }
 
         @Override
         public void removeUpdate(DocumentEvent documentEvent) {
-            axis.setAxisName(aixsNameTextField.getText());
+            axis.setAxisName(axisNameTextField.getText());
             xref.scopeTree.reloadSelectedTreeNode();
         }
 
         @Override
         public void changedUpdate(DocumentEvent documentEvent) {
-            axis.setAxisName(aixsNameTextField.getText());
+            axis.setAxisName(axisNameTextField.getText());
             xref.scopeTree.reloadSelectedTreeNode();
         }
     };
@@ -90,25 +93,26 @@ public class AxisProperties extends JPanel {
         this.xref = xref;
 
         // common properties
-        JCheckBox axisNameCheckBox = new JCheckBox(languageBundle.getString(Resources.TEXT_COMMON_SHOW_NAME));
+        axisNameCheckBox.setSelected(axis.isAxisNameVisible());
+        axisNameCheckBox.setText(languageBundle.getString(Resources.TEXT_COMMON_SHOW_NAME));
         axisNameCheckBox.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
         axisNameCheckBox.addItemListener(axisNameCheckBoxItemListener);
         axisNameCheckBox.setFocusPainted(false);
         axisNameCheckBox.setBounds(20, 55, 140, 20);
-        
-        Border axisNameOuterBorder = aixsNameTextField.getBorder();
+
+        Border axisNameOuterBorder = axisNameTextField.getBorder();
         Border axisNameInnerBorder = BorderFactory.createEmptyBorder(0, 4, 0, 4);
         CompoundBorder axisNameCompoundBorder = BorderFactory.createCompoundBorder(axisNameOuterBorder, axisNameInnerBorder);
 
-        aixsNameTextField.setBorder(axisNameCompoundBorder);
-        aixsNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        aixsNameTextField.setText(axis.getAxisName());
-        aixsNameTextField.getDocument().addDocumentListener(axisNameTextFieldDocumentListener);
-        aixsNameTextField.setBounds(15, 25, 140, 25);
+        axisNameTextField.setText(axis.getAxisName());
+        axisNameTextField.setBorder(axisNameCompoundBorder);
+        axisNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        axisNameTextField.getDocument().addDocumentListener(axisNameTextFieldDocumentListener);
+        axisNameTextField.setBounds(15, 25, 140, 25);
 
         JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
         commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 90));
-        commonPanel.add(aixsNameTextField);
+        commonPanel.add(axisNameTextField);
         commonPanel.add(axisNameCheckBox);
 
         // default content
@@ -120,7 +124,7 @@ public class AxisProperties extends JPanel {
 
         JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
-        scrollPanel.setViewportView(contentPanel);  
+        scrollPanel.setViewportView(contentPanel);
 
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
@@ -143,4 +147,32 @@ public class AxisProperties extends JPanel {
     public void setAxis(Axis axis) {
         this.axis = axis;
     }
+
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
+
+    public void reloadAxis() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                reload();
+            }
+        });
+    }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+ 
+    private void reload() {
+        // reload common properties
+        axisNameCheckBox.setSelected(axis.isAxisNameVisible());
+        
+        if (!axisNameTextField.getText().equals(axis.getAxisName())) {
+            axisNameTextField.getDocument().removeDocumentListener(axisNameTextFieldDocumentListener);
+            axisNameTextField.setText(axis.getAxisName());
+            axisNameTextField.getDocument().addDocumentListener(axisNameTextFieldDocumentListener);  
+        }
+    }    
 }

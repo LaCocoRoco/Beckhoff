@@ -393,9 +393,9 @@ public class Chart extends Observable {
         }
     }
 
-    public void addTrigger(TriggerGroup trigger) {
+    public void addTriggerGroup(TriggerGroup triggerGroup) {
         this.refresh = true;
-        triggerGroupList.add(trigger);
+        triggerGroupList.add(triggerGroup);
     }
 
     public void removeTrigger(TriggerGroup triggerGroupRemove) {

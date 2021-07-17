@@ -22,64 +22,68 @@ public class Resources {
     /*********************************/
     /************* path **************/
     /*********************************/
+
+    public static final String PATH_PACKAGE_IMAGES = "resources/images/";
     
-    public static final String PATH_LANGUAGE = "resources/string/language";
+    public static final String PATH_PACKAGE_TEXT = "resources/text/";
+    
+    public static final String PATH_LANGUAGE = PATH_PACKAGE_TEXT + "language";
    
-    public static final String PATH_TEXT_ADS_INFO = "/resources/string/ads_info.txt";
+    public static final String PATH_TEXT_ADS_INFO = PATH_PACKAGE_TEXT + "ads_info.txt";
     
-    public static final String PATH_ICON_APP = "/resources/images/app.png";
+    public static final String PATH_ICON_APP = PATH_PACKAGE_IMAGES + "app.png";
 
-    public static final String PATH_ICON_CONTROL_PLAY = "/resources/images/control_play.png";
+    public static final String PATH_ICON_CONTROL_PLAY = PATH_PACKAGE_IMAGES + "control_play.png";
     
-    public static final String PATH_ICON_CONTROL_PAUSE = "/resources/images/control_pause.png";
+    public static final String PATH_ICON_CONTROL_PAUSE = PATH_PACKAGE_IMAGES + "control_pause.png";
      
-    public static final String PATH_ICON_CONTROL_STOP = "/resources/images/control_stop.png";
+    public static final String PATH_ICON_CONTROL_STOP = PATH_PACKAGE_IMAGES + "control_stop.png";
     
-    public static final String PATH_ICON_CONTROL_MINIMIZE = "/resources/images/control_minimize.png";
+    public static final String PATH_ICON_CONTROL_MINIMIZE = PATH_PACKAGE_IMAGES + "control_minimize.png";
     
-    public static final String PATH_ICON_NAVIGATE_SCOPE = "/resources/images/navigate_scope.png";
+    public static final String PATH_ICON_NAVIGATE_SCOPE = PATH_PACKAGE_IMAGES + "navigate_scope.png";
 
-    public static final String PATH_ICON_NAVIGATE_CHART = "/resources/images/navigate_chart.png";
+    public static final String PATH_ICON_NAVIGATE_CHART = PATH_PACKAGE_IMAGES + "navigate_chart.png";
     
-    public static final String PATH_ICON_NAVIGATE_AXIS = "/resources/images/navigate_axis.png";
+    public static final String PATH_ICON_NAVIGATE_AXIS = PATH_PACKAGE_IMAGES + "navigate_axis.png";
     
-    public static final String PATH_ICON_NAVIGATE_CHANNEL = "/resources/images/navigate_channel.png";
+    public static final String PATH_ICON_NAVIGATE_CHANNEL = PATH_PACKAGE_IMAGES + "navigate_channel.png";
     
-    public static final String PATH_ICON_NAVIGATE_GROUP = "/resources/images/navigate_group.png";
+    public static final String PATH_ICON_NAVIGATE_TRIGGER_GROUP = PATH_PACKAGE_IMAGES + "navigate_group.png";
     
-    public static final String PATH_ICON_NAVIGATE_TRIGGER = "/resources/images/navigate_trigger.png";
+    public static final String PATH_ICON_NAVIGATE_TRIGGER_CHANNEL = PATH_PACKAGE_IMAGES + "navigate_trigger.png";
 
-    public static final String PATH_ICON_NAVIGATE_DELETE = "/resources/images/navigate_delete.png";
+    public static final String PATH_ICON_NAVIGATE_DELETE = PATH_PACKAGE_IMAGES + "navigate_delete.png";
     
-    public static final String PATH_ICON_NAVIGATE_SEARCH = "/resources/images/navigate_search.png";
+    public static final String PATH_ICON_NAVIGATE_SEARCH = PATH_PACKAGE_IMAGES + "navigate_search.png";
     
-    public static final String PATH_ICON_FOLDER_OPEN = "/resources/images/folder_open.png";
+    public static final String PATH_ICON_FOLDER_OPEN = PATH_PACKAGE_IMAGES + "folder_open.png";
     
-    public static final String PATH_ICON_FOLDER_CLOSED = "/resources/images/folder_closed.png";
+    public static final String PATH_ICON_FOLDER_CLOSED = PATH_PACKAGE_IMAGES + "folder_closed.png";
     
-    public static final String PATH_ICON_DATATYPE_BIT = "/resources/images/datatype_bit.png";
+    public static final String PATH_ICON_DATATYPE_BIT = PATH_PACKAGE_IMAGES + "datatype_bit.png";
     
-    public static final String PATH_ICON_DATATYPE_INT8 = "/resources/images/datatype_int8.png";
+    public static final String PATH_ICON_DATATYPE_INT8 = PATH_PACKAGE_IMAGES + "datatype_int8.png";
     
-    public static final String PATH_ICON_DATATYPE_UINT8 = "/resources/images/datatype_uint8.png";
+    public static final String PATH_ICON_DATATYPE_UINT8 = PATH_PACKAGE_IMAGES + "datatype_uint8.png";
     
-    public static final String PATH_ICON_DATATYPE_INT16 = "/resources/images/datatype_int16.png";
+    public static final String PATH_ICON_DATATYPE_INT16 = PATH_PACKAGE_IMAGES + "datatype_int16.png";
     
-    public static final String PATH_ICON_DATATYPE_UINT16 = "/resources/images/datatype_uint16.png";
+    public static final String PATH_ICON_DATATYPE_UINT16 = PATH_PACKAGE_IMAGES + "datatype_uint16.png";
     
-    public static final String PATH_ICON_DATATYPE_INT32 = "/resources/images/datatype_int32.png";
+    public static final String PATH_ICON_DATATYPE_INT32 = PATH_PACKAGE_IMAGES + "datatype_int32.png";
     
-    public static final String PATH_ICON_DATATYPE_UINT32 = "/resources/images/datatype_uint32.png";
+    public static final String PATH_ICON_DATATYPE_UINT32 = PATH_PACKAGE_IMAGES + "datatype_uint32.png";
     
-    public static final String PATH_ICON_DATATYPE_REAL32 = "/resources/images/datatype_real32.png";
+    public static final String PATH_ICON_DATATYPE_REAL32 = PATH_PACKAGE_IMAGES + "datatype_real32.png";
     
-    public static final String PATH_ICON_DATATYPE_REAL64 = "/resources/images/datatype_real64.png";
+    public static final String PATH_ICON_DATATYPE_REAL64 = PATH_PACKAGE_IMAGES + "datatype_real64.png";
     
-    public static final String PATH_ICON_DATATYPE_STRING = "/resources/images/datatype_string.png";
+    public static final String PATH_ICON_DATATYPE_STRING = PATH_PACKAGE_IMAGES + "datatype_string.png";
           
-    public static final String PATH_ICON_DATATYPE_BIGTYPE = "/resources/images/datatype_bigtype.png";
+    public static final String PATH_ICON_DATATYPE_BIGTYPE = PATH_PACKAGE_IMAGES + "datatype_bigtype.png";
     
-    public static final String PATH_ICON_DATATYPE_TIME = "/resources/images/datatype_time.png";   
+    public static final String PATH_ICON_DATATYPE_TIME = PATH_PACKAGE_IMAGES + "datatype_time.png";   
        
     /*********************************/
     /********* localization **********/

@@ -157,9 +157,9 @@ public class ChartProperties extends JPanel {
         Border chartNameInnerBorder = BorderFactory.createEmptyBorder(0, 3, 0, 3);
         CompoundBorder chartNameCompoundBorder = BorderFactory.createCompoundBorder(chartNameOuterBorder, chartNameInnerBorder);
 
+        chartNameTextField.setText(chart.getChartName());
         chartNameTextField.setBorder(chartNameCompoundBorder);
         chartNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));       
-        chartNameTextField.setText(chart.getChartName());
         chartNameTextField.getDocument().addDocumentListener(chartNameTextFieldDocumentListener); 
         chartNameTextField.setBounds(15, 25, 140, 25);
 
@@ -211,12 +211,33 @@ public class ChartProperties extends JPanel {
     public void setChart(Chart chart) {
         this.chart = chart;
     }
-
+  
     /*********************************/
     /********* public method *********/
     /*********************************/
 
-    public void reloadChart()  {
-        displayTimeTextField.setText(Scope.timeFormaterToString(chart.getDisplayTime()));
+    public void reloadChart() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                reload();
+            }
+        });
     }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+ 
+    private void reload() {
+        // reload common properties
+        if (!chartNameTextField.getText().equals(chart.getChartName())) {
+            chartNameTextField.getDocument().removeDocumentListener(chartNameTextFieldDocumentListener);
+            chartNameTextField.setText(chart.getChartName()); 
+            chartNameTextField.getDocument().addDocumentListener(chartNameTextFieldDocumentListener);   
+        }
+
+        // reload display time properties
+        displayTimeTextField.setText(Scope.timeFormaterToString(chart.getDisplayTime()));
+    }   
 }
