@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -72,8 +74,13 @@ public class ChannelProperties extends JPanel {
 
     public ChannelProperties(XReference xref) {
         this.xref = xref;
-        
-        // common 
+ 
+        // common properties
+        Border channelNameOuterBorder = channelNameTextField.getBorder();
+        Border channelNameInnerBorder = BorderFactory.createEmptyBorder(0, 4, 0, 4);
+        CompoundBorder channelNameCompoundBorder = BorderFactory.createCompoundBorder(channelNameOuterBorder, channelNameInnerBorder);
+
+        channelNameTextField.setBorder(channelNameCompoundBorder);
         channelNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));       
         channelNameTextField.setText(channel.getChannelName());
         channelNameTextField.getDocument().addDocumentListener(channelNameTextFieldDocumentListener); 
@@ -83,15 +90,10 @@ public class ChannelProperties extends JPanel {
         commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 70));
         commonPanel.add(channelNameTextField);
         
-
-        
-        
-        
-        
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new WrapLayout(FlowLayout.LEADING));
-        contentPanel.setBorder(BorderFactory.createEmptyBorder());
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);
 
@@ -101,9 +103,9 @@ public class ChannelProperties extends JPanel {
 
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
         
-        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this.add(textHeader, BorderLayout.PAGE_START);
         this.add(scrollPanel, BorderLayout.CENTER);

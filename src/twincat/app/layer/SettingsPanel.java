@@ -1,17 +1,50 @@
 package twincat.app.layer;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.util.ResourceBundle;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import twincat.LoremIpsum;
+import twincat.Resources;
+import twincat.java.ScrollablePanel;
+import twincat.java.WrapLayout;
 
-public class SettingsPanel extends JScrollPane {
+public class SettingsPanel extends JPanel {
     private static final long serialVersionUID = 1L;
+
+    /*********************************/
+    /****** local final variable *****/
+    /*********************************/
+
+    private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
     /*********************************/
     /********** constructor **********/
     /*********************************/
 
     public SettingsPanel(XReference xref) {
-        this.setViewportView(new LoremIpsum());
+        // default content
+        ScrollablePanel contentPanel = new ScrollablePanel();
+        contentPanel.setLayout(new WrapLayout(FlowLayout.LEADING));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder());
+        contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
+
+        JScrollPane scrollPanel = new JScrollPane();
+        scrollPanel.setBorder(BorderFactory.createEmptyBorder());
+        scrollPanel.setViewportView(contentPanel);
+
+        JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_SETTINGS_TITLE));
+        textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        
+        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        this.setLayout(new BorderLayout());
+        this.add(textHeader, BorderLayout.PAGE_START);
+        this.add(scrollPanel, BorderLayout.CENTER);
     }
 }

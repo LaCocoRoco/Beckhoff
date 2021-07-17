@@ -336,10 +336,10 @@ public class CommandLine {
     }
 
     private void cmdSymbolListAll() {  
-        RouteSymbolLoader routeSymbolLoader = new RouteSymbolLoader();
-        routeSymbolLoader.loadRouteSymbolDataList();
+        RouteLoader routeLoader = new RouteLoader();
+        routeLoader.loadRouteSymbolDataList();
 
-        for (RouteSymbolData routeSymbolData : routeSymbolLoader.getRouteSymbolDataList()) {
+        for (RouteSymbolData routeSymbolData : routeLoader.getRouteSymbolDataList()) {
             String hostName = routeSymbolData.getRoute().getHostName();
 
             SymbolLoader symbolLoader = routeSymbolData.getSymbolLoader();

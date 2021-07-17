@@ -35,9 +35,15 @@ public class TriggerChannelProperties extends JPanel {
     /*********************************/
 
     public TriggerChannelProperties(XReference xref) {
+        
+        
+        
+        
+        
+        // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new WrapLayout(FlowLayout.LEADING));
-        contentPanel.setBorder(BorderFactory.createEmptyBorder());
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
 
         JScrollPane scrollPanel = new JScrollPane();
@@ -46,9 +52,9 @@ public class TriggerChannelProperties extends JPanel {
 
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
         
-        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this.add(textHeader, BorderLayout.PAGE_START);
         this.add(scrollPanel, BorderLayout.CENTER);

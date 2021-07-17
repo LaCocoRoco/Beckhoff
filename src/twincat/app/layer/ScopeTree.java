@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -88,6 +90,13 @@ public class ScopeTree extends JPanel {
         }
     };
 
+    private final ActionListener addTriggerActionListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            addTriggerChannelTreeNode();
+        }
+    };
+
     private final ActionListener searchButtonActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -119,6 +128,25 @@ public class ScopeTree extends JPanel {
         }
     };
 
+    private final KeyListener browseTreeKeyListener = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent keyEvent) {
+            /* empty */
+        }
+
+        @Override
+        public void keyPressed(KeyEvent keyEvent) {
+            if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
+                deleteTreeNode(); 
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent keyEvent) {
+            /* empty */
+        }
+    };
+    
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -133,10 +161,11 @@ public class ScopeTree extends JPanel {
         browseTree.setShowsRootHandles(true);
         browseTree.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         browseTree.setModel(new ScopeTreeModel(new ScopeTreeNode()));
+        browseTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         browseTree.addMouseListener(browseTreeMouseAdapter);
         browseTree.setUI(browseTreeUI);
-        browseTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        
+        browseTree.addKeyListener(browseTreeKeyListener);
+
         JScrollPane treePanel = new JScrollPane();
         treePanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         treePanel.setBorder(BorderFactory.createEmptyBorder());
@@ -166,6 +195,12 @@ public class ScopeTree extends JPanel {
         addChannelButton.setFocusable(false);
         addChannelButton.addActionListener(addChannelActionListener);
 
+        JButton addTriggerButton = new JButton();
+        addTriggerButton.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_ADD_TRIGGER));
+        addTriggerButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_TRIGGER)));
+        addTriggerButton.setFocusable(false);
+        addTriggerButton.addActionListener(addTriggerActionListener);
+
         JButton searchButton = new JButton();
         searchButton.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_SEARCH));
         searchButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_SEARCH)));
@@ -189,6 +224,8 @@ public class ScopeTree extends JPanel {
         browserToolBar.add(addAxisButton);
         browserToolBar.addSeparator(new Dimension(5, 0));
         browserToolBar.add(addChannelButton);
+        browserToolBar.addSeparator(new Dimension(5, 0));
+        browserToolBar.add(addTriggerButton);
         browserToolBar.addSeparator(new Dimension(30, 0));
         browserToolBar.add(searchButton);
         browserToolBar.addSeparator(new Dimension(30, 0));
@@ -228,7 +265,8 @@ public class ScopeTree extends JPanel {
         Object userObject = channelTreeNode.getUserObject();
         Channel channel = (Channel) userObject;
         channel.setAcquisition(acquisition);
-
+        channel.setChannelName(acquisition.getChannelName());
+        
         // expand path
         expandTreeNode(channelTreeNode);
         
@@ -270,6 +308,7 @@ public class ScopeTree extends JPanel {
         
         // display symbol acquisition view
         card = xref.propertiesPanel.getCard();
+        xref.acquisitionProperties.reloadAcquisition();
         xref.treePanel.setCard(Tree.SYMBOL);
         xref.propertiesPanel.setCard(Propertie.ACQUISITION);
     }
@@ -282,13 +321,16 @@ public class ScopeTree extends JPanel {
             Scope scope = (Scope) userObject;
             xref.propertiesPanel.setCard(Propertie.SCOPE);
             xref.scopeProperties.setScope(scope);
+            xref.scopeProperties.reloadScope();
         }
 
         if (userObject instanceof Chart) {
             Chart chart = (Chart) userObject;
             xref.propertiesPanel.setCard(Propertie.CHART);
             xref.chartProperties.setChart(chart);
+            xref.chartProperties.reloadChart();
             xref.chartPanel.setChart(chart);
+            xref.chartPanel.reloadChart();
         }
 
         if (userObject instanceof Axis) {
@@ -413,10 +455,7 @@ public class ScopeTree extends JPanel {
         ScopeTreeNode chartTreeNode = new ScopeTreeNode();
         chartTreeNode.setUserObject(chart);
         scopeTreeNode.add(chartTreeNode);
-        
-        // set chart
-        xref.chartPanel.setChart(chart);
-        
+
         // expand path
         expandTreeNode(chartTreeNode);
         return chartTreeNode;
@@ -518,5 +557,15 @@ public class ScopeTree extends JPanel {
         // add new scope if no node present
         ScopeTreeNode channelTreeNode = addChannelTreeNode();
         return channelTreeNode;
+    }
+    
+    // TODO : trigger to trigger channel!
+    
+    private ScopeTreeNode addTriggerChannelTreeNode() {
+        return null;
+    }
+    
+    private ScopeTreeNode getTriggerChannelTreeNode() {
+        return null;
     }
 }

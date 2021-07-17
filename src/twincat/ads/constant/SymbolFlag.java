@@ -40,9 +40,9 @@ public enum SymbolFlag {
     /*********************************/
 
     public static final SymbolFlag getByValue(int value) {
-        for (SymbolFlag dataType : SymbolFlag.values()) {
-            if (dataType.value == value) {
-                return dataType;
+        for (SymbolFlag symbolFlag : SymbolFlag.values()) {
+            if (symbolFlag.value == value) {
+                return symbolFlag;
             }
         }
         

@@ -92,7 +92,7 @@ public class ScopeView {
 
         // acquisition 1
         Acquisition acquisition1 = new Acquisition();
-        acquisition1.setTaskTime(1);
+        acquisition1.setSampleTime(1);
         acquisition1.setSymbolBased(true);
         acquisition1.setSymbolName("Main.lr_channel_1");
         acquisition1.setDataType(DataType.REAL64);
@@ -101,7 +101,7 @@ public class ScopeView {
 
         // acquisition 2
         Acquisition acquisition2 = new Acquisition();
-        acquisition2.setTaskTime(1);
+        acquisition2.setSampleTime(1);
         acquisition2.setSymbolBased(true);
         acquisition2.setSymbolName("Main.lr_channel_2");
         acquisition2.setDataType(DataType.REAL64);
@@ -110,7 +110,7 @@ public class ScopeView {
 
         // acquisition 3
         Acquisition acquisition3 = new Acquisition();
-        acquisition3.setTaskTime(1);
+        acquisition3.setSampleTime(1);
         acquisition3.setSymbolBased(true);
         acquisition3.setSymbolName("Main.lr_channel_3");
         acquisition3.setDataType(DataType.REAL64);
@@ -119,7 +119,7 @@ public class ScopeView {
 
         // acquisition 4
         Acquisition acquisition4 = new Acquisition();
-        acquisition4.setTaskTime(1);
+        acquisition4.setSampleTime(1);
         acquisition4.setSymbolBased(true);
         acquisition4.setSymbolName("Main.lr_channel_4");
         acquisition4.setDataType(DataType.REAL64);
@@ -128,7 +128,7 @@ public class ScopeView {
 
         // acquisition 5
         Acquisition acquisition5 = new Acquisition();
-        acquisition5.setTaskTime(1);
+        acquisition5.setSampleTime(1);
         acquisition5.setSymbolBased(true);
         acquisition5.setSymbolName("Main.lr_channel_5");
         acquisition5.setDataType(DataType.REAL64);
@@ -137,7 +137,7 @@ public class ScopeView {
 
         // acquisition 6
         Acquisition acquisition6 = new Acquisition();
-        acquisition6.setTaskTime(1);
+        acquisition6.setSampleTime(1);
         acquisition6.setSymbolBased(true);
         acquisition6.setSymbolName("Main.lr_channel_6");
         acquisition6.setDataType(DataType.REAL64);
@@ -146,7 +146,7 @@ public class ScopeView {
 
         // acquisition 7
         Acquisition acquisition7 = new Acquisition();
-        acquisition7.setTaskTime(1);
+        acquisition7.setSampleTime(1);
         acquisition7.setSymbolBased(true);
         acquisition7.setSymbolName("Main.lr_channel_7");
         acquisition7.setDataType(DataType.REAL64);
@@ -155,7 +155,7 @@ public class ScopeView {
 
         // acquisition 8
         Acquisition acquisition8 = new Acquisition();
-        acquisition8.setTaskTime(1);
+        acquisition8.setSampleTime(1);
         acquisition8.setSymbolBased(true);
         acquisition8.setSymbolName("Main.lr_channel_8");
         acquisition8.setDataType(DataType.REAL64);

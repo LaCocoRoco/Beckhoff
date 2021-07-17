@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -87,13 +89,18 @@ public class AxisProperties extends JPanel {
     public AxisProperties(XReference xref) {
         this.xref = xref;
 
-        // common
+        // common properties
         JCheckBox axisNameCheckBox = new JCheckBox(languageBundle.getString(Resources.TEXT_COMMON_SHOW_NAME));
         axisNameCheckBox.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
-        axisNameCheckBox.setBounds(20, 55, 140, 20);
         axisNameCheckBox.addItemListener(axisNameCheckBoxItemListener);
         axisNameCheckBox.setFocusPainted(false);
+        axisNameCheckBox.setBounds(20, 55, 140, 20);
         
+        Border axisNameOuterBorder = aixsNameTextField.getBorder();
+        Border axisNameInnerBorder = BorderFactory.createEmptyBorder(0, 4, 0, 4);
+        CompoundBorder axisNameCompoundBorder = BorderFactory.createCompoundBorder(axisNameOuterBorder, axisNameInnerBorder);
+
+        aixsNameTextField.setBorder(axisNameCompoundBorder);
         aixsNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         aixsNameTextField.setText(axis.getAxisName());
         aixsNameTextField.getDocument().addDocumentListener(axisNameTextFieldDocumentListener);
@@ -107,19 +114,19 @@ public class AxisProperties extends JPanel {
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new WrapLayout(FlowLayout.LEADING));
-        contentPanel.setBorder(BorderFactory.createEmptyBorder());
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);
 
         JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
-        scrollPanel.setViewportView(contentPanel);
+        scrollPanel.setViewportView(contentPanel);  
 
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
 
-        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this.add(textHeader, BorderLayout.PAGE_START);
         this.add(scrollPanel, BorderLayout.CENTER);

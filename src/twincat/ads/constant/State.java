@@ -41,9 +41,9 @@ public enum State {
     /*********************************/
 
     public static final State getByValue(int value) {
-        for (State status : State.values()) {
-            if (status.value == value) {
-            	return status;
+        for (State state : State.values()) {
+            if (state.value == value) {
+            	return state;
             }
         }
         
@@ -51,9 +51,9 @@ public enum State {
     }
     
     public static final State getByString(String value) {
-        for (State status : State.values()) {
-            if (status.name().equalsIgnoreCase(value)) {
-                return status;
+        for (State state : State.values()) {
+            if (state.name().equalsIgnoreCase(value)) {
+                return state;
             }
         }
         return State.UNKNOWN;

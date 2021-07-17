@@ -2,22 +2,32 @@ package twincat.app.layer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import twincat.Resources;
 import twincat.Utilities;
 import twincat.scope.Chart;
+import twincat.scope.Scope;
 
 public class ChartPanel extends JPanel {
     private static final long serialVersionUID = 1L;
+
+    /*********************************/
+    /******** cross reference ********/
+    /*********************************/
+
+    private final XReference xref;
 
     /*********************************/
     /****** local final variable *****/
@@ -25,6 +35,8 @@ public class ChartPanel extends JPanel {
 
     private Chart chart = new Chart();
 
+    private  final JLabel textHeader = new JLabel();
+    
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
     /*********************************/
@@ -52,11 +64,28 @@ public class ChartPanel extends JPanel {
         }
     };
 
+    private final ActionListener minimizeActionListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            xref.scopePanel.controlToggle();
+        }
+    };
+
     /*********************************/
     /********** constructor **********/
     /*********************************/
 
     public ChartPanel(XReference xref) {
+        this.xref = xref;
+        
+        // graph panel
+        JPanel graphPanel = new JPanel();
+        graphPanel.setBorder(BorderFactory.createEmptyBorder());
+        
+        // tool bar
+        JLabel displayTime = new JLabel(Scope.TIME_FORMAT_TEMPLATE);
+        displayTime.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
+
         JButton playButton = new JButton();
         playButton.setToolTipText(languageBundle.getString(Resources.TEXT_CHART_PLAY));
         playButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PLAY)));
@@ -75,6 +104,12 @@ public class ChartPanel extends JPanel {
         stopButton.setFocusable(false);
         stopButton.addActionListener(stopActionListener);
 
+        JButton minimizeButton = new JButton();
+        minimizeButton.setToolTipText(languageBundle.getString(Resources.TEXT_CHART_MINIMIZE));
+        minimizeButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_MINIMIZE)));
+        minimizeButton.setFocusable(false);
+        minimizeButton.addActionListener(minimizeActionListener);
+
         JToolBar chartToolBar = new JToolBar();
         chartToolBar.setFloatable(false);
         chartToolBar.setRollover(false);
@@ -84,9 +119,15 @@ public class ChartPanel extends JPanel {
         chartToolBar.add(pauseButton);
         chartToolBar.addSeparator(new Dimension(5, 0));
         chartToolBar.add(stopButton);
-
+        chartToolBar.addSeparator(new Dimension(15, 0));
+        chartToolBar.add(displayTime);
+        chartToolBar.add(Box.createHorizontalGlue());
+        chartToolBar.add(minimizeButton);
+        
+        // default content
         this.setLayout(new BorderLayout());
         this.add(chartToolBar, BorderLayout.PAGE_END);
+        this.add(graphPanel, BorderLayout.CENTER);
         this.setBorder(BorderFactory.createEmptyBorder());
     }
 
@@ -94,8 +135,6 @@ public class ChartPanel extends JPanel {
     /******** setter & getter ********/
     /*********************************/
 
-    // TODO : update data on set chart
-    
     public Chart getChart() {
         return chart;
     }
@@ -103,6 +142,12 @@ public class ChartPanel extends JPanel {
     public void setChart(Chart chart) {
         this.chart = chart;
     }
-    
-    
+
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
+
+    public void reloadChart()  {
+        textHeader.setText(Long.toString(chart.getDisplayTime()));
+    }
 }

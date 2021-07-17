@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -76,13 +78,15 @@ public class ScopeProperties extends JPanel {
                         }
                     } else {
                         // value removed
-                        char value = time.charAt(caret);
+                        if (caret < time.length()) {
+                            char value = time.charAt(caret);
 
-                        if (value == ':' || value == '.') {
-                            input = time;
-                        } else {
-                            builder.insert(caret, "0");
-                            input = builder.toString();
+                            if (value == ':' || value == '.') {
+                                input = time;
+                            } else {
+                                builder.insert(caret, "0");
+                                input = builder.toString();
+                            }     
                         }
                     }   
                     
@@ -147,7 +151,12 @@ public class ScopeProperties extends JPanel {
     public ScopeProperties(XReference xref) {
         this.xref = xref;
 
-        // common 
+        // common properties
+        Border scopeNameOuterBorder = scopeNameTextField.getBorder();
+        Border scopeNameInnerBorder = BorderFactory.createEmptyBorder(0, 4, 0, 4);
+        CompoundBorder scopeNameCompoundBorder = BorderFactory.createCompoundBorder(scopeNameOuterBorder, scopeNameInnerBorder);
+
+        scopeNameTextField.setBorder(scopeNameCompoundBorder);
         scopeNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));       
         scopeNameTextField.setText(scope.getScopeName());
         scopeNameTextField.getDocument().addDocumentListener(scopeNameTextFieldDocumentListener); 
@@ -157,13 +166,12 @@ public class ScopeProperties extends JPanel {
         commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 70));
         commonPanel.add(scopeNameTextField);
 
-        // record time
+        // record time properties
         recordTimeTextField.setText(Scope.TIME_FORMAT_TEMPLATE);
         recordTimeTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         recordTimeTextField.setHorizontalAlignment(JTextField.CENTER);
         recordTimeTextField.getDocument().addDocumentListener(recordTimeTextFieldDocumentListener);
         recordTimeTextField.setBounds(10, 25, 100, 25);
-        
         
         JPanel recordTimePanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_RECORD_TIME));
         recordTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 70));
@@ -172,7 +180,7 @@ public class ScopeProperties extends JPanel {
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new WrapLayout(FlowLayout.LEADING));
-        contentPanel.setBorder(BorderFactory.createEmptyBorder());
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);
         contentPanel.add(recordTimePanel);
@@ -183,9 +191,9 @@ public class ScopeProperties extends JPanel {
 
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
         
-        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this.add(textHeader, BorderLayout.PAGE_START);
         this.add(scrollPanel, BorderLayout.CENTER);
@@ -201,5 +209,13 @@ public class ScopeProperties extends JPanel {
 
     public void setScope(Scope scope) {
         this.scope = scope;
-    }  
+    }
+
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
+
+    public void reloadScope()  {
+        recordTimeTextField.setText(Scope.timeFormaterToString(scope.getRecordTime()));
+    }
 }

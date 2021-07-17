@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -77,13 +79,15 @@ public class ChartProperties extends JPanel {
                         }
                     } else {
                         // value removed
-                        char value = time.charAt(caret);
+                        if (caret < time.length()) {
+                            char value = time.charAt(caret);
 
-                        if (value == ':' || value == '.') {
-                            input = time;
-                        } else {
-                            builder.insert(caret, "0");
-                            input = builder.toString();
+                            if (value == ':' || value == '.') {
+                                input = time;
+                            } else {
+                                builder.insert(caret, "0");
+                                input = builder.toString();
+                            }
                         }
                     }   
                     
@@ -148,7 +152,12 @@ public class ChartProperties extends JPanel {
     public ChartProperties(XReference xref) {
         this.xref = xref;
         
-        // common 
+        // common properties
+        Border chartNameOuterBorder = chartNameTextField.getBorder();
+        Border chartNameInnerBorder = BorderFactory.createEmptyBorder(0, 3, 0, 3);
+        CompoundBorder chartNameCompoundBorder = BorderFactory.createCompoundBorder(chartNameOuterBorder, chartNameInnerBorder);
+
+        chartNameTextField.setBorder(chartNameCompoundBorder);
         chartNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));       
         chartNameTextField.setText(chart.getChartName());
         chartNameTextField.getDocument().addDocumentListener(chartNameTextFieldDocumentListener); 
@@ -158,7 +167,7 @@ public class ChartProperties extends JPanel {
         commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 70));
         commonPanel.add(chartNameTextField);
         
-        // display time
+        // display time properties
         displayTimeTextField.setText(Scope.TIME_FORMAT_TEMPLATE);
         displayTimeTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         displayTimeTextField.setHorizontalAlignment(JTextField.CENTER);
@@ -172,7 +181,7 @@ public class ChartProperties extends JPanel {
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new WrapLayout(FlowLayout.LEADING));
-        contentPanel.setBorder(BorderFactory.createEmptyBorder());
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);
         contentPanel.add(displayTimePanel);
@@ -183,9 +192,9 @@ public class ChartProperties extends JPanel {
 
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
         
-        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this.add(textHeader, BorderLayout.PAGE_START);
         this.add(scrollPanel, BorderLayout.CENTER);
@@ -201,16 +210,13 @@ public class ChartProperties extends JPanel {
 
     public void setChart(Chart chart) {
         this.chart = chart;
-        reloadChart();
     }
 
     /*********************************/
-    /******** private method *********/
+    /********* public method *********/
     /*********************************/
 
-    private void reloadChart()  {
-        // TODO : String index out of range: 12
-        System.out.println(Scope.timeFormaterToString(chart.getDisplayTime()));
+    public void reloadChart()  {
         displayTimeTextField.setText(Scope.timeFormaterToString(chart.getDisplayTime()));
     }
 }

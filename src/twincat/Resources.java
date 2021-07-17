@@ -35,6 +35,8 @@ public class Resources {
      
     public static final String PATH_ICON_CONTROL_STOP = "/resources/images/control_stop.png";
     
+    public static final String PATH_ICON_CONTROL_MINIMIZE = "/resources/images/control_minimize.png";
+    
     public static final String PATH_ICON_NAVIGATE_SCOPE = "/resources/images/navigate_scope.png";
 
     public static final String PATH_ICON_NAVIGATE_CHART = "/resources/images/navigate_chart.png";
@@ -44,7 +46,9 @@ public class Resources {
     public static final String PATH_ICON_NAVIGATE_CHANNEL = "/resources/images/navigate_channel.png";
     
     public static final String PATH_ICON_NAVIGATE_GROUP = "/resources/images/navigate_group.png";
-       
+    
+    public static final String PATH_ICON_NAVIGATE_TRIGGER = "/resources/images/navigate_trigger.png";
+
     public static final String PATH_ICON_NAVIGATE_DELETE = "/resources/images/navigate_delete.png";
     
     public static final String PATH_ICON_NAVIGATE_SEARCH = "/resources/images/navigate_search.png";
@@ -87,6 +91,8 @@ public class Resources {
     
     public static final String TEXT_CHART_STOP = "chartStop";
     
+    public static final String TEXT_CHART_MINIMIZE = "chartMinimize";
+    
     
     
     public static final String TEXT_SCOPE_TREE_ADD_SCOPE = "scopeTreeAddScope";
@@ -96,6 +102,8 @@ public class Resources {
     public static final String TEXT_SCOPE_TREE_ADD_AXIS = "scopeTreeAddAxis";
     
     public static final String TEXT_SCOPE_TREE_ADD_CHANNEL = "scopeTreeAddChannel";
+
+    public static final String TEXT_SCOPE_TREE_ADD_TRIGGER = "scopeTreeAddTrigger";
     
     public static final String TEXT_SCOPE_TREE_SEARCH = "scopeTreeSearch";
     
@@ -140,8 +148,32 @@ public class Resources {
 
     public static final String TEXT_ACQUISITION_PROPERTIES_APPLY = "acquisitionPropertiesApply";
    
+    public static final String TEXT_ACQUISITION_PROPERTIES_TARGET = "acquisitionPropertiesTarget";
     
+    public static final String TEXT_ACQUISITION_PROPERTIES_TARGET_SYSTEM = "acquisitionPropertiesTargetSystem";
     
+    public static final String TEXT_ACQUISITION_PROPERTIES_TARGET_PORT = "acquisitionPropertiesTargetPort";
+     
+    public static final String TEXT_ACQUISITION_PROPERTIES_CONNETION = "acquisitionPropertiesConnection";
+    
+    public static final String TEXT_ACQUISITION_PROPERTIES_SAMPLE_TIME = "acquisitionPropertiesSympleTime";
+    
+    public static final String TEXT_ACQUISITION_PROPERTIES_SAMPLE_BASED = "acquisitionPropertiesSympleBased";
+          
+    public static final String TEXT_ACQUISITION_PROPERTIES_SYMBOL_INFO = "acquisitionPropertiesSymbolInfo";
+    
+    public static final String TEXT_ACQUISITION_PROPERTIES_NAME = "acquisitionPropertiesName";
+    
+    public static final String TEXT_ACQUISITION_PROPERTIES_DATA_TYPE = "acquisitionPropertiesDataType";
+     
+    public static final String TEXT_ACQUISITION_PROPERTIES_SYMBOL_CONNECT = "acquisitionPropertiesSymbolConnect";
+    
+    public static final String TEXT_ACQUISITION_PROPERTIES_INDEX_GROUP = "acquisitionPropertiesIndexGroup";
+    
+    public static final String TEXT_ACQUISITION_PROPERTIES_INDEX_OFFSET = "acquisitionPropertiesIndexOffset";
+        
+    
+  
     public static final String TEXT_TRIGGER_GROUP_PROPERTIES_TITLE = "triggerGroupPropertiesTitle";
 
     
@@ -179,4 +211,8 @@ public class Resources {
     public static final String TEXT_COMMON_NAME = "commonName";
     
     public static final String TEXT_COMMON_SHOW_NAME = "commonShowName";
+    
+    
+    
+    public static final String TEXT_SETTINGS_TITLE = "settingsTitle";
 }

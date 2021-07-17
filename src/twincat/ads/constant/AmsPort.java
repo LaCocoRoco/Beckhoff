@@ -96,9 +96,9 @@ public enum AmsPort {
     /*********************************/
 
     public static final AmsPort getByValue(int value) {
-        for (AmsPort dataType : AmsPort.values()) {
-            if (dataType.value == value) {
-                return dataType;
+        for (AmsPort amsPort : AmsPort.values()) {
+            if (amsPort.value == value) {
+                return amsPort;
             }
         }
 

@@ -9,7 +9,7 @@ public class Acquisition {
     /******** global variable ********/
     /*********************************/
 	
-	private int taskTime = 2;
+	private int sampleTime = 2;
 
 	private boolean symbolBased = false;
 
@@ -85,11 +85,25 @@ public class Acquisition {
 		this.dataType = dataType;
 	}
 
-	public int getTaskTime() {
-		return taskTime;
+	public int getSampleTime() {
+		return sampleTime;
 	}
 
-	public void setTaskTime(int taskTime) {
-		this.taskTime = taskTime;
+	public void setSampleTime(int sampleTime) {
+		this.sampleTime = sampleTime;
 	}
+
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
+
+	public String getChannelName() {
+	    String[] symbolNameArray = symbolName.split("\\.");
+	    
+	    if (symbolNameArray.length != 0 && !symbolName.isEmpty()) {
+	        return symbolNameArray[symbolNameArray.length - 1];
+	    } else {
+	        return "Channel";
+	    }
+	}	
 }

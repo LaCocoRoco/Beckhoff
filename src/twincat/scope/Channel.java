@@ -273,12 +273,12 @@ public class Channel extends Observable implements Observer {
                 if (acquisition.isSymbolBased()) {
                     variable = adsClient.getVariableBySymbolName(acquisition.getSymbolName());
                     variable.addObserver(this);
-                    variable.addNotification(acquisition.getTaskTime());
+                    variable.addNotification(acquisition.getSampleTime());
                 } else {
                     variable = adsClient.getVariableByAddress(acquisition.getDataType(),
                             acquisition.getIndexGroup(), acquisition.getIndexOffset());
                     variable.addObserver(this);
-                    variable.addNotification(acquisition.getTaskTime());
+                    variable.addNotification(acquisition.getSampleTime());
                 }
             } catch (AdsException adsException) {
                 channelError = "Notification Start | " + adsException.getAdsErrorMessage();

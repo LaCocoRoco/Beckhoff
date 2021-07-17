@@ -15,6 +15,8 @@ public class ScopePanel extends JSplitPane {
     /**** local constant variable ****/
     /*********************************/
 
+    private static final int DIVIDER_SIZE = 5;
+
     private static final double DIVIDER_LOCATION = 0.5;
 
     /*********************************/
@@ -40,5 +42,35 @@ public class ScopePanel extends JSplitPane {
                 setDividerLocation(DIVIDER_LOCATION);
             }
         });
+    }
+
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
+
+    public void controlToggle() {
+        if (this.getDividerSize() != 0) {
+            controlHide();
+        } else {
+            controlShow();
+        }
+    }
+
+    public void controlShow() {
+        setDividerLocation(DIVIDER_LOCATION);
+        getRightComponent().setVisible(true);
+        getLeftComponent().setVisible(true);
+        setDividerSize(DIVIDER_SIZE);
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent componentEvent) {
+                setDividerLocation(DIVIDER_LOCATION);
+            }
+        });
+    }
+
+    public void controlHide() {
+        getRightComponent().setVisible(false);
+        getLeftComponent().setVisible(true);
+        setDividerSize(0);
     }
 }

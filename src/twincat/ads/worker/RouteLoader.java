@@ -13,7 +13,7 @@ import twincat.ads.common.RouteSymbolData;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
 
-public class RouteSymbolLoader extends Observable {
+public class RouteLoader extends Observable {
     /*********************************/
     /**** local constant variable ****/
     /*********************************/
@@ -56,10 +56,34 @@ public class RouteSymbolLoader extends Observable {
     /********* public method *********/
     /*********************************/
 
-    public void clearRouteSymbolData() {
-        routeSymbolDataList.clear();
-    }
-    
+    public List<Route> loadRouteList() {
+        List<Route> routeList = new ArrayList<Route>();
+
+        try {
+            adsClient.open();
+            adsClient.setAmsNetId(AmsNetId.LOCAL);
+            adsClient.setAmsPort(AmsPort.SYSTEMSERVICE);
+            adsClient.setTimeout(AdsClient.DEFAULT_TIMEOUT);
+
+            Route localRoute = new Route();
+            String localAmsNetId = adsClient.readLocalAmsNetId();
+            String localHostName = adsClient.readLocalHostName();
+            String localHostAddress = AmsNetId.netIdSTringToAddress(localAmsNetId);
+
+            localRoute.setAmsNetId(localAmsNetId);
+            localRoute.setHostName(localHostName);
+            localRoute.setHostAddress(localHostAddress);
+
+            routeList.add(localRoute);
+            routeList.addAll(adsClient.readRouteEntrys());
+        } catch (AdsException e) {
+            logger.warning(e.getAdsErrorMessage());
+        } finally {
+            adsClient.close();
+        }
+
+        return routeList;
+    }  
     public void loadRouteSymbolDataList(AmsPort amsPort) {
         List<Route> routeList = loadRouteList();
 
@@ -141,36 +165,7 @@ public class RouteSymbolLoader extends Observable {
         logger.fine("Load Route Symbol Data Done");
     }
 
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
-
-    private List<Route> loadRouteList() {
-        List<Route> routeList = new ArrayList<Route>();
-
-        try {
-            adsClient.open();
-            adsClient.setAmsNetId(AmsNetId.LOCAL);
-            adsClient.setAmsPort(AmsPort.SYSTEMSERVICE);
-            adsClient.setTimeout(AdsClient.DEFAULT_TIMEOUT);
-
-            Route localRoute = new Route();
-            String localAmsNetId = adsClient.readLocalAmsNetId();
-            String localHostName = adsClient.readLocalHostName();
-            String localHostAddress = AmsNetId.netIdSTringToAddress(localAmsNetId);
-
-            localRoute.setAmsNetId(localAmsNetId);
-            localRoute.setHostName(localHostName);
-            localRoute.setHostAddress(localHostAddress);
-
-            routeList.add(localRoute);
-            routeList.addAll(adsClient.readRouteEntrys());
-        } catch (AdsException e) {
-            logger.warning(e.getAdsErrorMessage());
-        } finally {
-            adsClient.close();
-        }
-
-        return routeList;
-    }
+    public void clearRouteSymbolDataList() {
+        routeSymbolDataList.clear();
+    }   
 }

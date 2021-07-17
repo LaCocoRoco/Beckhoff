@@ -11,7 +11,7 @@ import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.common.RouteSymbolData;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.worker.RouteSymbolLoader;
+import twincat.ads.worker.RouteLoader;
 import twincat.ads.worker.SymbolLoader;
 
 public class RouteLoaderUnitTest {
@@ -25,10 +25,10 @@ public class RouteLoaderUnitTest {
     
     @Test
     public void test() {
-        RouteSymbolLoader routeSymbolLoader = new RouteSymbolLoader();       
-        routeSymbolLoader.loadRouteSymbolDataList();
+        RouteLoader routeLoader = new RouteLoader();       
+        routeLoader.loadRouteSymbolDataList();
         
-        for (RouteSymbolData routeSymbolData : routeSymbolLoader.getRouteSymbolDataList()) {
+        for (RouteSymbolData routeSymbolData : routeLoader.getRouteSymbolDataList()) {
             String hostName = routeSymbolData.getRoute().getHostName();
 
             SymbolLoader symbolLoader = routeSymbolData.getSymbolLoader();

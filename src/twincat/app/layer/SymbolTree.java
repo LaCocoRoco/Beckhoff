@@ -62,7 +62,7 @@ import twincat.ads.common.RouteSymbolData;
 import twincat.ads.common.Symbol;
 import twincat.ads.constant.AmsPort;
 import twincat.ads.constant.DataType;
-import twincat.ads.worker.RouteSymbolLoader;
+import twincat.ads.worker.RouteLoader;
 import twincat.ads.worker.SymbolLoader;
 import twincat.app.common.SymbolNode;
 import twincat.app.common.SymbolTreeModel;
@@ -111,7 +111,7 @@ public class SymbolTree extends JPanel {
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
-    private final RouteSymbolLoader routeSymbolLoader = new RouteSymbolLoader();
+    private final RouteLoader routeLoader = new RouteLoader();
 
     private final Logger logger = TwincatLogger.getLogger();
 
@@ -482,19 +482,19 @@ public class SymbolTree extends JPanel {
     }
 
     private void buildSearchTree() {
-        routeSymbolLoader.addObserver(new Observer() {
+        routeLoader.addObserver(new Observer() {
             @Override
             public void update(Observable observable, Object object) {
-                loadingState.setText(routeSymbolLoader.getLoadingState());
+                loadingState.setText(routeLoader.getLoadingState());
             }
         });
 
-        routeSymbolLoader.loadRouteSymbolDataList();
+        routeLoader.loadRouteSymbolDataList();
 
         SymbolTreeNode rootBrowseTreeNode = (SymbolTreeNode) browseTree.getModel().getRoot();
         SymbolTreeNode rootSearchTreeNode = (SymbolTreeNode) searchTree.getModel().getRoot();
 
-        for (RouteSymbolData routeSymbolData : routeSymbolLoader.getRouteSymbolDataList()) {
+        for (RouteSymbolData routeSymbolData : routeLoader.getRouteSymbolDataList()) {
             SymbolLoader symbolLoader = routeSymbolData.getSymbolLoader();
 
             String route = routeSymbolData.getRoute().getHostName();
@@ -534,7 +534,7 @@ public class SymbolTree extends JPanel {
         routeList.add(allRoutes);
         portList.add(allPorts);
 
-        for (RouteSymbolData routeSymbolData : routeSymbolLoader.getRouteSymbolDataList()) {
+        for (RouteSymbolData routeSymbolData : routeLoader.getRouteSymbolDataList()) {
             String route = routeSymbolData.getRoute().getHostName();
             String port = routeSymbolData.getSymbolLoader().getAmsPort().toString();
 
@@ -613,7 +613,7 @@ public class SymbolTree extends JPanel {
         portList.add(allPorts);
 
         if (selectedRoute.equals(allRoutes)) {
-            for (RouteSymbolData routeSymbolData : routeSymbolLoader.getRouteSymbolDataList()) {
+            for (RouteSymbolData routeSymbolData : routeLoader.getRouteSymbolDataList()) {
                 String port = routeSymbolData.getSymbolLoader().getAmsPort().toString();
 
                 if (!portList.contains(port)) {
@@ -621,7 +621,7 @@ public class SymbolTree extends JPanel {
                 }
             }
         } else {
-            for (RouteSymbolData routeSymbolData : routeSymbolLoader.getRouteSymbolDataList()) {
+            for (RouteSymbolData routeSymbolData : routeLoader.getRouteSymbolDataList()) {
                 if (routeSymbolData.getRoute().getHostName().equals(selectedRoute)) {
                     portList.add(routeSymbolData.getSymbolLoader().getAmsPort().toString());
                 }
@@ -759,6 +759,7 @@ public class SymbolTree extends JPanel {
                 xref.acquisitionProperties.getAcquisition().setSymbolName(symbolName);
                 xref.acquisitionProperties.getAcquisition().setAmsNetId(amsNetId);
                 xref.acquisitionProperties.getAcquisition().setAmsPort(amsPort);
+                xref.acquisitionProperties.reloadAcquisition();
                 
                 // send symbol acquisition data to console
                 xref.consolePanel.setClipboard(symbolName);
