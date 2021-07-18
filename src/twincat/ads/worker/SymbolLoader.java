@@ -12,8 +12,8 @@ import twincat.ads.common.Symbol;
 import twincat.ads.common.SymbolInfo;
 import twincat.ads.common.TypeInfo;
 import twincat.ads.common.UploadInfo;
-import twincat.ads.constant.DataType;
 import twincat.ads.constant.AmsPort;
+import twincat.ads.constant.DataType;
 
 public class SymbolLoader {
     /*********************************/

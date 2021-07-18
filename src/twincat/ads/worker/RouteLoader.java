@@ -10,6 +10,7 @@ import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.common.Route;
 import twincat.ads.common.RouteSymbolData;
+import twincat.ads.constant.AdsData;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
 
@@ -83,11 +84,12 @@ public class RouteLoader extends Observable {
         }
 
         return routeList;
-    }  
+    }
+
     public void loadRouteSymbolDataList(AmsPort amsPort) {
         List<Route> routeList = loadRouteList();
 
-        logger.fine("Load Route Symbol List");
+        logger.fine("Load Route List");
         for (Route route : routeList) {
             String amsNetId = route.getAmsNetId();
 
@@ -114,7 +116,7 @@ public class RouteLoader extends Observable {
                 RouteSymbolData routeSymbolHandler = new RouteSymbolData(route, symbolLoader);
                 routeSymbolDataList.add(routeSymbolHandler);
             } catch (AdsException e) {
-                // skip port exceptions
+                // skip read exception
             } finally {
                 adsClient.close();
             }
@@ -131,7 +133,7 @@ public class RouteLoader extends Observable {
         for (Route route : routeList) {
             String amsNetId = route.getAmsNetId();
 
-            for (AmsPort amsPort : AmsPort.values()) {
+            for (AmsPort amsPort : AdsData.AMS_PORT_SYMBOL_LIST) {
                 try {
                     loadingState = amsNetId + " | " + amsPort;
 
@@ -155,7 +157,7 @@ public class RouteLoader extends Observable {
                     RouteSymbolData routeSymbolHandler = new RouteSymbolData(route, symbolLoader);
                     routeSymbolDataList.add(routeSymbolHandler);
                 } catch (AdsException e) {
-                    // skip port exceptions
+                    // skip read exception
                 } finally {
                     adsClient.close();
                 }

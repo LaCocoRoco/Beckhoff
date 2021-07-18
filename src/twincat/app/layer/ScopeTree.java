@@ -12,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -26,7 +25,6 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import twincat.Resources;
-import twincat.TwincatLogger;
 import twincat.Utilities;
 import twincat.app.common.ScopeTreeModel;
 import twincat.app.common.ScopeTreeNode;
@@ -41,8 +39,6 @@ import twincat.scope.Chart;
 import twincat.scope.Scope;
 import twincat.scope.TriggerChannel;
 import twincat.scope.TriggerGroup;
-
-// TODO : logging remove & formating
 
 public class ScopeTree extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -64,8 +60,6 @@ public class ScopeTree extends JPanel {
     private final List<Scope> scopeList = new ArrayList<Scope>();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
-
-    private final Logger logger = TwincatLogger.getLogger();
 
     /*********************************/
     /****** predefined variable ******/
@@ -578,9 +572,6 @@ public class ScopeTree extends JPanel {
         // add scope to list
         scopeList.add(scope);
 
-        // logging
-        logger.fine("Add Tree Node | " + scope.getScopeName());
-
         // expand path
         expandAndSelectTreeNode(scopeTreeNode);
 
@@ -637,9 +628,6 @@ public class ScopeTree extends JPanel {
         Scope scope = (Scope) scopeTreeNode.getUserObject();
         scope.addChart(chart);
 
-        // logging
-        logger.fine("Add Tree Node | " + chart.getChartName());
-
         // expand path
         expandAndSelectTreeNode(chartTreeNode);
 
@@ -695,9 +683,6 @@ public class ScopeTree extends JPanel {
         // add axis to chart
         Chart chart = (Chart) chartTreeNode.getUserObject();
         chart.addAxis(axis);
-
-        // logging
-        logger.fine("Add Tree Node | " + axis.getAxisName());
 
         // expand path
         expandAndSelectTreeNode(axisTreeNode);
@@ -756,9 +741,6 @@ public class ScopeTree extends JPanel {
         Axis axis = (Axis) axisTreeNode.getUserObject();
         axis.addChannel(channel);
 
-        // logging
-        logger.fine("Add Tree Node | " + channel.getChannelName());
-
         // expand path
         expandAndSelectTreeNode(channelTreeNode);
 
@@ -813,9 +795,6 @@ public class ScopeTree extends JPanel {
         Chart chart = (Chart) chartTreeNode.getUserObject();
         chart.getTriggerGroupList().add(triggerGroup);
 
-        // logging
-        logger.fine("Add Tree Node | " + triggerGroup.getTriggerGroupName());
-
         // expand path
         expandAndSelectTreeNode(triggerGroupeTreeNode);
 
@@ -838,9 +817,6 @@ public class ScopeTree extends JPanel {
         // add axis to chart
         TriggerGroup triggerGroup = (TriggerGroup) triggerGroupTreeNode.getUserObject();
         triggerGroup.addTriggerChannel(triggerChannel);
-
-        // logging
-        logger.fine("Add Tree Node | " + triggerChannel.getChannel().getChannelName());
 
         // expand path
         expandAndSelectTreeNode(triggerChannelTreeNode);
@@ -892,9 +868,6 @@ public class ScopeTree extends JPanel {
 
                             // add trigger group to chart
                             chart.addTriggerGroup(triggerGroup);
-
-                            // logging
-                            logger.fine("Add Tree Node | " + triggerGroup.getTriggerGroupName());
                         }
 
                         // initialize trigger channel
@@ -910,9 +883,6 @@ public class ScopeTree extends JPanel {
                         // add trigger channel to trigger group
                         TriggerGroup triggerGroup = chart.getTriggerGroupList().get(0);
                         triggerGroup.addTriggerChannel(triggerChannel);
-
-                        // logging
-                        logger.fine("Add Tree Node | " + triggerChannel.getChannel().getChannelName());
 
                         return triggerChannelTreeNode;
                     }

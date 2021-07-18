@@ -16,6 +16,7 @@ import twincat.TwincatLogger;
 import twincat.ads.common.RouteSymbolData;
 import twincat.ads.common.Symbol;
 import twincat.ads.constant.AmsPort;
+import twincat.ads.worker.AdsWorker;
 import twincat.ads.worker.RouteLoader;
 import twincat.ads.worker.SymbolLoader;
 import twincat.app.common.AxisAcquisition;
@@ -58,6 +59,8 @@ public class AxisPanel extends JScrollPane {
 
     private final RouteLoader routeLoader = new RouteLoader();
 
+    private final Logger logger = TwincatLogger.getLogger();
+
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -99,13 +102,7 @@ public class AxisPanel extends JScrollPane {
                     axisAcquisition.setAxisSymbolName(axisSymbolName);
                     axisAcquisitionList.add(axisAcquisition);
                     axisNameList.add(axisName);
- 
-                    
-                    // TODO : search for torque symbol
-                    // TODO : symbolLoader.findRouteBySymbolName();
-                    // TODO : make special symbol port parse list
-          
-                    
+
                     // build axis button
                     JButton axisButton = new JButton();
                     StringBuilder stringBuilder = new StringBuilder(axisName);
@@ -141,6 +138,8 @@ public class AxisPanel extends JScrollPane {
     /******** private method *********/
     /*********************************/
 
+    // TODO : SwingWorker
+    
     public void buildAxisScope(AxisAcquisition axisAcquisition) {
         // scope
         Scope scope = new Scope();
@@ -160,13 +159,16 @@ public class AxisPanel extends JScrollPane {
         axisVelo.setAxisName("Velo");
 
         // acquisition ACTVELO
+        String actVeloSymbolName = axisAcquisition.getAxisSymbolName() + ".ACTVELO";
+        logger.fine(actVeloSymbolName);
+        
         Acquisition acquisitionActVelo = new Acquisition();
         acquisitionActVelo.setSampleTime(1);
         acquisitionActVelo.setSymbolBased(true);
-        acquisitionActVelo.setSymbolName(axisAcquisition.getAxisSymbolName() + ".ACTVELO");
+        acquisitionActVelo.setSymbolName(actVeloSymbolName);
         acquisitionActVelo.setAmsNetId(axisAcquisition.getAmsNetId());
         acquisitionActVelo.setAmsPort(axisAcquisition.getAmsPort());
-        
+
         // channel ACTVELO
         Channel channelActVelo = new Channel();
         channelActVelo.setAcquisition(acquisitionActVelo);
@@ -174,10 +176,13 @@ public class AxisPanel extends JScrollPane {
         channelActVelo.setLineColor(Color.RED);
 
         // acquisition SETVELO
+        String setVeloSymbolName = axisAcquisition.getAxisSymbolName() + ".SETVELO";
+        logger.fine(setVeloSymbolName);
+        
         Acquisition acquisitionSetVelo = new Acquisition();
         acquisitionSetVelo.setSampleTime(1);
         acquisitionSetVelo.setSymbolBased(true);
-        acquisitionSetVelo.setSymbolName(axisAcquisition.getAxisSymbolName() + ".SETVELO");
+        acquisitionSetVelo.setSymbolName(setVeloSymbolName);
         acquisitionSetVelo.setAmsNetId(axisAcquisition.getAmsNetId());
         acquisitionSetVelo.setAmsPort(axisAcquisition.getAmsPort());
         
@@ -197,10 +202,13 @@ public class AxisPanel extends JScrollPane {
         axisPosition.setAxisName("Pos");
 
         // acquisition ACTPOS
+        String actPosSymbolName = axisAcquisition.getAxisSymbolName() + ".ACTPOS";
+        logger.fine(actPosSymbolName);
+        
         Acquisition acquisitionActPos = new Acquisition();
         acquisitionActPos.setSampleTime(1);
         acquisitionActPos.setSymbolBased(true);
-        acquisitionActPos.setSymbolName(axisAcquisition.getAxisSymbolName() + ".ACTPOS");
+        acquisitionActPos.setSymbolName(actPosSymbolName);
         acquisitionActPos.setAmsNetId(axisAcquisition.getAmsNetId());
         acquisitionActPos.setAmsPort(axisAcquisition.getAmsPort());
         
@@ -211,10 +219,13 @@ public class AxisPanel extends JScrollPane {
         channelActPos.setLineColor(Color.ORANGE);
 
         // acquisition SETPOS
+        String setPosSymbolName = axisAcquisition.getAxisSymbolName() + ".SETPOS";
+        logger.fine(setPosSymbolName);
+        
         Acquisition acquisitionSetPos = new Acquisition();
         acquisitionSetPos.setSampleTime(1);
         acquisitionSetPos.setSymbolBased(true);
-        acquisitionSetPos.setSymbolName(axisAcquisition.getAxisSymbolName() + ".SETPOS");
+        acquisitionSetPos.setSymbolName(setPosSymbolName);
         acquisitionSetPos.setAmsNetId(axisAcquisition.getAmsNetId());
         acquisitionSetPos.setAmsPort(axisAcquisition.getAmsPort());
         
@@ -234,13 +245,16 @@ public class AxisPanel extends JScrollPane {
         axisAcceleration.setAxisName("Accel");
 
         // acquisition ACTACC
+        String actAccSymbolName = axisAcquisition.getAxisSymbolName() + ".ACTACC";
+        logger.fine(actAccSymbolName);
+        
         Acquisition acquisitionActAcc = new Acquisition();
         acquisitionActAcc.setSampleTime(1);
         acquisitionActAcc.setSymbolBased(true);
-        acquisitionActAcc.setSymbolName(axisAcquisition.getAxisSymbolName() + ".ACTACC");
+        acquisitionActAcc.setSymbolName(actAccSymbolName);
         acquisitionActAcc.setAmsNetId(axisAcquisition.getAmsNetId());
         acquisitionActAcc.setAmsPort(axisAcquisition.getAmsPort());
-
+        
         // channel ACTACC
         Channel channelActAcc = new Channel();
         channelActAcc.setAcquisition(acquisitionActAcc);
@@ -248,13 +262,16 @@ public class AxisPanel extends JScrollPane {
         channelActAcc.setLineColor(Color.MAGENTA);
 
         // acquisition SETACC
+        String setAccSymbolName = axisAcquisition.getAxisSymbolName() + ".SETACC";
+        logger.fine(setAccSymbolName);
+        
         Acquisition acquisitionSetAcc = new Acquisition();
         acquisitionSetAcc.setSampleTime(1);
         acquisitionSetAcc.setSymbolBased(true);
-        acquisitionSetAcc.setSymbolName(axisAcquisition.getAxisSymbolName() + ".SETACC");
+        acquisitionSetAcc.setSymbolName(setAccSymbolName);
         acquisitionSetAcc.setAmsNetId(axisAcquisition.getAmsNetId());
         acquisitionSetAcc.setAmsPort(axisAcquisition.getAmsPort());
-
+        
         // channel SETACC
         Channel channelSetAcc = new Channel();
         channelSetAcc.setAcquisition(acquisitionSetAcc);
@@ -271,13 +288,16 @@ public class AxisPanel extends JScrollPane {
         axisPosDiff.setAxisName("PosDiff");
 
         // acquisition POSDIFF
+        String posDiffSymbolName = axisAcquisition.getAxisSymbolName() + ".POSDIFF";
+        logger.fine(posDiffSymbolName);
+        
         Acquisition acquisitionPosDiff = new Acquisition();
         acquisitionPosDiff.setSampleTime(1);
         acquisitionPosDiff.setSymbolBased(true);
-        acquisitionPosDiff.setSymbolName(axisAcquisition.getAxisSymbolName() + ".POSDIFF");
+        acquisitionPosDiff.setSymbolName(posDiffSymbolName);
         acquisitionPosDiff.setAmsNetId(axisAcquisition.getAmsNetId());
         acquisitionPosDiff.setAmsPort(axisAcquisition.getAmsPort());
-
+        
         // channel POSDIFF
         Channel channelPosDiff = new Channel();
         channelPosDiff.setAcquisition(acquisitionPosDiff);
@@ -287,6 +307,40 @@ public class AxisPanel extends JScrollPane {
         // add POS to chart
         chart.addAxis(axisPosDiff);
         axisPosDiff.addChannel(channelPosDiff);
+
+        // TODO : build torque name
+        // ._I_TORQUE_CONVEYORCSX ?
+        // ._M06_221_HOZ_UEBERGABE_EH_SERVO_TORQUE 
+        String torqueSymbolName = "." + axisAcquisition.getAxisName().replaceAll("[^a-zA-Z0-9]", "_") + "_TORQUE";
+        System.out.println(torqueSymbolName);
+        
+        AmsPort amsPort = AdsWorker.findAmsPort(axisAcquisition.getAmsNetId(), torqueSymbolName);
+        
+        if (!amsPort.equals(AmsPort.UNKNOWN)) {
+            // axis TORQUE
+            Axis axisTorque = new Axis();
+            axisTorque.setAxisName("Torque");
+
+            // acquisition TORQUE
+            logger.fine(torqueSymbolName);
+            
+            Acquisition acquisitionTorque = new Acquisition();
+            acquisitionTorque.setSampleTime(1);
+            acquisitionTorque.setSymbolBased(true);
+            acquisitionTorque.setSymbolName(torqueSymbolName);
+            acquisitionTorque.setAmsNetId(axisAcquisition.getAmsNetId());
+            acquisitionTorque.setAmsPort(amsPort);
+            
+            // channel TORQUE
+            Channel channelTorque = new Channel();
+            channelTorque.setAcquisition(acquisitionTorque);
+            channelTorque.setChannelName("TORQUE");
+            channelTorque.setLineColor(Color.GRAY);
+
+            // add TORQUE to chart
+            chart.addAxis(axisTorque);
+            axisPosDiff.addChannel(channelTorque);
+        }
 
         // trigger channel SETVELO
         TriggerChannel triggerChannelSetVelo = new TriggerChannel();
