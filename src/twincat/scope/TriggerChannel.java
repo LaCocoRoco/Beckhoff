@@ -28,24 +28,7 @@ public class TriggerChannel extends Observable implements Observer {
 
     private long releaseTimeStamp = 0;
 
-    /*********************************/
-    /***** global final variable *****/
-    /*********************************/
-
-    private final Channel channel;
-
-    /*********************************/
-    /********** constructor **********/
-    /*********************************/
-
-    public TriggerChannel() {
-        this.channel = new Channel();
-    }
-
-    public TriggerChannel(Channel channel) {
-        this.channel = channel;
-        channel.addObserver(this);
-    }
+    private Channel channel = new Channel();
 
     /*********************************/
     /******** setter & getter ********/
@@ -106,6 +89,16 @@ public class TriggerChannel extends Observable implements Observer {
         }
     }
 
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
+
+    public void setChannel(Channel channel) {
+        this.channel.deleteObserver(this);
+        this.channel = channel;
+        channel.addObserver(this);
+    }
+    
     /*********************************/
     /******** private method *********/
     /*********************************/

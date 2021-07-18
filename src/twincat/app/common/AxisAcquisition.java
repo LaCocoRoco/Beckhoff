@@ -27,7 +27,7 @@ public class AxisAcquisition {
     public void setAxisName(String axisName) {
         this.axisName = axisName;
     }
-
+    
     public String getAxisSymbolName() {
         return axisSymbolName;
     }
@@ -35,7 +35,7 @@ public class AxisAcquisition {
     public void setAxisSymbolName(String axisSymbolName) {
         this.axisSymbolName = axisSymbolName;
     }
-
+    
     public String getAmsNetId() {
         return amsNetId;
     }

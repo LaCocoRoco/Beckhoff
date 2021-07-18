@@ -32,6 +32,8 @@ import com.sun.management.OperatingSystemMXBean;
 import twincat.TwincatLogger;
 import twincat.Utilities;
 
+// TODO : rework graphic task start
+
 public class Chart extends Observable {
     /*********************************/
     /**** local constant variable ****/

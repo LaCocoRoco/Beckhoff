@@ -34,7 +34,7 @@ public class Channel extends Observable implements Observer {
 
     private boolean channelVisible = true;
 
-    private boolean antialias = false;
+    private boolean antialias = true;
 
     private Color lineColor = Color.RED;
 
@@ -46,9 +46,9 @@ public class Channel extends Observable implements Observer {
 
     private int plotSize = 4;
 
-    private boolean plotVisible = true;
+    private boolean plotVisible = false;
 
-    private boolean watchdogEnabled = false;
+    private boolean watchdogEnabled = true;
 
     private String channelError = new String();
 

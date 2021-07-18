@@ -275,7 +275,8 @@ public class ScopeView {
         channel8.setWatchdogEnabled(true);
 
         // trigger channel
-        TriggerChannel triggerChannel = new TriggerChannel(channel1);
+        TriggerChannel triggerChannel = new TriggerChannel();
+        triggerChannel.setChannel(channel1);
         triggerChannel.setThreshold(0);
         triggerChannel.setCombine(TriggerChannel.Combine.AND);
         triggerChannel.setRelease(TriggerChannel.Release.RISING_EDGE);
