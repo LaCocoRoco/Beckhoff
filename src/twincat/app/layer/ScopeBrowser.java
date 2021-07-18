@@ -685,7 +685,7 @@ public class ScopeBrowser extends JPanel {
     private ScopeTreeNode addAxisTreeNode() {
         // initialize axis
         Axis axis = new Axis();
-        axis.setAxisColor(Utilities.getRandomColor());
+        axis.setAxisColor(Utilities.getRandomTableColor());
 
         return addAxisTreeNode(axis);
     }
@@ -742,7 +742,7 @@ public class ScopeBrowser extends JPanel {
     private ScopeTreeNode addChannelTreeNode() {
         // initialize channel
         Channel channel = new Channel();
-        channel.setLineColor(Utilities.getRandomColor());
+        channel.setLineColor(Utilities.getRandomTableColor());
 
         return addChannelTreeNode(channel);
     }

@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 
+import twincat.ads.constant.ColorTable;
+
 public class Utilities {
     /*********************************/
     /**** local constant variable ****/
@@ -85,8 +87,14 @@ public class Utilities {
         }   
     }
 
-    public static final Color getRandomColor() {
+    public static final Color getRandomColor() { 
         Random random = new Random();
         return Color.getHSBColor(random.nextFloat(), 1F, 1F);
+    }
+    
+    public static final Color getRandomTableColor() {
+        Random random = new Random();
+        int index = random.nextInt(ColorTable.values().length);
+        return ColorTable.values()[index].color;
     }
 }

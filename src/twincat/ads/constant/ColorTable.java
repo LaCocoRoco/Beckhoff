@@ -7,8 +7,20 @@ public enum ColorTable {
     /*** global constant variable ****/
     /*********************************/
 
-    RED     (Color.RED);
-
+    BLACK           (new Color(0x00, 0x00, 0x00)),
+    RED             (new Color(0xFF, 0x00, 0x00)),
+    DEEP_PINK       (new Color(0xFF, 0x14, 0x93)),
+    VIOLET          (new Color(0xEE, 0x82, 0xEE)),
+    PURPLE          (new Color(0x80, 0x00, 0x80)),
+    BLUE            (new Color(0x00, 0x00, 0xFF)),
+    DARK_GREEN      (new Color(0x00, 0x64, 0x00)),
+    DARK_RED        (new Color(0x8B, 0x00, 0x00)),
+    GOLDENROD       (new Color(0xDA, 0xA5, 0x20)),
+    DARK_SLATE_GRAY (new Color(0x2F, 0x4F, 0x4F)),
+    ORANGE          (new Color(0xFF, 0xA5, 0x00)),
+    OLIVE           (new Color(0x80, 0x80, 0x00)),
+    ORANGE_RED      (new Color(0xFF, 0x45, 0x00));
+ 
     /*********************************/
     /******** global variable ********/
     /*********************************/

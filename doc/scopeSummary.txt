@@ -1,0 +1,72 @@
+> ScopeViewSerializable
+Title = scopeName
+	> Operating
+	RecordTime = recordTime
+
+###########################
+
+	> ScopeChartSerializable
+	Name = chartName
+
+		> Style
+		BackgroundColorValue 	= chartColor
+		BorderColorValue 		= borderColor
+		BaseTime 				= displayTime
+
+		> XAxis
+			> Style
+			ColorValue 		= timeLineColor
+			Ticks 			= timeTickCount
+			GridColorValue 	= gridLineColor
+			GridLineWidth 	= lineWidth
+			WIRD NICHT ÜBERNOMMEN! axisTickCount
+
+###########################
+
+		> ScopeYAxisSerializable
+		Name = axisName
+			> Style
+			Enabled 	= axisVisible
+			ColorValue 	= axisColor
+			LineWidth 	= lineWidth
+			AutoScale 	= autoscale
+			ShowName 	= axisNameVisible
+			AxisMin 	= valueMin
+			AxisMax 	= valueMax
+
+###########################
+
+			> ScopeChannelSerializable
+			Name = channelName
+			IdentHandle = 1 -> ScopeTriggerSingleSetSerializable
+
+				> Style
+				LineWidth 		= lineWidth
+				ColorValue 		= lineColor
+				MarkColorValue 	= plotColor
+				MarkSize 		= plotSize
+				Antialias 		= antialias
+				Marks 			= plotVisible
+				Visible 		= channelVisible
+
+				> Acquisition
+				REAL64 			= dataType
+				IndexGroup 		= IndexGroup
+				IndexOffset 	= indexOffset
+				TargetPort 		= amsPort
+				SymbolName 		= symbolName
+				AmsNetIdString 	= amsNetId
+				IsSymbolBased 	= symbolBased
+
+###########################
+
+	> ScopeTriggerGroupSerializable
+	Title 				= triggerGroupName
+	TriggerPrePercent 	= triggerOffset
+	Enabled 			= enabled
+
+		> ScopeTriggerSingleSetSerializable
+		CombineOption 	= combine
+		ReleaseOption 	= release
+		Threshold 		= threshold
+		ConnectedChannelHandle = 1 -> ScopeChannelSerializable
