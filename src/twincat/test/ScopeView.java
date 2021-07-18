@@ -168,7 +168,6 @@ public class ScopeView {
         channel1.setChannelName("Channel1");
         channel1.setChannelVisible(true);
         channel1.setAntialias(true);
-        channel1.setLineVisible(true);
         channel1.setLineColor(Color.RED);
         channel1.setLineWidth(1);
         channel1.setPlotVisible(true);
@@ -182,7 +181,6 @@ public class ScopeView {
         channel2.setChannelName("Channel2");
         channel2.setChannelVisible(true);
         channel2.setAntialias(true);
-        channel2.setLineVisible(true);
         channel2.setLineColor(Color.BLACK);
         channel2.setLineWidth(1);
         channel2.setPlotVisible(true);
@@ -196,7 +194,6 @@ public class ScopeView {
         channel3.setChannelName("Channel3");
         channel3.setChannelVisible(true);
         channel3.setAntialias(true);
-        channel3.setLineVisible(true);
         channel3.setLineColor(Color.BLUE);
         channel3.setLineWidth(1);
         channel3.setPlotVisible(true);
@@ -210,7 +207,6 @@ public class ScopeView {
         channel4.setChannelName("Channel4");
         channel4.setChannelVisible(true);
         channel4.setAntialias(true);
-        channel4.setLineVisible(true);
         channel4.setLineColor(Color.ORANGE);
         channel4.setLineWidth(1);
         channel4.setPlotVisible(true);
@@ -224,7 +220,6 @@ public class ScopeView {
         channel5.setChannelName("Channel5");
         channel5.setChannelVisible(true);
         channel5.setAntialias(false);
-        channel5.setLineVisible(true);
         channel5.setLineColor(Color.GREEN);
         channel5.setLineWidth(1);
         channel5.setPlotVisible(true);
@@ -238,7 +233,6 @@ public class ScopeView {
         channel6.setChannelName("Channel6");
         channel2.setChannelVisible(true);
         channel6.setAntialias(false);
-        channel6.setLineVisible(true);
         channel6.setLineColor(Color.GRAY);
         channel6.setLineWidth(1);
         channel6.setPlotVisible(true);
@@ -252,7 +246,6 @@ public class ScopeView {
         channel7.setChannelName("Channel7");
         channel7.setChannelVisible(true);
         channel7.setAntialias(false);
-        channel7.setLineVisible(true);
         channel7.setLineColor(Color.MAGENTA);
         channel7.setLineWidth(1);
         channel7.setPlotVisible(true);
@@ -266,7 +259,6 @@ public class ScopeView {
         channel8.setChannelName("Channel8");
         channel8.setChannelVisible(true);
         channel8.setAntialias(false);
-        channel8.setLineVisible(true);
         channel8.setLineColor(Color.WHITE);
         channel8.setLineWidth(1);
         channel8.setPlotVisible(true);
@@ -290,8 +282,13 @@ public class ScopeView {
         // scope add chart
         scope.addChart(chart);
 
+        
+        // TODO : add trigger group to scope
+        // TODO : reference trigger group to chart
+        // TODO : if trigger group != null use
+        
         // chart add trigger group
-        chart.addTriggerGroup(triggerGroup);
+        scope.addTriggerGroup(triggerGroup);
 
         // chart add axis
         chart.addAxis(axis1);

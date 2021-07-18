@@ -41,7 +41,9 @@ public final class Scope {
     /*********************************/
 
     private final CopyOnWriteArrayList<Chart> chartList = new CopyOnWriteArrayList<Chart>();
-
+    
+    private final CopyOnWriteArrayList<TriggerGroup> triggerGroupList = new CopyOnWriteArrayList<TriggerGroup>();
+ 
     /*********************************/
     /******** setter & getter ********/
     /*********************************/
@@ -65,6 +67,10 @@ public final class Scope {
     public CopyOnWriteArrayList<Chart> getChartList() {
         return chartList;
     }
+    
+    public CopyOnWriteArrayList<TriggerGroup> getTriggerGroupList() {
+        return triggerGroupList;
+    }
 
     /*********************************/
     /******** override method ********/
@@ -83,7 +89,20 @@ public final class Scope {
         this.recordTime = Scope.timeFormaterToLong(recordTime);
     }
 
+    public void addTriggerGroup(TriggerGroup triggerGroup) {
+        triggerGroupList.add(triggerGroup);
+    }
+
+    public void removeTrigger(TriggerGroup triggerGroupRemove) {
+        for (TriggerGroup triggerGroup : triggerGroupList) {
+            if (triggerGroup.equals(triggerGroupRemove)) {
+                triggerGroupList.remove(triggerGroup);
+            }
+        }
+    }
+    
     public void addChart(Chart chart) {
+        chart.setTriggerGroupList(triggerGroupList);
         chartList.add(chart);
     }
 

@@ -63,8 +63,6 @@ public class Chart extends Observable {
 
     private String chartName = "Chart";
 
-    private Color chartLineColor = new Color(41, 61, 74, 255);
-
     private Color timeLineColor = new Color(41, 61, 74, 255);
 
     private Color gridLineColor = new Color(41, 61, 74, 255);
@@ -79,9 +77,11 @@ public class Chart extends Observable {
 
     private int axisTickCount = 11;
 
+    private long displayTime = 1000;
+    
     private long recordTime = 0;
 
-    private long displayTime = 1000;
+    private CopyOnWriteArrayList<TriggerGroup> triggerGroupList = new CopyOnWriteArrayList<TriggerGroup>();
 
     private VolatileImage image = Chart.createBitmaskVolatileImage(width, height);
 
@@ -90,8 +90,6 @@ public class Chart extends Observable {
     /*********************************/
     
     private final CopyOnWriteArrayList<Axis> axisList = new CopyOnWriteArrayList<Axis>();
-
-    private final CopyOnWriteArrayList<TriggerGroup> triggerGroupList = new CopyOnWriteArrayList<TriggerGroup>();
 
     /*********************************/
     /******** local variable *********/
@@ -209,15 +207,6 @@ public class Chart extends Observable {
         this.refresh = true;
     }
 
-    public Color getChartLineColor() {
-        return chartLineColor;
-    }
-
-    public void setChartLineColor(Color chartLineColor) {
-        this.chartLineColor = chartLineColor;
-        this.refresh = true;
-    }
-
     public Color getTimeLineColor() {
         return timeLineColor;
     }
@@ -311,9 +300,13 @@ public class Chart extends Observable {
     public List<Axis> getAxisList() {
         return axisList;
     }
-
-    public List<TriggerGroup> getTriggerGroupList() {
+    
+    public CopyOnWriteArrayList<TriggerGroup> getTriggerGroupList() {
         return triggerGroupList;
+    }
+
+    public void setTriggerGroupList(CopyOnWriteArrayList<TriggerGroup> triggerGroupList) {
+        this.triggerGroupList = triggerGroupList;
     }
 
     /*********************************/
@@ -391,20 +384,6 @@ public class Chart extends Observable {
             if (axis.equals(axisRemove)) {
                 axis.close();
                 axisList.remove(axis);
-            }
-        }
-    }
-
-    public void addTriggerGroup(TriggerGroup triggerGroup) {
-        this.refresh = true;
-        triggerGroupList.add(triggerGroup);
-    }
-
-    public void removeTrigger(TriggerGroup triggerGroupRemove) {
-        this.refresh = true;
-        for (TriggerGroup triggerGroup : triggerGroupList) {
-            if (triggerGroup.equals(triggerGroupRemove)) {
-                triggerGroupList.remove(triggerGroup);
             }
         }
     }
@@ -741,12 +720,10 @@ public class Chart extends Observable {
                         double samplePositionOffset = channelHeight - pixelToValueRangeOffset - samplePixelPosition;
                         double samplePositionY = channelPositionY + samplePositionOffset;
 
-                        if (channel.isLineVisible()) {
-                            if (generalPath.getCurrentPoint() == null) {
-                                generalPath.moveTo(samplePositionX, samplePositionY);
-                            } else {
-                                generalPath.lineTo(samplePositionX, samplePositionY);
-                            }
+                        if (generalPath.getCurrentPoint() == null) {
+                            generalPath.moveTo(samplePositionX, samplePositionY);
+                        } else {
+                            generalPath.lineTo(samplePositionX, samplePositionY);
                         }
 
                         if (channel.isPlotVisible()) {
@@ -764,12 +741,9 @@ public class Chart extends Observable {
                         graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
                     }
 
-                    if (channel.isLineVisible()) {
-                        graphics.setColor(channel.getLineColor());
-                        graphics.setStroke(
-                                new BasicStroke(channel.getLineWidth(), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
-                        graphics.draw(generalPath);
-                    }
+                    graphics.setColor(channel.getLineColor());
+                    graphics.setStroke(new BasicStroke(channel.getLineWidth(), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
+                    graphics.draw(generalPath);
 
                     if (!rectangleList.isEmpty()) {
                         for (Rectangle2D rectangle : rectangleList) {

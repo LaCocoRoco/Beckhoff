@@ -29,9 +29,8 @@ import twincat.Utilities;
 import twincat.app.common.ScopeTreeModel;
 import twincat.app.common.ScopeTreeNode;
 import twincat.app.common.ScopeTreeRenderer;
+import twincat.app.constant.Browser;
 import twincat.app.constant.Propertie;
-import twincat.app.constant.Tree;
-import twincat.app.constant.Window;
 import twincat.scope.Acquisition;
 import twincat.scope.Axis;
 import twincat.scope.Channel;
@@ -40,7 +39,7 @@ import twincat.scope.Scope;
 import twincat.scope.TriggerChannel;
 import twincat.scope.TriggerGroup;
 
-public class ScopeTree extends JPanel {
+public class ScopeBrowser extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*********************************/
@@ -154,7 +153,7 @@ public class ScopeTree extends JPanel {
     /********** constructor **********/
     /*********************************/
 
-    public ScopeTree(XReference xref) {
+    public ScopeBrowser(XReference xref) {
         this.xref = xref;
 
         browseTree.setCellRenderer(new ScopeTreeRenderer());
@@ -176,44 +175,43 @@ public class ScopeTree extends JPanel {
 
         JButton addScopeButton = new JButton();
         addScopeButton.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_ADD_SCOPE));
-        addScopeButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_SCOPE)));
+        addScopeButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_APP_SCOPE)));
         addScopeButton.setFocusable(false);
         addScopeButton.addActionListener(addScopeActionListener);
 
         JButton addChartButton = new JButton();
         addChartButton.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_ADD_CHART));
-        addChartButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_CHART)));
+        addChartButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_APP_CHART)));
         addChartButton.setFocusable(false);
         addChartButton.addActionListener(addChartActionListener);
 
         JButton addAxisButton = new JButton();
         addAxisButton.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_ADD_AXIS));
-        addAxisButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_AXIS)));
+        addAxisButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_APP_AXIS)));
         addAxisButton.setFocusable(false);
         addAxisButton.addActionListener(addAxisActionListener);
 
         JButton addChannelButton = new JButton();
         addChannelButton.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_ADD_CHANNEL));
-        addChannelButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_CHANNEL)));
+        addChannelButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_APP_CHANNEL)));
         addChannelButton.setFocusable(false);
         addChannelButton.addActionListener(addChannelActionListener);
 
         JButton addTriggerChannelButton = new JButton();
         addTriggerChannelButton.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_ADD_TRIGGER));
-        addTriggerChannelButton
-                .setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_TRIGGER_CHANNEL)));
+        addTriggerChannelButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_APP_TRIGGER_CHANNEL)));
         addTriggerChannelButton.setFocusable(false);
         addTriggerChannelButton.addActionListener(addTriggerChannelActionListener);
 
         JButton searchButton = new JButton();
         searchButton.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_SEARCH));
-        searchButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_SEARCH)));
+        searchButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_APP_SEARCH)));
         searchButton.setFocusable(false);
         searchButton.addActionListener(searchButtonActionListener);
 
         JButton buttonDelete = new JButton();
         buttonDelete.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_DELETE));
-        buttonDelete.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_NAVIGATE_DELETE)));
+        buttonDelete.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_APP_DELETE)));
         buttonDelete.setFocusable(false);
         buttonDelete.addActionListener(deleteButtonActionListener);
 
@@ -245,23 +243,41 @@ public class ScopeTree extends JPanel {
     /********* public method *********/
     /*********************************/
 
-    public void clearScopeList() {
-        scopeList.clear();
+    public void removeScope() {
+        ScopeTreeNode rootNode = (ScopeTreeNode) browseTree.getModel().getRoot();
+        
+        // remove scope node
+        for (int i = 0; i < rootNode.getChildCount(); i++) {
+            ScopeTreeNode scopeNode = (ScopeTreeNode) rootNode.getChildAt(i);
+            removeScopeTreeNode(scopeNode);
+        }
+        
+        // reload
+        reloadTreeNode();
+        
+        // remove scope
+        for (Scope scope : scopeList) {
+            scope.close();
+        }
     }
 
     public void addScope(Scope scope) {
-        addScopeTreeNode(scope);
+        // add scope
+        ScopeTreeNode scopeTreeNode = addScopeTreeNode(scope);
 
         List<Chart> chartList = scope.getChartList();
         for (Chart chart : chartList) {
+            // add chart
             addChartTreeNode(chart);
 
             List<Axis> axisList = chart.getAxisList();
             for (Axis axis : axisList) {
+                // add axis
                 addAxisTreeNode(axis);
 
                 List<Channel> channelList = axis.getChannelList();
                 for (Channel channel : channelList) {
+                    // add channel
                     addChannelTreeNode(channel);
                 }
             }
@@ -270,24 +286,24 @@ public class ScopeTree extends JPanel {
             if (!triggerGroupList.isEmpty()) {
 
                 for (TriggerGroup triggerGroup : triggerGroupList) {
+                    // add trigger group
                     addTriggerGroupTreeNode(triggerGroup);
+                    
                     List<TriggerChannel> triggerChannelList = triggerGroup.getTriggerChannelList();
-
                     for (TriggerChannel triggerChannel : triggerChannelList) {
+                        // add trigger channel
                         addTriggerChannelTreeNode(triggerChannel);
                     }
                 }
             }
         }
-
-        // display scope view
-        xref.treePanel.setCard(Tree.SCOPE);
-        xref.propertiesPanel.setCard(Propertie.EMPTY);
-        xref.windowPanel.setCard(Window.SCOPE);
+        
+        // select scope
+        reloadAndSelectTreeNode(scopeTreeNode);
     }
 
     public void abortSymbolAcquisition() {
-        xref.treePanel.setCard(Tree.SCOPE);
+        xref.browserPanel.setCard(Browser.SCOPE);
         xref.propertiesPanel.setCard(card);
     }
 
@@ -313,10 +329,10 @@ public class ScopeTree extends JPanel {
         channel.setChannelName(acquisition.getChannelName());
 
         // expand path
-        expandAndSelectTreeNode(channelTreeNode);
+        reloadAndSelectTreeNode(channelTreeNode);
 
         // display scope tree view
-        xref.treePanel.setCard(Tree.SCOPE);
+        xref.browserPanel.setCard(Browser.SCOPE);
         xref.propertiesPanel.setCard(Propertie.CHANNEL);
     }
 
@@ -326,13 +342,44 @@ public class ScopeTree extends JPanel {
 
         // refresh selected tree node
         if (selectedTreeNode != null) {
-            expandAndSelectTreeNode(selectedTreeNode);
+            reloadAndSelectTreeNode(selectedTreeNode);
         }
     }
 
     /*********************************/
     /******** private method *********/
     /*********************************/
+
+    private void reloadTreeNode() {
+        // save path of all expanded nodes
+        List<TreePath> expandedPath = new ArrayList<>();
+        for (int i = 0; i < browseTree.getRowCount() - 1; i++) {
+            TreePath currPath = browseTree.getPathForRow(i);
+            TreePath nextPath = browseTree.getPathForRow(i + 1);
+            if (currPath.isDescendant(nextPath)) {
+                expandedPath.add(currPath);
+            }
+        }
+
+        // reload tree model
+        ScopeTreeModel treeModel = (ScopeTreeModel) browseTree.getModel();
+        treeModel.reload();
+
+        // expand all nodes
+        for (TreePath path : expandedPath) {
+            browseTree.expandPath(path);
+        }
+    }
+    
+    private void reloadAndSelectTreeNode(ScopeTreeNode treeNode) {
+        // reload tree node
+        reloadTreeNode();
+
+        // set tree node selected
+        TreePath treePath = new TreePath(treeNode.getPath());
+        browseTree.setSelectionPath(treePath);
+        treeNodeSelectedSingleClick(treePath);
+    }
 
     private void searchSymbolAcquisition() {
         // get selected tree node
@@ -354,7 +401,7 @@ public class ScopeTree extends JPanel {
         // display symbol acquisition view
         card = xref.propertiesPanel.getCard();
         xref.acquisitionProperties.reloadAcquisition();
-        xref.treePanel.setCard(Tree.SYMBOL);
+        xref.browserPanel.setCard(Browser.SYMBOL);
         xref.propertiesPanel.setCard(Propertie.ACQUISITION);
     }
 
@@ -407,35 +454,6 @@ public class ScopeTree extends JPanel {
         }
     }
 
-    private void expandAndSelectTreeNode(ScopeTreeNode treeNode) {
-        // expand tree node
-        TreePath treePath = new TreePath(treeNode.getPath());
-        browseTree.setSelectionPath(treePath);
-
-        // save path of all expanded nodes
-        List<TreePath> expandedPath = new ArrayList<>();
-        for (int i = 0; i < browseTree.getRowCount() - 1; i++) {
-            TreePath currPath = browseTree.getPathForRow(i);
-            TreePath nextPath = browseTree.getPathForRow(i + 1);
-            if (currPath.isDescendant(nextPath)) {
-                expandedPath.add(currPath);
-            }
-        }
-
-        // reload tree model
-        ScopeTreeModel treeModel = (ScopeTreeModel) browseTree.getModel();
-        treeModel.reload();
-
-        // expand all nodes
-        for (TreePath path : expandedPath) {
-            browseTree.expandPath(path);
-        }
-
-        // set tree node selected
-        browseTree.setSelectionPath(treePath);
-        treeNodeSelectedSingleClick(treePath);
-    }
-
     private void removeTreeNode() {
         // get selected tree node
         ScopeTreeNode selectedTreeNode = (ScopeTreeNode) browseTree.getLastSelectedPathComponent();
@@ -478,17 +496,16 @@ public class ScopeTree extends JPanel {
                     ScopeTreeNode chartTreeNode = (ScopeTreeNode) object;
                     Object chartUserObject = chartTreeNode.getUserObject();
 
-                    // get chart from channel
-                    if (chartUserObject instanceof Chart) {
+                    // get scope of channel
+                    if (chartUserObject instanceof Scope) {
                         for (int i = 0; i < chartTreeNode.getChildCount(); i++) {
                             ScopeTreeNode triggerGroupTreeNode = (ScopeTreeNode) chartTreeNode.getChildAt(i);
                             Object triggerGroupUserObject = triggerGroupTreeNode.getUserObject();
 
-                            // get trigger group from chart
+                            // get trigger group of scope
                             if (triggerGroupUserObject instanceof TriggerGroup) {
                                 for (int x = 0; x < triggerGroupTreeNode.getChildCount(); x++) {
-                                    ScopeTreeNode triggerChannelTreeNode = (ScopeTreeNode) triggerGroupTreeNode
-                                            .getChildAt(x);
+                                    ScopeTreeNode triggerChannelTreeNode = (ScopeTreeNode) triggerGroupTreeNode.getChildAt(x);
                                     Object triggerChannelUserObject = triggerChannelTreeNode.getUserObject();
                                     TriggerChannel triggerChannel = (TriggerChannel) triggerChannelUserObject;
 
@@ -514,7 +531,7 @@ public class ScopeTree extends JPanel {
 
             // expand tree node
             if (selectedTreeNode != null) {
-                expandAndSelectTreeNode(selectedTreeNode);
+                reloadAndSelectTreeNode(selectedTreeNode);
             }
 
             // display nothing if tree is empty
@@ -544,7 +561,7 @@ public class ScopeTree extends JPanel {
             }
         }
 
-        // add new scope if no node present
+        // add new scope node if none present
         ScopeTreeNode scopeTreeNode = addScopeTreeNode();
         return scopeTreeNode;
     }
@@ -569,11 +586,11 @@ public class ScopeTree extends JPanel {
         scopeTreeNode.setUserObject(scope);
         rootTreeNode.add(scopeTreeNode);
 
-        // add scope to list
+        // add scope
         scopeList.add(scope);
 
         // expand path
-        expandAndSelectTreeNode(scopeTreeNode);
+        reloadAndSelectTreeNode(scopeTreeNode);
 
         return scopeTreeNode;
     }
@@ -597,7 +614,7 @@ public class ScopeTree extends JPanel {
             }
         }
 
-        // add new scope if no node present
+        // add new chart node if none present
         ScopeTreeNode chartTreeNode = addChartTreeNode();
 
         return chartTreeNode;
@@ -624,12 +641,12 @@ public class ScopeTree extends JPanel {
         chartTreeNode.setUserObject(chart);
         scopeTreeNode.add(chartTreeNode);
 
-        // add chart to scope
+        // add chart
         Scope scope = (Scope) scopeTreeNode.getUserObject();
         scope.addChart(chart);
 
         // expand path
-        expandAndSelectTreeNode(chartTreeNode);
+        reloadAndSelectTreeNode(chartTreeNode);
 
         return chartTreeNode;
     }
@@ -653,7 +670,7 @@ public class ScopeTree extends JPanel {
             }
         }
 
-        // add new scope if no node present
+        // add new axis node if none present
         ScopeTreeNode chartTreeNode = addAxisTreeNode();
 
         return chartTreeNode;
@@ -680,12 +697,12 @@ public class ScopeTree extends JPanel {
         axisTreeNode.setUserObject(axis);
         chartTreeNode.add(axisTreeNode);
 
-        // add axis to chart
+        // add axis
         Chart chart = (Chart) chartTreeNode.getUserObject();
         chart.addAxis(axis);
 
         // expand path
-        expandAndSelectTreeNode(axisTreeNode);
+        reloadAndSelectTreeNode(axisTreeNode);
 
         return axisTreeNode;
     }
@@ -709,7 +726,7 @@ public class ScopeTree extends JPanel {
             }
         }
 
-        // add new scope if no node present
+        // add new scope node if none present
         ScopeTreeNode channelTreeNode = addChannelTreeNode();
 
         return channelTreeNode;
@@ -737,12 +754,12 @@ public class ScopeTree extends JPanel {
         channelTreeNode.setUserObject(channel);
         axisTreeNode.add(channelTreeNode);
 
-        // add axis to chart
+        // add axis
         Axis axis = (Axis) axisTreeNode.getUserObject();
         axis.addChannel(channel);
 
         // expand path
-        expandAndSelectTreeNode(channelTreeNode);
+        reloadAndSelectTreeNode(channelTreeNode);
 
         return channelTreeNode;
     }
@@ -766,14 +783,14 @@ public class ScopeTree extends JPanel {
                 ScopeTreeNode selectedTreeNode = (ScopeTreeNode) selectedObject;
                 Object userObject = selectedTreeNode.getUserObject();
 
-                // get channel
+                // get trigger group
                 if (userObject instanceof TriggerGroup) {
                     return selectedTreeNode;
                 }
             }
         }
 
-        // add new trigger group if no node present
+        // add new trigger group node if none present
         ScopeTreeNode channelTreeNode = addTriggerGroupTreeNode();
 
         return channelTreeNode;
@@ -785,18 +802,18 @@ public class ScopeTree extends JPanel {
     }
 
     private ScopeTreeNode addTriggerGroupTreeNode(TriggerGroup triggerGroup) {
-        // add axis node
-        ScopeTreeNode chartTreeNode = getChartTreeNode();
+        // add trigger group node
+        ScopeTreeNode scopeTreeNode = getScopeTreeNode();
         ScopeTreeNode triggerGroupeTreeNode = new ScopeTreeNode();
         triggerGroupeTreeNode.setUserObject(triggerGroup);
-        chartTreeNode.insert(triggerGroupeTreeNode, 0);
+        scopeTreeNode.insert(triggerGroupeTreeNode, 0);
 
-        // add trigger group to chart trigger group list
-        Chart chart = (Chart) chartTreeNode.getUserObject();
-        chart.getTriggerGroupList().add(triggerGroup);
+        // add trigger group
+        Scope scope = (Scope) scopeTreeNode.getUserObject();
+        scope.getTriggerGroupList().add(triggerGroup);
 
         // expand path
-        expandAndSelectTreeNode(triggerGroupeTreeNode);
+        reloadAndSelectTreeNode(triggerGroupeTreeNode);
 
         return triggerGroupeTreeNode;
     }
@@ -808,18 +825,18 @@ public class ScopeTree extends JPanel {
     }
 
     private ScopeTreeNode addTriggerChannelTreeNode(TriggerChannel triggerChannel) {
-        // add channel node
+        // add trigger channel node
         ScopeTreeNode triggerGroupTreeNode = getTriggerGroupTreeNode();
         ScopeTreeNode triggerChannelTreeNode = new ScopeTreeNode();
         triggerChannelTreeNode.setUserObject(triggerChannel);
         triggerGroupTreeNode.add(triggerChannelTreeNode);
 
-        // add axis to chart
+        // add trigger channel
         TriggerGroup triggerGroup = (TriggerGroup) triggerGroupTreeNode.getUserObject();
         triggerGroup.addTriggerChannel(triggerChannel);
 
         // expand path
-        expandAndSelectTreeNode(triggerChannelTreeNode);
+        reloadAndSelectTreeNode(triggerChannelTreeNode);
 
         return triggerChannelTreeNode;
     }
@@ -837,14 +854,14 @@ public class ScopeTree extends JPanel {
                 TreePath treePath = browseTree.getSelectionPath();
                 Object[] objectArray = (Object[]) treePath.getPath();
 
-                // loop through tree path
+                // lookup for scope
                 for (Object object : objectArray) {
                     ScopeTreeNode treeNode = (ScopeTreeNode) object;
                     Object userObject = treeNode.getUserObject();
 
-                    // get chart from channel
-                    if (userObject instanceof Chart) {
-                        Chart chart = (Chart) userObject;
+                    // get scope of channel
+                    if (userObject instanceof Scope) {
+                        Scope scope = (Scope) userObject;
                         ScopeTreeNode triggerGroupTreeNode = new ScopeTreeNode();
 
                         for (int i = 0; i < treeNode.getChildCount(); i++) {
@@ -866,8 +883,8 @@ public class ScopeTree extends JPanel {
                             triggerGroupTreeNode.setUserObject(triggerGroup);
                             treeNode.insert(triggerGroupTreeNode, 0);
 
-                            // add trigger group to chart
-                            chart.addTriggerGroup(triggerGroup);
+                            // add trigger group
+                            scope.addTriggerGroup(triggerGroup);
                         }
 
                         // initialize trigger channel
@@ -878,10 +895,10 @@ public class ScopeTree extends JPanel {
                         ScopeTreeNode triggerChannelTreeNode = new ScopeTreeNode();
                         triggerChannelTreeNode.setUserObject(triggerChannel);
                         triggerGroupTreeNode.add(triggerChannelTreeNode);
-                        expandAndSelectTreeNode(triggerChannelTreeNode);
+                        reloadAndSelectTreeNode(triggerChannelTreeNode);
 
                         // add trigger channel to trigger group
-                        TriggerGroup triggerGroup = chart.getTriggerGroupList().get(0);
+                        TriggerGroup triggerGroup = scope.getTriggerGroupList().get(0);
                         triggerGroup.addTriggerChannel(triggerChannel);
 
                         return triggerChannelTreeNode;

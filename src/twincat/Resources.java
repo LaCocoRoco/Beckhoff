@@ -32,7 +32,27 @@ public class Resources {
     public static final String PATH_TEXT_ADS_INFO = PATH_PACKAGE_TEXT + "ads_info.txt";
     
     public static final String PATH_ICON_APP = PATH_PACKAGE_IMAGES + "app.png";
+    
+    public static final String PATH_ICON_APP_SCOPE = PATH_PACKAGE_IMAGES + "app_scope.png";
 
+    public static final String PATH_ICON_APP_CHART = PATH_PACKAGE_IMAGES + "app_chart.png";
+    
+    public static final String PATH_ICON_APP_AXIS = PATH_PACKAGE_IMAGES + "app_axis.png";
+    
+    public static final String PATH_ICON_APP_CHANNEL = PATH_PACKAGE_IMAGES + "app_channel.png";
+    
+    public static final String PATH_ICON_APP_TRIGGER_GROUP = PATH_PACKAGE_IMAGES + "app_group.png";
+    
+    public static final String PATH_ICON_APP_TRIGGER_CHANNEL = PATH_PACKAGE_IMAGES + "app_trigger.png";
+
+    public static final String PATH_ICON_APP_DELETE = PATH_PACKAGE_IMAGES + "app_delete.png";
+    
+    public static final String PATH_ICON_APP_SEARCH = PATH_PACKAGE_IMAGES + "app_search.png";
+
+    public static final String PATH_ICON_APP_FOLDER_OPEN = PATH_PACKAGE_IMAGES + "folder_open.png";
+    
+    public static final String PATH_ICON_APP_FOLDER_CLOSED = PATH_PACKAGE_IMAGES + "folder_closed.png";
+    
     public static final String PATH_ICON_CONTROL_PLAY = PATH_PACKAGE_IMAGES + "control_play.png";
     
     public static final String PATH_ICON_CONTROL_PAUSE = PATH_PACKAGE_IMAGES + "control_pause.png";
@@ -40,27 +60,7 @@ public class Resources {
     public static final String PATH_ICON_CONTROL_STOP = PATH_PACKAGE_IMAGES + "control_stop.png";
     
     public static final String PATH_ICON_CONTROL_MINIMIZE = PATH_PACKAGE_IMAGES + "control_minimize.png";
-    
-    public static final String PATH_ICON_NAVIGATE_SCOPE = PATH_PACKAGE_IMAGES + "navigate_scope.png";
 
-    public static final String PATH_ICON_NAVIGATE_CHART = PATH_PACKAGE_IMAGES + "navigate_chart.png";
-    
-    public static final String PATH_ICON_NAVIGATE_AXIS = PATH_PACKAGE_IMAGES + "navigate_axis.png";
-    
-    public static final String PATH_ICON_NAVIGATE_CHANNEL = PATH_PACKAGE_IMAGES + "navigate_channel.png";
-    
-    public static final String PATH_ICON_NAVIGATE_TRIGGER_GROUP = PATH_PACKAGE_IMAGES + "navigate_group.png";
-    
-    public static final String PATH_ICON_NAVIGATE_TRIGGER_CHANNEL = PATH_PACKAGE_IMAGES + "navigate_trigger.png";
-
-    public static final String PATH_ICON_NAVIGATE_DELETE = PATH_PACKAGE_IMAGES + "navigate_delete.png";
-    
-    public static final String PATH_ICON_NAVIGATE_SEARCH = PATH_PACKAGE_IMAGES + "navigate_search.png";
-    
-    public static final String PATH_ICON_FOLDER_OPEN = PATH_PACKAGE_IMAGES + "folder_open.png";
-    
-    public static final String PATH_ICON_FOLDER_CLOSED = PATH_PACKAGE_IMAGES + "folder_closed.png";
-    
     public static final String PATH_ICON_DATATYPE_BIT = PATH_PACKAGE_IMAGES + "datatype_bit.png";
     
     public static final String PATH_ICON_DATATYPE_INT8 = PATH_PACKAGE_IMAGES + "datatype_int8.png";

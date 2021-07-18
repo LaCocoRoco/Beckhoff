@@ -11,15 +11,19 @@ import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
+import javax.swing.SwingWorker;
 
 import twincat.TwincatLogger;
 import twincat.ads.common.RouteSymbolData;
 import twincat.ads.common.Symbol;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.worker.AdsWorker;
 import twincat.ads.worker.RouteLoader;
 import twincat.ads.worker.SymbolLoader;
 import twincat.app.common.AxisAcquisition;
+import twincat.app.constant.Browser;
+import twincat.app.constant.Navigation;
+import twincat.app.constant.Propertie;
+import twincat.app.constant.Window;
 import twincat.java.ScrollablePanel;
 import twincat.java.WrapLayout;
 import twincat.scope.Acquisition;
@@ -119,10 +123,17 @@ public class AxisPanel extends JScrollPane {
                     axisButton.setContentAreaFilled(false);
                     axisButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 
-                    axisButton.addActionListener(new ActionListener() {
+                    axisButton.addActionListener(new ActionListener() {      
                         @Override
-                        public void actionPerformed(ActionEvent e) {
-                            buildAxisScope(axisAcquisition);
+                        public void actionPerformed(ActionEvent actionEvent) {
+                            new SwingWorker<Void, Void>() {
+                                @Override
+                                protected Void doInBackground() throws Exception {
+                                    // build axis scope process
+                                    buildAxisScope(axisAcquisition);
+                                    return null;
+                                }
+                            }.execute();; 
                         }
                     });
 
@@ -138,9 +149,7 @@ public class AxisPanel extends JScrollPane {
     /******** private method *********/
     /*********************************/
 
-    // TODO : SwingWorker
-    
-    public void buildAxisScope(AxisAcquisition axisAcquisition) {
+    private void buildAxisScope(AxisAcquisition axisAcquisition) {
         // scope
         Scope scope = new Scope();
         scope.setScopeName(axisAcquisition.getAxisName());
@@ -308,40 +317,6 @@ public class AxisPanel extends JScrollPane {
         chart.addAxis(axisPosDiff);
         axisPosDiff.addChannel(channelPosDiff);
 
-        // TODO : build torque name
-        // ._I_TORQUE_CONVEYORCSX ?
-        // ._M06_221_HOZ_UEBERGABE_EH_SERVO_TORQUE 
-        String torqueSymbolName = "." + axisAcquisition.getAxisName().replaceAll("[^a-zA-Z0-9]", "_") + "_TORQUE";
-        System.out.println(torqueSymbolName);
-        
-        AmsPort amsPort = AdsWorker.findAmsPort(axisAcquisition.getAmsNetId(), torqueSymbolName);
-        
-        if (!amsPort.equals(AmsPort.UNKNOWN)) {
-            // axis TORQUE
-            Axis axisTorque = new Axis();
-            axisTorque.setAxisName("Torque");
-
-            // acquisition TORQUE
-            logger.fine(torqueSymbolName);
-            
-            Acquisition acquisitionTorque = new Acquisition();
-            acquisitionTorque.setSampleTime(1);
-            acquisitionTorque.setSymbolBased(true);
-            acquisitionTorque.setSymbolName(torqueSymbolName);
-            acquisitionTorque.setAmsNetId(axisAcquisition.getAmsNetId());
-            acquisitionTorque.setAmsPort(amsPort);
-            
-            // channel TORQUE
-            Channel channelTorque = new Channel();
-            channelTorque.setAcquisition(acquisitionTorque);
-            channelTorque.setChannelName("TORQUE");
-            channelTorque.setLineColor(Color.GRAY);
-
-            // add TORQUE to chart
-            chart.addAxis(axisTorque);
-            axisPosDiff.addChannel(channelTorque);
-        }
-
         // trigger channel SETVELO
         TriggerChannel triggerChannelSetVelo = new TriggerChannel();
         triggerChannelSetVelo.setChannel(channelSetVelo);
@@ -353,8 +328,15 @@ public class AxisPanel extends JScrollPane {
         triggerGroup.setTriggerOffset(0);
 
         // add trigger group to chart
-        chart.addTriggerGroup(triggerGroup);
+        scope.addTriggerGroup(triggerGroup);
  
-        xref.scopeTree.addScope(scope);
+        // display scope view
+        xref.browserPanel.setCard(Browser.SCOPE);
+        xref.propertiesPanel.setCard(Propertie.EMPTY);
+        xref.windowPanel.setCard(Window.SCOPE);
+        xref.navigationPanel.setCard(Navigation.CHART);
+        
+        // add scope
+        xref.scopeBrowser.addScope(scope);
     }
 }

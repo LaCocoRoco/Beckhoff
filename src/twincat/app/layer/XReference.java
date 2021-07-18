@@ -19,9 +19,9 @@ public class XReference {
 
     public final TriggerChannelProperties triggerChannelProperties = new TriggerChannelProperties(this);
 
-    public final ScopeTree scopeTree = new ScopeTree(this);
+    public final ScopeBrowser scopeBrowser = new ScopeBrowser(this);
 
-    public final SymbolTree symbolTree = new SymbolTree(this);
+    public final SymbolBrowser symbolBrowser = new SymbolBrowser(this);
 
     /*********************************/
     /************ layer 5 ************/
@@ -29,13 +29,17 @@ public class XReference {
 
     public final PropertiesPanel propertiesPanel = new PropertiesPanel(this);
 
-    public final TreePanel treePanel = new TreePanel(this);
+    public final BrowserPanel browserPanel = new BrowserPanel(this);
 
+    public final ChartPanel chartPanel = new ChartPanel(this);
+    
+    public final LoaderPanel loaderPanel = new LoaderPanel(this);
+    
     /*********************************/
     /************ layer 4 ************/
     /*********************************/
 
-    public final ChartPanel chartPanel = new ChartPanel(this);
+    public final NavigationPanel navigationPanel = new NavigationPanel(this);
 
     public final ControlPanel controlPanel = new ControlPanel(this);
 
@@ -64,5 +68,4 @@ public class XReference {
     /*********************************/
 
     public final ContentPanel contentPanel = new ContentPanel(this);
-
 }

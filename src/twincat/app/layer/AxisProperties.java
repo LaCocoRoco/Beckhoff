@@ -58,19 +58,19 @@ public class AxisProperties extends JPanel {
         @Override
         public void insertUpdate(DocumentEvent documentEvent) {
             axis.setAxisName(axisNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
 
         @Override
         public void removeUpdate(DocumentEvent documentEvent) {
             axis.setAxisName(axisNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
 
         @Override
         public void changedUpdate(DocumentEvent documentEvent) {
             axis.setAxisName(axisNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
     };
 

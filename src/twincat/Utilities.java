@@ -84,7 +84,7 @@ public class Utilities {
             }
         }   
     }
-    
+
     public static final Color getRandomColor() {
         Random random = new Random();
         return Color.getHSBColor(random.nextFloat(), 1F, 1F);

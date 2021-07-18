@@ -24,7 +24,7 @@ public class ScopePanel extends JSplitPane {
     /*********************************/
 
     public ScopePanel(XReference xref) {
-        this.setLeftComponent(xref.chartPanel);
+        this.setLeftComponent(xref.navigationPanel);
         this.setRightComponent(xref.controlPanel);
         this.setDividerSize(Resources.DEFAULT_DIVIDER_SIZE);
         this.setOrientation(JSplitPane.VERTICAL_SPLIT);

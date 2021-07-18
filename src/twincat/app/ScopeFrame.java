@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import twincat.Resources;
 import twincat.TwincatLogger;
+import twincat.app.constant.Navigation;
 import twincat.app.constant.Window;
 import twincat.app.layer.XReference;
 
@@ -61,6 +62,7 @@ public class ScopeFrame extends JPanel {
         menuItemWindowScope.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 xref.windowPanel.setCard(Window.SCOPE);
+                xref.navigationPanel.setCard(Navigation.CHART);
             }
         });
 
@@ -95,14 +97,15 @@ public class ScopeFrame extends JPanel {
         menuItemFileNew.setText(languageBundle.getString(Resources.TEXT_FILE_NEW));
         menuItemFileNew.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                // TODO : menu new file
+                xref.scopeBrowser.removeScope();
             }
         });
 
         menuItemFileOpen.setText(languageBundle.getString(Resources.TEXT_FILE_OPEN));
         menuItemFileOpen.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                // TODO : menu open file
+                xref.navigationPanel.setCard(Navigation.LOADER);
+                xref.windowPanel.setCard(Window.SCOPE);
             }
         });
 

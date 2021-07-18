@@ -53,19 +53,19 @@ public class TriggerGroupProperties extends JPanel {
         @Override
         public void insertUpdate(DocumentEvent documentEvent) {
             triggerGroup.setTriggerGroupName(triggerGroupNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
 
         @Override
         public void removeUpdate(DocumentEvent documentEvent) {
             triggerGroup.setTriggerGroupName(triggerGroupNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
 
         @Override
         public void changedUpdate(DocumentEvent documentEvent) {
             triggerGroup.setTriggerGroupName(triggerGroupNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
     };
 

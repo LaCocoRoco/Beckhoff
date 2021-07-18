@@ -46,9 +46,9 @@ public class SymbolTreeRenderer extends DefaultTreeCellRenderer {
 
     private static final ImageIcon ICON_TIME = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_DATATYPE_TIME));
 
-    private static final ImageIcon ICON_OPEN = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_FOLDER_OPEN));
+    private static final ImageIcon ICON_OPEN = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_APP_FOLDER_OPEN));
 
-    private static final ImageIcon ICON_CLOSED = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_FOLDER_CLOSED));
+    private static final ImageIcon ICON_CLOSED = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_APP_FOLDER_CLOSED));
 
     /*********************************/
     /******** override method ********/

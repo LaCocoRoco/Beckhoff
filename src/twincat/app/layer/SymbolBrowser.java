@@ -70,7 +70,7 @@ import twincat.app.common.SymbolTreeNode;
 import twincat.app.common.SymbolTreeRenderer;
 import twincat.app.constant.Filter;
 
-public class SymbolTree extends JPanel {
+public class SymbolBrowser extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*********************************/
@@ -293,7 +293,7 @@ public class SymbolTree extends JPanel {
     private final ActionListener abortButtonActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            xref.scopeTree.abortSymbolAcquisition();
+            xref.scopeBrowser.abortSymbolAcquisition();
         }
     };
 
@@ -306,12 +306,12 @@ public class SymbolTree extends JPanel {
             return null;
         }
     };
-
+ 
     /*********************************/
     /********** constructor **********/
     /*********************************/
 
-    public SymbolTree(XReference xref) {
+    public SymbolBrowser(XReference xref) {
         this.xref = xref;
 
         browseTree.setCellRenderer(new SymbolTreeRenderer());

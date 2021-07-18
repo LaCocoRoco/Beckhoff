@@ -40,8 +40,6 @@ public class Channel extends Observable implements Observer {
 
     private int lineWidth = 1;
 
-    private boolean lineVisible = true;
-
     private Color plotColor = Color.RED;
 
     private int plotSize = 4;
@@ -150,15 +148,6 @@ public class Channel extends Observable implements Observer {
 
     public void setLineWidth(int lineWidth) {
         this.lineWidth = lineWidth;
-        this.refresh = true;
-    }
-
-    public boolean isLineVisible() {
-        return lineVisible;
-    }
-
-    public void setLineVisible(boolean lineVisible) {
-        this.lineVisible = lineVisible;
         this.refresh = true;
     }
 

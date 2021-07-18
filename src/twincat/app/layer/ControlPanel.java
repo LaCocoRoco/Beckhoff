@@ -23,7 +23,7 @@ public class ControlPanel extends JSplitPane {
     /*********************************/
 
     public ControlPanel(XReference xref) {
-        this.setLeftComponent(xref.treePanel);
+        this.setLeftComponent(xref.browserPanel);
         this.setRightComponent(xref.propertiesPanel);
         this.setDividerSize(Resources.DEFAULT_DIVIDER_SIZE);
         this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);

@@ -13,8 +13,8 @@ public class Acquisition {
 
 	private boolean symbolBased = false;
 
-	private String symbolName = new String();
-
+    private String symbolName = "Channel";
+	
 	private int indexGroup = 0;
 
 	private int indexOffset = 0;
@@ -100,10 +100,10 @@ public class Acquisition {
 	public String getChannelName() {
 	    String[] symbolNameArray = symbolName.split("\\.");
 	    
-	    if (symbolNameArray.length != 0 && !symbolName.isEmpty()) {
+	    if (symbolNameArray.length != 0) {
 	        return symbolNameArray[symbolNameArray.length - 1];
 	    } else {
-	        return "Channel";
+	        return symbolName;
 	    }
 	}	
 }

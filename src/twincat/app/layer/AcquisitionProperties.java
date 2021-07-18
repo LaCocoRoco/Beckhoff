@@ -247,7 +247,7 @@ public class AcquisitionProperties extends JPanel {
     /*********************************/
 
     public void applyAcquisition() {
-        xref.scopeTree.applySymbolAcquisition(acquisition);
+        xref.scopeBrowser.applySymbolAcquisition(acquisition);
     }
 
     public void cloneAcquisition(Acquisition acquisition) {

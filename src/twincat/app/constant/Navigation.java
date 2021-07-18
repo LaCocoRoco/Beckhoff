@@ -1,9 +1,9 @@
 package twincat.app.constant;
 
-public enum Tree {
+public enum Navigation {
     /*********************************/
     /*** global constant variable ****/
     /*********************************/
     
-    SCOPE, SYMBOL
+    CHART, LOADER
 }

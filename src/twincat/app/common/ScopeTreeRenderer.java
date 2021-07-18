@@ -27,17 +27,17 @@ public class ScopeTreeRenderer extends DefaultTreeCellRenderer {
     
     private static final Color BACKGROUND_SELECTION_COLOR = new Color(234, 234, 234);
     
-    private static final ImageIcon ICON_SCOPE = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_SCOPE, 0.8));
+    private static final ImageIcon ICON_SCOPE = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_APP_SCOPE, 0.8));
 
-    private static final ImageIcon ICON_CHART = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_CHART, 0.8));
+    private static final ImageIcon ICON_CHART = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_APP_CHART, 0.8));
     
-    private static final ImageIcon ICON_AXIS = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_AXIS, 0.8));    
+    private static final ImageIcon ICON_AXIS = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_APP_AXIS, 0.8));    
     
-    private static final ImageIcon ICON_CHANNEL = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_CHANNEL, 0.8));    
+    private static final ImageIcon ICON_CHANNEL = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_APP_CHANNEL, 0.8));    
     
-    private static final ImageIcon ICON_TRIGGER_GROUP = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_TRIGGER_GROUP, 0.8));    
+    private static final ImageIcon ICON_TRIGGER_GROUP = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_APP_TRIGGER_GROUP, 0.8));    
 
-    private static final ImageIcon ICON_TRIGGER_CHANNEL = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_NAVIGATE_TRIGGER_CHANNEL, 0.8));   
+    private static final ImageIcon ICON_TRIGGER_CHANNEL = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_APP_TRIGGER_CHANNEL, 0.8));   
 
     /*********************************/
     /******** override method ********/

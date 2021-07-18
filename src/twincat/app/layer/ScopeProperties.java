@@ -128,19 +128,19 @@ public class ScopeProperties extends JPanel {
         @Override
         public void insertUpdate(DocumentEvent documentEvent) {
             scope.setScopeName(scopeNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
 
         @Override
         public void removeUpdate(DocumentEvent documentEvent) {
             scope.setScopeName(scopeNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
 
         @Override
         public void changedUpdate(DocumentEvent documentEvent) {
             scope.setScopeName(scopeNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
     };
 

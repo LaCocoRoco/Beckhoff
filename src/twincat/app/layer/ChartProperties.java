@@ -129,19 +129,19 @@ public class ChartProperties extends JPanel {
         @Override
         public void insertUpdate(DocumentEvent documentEvent) {
             chart.setChartName(chartNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
 
         @Override
         public void removeUpdate(DocumentEvent documentEvent) {
             chart.setChartName(chartNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
 
         @Override
         public void changedUpdate(DocumentEvent documentEvent) {
             chart.setChartName(chartNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
     };
 

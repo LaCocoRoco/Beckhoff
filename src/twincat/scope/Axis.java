@@ -37,8 +37,6 @@ public class Axis implements Observer {
 
     private boolean autoscale = true;
 
-    private int autoscaleOffset = 20;
-
     /*********************************/
     /****** local final variable *****/
     /*********************************/
@@ -133,15 +131,6 @@ public class Axis implements Observer {
 
     public void setAutoscale(boolean autoscale) {
         this.autoscale = autoscale;
-        this.refresh = true;
-    }
-
-    public int getAutoscaleOffset() {
-        return autoscaleOffset;
-    }
-
-    public void setAutoscaleOffset(int autoscaleOffset) {
-        this.autoscaleOffset = autoscaleOffset;
         this.refresh = true;
     }
 

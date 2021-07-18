@@ -53,19 +53,19 @@ public class ChannelProperties extends JPanel {
         @Override
         public void insertUpdate(DocumentEvent documentEvent) {
             channel.setChannelName(channelNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
 
         @Override
         public void removeUpdate(DocumentEvent documentEvent) {
             channel.setChannelName(channelNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
 
         @Override
         public void changedUpdate(DocumentEvent documentEvent) {
             channel.setChannelName(channelNameTextField.getText());
-            xref.scopeTree.reloadSelectedTreeNode();
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
     };
 
