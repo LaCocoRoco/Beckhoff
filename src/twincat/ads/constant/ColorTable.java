@@ -55,6 +55,7 @@ public enum ColorTable {
                 return primitiveColor;
             }
         }
+        
         return ColorTable.RED;
     } 
 }
