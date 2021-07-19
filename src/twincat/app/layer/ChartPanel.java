@@ -83,7 +83,7 @@ public class ChartPanel extends JPanel {
         graphPanel.setBorder(BorderFactory.createEmptyBorder());
         
         // tool bar
-        JLabel displayTime = new JLabel(Scope.TIME_FORMAT_TEMPLATE);
+        JLabel displayTime = new JLabel(Scope.TIME_FORMAT_MIN_TIME);
         displayTime.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
 
         JButton playButton = new JButton();

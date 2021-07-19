@@ -454,6 +454,10 @@ public class ScopeBrowser extends JPanel {
         }
     }
 
+    // TODO : check if any child channel has trigger channel
+    // TODO : theoretical always loop through all components
+    // TODO : needs a basic rework
+    
     private void removeTreeNode() {
         // get selected tree node
         ScopeTreeNode selectedTreeNode = (ScopeTreeNode) browseTree.getLastSelectedPathComponent();
@@ -462,18 +466,22 @@ public class ScopeBrowser extends JPanel {
             Object selectedObject = selectedTreeNode.getUserObject();
 
             if (selectedObject instanceof Scope) {
+                // TODO : if child channel has trigger channel
                 selectedTreeNode = removeScopeTreeNode(selectedTreeNode);
             }
 
             if (selectedObject instanceof Chart) {
+                // TODO : if child channel has trigger channel
                 selectedTreeNode = removeChartTreeNode(selectedTreeNode);
             }
 
             if (selectedObject instanceof Axis) {
+                // TODO : if child channel has trigger channel
                 selectedTreeNode = removeAxisTreeNode(selectedTreeNode);
             }
 
             if (selectedObject instanceof TriggerGroup) {
+                // TODO : if child channel has trigger channel
                 selectedTreeNode = removeTriggerGroupTreeNode(selectedTreeNode);
             }
 

@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import twincat.Resources;
 import twincat.TwincatLogger;
 import twincat.app.constant.Navigation;
+import twincat.app.constant.Propertie;
 import twincat.app.constant.Window;
 import twincat.app.layer.XReference;
 
@@ -98,6 +99,7 @@ public class ScopeFrame extends JPanel {
         menuItemFileNew.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 xref.scopeBrowser.removeScope();
+                xref.propertiesPanel.setCard(Propertie.EMPTY);
             }
         });
 

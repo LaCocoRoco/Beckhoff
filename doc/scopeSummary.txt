@@ -1,72 +1,69 @@
-> ScopeViewSerializable
-Title = scopeName
-	> Operating
-	RecordTime = recordTime
+> ScopeViewSerializable 							(Node)
+Title = scopeName									(Element)
+	> Operating										(Node)
+	RecordTime = recordTime							(Element)
+	> Charts 										(Node) FOR
+		> ScopeChartSerializable					(Node)
+		Name = chartName
 
-###########################
-
-	> ScopeChartSerializable
-	Name = chartName
-
-		> Style
-		BackgroundColorValue 	= chartColor
-		BorderColorValue 		= borderColor
-		BaseTime 				= displayTime
-
-		> XAxis
 			> Style
-			ColorValue 		= timeLineColor
-			Ticks 			= timeTickCount
-			GridColorValue 	= gridLineColor
-			GridLineWidth 	= lineWidth
-			WIRD NICHT ÜBERNOMMEN! axisTickCount
+			BackgroundColorValue 	= chartColor
+			BorderColorValue 		= borderColor
+			BaseTime 				= displayTime
 
-###########################
-
-		> ScopeYAxisSerializable
-		Name = axisName
-			> Style
-			Enabled 	= axisVisible
-			ColorValue 	= axisColor
-			LineWidth 	= lineWidth
-			AutoScale 	= autoscale
-			ShowName 	= axisNameVisible
-			AxisMin 	= valueMin
-			AxisMax 	= valueMax
-
-###########################
-
-			> ScopeChannelSerializable
-			Name = channelName
-			IdentHandle = 1 -> ScopeTriggerSingleSetSerializable
-
+			> XAxis
 				> Style
-				LineWidth 		= lineWidth
-				ColorValue 		= lineColor
-				MarkColorValue 	= plotColor
-				MarkSize 		= plotSize
-				Antialias 		= antialias
-				Marks 			= plotVisible
-				Visible 		= channelVisible
+				ColorValue 		= timeLineColor
+				Ticks 			= timeTickCount
+				GridColorValue 	= gridLineColor
+				GridLineWidth 	= lineWidth
+				WIRD NICHT ÜBERNOMMEN! axisTickCount
 
-				> Acquisition
-				REAL64 			= dataType
-				IndexGroup 		= IndexGroup
-				IndexOffset 	= indexOffset
-				TargetPort 		= amsPort
-				SymbolName 		= symbolName
-				AmsNetIdString 	= amsNetId
-				IsSymbolBased 	= symbolBased
+			> YAxes
+				> ScopeYAxisSerializable
+				Name = axisName
+					> Style
+					Enabled 	= axisVisible
+					ColorValue 	= axisColor
+					LineWidth 	= lineWidth
+					AutoScale 	= autoscale
+					ShowName 	= axisNameVisible
+					AxisMin 	= valueMin
+					AxisMax 	= valueMax
 
-###########################
+					> Channels
+						> ScopeChannelSerializable
+						Name = channelName
+						IdentHandle = 1 -> getChannelName(ConnectedChannelHandle#1)
+							
+							> Acquisition
+							DataType 		= dataType
+							IndexGroup 		= indexGroup
+							IndexOffset 	= indexOffset
+							TargetPort 		= amsPort
+							SymbolName 		= symbolName
+							AmsNetIdString 	= amsNetId
+							IsSymbolBased 	= symbolBased
 
-	> ScopeTriggerGroupSerializable
-	Title 				= triggerGroupName
-	TriggerPrePercent 	= triggerOffset
-	Enabled 			= enabled
+							> Style
+							LineWidth 		= lineWidth
+							ColorValue 		= lineColor
+							MarkColorValue 	= plotColor
+							MarkSize 		= plotSize
+							Antialias 		= antialias
+							Marks 			= plotVisible
+							Visible 		= channelVisible
 
-		> ScopeTriggerSingleSetSerializable
-		CombineOption 	= combine
-		ReleaseOption 	= release
-		Threshold 		= threshold
-		ConnectedChannelHandle = 1 -> ScopeChannelSerializable
+> TriggerModule
+	> TriggerGroups							
+		> ScopeTriggerGroupSerializable (loop)
+		Title 				= triggerGroupName
+		TriggerPrePercent 	= triggerOffset
+		Enabled 			= enabled
+			> TriggerSets
+				> ScopeTriggerSingleSetSerializable (loop)
+				CombineOption 	= combine
+				ReleaseOption 	= release
+				Threshold 		= threshold
+				ConnectedChannelHandle = setChannelName(ConnectedChannelHandle#1)
+				// oder loop get x

@@ -23,10 +23,13 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
 import twincat.Resources;
@@ -34,7 +37,7 @@ import twincat.ads.common.Route;
 import twincat.ads.constant.AmsPort;
 import twincat.ads.worker.RouteLoader;
 import twincat.java.ScrollablePanel;
-import twincat.java.WrapLayout;
+import twincat.java.TopFlowLayout;
 import twincat.scope.Acquisition;
 
 public class AcquisitionProperties extends JPanel {
@@ -60,6 +63,8 @@ public class AcquisitionProperties extends JPanel {
 
     private final JComboBox<String> targetPortComboBox = new JComboBox<String>();
 
+    private final JTextField symbolNameTextField = new JTextField();
+    
     private final RouteLoader routeLoader = new RouteLoader();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
@@ -149,6 +154,23 @@ public class AcquisitionProperties extends JPanel {
         }
     };
 
+    private final DocumentListener symbolNameTextFieldDocumentListener = new DocumentListener() {
+        @Override
+        public void insertUpdate(DocumentEvent documentEvent) {
+            acquisition.setSymbolName(symbolNameTextField.getText());
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent documentEvent) {
+            acquisition.setSymbolName(symbolNameTextField.getText());
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent documentEvent) {
+            acquisition.setSymbolName(symbolNameTextField.getText());
+        }
+    };
+
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -172,7 +194,7 @@ public class AcquisitionProperties extends JPanel {
         targetSystemComboBox.setBorder(targetSystemCompoundBorder);
         targetSystemComboBox.setUI(targetSystemComboBoxBasicUI);
         targetSystemComboBox.setRenderer(targetSystemComboBoxDefaultListCellRenderer);
-        targetSystemComboBox.setBounds(18, 35, 160, 22);
+        targetSystemComboBox.setBounds(18, 35, 265, 22);
 
         JLabel targetPortLabel = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TARGET_PORT));
         targetPortLabel.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
@@ -186,15 +208,30 @@ public class AcquisitionProperties extends JPanel {
         targetPortComboBox.setBorder(targetPortCompoundBorder);
         targetPortComboBox.setUI(targetPortComboBoxBasicUI);
         targetPortComboBox.setRenderer(targetPortComboBoxDefaultListCellRenderer);
-        targetPortComboBox.setBounds(18, 77, 160, 22);
+        targetPortComboBox.setBounds(18, 77, 265, 22);
 
         JPanel targetPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TARGET));
-        targetPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 115));
+        targetPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 115));
         targetPanel.add(targetSystemLabel);
         targetPanel.add(targetSystemComboBox);
         targetPanel.add(targetPortLabel);
         targetPanel.add(targetPortComboBox);
 
+        // symbol information properties
+        Border symbolInfoOuterBorder = symbolNameTextField.getBorder();
+        Border symbolInfoInnerBorder = BorderFactory.createEmptyBorder(0, 4, 0, 4);
+        CompoundBorder symbolInfoCompoundBorder = BorderFactory.createCompoundBorder(symbolInfoOuterBorder, symbolInfoInnerBorder);
+
+        symbolNameTextField.setText(acquisition.getSymbolName());
+        symbolNameTextField.setBorder(symbolInfoCompoundBorder);
+        symbolNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));       
+        symbolNameTextField.getDocument().addDocumentListener(symbolNameTextFieldDocumentListener); 
+        symbolNameTextField.setBounds(15, 25, 265, 25);
+
+        JPanel symbolInfoPanel = PropertiesPanel.buildTemplate("TODO");
+        symbolInfoPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
+        symbolInfoPanel.add(symbolNameTextField);
+        
         // default content
         JButton applyButton = new JButton(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_APPLY));
         applyButton.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -209,11 +246,13 @@ public class AcquisitionProperties extends JPanel {
         applyToolBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         applyToolBar.add(applyButton);
 
+        // add properties
         ScrollablePanel contentPanel = new ScrollablePanel();
-        contentPanel.setLayout(new WrapLayout(FlowLayout.LEADING));
+        contentPanel.setLayout(new TopFlowLayout(FlowLayout.LEADING));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(targetPanel);
+        contentPanel.add(symbolInfoPanel);
 
         JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
@@ -222,7 +261,8 @@ public class AcquisitionProperties extends JPanel {
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-
+        textHeader.setMinimumSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 0));
+        
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this.add(textHeader, BorderLayout.PAGE_START);
@@ -291,6 +331,10 @@ public class AcquisitionProperties extends JPanel {
                 targetPortComboBox.setSelectedIndex(i);
             }
         }
+        
+        // reload symbol information
+        symbolNameTextField.setText(acquisition.getSymbolName());
+        symbolNameTextField.setCaretPosition(0);
     }
     
     private void buildTargetComboBoxItemList() {

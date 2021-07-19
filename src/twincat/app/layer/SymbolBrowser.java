@@ -713,8 +713,38 @@ public class SymbolBrowser extends JPanel {
             treePanel.setViewportView(browseTree);
         }
     }
-    
+
     private void treeNodeSelectedSingleClick(TreePath treePath) {
+        SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();
+        Object userObject = symbolTreeNode.getUserObject();
+
+        if (userObject instanceof SymbolNode) {
+            SymbolNode symbolNode = (SymbolNode) userObject;
+            Symbol selectedSymbol = symbolNode.getSymbol();
+            SymbolLoader symbolLoader = symbolNode.getSymbolLoader();
+            
+            if (!selectedSymbol.getDataType().equals(DataType.BIGTYPE)) {
+                String symbolName = selectedSymbol.getSymbolName();
+                String amsNetId = symbolLoader.getAmsNetId();
+                AmsPort amsPort = symbolLoader.getAmsPort();
+                
+                // set symbol acquisition data
+                xref.acquisitionProperties.getAcquisition().setSymbolName(symbolName);
+                xref.acquisitionProperties.getAcquisition().setAmsNetId(amsNetId);
+                xref.acquisitionProperties.getAcquisition().setAmsPort(amsPort);
+                xref.acquisitionProperties.reloadAcquisition();
+                
+                // send symbol acquisition data to console
+                xref.consolePanel.setClipboard(symbolName);
+                xref.consolePanel.getCommandLine().getAdsClient().setAmsNetId(amsNetId);
+                xref.consolePanel.getCommandLine().getAdsClient().setAmsPort(amsPort);
+                
+                logger.info(selectedSymbol.getSymbolName());
+            }
+        }
+    }
+
+    private void treeNodeSelectedDoubleClick(TreePath treePath) {
         SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();
         Object userObject = symbolTreeNode.getUserObject();
 
@@ -751,34 +781,8 @@ public class SymbolBrowser extends JPanel {
                 // set view to symbol tree not path snapshot
                 searchTree.setSelectionPath(symbolTreePath);
             } else {
-                String symbolName = selectedSymbol.getSymbolName();
-                String amsNetId = symbolLoader.getAmsNetId();
-                AmsPort amsPort = symbolLoader.getAmsPort();
-                
-                // set symbol acquisition data
-                xref.acquisitionProperties.getAcquisition().setSymbolName(symbolName);
-                xref.acquisitionProperties.getAcquisition().setAmsNetId(amsNetId);
-                xref.acquisitionProperties.getAcquisition().setAmsPort(amsPort);
-                xref.acquisitionProperties.reloadAcquisition();
-                
-                // send symbol acquisition data to console
-                xref.consolePanel.setClipboard(symbolName);
-                xref.consolePanel.getCommandLine().getAdsClient().setAmsNetId(amsNetId);
-                xref.consolePanel.getCommandLine().getAdsClient().setAmsPort(amsPort);
-                
-                logger.info(selectedSymbol.getSymbolName());
+                xref.acquisitionProperties.applyAcquisition();
             }
         }
     }
-
-    private void treeNodeSelectedDoubleClick(TreePath treePath) {
-        SymbolTreeNode symbolTreeNode = (SymbolTreeNode) treePath.getLastPathComponent();
-        Object userObject = symbolTreeNode.getUserObject();
-
-        if (userObject instanceof SymbolNode) {
-            // apply acquisition data
-            xref.acquisitionProperties.applyAcquisition();
-        }
-    }
-
 }

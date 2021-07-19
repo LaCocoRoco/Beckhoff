@@ -53,37 +53,37 @@ public class ChartProperties extends JPanel {
     /*********************************/
 
     private final DocumentListener displayTimeTextFieldDocumentListener = new DocumentListener() {
-        private String time = Scope.TIME_FORMAT_TEMPLATE;
+        private String displayTime = Scope.TIME_FORMAT_MIN_TIME;
 
         private final Runnable task = new Runnable() {
             @Override
             public void run() {
                 String input = displayTimeTextField.getText();
-                if (!time.equals(displayTimeTextField.getText())) {
+                if (!displayTime.equals(displayTimeTextField.getText())) {
                     StringBuilder builder = new StringBuilder(input);
                     int caret = displayTimeTextField.getCaretPosition();
-                    if (input.length() > time.length()) {
+                    if (input.length() > displayTime.length()) {
                         // value added
-                        if (caret <= time.length()) {
-                            char value = time.charAt(caret - 1);
+                        if (caret <= displayTime.length()) {
+                            char value = displayTime.charAt(caret - 1);
 
                             if (value == ':' || value == '.') {
-                                input = time;
+                                input = displayTime;
                             } else {
                                 builder.deleteCharAt(caret);
                                 input = builder.toString();
                             }
                         } else {
                             caret = caret - 1;
-                            input = time;
+                            input = displayTime;
                         }
                     } else {
                         // value removed
-                        if (caret < time.length()) {
-                            char value = time.charAt(caret);
+                        if (caret < displayTime.length()) {
+                            char value = displayTime.charAt(caret);
 
                             if (value == ':' || value == '.') {
-                                input = time;
+                                input = displayTime;
                             } else {
                                 builder.insert(caret, "0");
                                 input = builder.toString();
@@ -95,15 +95,15 @@ public class ChartProperties extends JPanel {
                     String formatedInput = Scope.timeFormaterParse(input);
                  
                     // update time
-                    if (formatedInput.length() > Scope.TIME_FORMAT_TEMPLATE.length()) {
-                        time = formatedInput.substring(1);
+                    if (formatedInput.length() > Scope.TIME_FORMAT_MIN_TIME.length()) {
+                        displayTime = formatedInput.substring(1);
                     } else {
-                        time = formatedInput;
+                        displayTime = formatedInput;
                     }
                     
                     // set display time
-                    chart.setDisplayTime(time);
-                    displayTimeTextField.setText(time);
+                    chart.setDisplayTime(displayTime);
+                    displayTimeTextField.setText(displayTime);
                     displayTimeTextField.setCaretPosition(caret);
                 }
             }
@@ -164,18 +164,18 @@ public class ChartProperties extends JPanel {
         chartNameTextField.setBounds(15, 25, 140, 25);
 
         JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 70));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
         commonPanel.add(chartNameTextField);
         
         // display time properties
-        displayTimeTextField.setText(Scope.TIME_FORMAT_TEMPLATE);
+        displayTimeTextField.setText(Scope.TIME_FORMAT_MIN_TIME);
         displayTimeTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         displayTimeTextField.setHorizontalAlignment(JTextField.CENTER);
         displayTimeTextField.getDocument().addDocumentListener(displayTimeTextFieldDocumentListener);
         displayTimeTextField.setBounds(10, 25, 100, 25);
             
         JPanel displayTimePanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_DISPLAY_TIME));
-        displayTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 70));
+        displayTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
         displayTimePanel.add(displayTimeTextField);
 
         // default content
@@ -233,7 +233,8 @@ public class ChartProperties extends JPanel {
         // reload common properties
         if (!chartNameTextField.getText().equals(chart.getChartName())) {
             chartNameTextField.getDocument().removeDocumentListener(chartNameTextFieldDocumentListener);
-            chartNameTextField.setText(chart.getChartName()); 
+            chartNameTextField.setText(chart.getChartName());
+            chartNameTextField.setCaretPosition(0);
             chartNameTextField.getDocument().addDocumentListener(chartNameTextFieldDocumentListener);   
         }
 

@@ -111,7 +111,7 @@ public class AxisProperties extends JPanel {
         axisNameTextField.setBounds(15, 25, 140, 25);
 
         JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 90));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 90));
         commonPanel.add(axisNameTextField);
         commonPanel.add(axisNameCheckBox);
 
@@ -172,6 +172,7 @@ public class AxisProperties extends JPanel {
         if (!axisNameTextField.getText().equals(axis.getAxisName())) {
             axisNameTextField.getDocument().removeDocumentListener(axisNameTextFieldDocumentListener);
             axisNameTextField.setText(axis.getAxisName());
+            axisNameTextField.setCaretPosition(0);
             axisNameTextField.getDocument().addDocumentListener(axisNameTextFieldDocumentListener);  
         }
     }    

@@ -52,37 +52,37 @@ public class ScopeProperties extends JPanel {
     /*********************************/
 
     private final DocumentListener recordTimeTextFieldDocumentListener = new DocumentListener() {
-        private String time = Scope.TIME_FORMAT_TEMPLATE;
+        private String recordTime = Scope.TIME_FORMAT_MIN_TIME;
 
         private final Runnable task = new Runnable() {
             @Override
             public void run() {
                 String input = recordTimeTextField.getText();
-                if (!time.equals(recordTimeTextField.getText())) {
+                if (!recordTime.equals(recordTimeTextField.getText())) {
                     StringBuilder builder = new StringBuilder(input);
                     int caret = recordTimeTextField.getCaretPosition();
-                    if (input.length() > time.length()) {
+                    if (input.length() > recordTime.length()) {
                         // value added
-                        if (caret <= time.length()) {
-                            char value = time.charAt(caret - 1);
+                        if (caret <= recordTime.length()) {
+                            char value = recordTime.charAt(caret - 1);
 
                             if (value == ':' || value == '.') {
-                                input = time;
+                                input = recordTime;
                             } else {
                                 builder.deleteCharAt(caret);
                                 input = builder.toString();
                             }
                         } else {
                             caret = caret - 1;
-                            input = time;
+                            input = recordTime;
                         }
                     } else {
                         // value removed
-                        if (caret < time.length()) {
-                            char value = time.charAt(caret);
+                        if (caret < recordTime.length()) {
+                            char value = recordTime.charAt(caret);
 
                             if (value == ':' || value == '.') {
-                                input = time;
+                                input = recordTime;
                             } else {
                                 builder.insert(caret, "0");
                                 input = builder.toString();
@@ -93,16 +93,16 @@ public class ScopeProperties extends JPanel {
                     // format time
                     String formatedInput = Scope.timeFormaterParse(input);
 
-                    // update record time
-                    if (formatedInput.length() > Scope.TIME_FORMAT_TEMPLATE.length()) {
-                        time = formatedInput.substring(1);
+                    // set time
+                    if (formatedInput.length() > Scope.TIME_FORMAT_MIN_TIME.length()) {
+                        recordTime = formatedInput.substring(1);
                     } else {
-                        time = formatedInput;
+                        recordTime = formatedInput;
                     }
 
                     // set record time
-                    scope.setRecordTime(time);
-                    recordTimeTextField.setText(time);
+                    scope.setRecordTime(recordTime);
+                    recordTimeTextField.setText(recordTime);
                     recordTimeTextField.setCaretPosition(caret);
                 }
             }
@@ -160,22 +160,27 @@ public class ScopeProperties extends JPanel {
         scopeNameTextField.setBorder(scopeNameCompoundBorder);
         scopeNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         scopeNameTextField.getDocument().addDocumentListener(scopeNameTextFieldDocumentListener);
-        scopeNameTextField.setBounds(15, 25, 140, 25);
-
+        scopeNameTextField.setBounds(15, 25, 210, 25);
+        
         JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 70));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
         commonPanel.add(scopeNameTextField);
 
         // record mode properties
-        recordTimeTextField.setText(Scope.TIME_FORMAT_TEMPLATE);
+        recordTimeTextField.setText(Scope.TIME_FORMAT_MIN_TIME);
         recordTimeTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         recordTimeTextField.setHorizontalAlignment(JTextField.CENTER);
         recordTimeTextField.getDocument().addDocumentListener(recordTimeTextFieldDocumentListener);
-        recordTimeTextField.setBounds(10, 25, 100, 25);
+        recordTimeTextField.setBounds(15, 25, 100, 25);
 
+        JLabel recordTimeText = new JLabel("[" + Scope.TIME_FORMAT_TEMPLATE + "]");
+        recordTimeText.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        recordTimeText.setBounds(125, 23, 120, 25);
+        
         JPanel recordTimePanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_RECORD_TIME));
-        recordTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 70));
+        recordTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
         recordTimePanel.add(recordTimeTextField);
+        recordTimePanel.add(recordTimeText);
 
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
@@ -192,7 +197,8 @@ public class ScopeProperties extends JPanel {
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-
+        textHeader.setMinimumSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 0));
+        
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this.add(textHeader, BorderLayout.PAGE_START);
@@ -233,6 +239,7 @@ public class ScopeProperties extends JPanel {
         if (!scopeNameTextField.getText().equals(scope.getScopeName())) {
             scopeNameTextField.getDocument().removeDocumentListener(scopeNameTextFieldDocumentListener);
             scopeNameTextField.setText(scope.getScopeName());
+            scopeNameTextField.setCaretPosition(0);
             scopeNameTextField.getDocument().addDocumentListener(scopeNameTextFieldDocumentListener);         
         }
 

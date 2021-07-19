@@ -33,6 +33,7 @@ import twincat.TwincatLogger;
 import twincat.Utilities;
 
 // TODO : rework graphic task start
+// TODO : rework grap
 
 public class Chart extends Observable {
     /*********************************/

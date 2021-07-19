@@ -88,7 +88,7 @@ public class TriggerGroupProperties extends JPanel {
         triggerGroupNameTextField.setBounds(15, 25, 140, 25);
 
         JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 70));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
         commonPanel.add(triggerGroupNameTextField);
         
         // default content
@@ -146,6 +146,7 @@ public class TriggerGroupProperties extends JPanel {
         if (!triggerGroupNameTextField.getText().equals(triggerGroup.getTriggerGroupName())) {
             triggerGroupNameTextField.getDocument().removeDocumentListener(triggerChannelNameTextFieldDocumentListener);
             triggerGroupNameTextField.setText(triggerGroup.getTriggerGroupName());
+            triggerGroupNameTextField.setCaretPosition(0);
             triggerGroupNameTextField.getDocument().addDocumentListener(triggerChannelNameTextFieldDocumentListener);
         }
     } 

@@ -88,7 +88,7 @@ public class ChannelProperties extends JPanel {
         channelNameTextField.setBounds(15, 25, 140, 25);
 
         JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH, 70));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
         commonPanel.add(channelNameTextField);
         
         // default content
@@ -145,6 +145,7 @@ public class ChannelProperties extends JPanel {
         // reload common properties
         channelNameTextField.getDocument().removeDocumentListener(channelNameTextFieldDocumentListener);
         channelNameTextField.setText(channel.getChannelName());   
+        channelNameTextField.setCaretPosition(0);
         channelNameTextField.getDocument().addDocumentListener(channelNameTextFieldDocumentListener);
     }    
 }

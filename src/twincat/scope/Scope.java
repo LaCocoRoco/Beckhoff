@@ -12,7 +12,11 @@ public final class Scope {
     /*** global constant variable ****/
     /*********************************/
 
-    public static final String TIME_FORMAT_TEMPLATE = "00:00:00.000";
+    public static final String TIME_FORMAT_MAX_TIME = "99:59:59.999";
+    
+    public static final String TIME_FORMAT_MIN_TIME = "00:00:00.000";
+    
+    public static final String TIME_FORMAT_TEMPLATE = "hh:mm:ss.sss";
 
     /*********************************/
     /**** local constant variable ****/
@@ -86,7 +90,7 @@ public final class Scope {
     /*********************************/
 
     public void setRecordTime(String recordTime) {
-        this.recordTime = Scope.timeFormaterToLong(recordTime);
+        setRecordTime(Scope.timeFormaterToLong(recordTime));
     }
 
     public void addTriggerGroup(TriggerGroup triggerGroup) {

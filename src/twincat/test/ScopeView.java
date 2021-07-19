@@ -29,6 +29,8 @@ public class ScopeView {
     private final static int FRAME_WIDTH = 1500;
     private final static int FRAME_HEIGHT = 1000;
 
+    // TODO : repair scope view
+    
     public static void main(String[] args) {
         new ScopeView();
     }
@@ -282,13 +284,8 @@ public class ScopeView {
         // scope add chart
         scope.addChart(chart);
 
-        
-        // TODO : add trigger group to scope
-        // TODO : reference trigger group to chart
-        // TODO : if trigger group != null use
-        
         // chart add trigger group
-        scope.addTriggerGroup(triggerGroup);
+        //scope.addTriggerGroup(triggerGroup);
 
         // chart add axis
         chart.addAxis(axis1);
