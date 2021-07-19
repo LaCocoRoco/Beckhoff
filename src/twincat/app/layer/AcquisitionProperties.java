@@ -228,7 +228,7 @@ public class AcquisitionProperties extends JPanel {
         symbolNameTextField.getDocument().addDocumentListener(symbolNameTextFieldDocumentListener); 
         symbolNameTextField.setBounds(15, 25, 265, 25);
 
-        JPanel symbolInfoPanel = PropertiesPanel.buildTemplate("TODO");
+        JPanel symbolInfoPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_SYMBOL_INFO));
         symbolInfoPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
         symbolInfoPanel.add(symbolNameTextField);
         
@@ -261,7 +261,6 @@ public class AcquisitionProperties extends JPanel {
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-        textHeader.setMinimumSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 0));
         
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());

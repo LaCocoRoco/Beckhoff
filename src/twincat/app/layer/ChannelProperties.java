@@ -85,10 +85,10 @@ public class ChannelProperties extends JPanel {
         channelNameTextField.setBorder(channelNameCompoundBorder);
         channelNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));       
         channelNameTextField.getDocument().addDocumentListener(channelNameTextFieldDocumentListener); 
-        channelNameTextField.setBounds(15, 25, 140, 25);
+        channelNameTextField.setBounds(15, 25, 210, 25);
 
         JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
         commonPanel.add(channelNameTextField);
         
         // default content
@@ -102,7 +102,7 @@ public class ChannelProperties extends JPanel {
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
 
-        JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_TITLE));
+        JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
         
@@ -143,9 +143,11 @@ public class ChannelProperties extends JPanel {
  
     private void reload() {
         // reload common properties
-        channelNameTextField.getDocument().removeDocumentListener(channelNameTextFieldDocumentListener);
-        channelNameTextField.setText(channel.getChannelName());   
-        channelNameTextField.setCaretPosition(0);
-        channelNameTextField.getDocument().addDocumentListener(channelNameTextFieldDocumentListener);
+        if (!channelNameTextField.getText().equals(channel.getChannelName())) {
+            channelNameTextField.getDocument().removeDocumentListener(channelNameTextFieldDocumentListener);
+            channelNameTextField.setText(channel.getChannelName());   
+            channelNameTextField.setCaretPosition(0);
+            channelNameTextField.getDocument().addDocumentListener(channelNameTextFieldDocumentListener);           
+        }
     }    
 }

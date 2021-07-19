@@ -82,14 +82,14 @@ public class Chart extends Observable {
     
     private long recordTime = 0;
 
-    private CopyOnWriteArrayList<TriggerGroup> triggerGroupList = new CopyOnWriteArrayList<TriggerGroup>();
-
     private VolatileImage image = Chart.createBitmaskVolatileImage(width, height);
 
     /*********************************/
     /***** global final variable *****/
     /*********************************/
-    
+
+    private final CopyOnWriteArrayList<TriggerGroup> triggerGroupList = new CopyOnWriteArrayList<TriggerGroup>();
+  
     private final CopyOnWriteArrayList<Axis> axisList = new CopyOnWriteArrayList<Axis>();
 
     /*********************************/
@@ -304,10 +304,6 @@ public class Chart extends Observable {
     
     public CopyOnWriteArrayList<TriggerGroup> getTriggerGroupList() {
         return triggerGroupList;
-    }
-
-    public void setTriggerGroupList(CopyOnWriteArrayList<TriggerGroup> triggerGroupList) {
-        this.triggerGroupList = triggerGroupList;
     }
 
     /*********************************/

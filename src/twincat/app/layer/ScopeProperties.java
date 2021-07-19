@@ -197,7 +197,6 @@ public class ScopeProperties extends JPanel {
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-        textHeader.setMinimumSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 0));
         
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());

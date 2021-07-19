@@ -11,6 +11,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -84,7 +86,7 @@ public class SymbolBrowser extends JPanel {
     /*********************************/
 
     private static enum View {
-        LOADING, SEARCH
+        LOADING, TREE
     };
 
     /*********************************/
@@ -99,7 +101,7 @@ public class SymbolBrowser extends JPanel {
 
     private final JTree browseTree = new JTree();
     
-    private final JPanel searchPanel = new JPanel();
+    private final JPanel viewPanel = new JPanel();
 
     private final JTextField searchTextField = new JTextField();
 
@@ -297,16 +299,30 @@ public class SymbolBrowser extends JPanel {
         }
     };
 
-    private final SwingWorker<Void, Void> backgroundTask = new SwingWorker<Void, Void>() {
+    private final SwingWorker<Void, Void> buildSymbolTreeTask = new SwingWorker<Void, Void>() {
         @Override
         protected Void doInBackground() throws Exception {
-            disableSearchTree();
-            buildSearchTree();
-            enableSearchTree();
+            disableSymbolTree();
+            buildSymbolTree();
+            enableSymbolTree();
             return null;
         }
     };
- 
+
+    private final Observer routeLoadObserver = new Observer() {
+        @Override
+        public void update(Observable observable, Object object) {
+            loadingState.setText(routeLoader.getLoadingState());
+        }
+    };
+    
+    private final ComponentAdapter symbolBrowserComponentAdapter = new ComponentAdapter() {
+        @Override
+        public void componentShown(ComponentEvent e ) {
+            requestFocusInWindow();
+        }
+    };
+    
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -424,15 +440,16 @@ public class SymbolBrowser extends JPanel {
         loadingPanel.add(loadingBackground);
         loadingPanel.add(Box.createVerticalGlue());
 
-        searchPanel.setLayout(new CardLayout());
-        searchPanel.add(loadingPanel, View.LOADING.toString());
-        searchPanel.add(treePanel, View.SEARCH.toString());
+        viewPanel.setLayout(new CardLayout());
+        viewPanel.add(loadingPanel, View.LOADING.toString());
+        viewPanel.add(treePanel, View.TREE.toString());
 
-        backgroundTask.execute();
+        buildSymbolTreeTask.execute();
 
+        this.addComponentListener(symbolBrowserComponentAdapter);
         this.setLayout(new BorderLayout());
         this.add(acquisitionToolbar, BorderLayout.PAGE_START);
-        this.add(searchPanel, BorderLayout.CENTER);
+        this.add(viewPanel, BorderLayout.CENTER);
         this.add(abortToolBar, BorderLayout.PAGE_END);
         this.setBorder(BorderFactory.createEmptyBorder());
     }
@@ -441,13 +458,13 @@ public class SymbolBrowser extends JPanel {
     /******** private function *********/
     /***********************************/
 
-    private void setSearchPanel(View card) {
-        CardLayout cardLayout = (CardLayout) (searchPanel.getLayout());
-        cardLayout.show(searchPanel, card.toString());
+    private void setViewPanel(View card) {
+        CardLayout cardLayout = (CardLayout) (viewPanel.getLayout());
+        cardLayout.show(viewPanel, card.toString());
     }
 
-    private void disableSearchTree() {
-        setSearchPanel(View.LOADING);
+    private void disableSymbolTree() {
+        setViewPanel(View.LOADING);
 
         portComboBox.setEditable(true);
         ComboBoxEditor portComboBoxEditor = portComboBox.getEditor();
@@ -469,8 +486,8 @@ public class SymbolBrowser extends JPanel {
         searchTextField.setEnabled(false);
     }
 
-    private void enableSearchTree() {
-        setSearchPanel(View.SEARCH);
+    private void enableSymbolTree() {
+        setViewPanel(View.TREE);
 
         portComboBox.setEditable(false);
         portComboBox.setEnabled(true);
@@ -481,14 +498,8 @@ public class SymbolBrowser extends JPanel {
         searchTextField.setEnabled(true);
     }
 
-    private void buildSearchTree() {
-        routeLoader.addObserver(new Observer() {
-            @Override
-            public void update(Observable observable, Object object) {
-                loadingState.setText(routeLoader.getLoadingState());
-            }
-        });
-
+    private void buildSymbolTree() {
+        routeLoader.addObserver(routeLoadObserver);
         routeLoader.loadRouteSymbolDataList();
 
         SymbolTreeNode rootBrowseTreeNode = (SymbolTreeNode) browseTree.getModel().getRoot();
@@ -564,7 +575,7 @@ public class SymbolBrowser extends JPanel {
 
     private void reloadAndExpandSearchTree() {
         // hide tree
-        setSearchPanel(View.LOADING);
+        setViewPanel(View.LOADING);
         searchTextField.setEnabled(false);
         loadingState.setText("Reload Tree");
 
@@ -578,7 +589,7 @@ public class SymbolBrowser extends JPanel {
         }
 
         // show tree
-        setSearchPanel(View.SEARCH);
+        setViewPanel(View.TREE);
         searchTextField.setEnabled(true);
     }
 
@@ -754,6 +765,7 @@ public class SymbolBrowser extends JPanel {
             SymbolLoader symbolLoader = symbolNode.getSymbolLoader();
             
             if (selectedSymbol.getDataType().equals(DataType.BIGTYPE)) {
+                // update symbol tree
                 List<Symbol> symbolList = symbolLoader.getSymbolList(selectedSymbol);
                 for (Symbol symbol : symbolList) {
                     if (treePanel.getViewport().getView().equals(searchTree)) {

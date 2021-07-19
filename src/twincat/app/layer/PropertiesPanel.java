@@ -24,16 +24,22 @@ public class PropertiesPanel extends JPanel {
     /*********************************/
     /******** global variable ********/
     /*********************************/
-
+   
     private Propertie card = Propertie.EMPTY;
 
+    /*********************************/
+    /****** local final variable *****/
+    /*********************************/
+
+    private final JPanel emptyProperties = new JPanel();
+    
     /*********************************/
     /********** constructor **********/
     /*********************************/
 
     public PropertiesPanel(XReference xref) {
         this.setLayout(new CardLayout());
-        this.add(new JPanel(), Propertie.EMPTY.toString());
+        this.add(emptyProperties, Propertie.EMPTY.toString());
         this.add(xref.triggerGroupProperties, Propertie.TRIGGER_GROUP.toString());
         this.add(xref.triggerChannelProperties, Propertie.TRIGGER_CHANNEL.toString());
         this.add(xref.chartProperties, Propertie.CHART.toString());

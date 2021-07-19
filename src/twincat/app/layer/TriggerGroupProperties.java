@@ -85,10 +85,10 @@ public class TriggerGroupProperties extends JPanel {
         triggerGroupNameTextField.setBorder(triggerGroupNameCompoundBorder);
         triggerGroupNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         triggerGroupNameTextField.getDocument().addDocumentListener(triggerChannelNameTextFieldDocumentListener);
-        triggerGroupNameTextField.setBounds(15, 25, 140, 25);
+        triggerGroupNameTextField.setBounds(15, 25, 210, 25);
 
         JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
         commonPanel.add(triggerGroupNameTextField);
         
         // default content

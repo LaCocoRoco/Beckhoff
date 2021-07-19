@@ -98,7 +98,7 @@ public class AxisProperties extends JPanel {
         axisNameCheckBox.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
         axisNameCheckBox.addItemListener(axisNameCheckBoxItemListener);
         axisNameCheckBox.setFocusPainted(false);
-        axisNameCheckBox.setBounds(20, 55, 140, 20);
+        axisNameCheckBox.setBounds(20, 55, 150, 20);
 
         Border axisNameOuterBorder = axisNameTextField.getBorder();
         Border axisNameInnerBorder = BorderFactory.createEmptyBorder(0, 4, 0, 4);
@@ -108,10 +108,10 @@ public class AxisProperties extends JPanel {
         axisNameTextField.setBorder(axisNameCompoundBorder);
         axisNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         axisNameTextField.getDocument().addDocumentListener(axisNameTextFieldDocumentListener);
-        axisNameTextField.setBounds(15, 25, 140, 25);
+        axisNameTextField.setBounds(15, 25, 210, 25);
 
         JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 90));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 90));
         commonPanel.add(axisNameTextField);
         commonPanel.add(axisNameCheckBox);
 

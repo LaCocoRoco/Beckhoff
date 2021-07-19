@@ -161,10 +161,10 @@ public class ChartProperties extends JPanel {
         chartNameTextField.setBorder(chartNameCompoundBorder);
         chartNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));       
         chartNameTextField.getDocument().addDocumentListener(chartNameTextFieldDocumentListener); 
-        chartNameTextField.setBounds(15, 25, 140, 25);
+        chartNameTextField.setBounds(15, 25, 210, 25);
 
         JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
         commonPanel.add(chartNameTextField);
         
         // display time properties
@@ -172,12 +172,17 @@ public class ChartProperties extends JPanel {
         displayTimeTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         displayTimeTextField.setHorizontalAlignment(JTextField.CENTER);
         displayTimeTextField.getDocument().addDocumentListener(displayTimeTextFieldDocumentListener);
-        displayTimeTextField.setBounds(10, 25, 100, 25);
-            
-        JPanel displayTimePanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_DISPLAY_TIME));
-        displayTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
-        displayTimePanel.add(displayTimeTextField);
+        displayTimeTextField.setBounds(15, 25, 100, 25);
 
+        JLabel displayTimeText = new JLabel("[" + Scope.TIME_FORMAT_TEMPLATE + "]");
+        displayTimeText.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        displayTimeText.setBounds(125, 23, 120, 25);
+                
+        JPanel displayTimePanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_DISPLAY_TIME));
+        displayTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
+        displayTimePanel.add(displayTimeTextField);
+        displayTimePanel.add(displayTimeText);
+        
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new WrapLayout(FlowLayout.LEADING));
