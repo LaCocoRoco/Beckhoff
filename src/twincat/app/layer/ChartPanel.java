@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -36,9 +35,7 @@ public class ChartPanel extends JPanel {
     private Chart chart = new Chart();
 
     private  final JLabel textHeader = new JLabel();
-    
-    private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
-
+ 
     /*********************************/
     /****** predefined variable ******/
     /*********************************/
@@ -87,25 +84,21 @@ public class ChartPanel extends JPanel {
         displayTime.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
 
         JButton playButton = new JButton();
-        playButton.setToolTipText(languageBundle.getString(Resources.TEXT_CHART_PLAY));
         playButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PLAY)));
         playButton.setFocusable(false);
         playButton.addActionListener(playActionListener);
 
         JButton pauseButton = new JButton();
-        pauseButton.setToolTipText(languageBundle.getString(Resources.TEXT_CHART_PAUSE));
         pauseButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PAUSE)));
         pauseButton.setFocusable(false);
         pauseButton.addActionListener(pauseActionListener);
 
         JButton stopButton = new JButton();
-        stopButton.setToolTipText(languageBundle.getString(Resources.TEXT_CHART_STOP));
         stopButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_STOP)));
         stopButton.setFocusable(false);
         stopButton.addActionListener(stopActionListener);
 
         JButton minimizeButton = new JButton();
-        minimizeButton.setToolTipText(languageBundle.getString(Resources.TEXT_CHART_MINIMIZE));
         minimizeButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_MINIMIZE)));
         minimizeButton.setFocusable(false);
         minimizeButton.addActionListener(minimizeActionListener);

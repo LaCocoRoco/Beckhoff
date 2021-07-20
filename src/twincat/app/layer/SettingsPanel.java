@@ -11,8 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import twincat.Resources;
-import twincat.java.ScrollablePanel;
-import twincat.java.WrapLayout;
+import twincat.app.components.ScrollablePanel;
+import twincat.app.components.WrapLayout;
 
 public class SettingsPanel extends JPanel {
     private static final long serialVersionUID = 1L;

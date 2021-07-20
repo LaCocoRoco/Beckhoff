@@ -4,10 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ResourceBundle;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,11 +17,11 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import twincat.Resources;
+import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TextField;
-import twincat.app.components.TitleBorder;
+import twincat.app.components.TitledPanel;
+import twincat.app.components.WrapTopLayout;
 import twincat.app.constant.Propertie;
-import twincat.java.ScrollablePanel;
-import twincat.java.WrapTopLayout;
 import twincat.scope.Channel;
 
 public class ChannelProperties extends JPanel {
@@ -57,6 +59,15 @@ public class ChannelProperties extends JPanel {
         }
     };
 
+    private AbstractAction scrollPanelDisableKey = new AbstractAction() {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            /* empty */
+        }
+    };
+    
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -68,22 +79,46 @@ public class ChannelProperties extends JPanel {
         channelNameTextField.setText(channel.getChannelName());   
         channelNameTextField.addPropertyChangeListener(channelNamePropertyChanged);
         channelNameTextField.setBounds(15, 25, 210, 23);
-        
-        JPanel commonPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 80));
+
+        TitledPanel commonPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_COMMON));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
         commonPanel.add(channelNameTextField);
+
+        // color properties
+        // TODO : line color
+        // TODO : plot color
+        // TODO : anti alising
+        TitledPanel colorPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_COLOR));
+        colorPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
         
+        // line style properties
+        // TODO : line width
+        // TODO : line visible
+        TitledPanel lineStylePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_LINE_STYLE));
+        lineStylePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
+        
+        // plot style properties
+        // TODO : plot size
+        // TODO : plot visible;
+        TitledPanel plotStylePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_PLOT_STYLE));
+        plotStylePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
+
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new WrapTopLayout(FlowLayout.LEADING));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);
+        contentPanel.add(colorPanel);
+        contentPanel.add(lineStylePanel);
+        contentPanel.add(plotStylePanel);
 
         JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
-
+        scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
+        scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
+        
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));

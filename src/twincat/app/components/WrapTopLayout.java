@@ -1,4 +1,4 @@
-package twincat.java;
+package twincat.app.components;
 
 import java.awt.Component;
 import java.awt.Container;

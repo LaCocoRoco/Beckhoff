@@ -4,10 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ResourceBundle;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,11 +17,11 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import twincat.Resources;
+import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TextField;
-import twincat.app.components.TitleBorder;
+import twincat.app.components.TitledPanel;
+import twincat.app.components.WrapTopLayout;
 import twincat.app.constant.Propertie;
-import twincat.java.ScrollablePanel;
-import twincat.java.WrapTopLayout;
 import twincat.scope.TriggerGroup;
 
 public class TriggerGroupProperties extends JPanel {
@@ -49,7 +51,6 @@ public class TriggerGroupProperties extends JPanel {
     /****** predefined variable ******/
     /*********************************/
 
-
     private PropertyChangeListener triggerChannelNamePropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
@@ -58,6 +59,15 @@ public class TriggerGroupProperties extends JPanel {
         }
     };
 
+    private AbstractAction scrollPanelDisableKey = new AbstractAction() {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            /* empty */
+        }
+    };
+    
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -69,10 +79,14 @@ public class TriggerGroupProperties extends JPanel {
         triggerGroupNameTextField.setText(triggerGroup.getTriggerGroupName());
         triggerGroupNameTextField.addPropertyChangeListener(triggerChannelNamePropertyChanged);
         triggerGroupNameTextField.setBounds(15, 25, 210, 23);
-        
-        JPanel commonPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_COMMON_NAME));
+
+        TitledPanel commonPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_COMMON));
         commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
         commonPanel.add(triggerGroupNameTextField);
+        
+        // TODO : SETTINGS
+        // enabled
+        // triggerOffset
         
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
@@ -84,7 +98,9 @@ public class TriggerGroupProperties extends JPanel {
         JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
-
+        scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
+        scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
+        
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));

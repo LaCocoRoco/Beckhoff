@@ -86,7 +86,7 @@ public class LoaderPanel extends JPanel {
        @Override
        protected Void doInBackground() throws Exception {
            Scope scope = loadScopeFile(fileChooser.getSelectedFile().getPath());
-           
+
            if (scope != null) {
                xref.scopeBrowser.addScope(scope);
            }
@@ -219,8 +219,8 @@ public class LoaderPanel extends JPanel {
                 axis.setLineWidth(Integer.valueOf(lineWidth));
                 axis.setAutoscale(Boolean.valueOf(autoscale));
                 axis.setAxisNameVisible(Boolean.valueOf(axisNameVisible));
-                axis.setValueMin(Double.valueOf(valueMin));
-                axis.setValueMax(Double.valueOf(valueMax));
+                axis.setValueMin(Long.valueOf(valueMin));
+                axis.setValueMax(Long.valueOf(valueMax));
             }
 
             // channels node

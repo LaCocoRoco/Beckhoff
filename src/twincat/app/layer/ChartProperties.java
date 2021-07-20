@@ -6,10 +6,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ResourceBundle;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,12 +20,12 @@ import javax.swing.SwingUtilities;
 
 import twincat.Resources;
 import twincat.app.components.NumberTextField;
+import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TextField;
 import twincat.app.components.TimeTextField;
-import twincat.app.components.TitleBorder;
+import twincat.app.components.TitledPanel;
+import twincat.app.components.WrapTopLayout;
 import twincat.app.constant.Propertie;
-import twincat.java.ScrollablePanel;
-import twincat.java.WrapTopLayout;
 import twincat.scope.Chart;
 import twincat.scope.Scope;
 
@@ -46,10 +48,20 @@ public class ChartProperties extends JPanel {
     /****** local final variable *****/
     /*********************************/
 
-    private final TextField chartNameTextField = new TextField();
+    private final TextField chartName = new TextField();
 
-    private final TimeTextField displayTimeTextField = new TimeTextField();
+    private final TimeTextField displayTime = new TimeTextField();
 
+    private final JPanel borderColor = new JPanel();
+    
+    private final JPanel chartColor = new JPanel();
+    
+    private final NumberTextField lineWidth = new NumberTextField();
+    
+    private final NumberTextField timeTickCount = new NumberTextField();
+    
+    private final NumberTextField axisTickCount = new NumberTextField();
+    
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
     /*********************************/
@@ -75,7 +87,7 @@ public class ChartProperties extends JPanel {
     private PropertyChangeListener chartNamePropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            chart.setChartName(chartNameTextField.getText());
+            chart.setChartName(chartName.getText());
             xref.scopeBrowser.reloadSelectedTreeNode();
         }
     };
@@ -112,6 +124,15 @@ public class ChartProperties extends JPanel {
         }
     };
 
+    private AbstractAction scrollPanelDisableKey = new AbstractAction() {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            /* empty */
+        }
+    };
+    
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -120,89 +141,88 @@ public class ChartProperties extends JPanel {
         this.xref = xref;
 
         // common properties
-        chartNameTextField.setText(chart.getChartName());
-        chartNameTextField.addPropertyChangeListener("text", chartNamePropertyChanged);
-        chartNameTextField.setBounds(15, 25, 210, 23);
+        chartName.setText(chart.getChartName());
+        chartName.addPropertyChangeListener("text", chartNamePropertyChanged);
+        chartName.setBounds(15, 25, 210, 23);
 
-        JPanel commonPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_COMMON_NAME));
+        TitledPanel commonPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_COMMON));
         commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
-        commonPanel.add(chartNameTextField);
+        commonPanel.add(chartName);
 
         // display time properties
-        displayTimeTextField.setText(Scope.TIME_FORMAT_MIN_TIME);
-        displayTimeTextField.addPropertyChangeListener("time", displayTimePropertyChanged);
-        displayTimeTextField.setBounds(15, 25, 100, 23);
+        displayTime.setText(Scope.TIME_FORMAT_MIN_TIME);
+        displayTime.addPropertyChangeListener("time", displayTimePropertyChanged);
+        displayTime.setBounds(15, 25, 100, 23);
 
         JLabel displayTimeText = new JLabel("[" + Scope.TIME_FORMAT_TEMPLATE + "]");
         displayTimeText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
         displayTimeText.setBounds(125, 24, 120, 23);
 
-        JPanel displayTimePanel = new TitleBorder(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_DISPLAY_TIME));
+        TitledPanel displayTimePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_DISPLAY_TIME));
         displayTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
-        displayTimePanel.add(displayTimeTextField);
+        displayTimePanel.add(displayTime);
         displayTimePanel.add(displayTimeText);
 
-        // style properties
-        JPanel borderColor = new JPanel();
+        // color properties
         borderColor.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         borderColor.setBackground(chart.getBorderColor());
         borderColor.setBounds(15, 25, 40, 40);
         borderColor.addMouseListener(xref.colorProperties.getColorPropertieMouseAdapter());
         borderColor.addPropertyChangeListener("background", borderColorChanged);
 
-        JLabel borderColorText = new JLabel("Border Color");
+        JLabel borderColorText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_COLOR_BORDER));
         borderColorText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
         borderColorText.setBounds(60, 34, 120, 23);
 
-        JPanel chartColor = new JPanel();
         chartColor.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         chartColor.setBackground(chart.getChartColor());
-        chartColor.setBounds(15, 72, 40, 40);
+        chartColor.setBounds(15, 75, 40, 40);
         chartColor.addMouseListener(xref.colorProperties.getColorPropertieMouseAdapter());
         chartColor.addPropertyChangeListener("background", chartColorChanged);
 
-        JLabel chartColorText = new JLabel("Chart Color");
+        JLabel chartColorText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_COLOR_CHART));
         chartColorText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        chartColorText.setBounds(60, 81, 120, 23);
+        chartColorText.setBounds(60, 84, 120, 23);
 
-        NumberTextField lineWidthTextField = new NumberTextField();
-        lineWidthTextField.setText(String.valueOf(chart.getLineWidth()));
-        lineWidthTextField.addPropertyChangeListener("number", lineWidthPropertyChanged);     
-        lineWidthTextField.setBounds(15, 120, 40, 23);
+        TitledPanel colorPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_COLOR));
+        colorPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 130));
+        colorPanel.add(borderColor);
+        colorPanel.add(borderColorText);
+        colorPanel.add(chartColor);
+        colorPanel.add(chartColorText);
 
-        JLabel lineWidthText = new JLabel("Line Width");
+        // style properties
+        lineWidth.setText(String.valueOf(chart.getLineWidth()));
+        lineWidth.addPropertyChangeListener("number", lineWidthPropertyChanged);
+        lineWidth.setBounds(15, 25, 40, 23);
+
+        JLabel lineWidthText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_LINE_WIDTH));
         lineWidthText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        lineWidthText.setBounds(60, 120, 120, 23);
+        lineWidthText.setBounds(60, 25, 120, 23);
 
-        NumberTextField timeTickCountTextField = new NumberTextField();
-        timeTickCountTextField.setText(String.valueOf(chart.getTimeTickCount()));
-        lineWidthTextField.addPropertyChangeListener("number", timeTickCountPropertyChanged);  
-        timeTickCountTextField.setBounds(15, 150, 40, 23);
+        timeTickCount.setText(String.valueOf(chart.getTimeTickCount()));
+        lineWidth.addPropertyChangeListener("number", timeTickCountPropertyChanged);
+        timeTickCount.setBounds(15, 60, 40, 23);
 
-        JLabel timeTickCountText = new JLabel("Time Tick Count");
+        JLabel timeTickCountText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_TIME_TICK_COUNT));
         timeTickCountText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        timeTickCountText.setBounds(60, 150, 120, 23);      
-        
-        NumberTextField axisTickCountTextField = new NumberTextField();
-        axisTickCountTextField.setText(String.valueOf(chart.getAxisTickCount()));
-        lineWidthTextField.addPropertyChangeListener("number", axisTickCountPropertyChanged); 
-        axisTickCountTextField.setBounds(15, 180, 40, 23);
+        timeTickCountText.setBounds(60, 60, 120, 23);
 
-        JLabel axisTickCountText = new JLabel("Axis Tick Count");
+        axisTickCount.setText(String.valueOf(chart.getAxisTickCount()));
+        lineWidth.addPropertyChangeListener("number", axisTickCountPropertyChanged);
+        axisTickCount.setBounds(15, 95, 40, 23);
+
+        JLabel axisTickCountText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_AXIS_TICK_COUNT));
         axisTickCountText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        axisTickCountText.setBounds(60, 180, 120, 23);    
-        
-        JPanel stylePanel = new TitleBorder(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_DISPLAY_STYLE));
-        stylePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 220));
-        stylePanel.add(borderColor);
-        stylePanel.add(borderColorText);
-        stylePanel.add(chartColor);
-        stylePanel.add(chartColorText);
-        stylePanel.add(lineWidthTextField);
+        axisTickCountText.setBounds(60, 95, 120, 23);
+
+        TitledPanel stylePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_STYLE));
+        stylePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 130));
+        stylePanel.add(lineWidth);
         stylePanel.add(lineWidthText);
-        stylePanel.add(timeTickCountTextField);
+        stylePanel.add(timeTickCount);
         stylePanel.add(timeTickCountText);
-        stylePanel.add(axisTickCountTextField);
+        stylePanel.add(axisTickCount);
         stylePanel.add(axisTickCountText);
 
         // default content
@@ -212,11 +232,14 @@ public class ChartProperties extends JPanel {
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);
         contentPanel.add(displayTimePanel);
+        contentPanel.add(colorPanel);
         contentPanel.add(stylePanel);
 
         JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
+        scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
+        scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
 
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
@@ -259,16 +282,22 @@ public class ChartProperties extends JPanel {
 
     private void reload() {
         // reload common properties
-        if (!chartNameTextField.getText().equals(chart.getChartName())) {
-            chartNameTextField.setText(chart.getChartName());
-            chartNameTextField.setCaretPosition(0);
+        if (!chartName.getText().equals(chart.getChartName())) {
+            chartName.setText(chart.getChartName());
+            chartName.setCaretPosition(0);
         }
 
         // reload display time properties
-        displayTimeTextField.setText(Scope.timeFormaterToString(chart.getDisplayTime()));
-        
-        // reload style
-        // TODO
+        displayTime.setText(Scope.timeFormaterToString(chart.getDisplayTime()));
+
+        // reload color properties
+        borderColor.setBackground(chart.getBorderColor());
+        chartColor.setBackground(chart.getChartColor());
+
+        // reload style properties
+        lineWidth.setText(String.valueOf(chart.getLineWidth()));
+        timeTickCount.setText(String.valueOf(chart.getTimeTickCount()));
+        axisTickCount.setText(String.valueOf(chart.getAxisTickCount()));
         
         // display chart properties
         xref.propertiesPanel.setCard(Propertie.CHART);

@@ -676,77 +676,88 @@ public class Chart extends Observable {
                 Iterator<Channel> channelIterator = axis.getChannelList().iterator();
                 while (channelIterator.hasNext()) {
                     Channel channel = channelIterator.next();
-                    if (!channel.isChannelVisible()) continue;
+                    
+                    if (channel.isChannelVisible() || channel.isPlotVisible()) {
 
-                    GeneralPath generalPath = new GeneralPath();
-                    List<Rectangle2D> rectangleList = new ArrayList<Rectangle2D>();
+                        GeneralPath generalPath = new GeneralPath();
+                        List<Rectangle2D> rectangleList = new ArrayList<Rectangle2D>();
 
-                    Samples samples = channel.getSamples();
-                    int sampleCurrentIndex = samples.getCurrentIndex();
-                    if (sampleCurrentIndex == 0) continue;
+                        Samples samples = channel.getSamples();
+                        int sampleCurrentIndex = samples.getCurrentIndex();
+                        if (sampleCurrentIndex == 0) continue;
 
-                    int stopIndex = 0;
-                    for (int i = 0; i <= sampleCurrentIndex; i++) {
-                        long sampleTime = samples.getTimeStamp(i);
-                        if (sampleTime >= stopTimeStamp) {
-                            stopIndex = i;
-                            break;
+                        int stopIndex = 0;
+                        for (int i = 0; i <= sampleCurrentIndex; i++) {
+                            long sampleTime = samples.getTimeStamp(i);
+                            if (sampleTime >= stopTimeStamp) {
+                                stopIndex = i;
+                                break;
+                            }
                         }
-                    }
 
-                    int startIndex = 0;
-                    for (int i = stopIndex; i >= 0; i--) {
-                        long sampleTimeStamp = samples.getTimeStamp(i);
-                        if (sampleTimeStamp <= startTimeStamp) {
-                            startIndex = i;
-                            break;
+                        int startIndex = 0;
+                        for (int i = stopIndex; i >= 0; i--) {
+                            long sampleTimeStamp = samples.getTimeStamp(i);
+                            if (sampleTimeStamp <= startTimeStamp) {
+                                startIndex = i;
+                                break;
+                            }
                         }
-                    }
 
-                    int sampleRange = stopIndex - startIndex;
-                    for (int i = 0; i <= sampleRange; i++) {
-                        int sampleIndex = startIndex + i;
+                        int sampleRange = stopIndex - startIndex;
+                        for (int i = 0; i <= sampleRange; i++) {
+                            int sampleIndex = startIndex + i;
 
-                        long sampleTime = samples.getTimeStamp(sampleIndex) - startTimeStamp; // 1000 - 500
-                        long sampleTimeDisplayOffset = referenceToDisplayTimeOffset + sampleTime;
-                        double sampleTimePixelPosition = sampleTimeDisplayOffset * pixelToDisplayTime;
-                        double samplePositionX = channelPositionX + sampleTimePixelPosition;
+                            long sampleTime = samples.getTimeStamp(sampleIndex) - startTimeStamp; // 1000 - 500
+                            long sampleTimeDisplayOffset = referenceToDisplayTimeOffset + sampleTime;
+                            double sampleTimePixelPosition = sampleTimeDisplayOffset * pixelToDisplayTime;
+                            double samplePositionX = channelPositionX + sampleTimePixelPosition;
 
-                        double sampleValue = samples.getValue(sampleIndex);
-                        double samplePixelPosition = sampleValue * pixelToValueRange;
-                        double samplePositionOffset = channelHeight - pixelToValueRangeOffset - samplePixelPosition;
-                        double samplePositionY = channelPositionY + samplePositionOffset;
+                            double sampleValue = samples.getValue(sampleIndex);
+                            double samplePixelPosition = sampleValue * pixelToValueRange;
+                            double samplePositionOffset = channelHeight - pixelToValueRangeOffset - samplePixelPosition;
+                            double samplePositionY = channelPositionY + samplePositionOffset;
 
-                        if (generalPath.getCurrentPoint() == null) {
-                            generalPath.moveTo(samplePositionX, samplePositionY);
+                            // build channel line
+                            if (channel.isChannelVisible()) {
+                                if (generalPath.getCurrentPoint() == null) {
+                                    generalPath.moveTo(samplePositionX, samplePositionY);
+                                } else {
+                                    generalPath.lineTo(samplePositionX, samplePositionY);
+                                }   
+                            }
+
+                            // build channel plot
+                            if (channel.isPlotVisible()) {
+                                int size = channel.getPlotSize();
+                                double xRect = samplePositionX - (size / 2);
+                                double yRect = samplePositionY - (size / 2);
+                                Rectangle2D rectangle = new Rectangle2D.Double(xRect, yRect, size, size);
+                                rectangleList.add(rectangle);
+                            }
+                        }
+                        
+                        // set anti aliasing
+                        if (channel.isAntialias()) {
+                            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                         } else {
-                            generalPath.lineTo(samplePositionX, samplePositionY);
+                            graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+                        }
+                        
+                        // draw channel line
+                        if (channel.isChannelVisible()) {
+                            graphics.setColor(channel.getLineColor());
+                            graphics.setStroke(new BasicStroke(channel.getLineWidth(), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
+                            graphics.draw(generalPath);    
                         }
 
-                        if (channel.isPlotVisible()) {
-                            int size = channel.getPlotSize();
-                            double xRect = samplePositionX - (size / 2);
-                            double yRect = samplePositionY - (size / 2);
-                            Rectangle2D rectangle = new Rectangle2D.Double(xRect, yRect, size, size);
-                            rectangleList.add(rectangle);
-                        }
-                    }
-
-                    if (channel.isAntialias()) {
-                        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                    } else {
-                        graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-                    }
-
-                    graphics.setColor(channel.getLineColor());
-                    graphics.setStroke(new BasicStroke(channel.getLineWidth(), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
-                    graphics.draw(generalPath);
-
-                    if (!rectangleList.isEmpty()) {
-                        for (Rectangle2D rectangle : rectangleList) {
-                            graphics.setColor(channel.getPlotColor());
-                            graphics.fill(rectangle);
-                        }
+                        // draw channel plot
+                        if (!rectangleList.isEmpty()) {
+                            for (Rectangle2D rectangle : rectangleList) {
+                                graphics.setColor(channel.getPlotColor());
+                                graphics.fill(rectangle);
+                            }
+                        }   
                     }
                 }
             }

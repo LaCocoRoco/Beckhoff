@@ -28,9 +28,9 @@ public class NumberTextField extends JTextField {
     /******** global variable ********/
     /*********************************/
 
-    private int minValue = 0;
+    private long minValue = 0;
 
-    private int maxValue = 9999;
+    private long maxValue = 1000;
     
     /*********************************/
     /******** local variable *********/
@@ -142,19 +142,19 @@ public class NumberTextField extends JTextField {
     /******** setter & getter ********/
     /*********************************/
 
-    public int getMinValue() {
+    public long getMinValue() {
         return minValue;
     }
 
-    public void setMinValue(int minValue) {
+    public void setMinValue(long minValue) {
         this.minValue = minValue;
     }
 
-    public int getMaxValue() {
+    public long getMaxValue() {
         return maxValue;
     }
 
-    public void setMaxValue(int maxValue) {
+    public void setMaxValue(long maxValue) {
         this.maxValue = maxValue;
     }
 
@@ -184,33 +184,59 @@ public class NumberTextField extends JTextField {
     
     private void updateNumber() {
         String text = getText();
-        int caretPosition = getCaretPosition();
+        int caret = getCaretPosition();
+        boolean negate = false;
         
-        // no update necessary
-        if (number.equals(text)) return;
-        
-        // replace none numeral
-        text = text.replaceAll("[^0-9|^-]", "");
-
-        // replace empty text
-        if (text.isEmpty()) {
-            caretPosition = 1;
-            text = String.valueOf(minValue);
+        // value is equal
+        if (number.equals(text)) {
+            return;
         }
         
+        // value is empty
+        if (text.isEmpty()) {
+            return;
+        }
+        
+        // value is negative
+        if (text.charAt(0) == '-') {
+            negate = true;
+        }
+        
+        // replace none numbers
+        text = text.replaceAll("[^0-9]", "");
+
+        // value is empty
+        if (text.isEmpty()) {
+            return;
+        }
+       
         // max length exceeded
         if (text.length() > String.valueOf(maxValue).length()) {
  
             // number was inserted
-            if (caretPosition < text.length()) {
+            if (caret < text.length()) {
+                
+                // remove previous number
                 StringBuilder stringBuilder = new StringBuilder(text);
-                stringBuilder.deleteCharAt(caretPosition);
+                stringBuilder.deleteCharAt(caret);
                 text = stringBuilder.toString();
             }
         }
 
-        // text to value
-        int value = Integer.valueOf(text);
+
+        // max long string length
+        int length = String.valueOf(Long.MAX_VALUE).length() - 1;
+        
+        // remove number exceeds length
+        if (text.length() > length) {
+            text = text.substring(0, length);
+        }
+        
+        // text to value 
+        long value = Long.valueOf(text);
+
+        // negate value
+        value = negate ? value * -1 : value;
         
         // value above maximum
         if (value > maxValue) {
@@ -226,13 +252,13 @@ public class NumberTextField extends JTextField {
         number = String.valueOf(value);
         
         // caret position out of bounds
-        if (caretPosition > number.length()) {
-            caretPosition = number.length();
+        if (caret > number.length()) {
+            caret = number.length();
         }
         
         // update content
         setText(number);
-        setCaretPosition(caretPosition);
+        setCaretPosition(caret);
         
         // fire property changed
         firePropertyChange("number", null, null);

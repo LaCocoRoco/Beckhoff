@@ -89,16 +89,6 @@ public class Resources {
     /********* localization **********/
     /*********************************/
 
-    public static final String TEXT_CHART_PLAY = "chartPlay";
-    
-    public static final String TEXT_CHART_PAUSE = "chartPause";
-    
-    public static final String TEXT_CHART_STOP = "chartStop";
-    
-    public static final String TEXT_CHART_MINIMIZE = "chartMinimize";
-    
-    
-    
     public static final String TEXT_SCOPE_TREE_ADD_SCOPE = "scopeTreeAddScope";
 
     public static final String TEXT_SCOPE_TREE_ADD_CHART = "scopeTreeAddChart";
@@ -125,34 +115,89 @@ public class Resources {
     
     public static final String TEXT_SYMBOL_TREE_LOADING = "symbolTreeLoading";
  
-    
-    
+ 
 
     public static final String TEXT_SCOPE_PROPERTIES_TITLE = "scopePropertiesTitle";
     
+    public static final String TEXT_SCOPE_PROPERTIES_COMMON = "scopePropertiesCommon";
+      
     public static final String TEXT_SCOPE_PROPERTIES_RECORD_TIME = "scopePropertiesRecordTime";
     
     
     
     public static final String TEXT_CHART_PROPERTIES_TITLE = "chartPropertiesTitle";
     
+    public static final String TEXT_CHART_PROPERTIES_COMMON = "chartPropertiesCommon";
+      
     public static final String TEXT_CHART_PROPERTIES_DISPLAY_TIME = "chartPropertiesDisplayTime";
 
-    public static final String TEXT_CHART_PROPERTIES_DISPLAY_STYLE = "chartPropertiesStyle";
+    public static final String TEXT_CHART_PROPERTIES_COLOR = "chartPropertiesColor";
 
+    public static final String TEXT_CHART_PROPERTIES_STYLE = "chartPropertiesStyle";
+
+    public static final String TEXT_CHART_PROPERTIES_COLOR_BORDER = "chartPropertiesColorBorder";
+    
+    public static final String TEXT_CHART_PROPERTIES_COLOR_CHART = "chartPropertiesColorChart";
+    
+    public static final String TEXT_CHART_PROPERTIES_LINE_WIDTH = "chartPropertiesLineWidth";
+    
+    public static final String TEXT_CHART_PROPERTIES_TIME_TICK_COUNT= "chartPropertiesTimeTickCount";
+    
+    public static final String TEXT_CHART_PROPERTIES_AXIS_TICK_COUNT= "chartPropertiesAxisTickCount";    
+    
+    
     
     public static final String TEXT_AXIS_PROPERTIES_TITLE = "axisPropertiesTitle";
 
+    public static final String TEXT_AXIS_PROPERTIES_COMMON = "axisPropertiesCommon";
+
+    public static final String TEXT_AXIS_PROPERTIES_COLOR = "axisPropertiesColor";
+
+    public static final String TEXT_AXIS_PROPERTIES_AXIS_COLOR = "axisPropertiesAxisColor";
+
+    public static final String TEXT_AXIS_PROPERTIES_STYLE = "axisPropertiesStyle";
+
+    public static final String TEXT_AXIS_PROPERTIES_LINE_WIDTH = "axisPropertiesLineWidth";
+
+    public static final String TEXT_AXIS_PROPERTIES_NAME_VISIBLE = "axisPropertiesNameVisible";
+
+    public static final String TEXT_AXIS_PROPERTIES_AXIS_VISIBLE = "axisPropertiesAxisVisible";
+
+    public static final String TEXT_AXIS_PROPERTIES_SCALE = "axisPropertiesScale";
+   
+    public static final String TEXT_AXIS_PROPERTIES_VALUE_MIN = "axisPropertiesValueMin";
+
+    public static final String TEXT_AXIS_PROPERTIES_VALUE_MAX = "axisPropertiesValueMax";
+
+    public static final String TEXT_AXIS_PROPERTIES_VALUE_AUTOSCALE = "axisPropertiesAutoscale";
+   
     
-    
+
     public static final String TEXT_CHANNEL_PROPERTIES_TITLE = "channelPropertiesTitle";
 
+    public static final String TEXT_CHANNEL_PROPERTIES_COMMON = "channelPropertiesCommon";
+
+    public static final String TEXT_CHANNEL_PROPERTIES_COLOR = "channelPropertiesColor";
+
+    public static final String TEXT_CHANNEL_PROPERTIES_LINE_STYLE = "channelPropertiesLineStyle";
+
+    public static final String TEXT_CHANNEL_PROPERTIES_PLOT_STYLE = "channelPropertiesPlotStyle";
+
+       
+    
+    
+    
+    
+    
+    
+    
+    
     
 
     public static final String TEXT_ACQUISITION_PROPERTIES_TITLE = "acquisitionPropertiesTitle";
 
     public static final String TEXT_ACQUISITION_PROPERTIES_APPLY = "acquisitionPropertiesApply";
-   
+
     public static final String TEXT_ACQUISITION_PROPERTIES_TARGET = "acquisitionPropertiesTarget";
     
     public static final String TEXT_ACQUISITION_PROPERTIES_TARGET_SYSTEM = "acquisitionPropertiesTargetSystem";
@@ -180,8 +225,10 @@ public class Resources {
     
   
     public static final String TEXT_TRIGGER_GROUP_PROPERTIES_TITLE = "triggerGroupPropertiesTitle";
-
     
+    public static final String TEXT_TRIGGER_GROUP_PROPERTIES_COMMON = "triggerGroupPropertiesCommon";
+
+
     
     public static final String TEXT_TRIGGER_CHANNEL_PROPERTIES_TITLE = "triggerChannelPropertiesTitle";
 
@@ -210,12 +257,6 @@ public class Resources {
     public static final String TEXT_FILE_NEW = "fileNew";
     
     public static final String TEXT_FILE_OPEN = "fileOpen";
-    
-    
-
-    public static final String TEXT_COMMON_NAME = "commonName";
-    
-    public static final String TEXT_COMMON_SHOW_NAME = "commonShowName";
     
     
     

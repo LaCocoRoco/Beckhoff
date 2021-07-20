@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -29,12 +30,12 @@ import twincat.ads.common.Route;
 import twincat.ads.constant.AmsPort;
 import twincat.ads.worker.RouteLoader;
 import twincat.app.components.ComboBox;
+import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TextField;
-import twincat.app.components.TitleBorder;
+import twincat.app.components.TitledPanel;
+import twincat.app.components.WrapTopLayout;
 import twincat.app.constant.Browser;
 import twincat.app.constant.Propertie;
-import twincat.java.ScrollablePanel;
-import twincat.java.WrapTopLayout;
 import twincat.scope.Acquisition;
 
 public class AcquisitionProperties extends JPanel {
@@ -112,6 +113,15 @@ public class AcquisitionProperties extends JPanel {
         }
     };
 
+    private AbstractAction scrollPanelDisableKey = new AbstractAction() {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            /* empty */
+        }
+    };
+    
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -136,8 +146,8 @@ public class AcquisitionProperties extends JPanel {
 
         targetPortComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
         targetPortComboBox.setBounds(18, 77, 265, 22);
-        
-        TitleBorder targetPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TARGET));
+
+        TitledPanel targetPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TARGET));
         targetPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 115));
         targetPanel.add(targetSystemLabel);
         targetPanel.add(targetSystemComboBox);
@@ -148,7 +158,7 @@ public class AcquisitionProperties extends JPanel {
         symbolNameTextField.addPropertyChangeListener(symbolNamePropertyChanged);
         symbolNameTextField.setBounds(15, 25, 265, 23);
         
-        JPanel symbolInfoPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_SYMBOL_INFO));
+        TitledPanel symbolInfoPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_SYMBOL_INFO));
         symbolInfoPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
         symbolInfoPanel.add(symbolNameTextField);
         
@@ -176,6 +186,8 @@ public class AcquisitionProperties extends JPanel {
         JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
+        scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
+        scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
 
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));

@@ -3,8 +3,10 @@ package twincat.app.layer;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,9 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import twincat.Resources;
+import twincat.app.components.ScrollablePanel;
+import twincat.app.components.WrapTopLayout;
 import twincat.app.constant.Propertie;
-import twincat.java.ScrollablePanel;
-import twincat.java.WrapTopLayout;
 import twincat.scope.TriggerChannel;
 
 public class TriggerChannelProperties extends JPanel {
@@ -39,11 +41,29 @@ public class TriggerChannelProperties extends JPanel {
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
     /*********************************/
+    /****** predefined variable ******/
+    /*********************************/
+    
+    private AbstractAction scrollPanelDisableKey = new AbstractAction() {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            /* empty */
+        }
+    };
+    
+    /*********************************/
     /********** constructor **********/
     /*********************************/
 
     public TriggerChannelProperties(XReference xref) {
         this.xref = xref;
+        
+        // TODO : SETTINGS
+        // combine
+        // release
+        // threshold
         
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
@@ -54,7 +74,9 @@ public class TriggerChannelProperties extends JPanel {
         JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
-
+        scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
+        scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
+        
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));

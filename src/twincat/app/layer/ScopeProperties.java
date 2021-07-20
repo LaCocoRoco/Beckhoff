@@ -4,10 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ResourceBundle;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,12 +17,12 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import twincat.Resources;
+import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TextField;
 import twincat.app.components.TimeTextField;
-import twincat.app.components.TitleBorder;
+import twincat.app.components.TitledPanel;
+import twincat.app.components.WrapTopLayout;
 import twincat.app.constant.Propertie;
-import twincat.java.ScrollablePanel;
-import twincat.java.WrapTopLayout;
 import twincat.scope.Scope;
 
 public class ScopeProperties extends JPanel {
@@ -42,7 +44,7 @@ public class ScopeProperties extends JPanel {
     /****** local final variable *****/
     /*********************************/
 
-    private final TextField scopeNameTextField = new TextField();
+    private final TextField scopeName = new TextField();
 
     private final TimeTextField recordTimeTextField = new TimeTextField();
 
@@ -63,11 +65,20 @@ public class ScopeProperties extends JPanel {
     private PropertyChangeListener scopeNamePropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            scope.setScopeName(scopeNameTextField.getText());
+            scope.setScopeName(scopeName.getText());
             xref.scopeBrowser.reloadSelectedTreeNode();
         }
     };
 
+    private AbstractAction scrollPanelDisableKey = new AbstractAction() {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            /* empty */
+        }
+    };
+    
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -76,13 +87,13 @@ public class ScopeProperties extends JPanel {
         this.xref = xref;
 
         // common properties
-        scopeNameTextField.setText(scope.getScopeName());
-        scopeNameTextField.addPropertyChangeListener("text", scopeNamePropertyChanged);
-        scopeNameTextField.setBounds(15, 25, 210, 23);
+        scopeName.setText(scope.getScopeName());
+        scopeName.addPropertyChangeListener("text", scopeNamePropertyChanged);
+        scopeName.setBounds(15, 25, 210, 23);
 
-        JPanel commonPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_COMMON_NAME));
+        TitledPanel commonPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_COMMON));
         commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
-        commonPanel.add(scopeNameTextField);
+        commonPanel.add(scopeName);
 
         // record mode properties
         recordTimeTextField.setText(Scope.TIME_FORMAT_MIN_TIME);
@@ -93,7 +104,7 @@ public class ScopeProperties extends JPanel {
         recordTimeText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
         recordTimeText.setBounds(125, 24, 120, 23);
 
-        JPanel recordTimePanel = new TitleBorder(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_RECORD_TIME));
+        TitledPanel recordTimePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_RECORD_TIME));
         recordTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
         recordTimePanel.add(recordTimeTextField);
         recordTimePanel.add(recordTimeText);
@@ -109,7 +120,9 @@ public class ScopeProperties extends JPanel {
         JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
-
+        scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
+        scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
+        
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
@@ -151,9 +164,9 @@ public class ScopeProperties extends JPanel {
 
     private void reload() {
         // reload common properties
-        if (!scopeNameTextField.getText().equals(scope.getScopeName())) {
-            scopeNameTextField.setText(scope.getScopeName());
-            scopeNameTextField.setCaretPosition(0);
+        if (!scopeName.getText().equals(scope.getScopeName())) {
+            scopeName.setText(scope.getScopeName());
+            scopeName.setCaretPosition(0);
         }
 
         // reload record mode properties
