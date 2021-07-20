@@ -398,8 +398,6 @@ public class ScopeBrowser extends JPanel {
 
         // display symbol acquisition view
         xref.acquisitionProperties.reloadAcquisition();
-        xref.browserPanel.setCard(Browser.SYMBOL);
-        xref.propertiesPanel.setCard(Propertie.ACQUISITION);
     }
 
     private void treeNodeSelectedSingleClick(TreePath treePath) {
@@ -408,14 +406,12 @@ public class ScopeBrowser extends JPanel {
 
         if (userObject instanceof Scope) {
             Scope scope = (Scope) userObject;
-            xref.propertiesPanel.setCard(Propertie.SCOPE);
             xref.scopeProperties.setScope(scope);
             xref.scopeProperties.reloadScope();
         }
 
         if (userObject instanceof Chart) {
             Chart chart = (Chart) userObject;
-            xref.propertiesPanel.setCard(Propertie.CHART);
             xref.chartProperties.setChart(chart);
             xref.chartProperties.reloadChart();
             xref.chartPanel.setChart(chart);
@@ -424,28 +420,24 @@ public class ScopeBrowser extends JPanel {
 
         if (userObject instanceof Axis) {
             Axis axis = (Axis) userObject;
-            xref.propertiesPanel.setCard(Propertie.AXIS);
             xref.axisProperties.setAxis(axis);
             xref.axisProperties.reloadAxis();
         }
 
         if (userObject instanceof Channel) {
             Channel Channel = (Channel) userObject;
-            xref.propertiesPanel.setCard(Propertie.CHANNEL);
             xref.channelProperties.setChannel(Channel);
             xref.channelProperties.reloadChannel();
         }
 
         if (userObject instanceof TriggerGroup) {
             TriggerGroup tgriggerGroup = (TriggerGroup) userObject;
-            xref.propertiesPanel.setCard(Propertie.TRIGGER_GROUP);
             xref.triggerGroupProperties.setTriggerGroup(tgriggerGroup);
             xref.triggerGroupProperties.reloadTriggerGroup();
         }
 
         if (userObject instanceof TriggerChannel) {
             TriggerChannel triggerChannel = (TriggerChannel) userObject;
-            xref.propertiesPanel.setCard(Propertie.TRIGGER_CHANNEL);
             xref.triggerChannelProperties.setTriggerChannel(triggerChannel);
             xref.triggerChannelProperties.reloadTriggerChannel();
         }

@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
@@ -14,12 +16,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import twincat.Resources;
 import twincat.app.components.TextField;
 import twincat.app.components.TitleBorder;
+import twincat.app.constant.Propertie;
 import twincat.java.ScrollablePanel;
 import twincat.java.WrapTopLayout;
 import twincat.scope.Axis;
@@ -53,21 +54,9 @@ public class AxisProperties extends JPanel {
     /****** predefined variable ******/
     /*********************************/
 
-    private final DocumentListener axisNameTextFieldDocumentListener = new DocumentListener() {
+    private PropertyChangeListener axisNamePropertyChanged = new PropertyChangeListener() {
         @Override
-        public void insertUpdate(DocumentEvent documentEvent) {
-            axis.setAxisName(axisNameTextField.getText());
-            xref.scopeBrowser.reloadSelectedTreeNode();
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent documentEvent) {
-            axis.setAxisName(axisNameTextField.getText());
-            xref.scopeBrowser.reloadSelectedTreeNode();
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent documentEvent) {
+        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
             axis.setAxisName(axisNameTextField.getText());
             xref.scopeBrowser.reloadSelectedTreeNode();
         }
@@ -99,12 +88,12 @@ public class AxisProperties extends JPanel {
         axisNameCheckBox.setFocusPainted(false);
         axisNameCheckBox.setBounds(20, 55, 150, 20);
 
-        axisNameTextField.setText(axis.getAxisName());
-        axisNameTextField.getDocument().addDocumentListener(axisNameTextFieldDocumentListener);
-        axisNameTextField.setBounds(15, 25, 210, 25);
+        axisNameTextField.setText(axis.getAxisName()); 
+        axisNameTextField.addPropertyChangeListener(axisNamePropertyChanged);
+        axisNameTextField.setBounds(15, 25, 210, 23);
         
         JPanel commonPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 90));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 85));
         commonPanel.add(axisNameTextField);
         commonPanel.add(axisNameCheckBox);
 
@@ -163,10 +152,11 @@ public class AxisProperties extends JPanel {
         axisNameCheckBox.setSelected(axis.isAxisNameVisible());
         
         if (!axisNameTextField.getText().equals(axis.getAxisName())) {
-            axisNameTextField.getDocument().removeDocumentListener(axisNameTextFieldDocumentListener);
             axisNameTextField.setText(axis.getAxisName());
             axisNameTextField.setCaretPosition(0);
-            axisNameTextField.getDocument().addDocumentListener(axisNameTextFieldDocumentListener);  
         }
+        
+        // display axis properties
+        xref.propertiesPanel.setCard(Propertie.AXIS);
     }    
 }

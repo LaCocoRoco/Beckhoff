@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
@@ -11,12 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import twincat.Resources;
 import twincat.app.components.TextField;
 import twincat.app.components.TitleBorder;
+import twincat.app.constant.Propertie;
 import twincat.java.ScrollablePanel;
 import twincat.java.WrapTopLayout;
 import twincat.scope.TriggerGroup;
@@ -48,21 +49,10 @@ public class TriggerGroupProperties extends JPanel {
     /****** predefined variable ******/
     /*********************************/
 
-    private final DocumentListener triggerChannelNameTextFieldDocumentListener = new DocumentListener() {
-        @Override
-        public void insertUpdate(DocumentEvent documentEvent) {
-            triggerGroup.setTriggerGroupName(triggerGroupNameTextField.getText());
-            xref.scopeBrowser.reloadSelectedTreeNode();
-        }
 
+    private PropertyChangeListener triggerChannelNamePropertyChanged = new PropertyChangeListener() {
         @Override
-        public void removeUpdate(DocumentEvent documentEvent) {
-            triggerGroup.setTriggerGroupName(triggerGroupNameTextField.getText());
-            xref.scopeBrowser.reloadSelectedTreeNode();
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent documentEvent) {
+        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
             triggerGroup.setTriggerGroupName(triggerGroupNameTextField.getText());
             xref.scopeBrowser.reloadSelectedTreeNode();
         }
@@ -77,11 +67,11 @@ public class TriggerGroupProperties extends JPanel {
 
         // common properties
         triggerGroupNameTextField.setText(triggerGroup.getTriggerGroupName());
-        triggerGroupNameTextField.getDocument().addDocumentListener(triggerChannelNameTextFieldDocumentListener);
-        triggerGroupNameTextField.setBounds(15, 25, 210, 25);
+        triggerGroupNameTextField.addPropertyChangeListener(triggerChannelNamePropertyChanged);
+        triggerGroupNameTextField.setBounds(15, 25, 210, 23);
         
         JPanel commonPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
         commonPanel.add(triggerGroupNameTextField);
         
         // default content
@@ -137,10 +127,11 @@ public class TriggerGroupProperties extends JPanel {
     private void reload() {
         // reload common properties
         if (!triggerGroupNameTextField.getText().equals(triggerGroup.getTriggerGroupName())) {
-            triggerGroupNameTextField.getDocument().removeDocumentListener(triggerChannelNameTextFieldDocumentListener);
             triggerGroupNameTextField.setText(triggerGroup.getTriggerGroupName());
             triggerGroupNameTextField.setCaretPosition(0);
-            triggerGroupNameTextField.getDocument().addDocumentListener(triggerChannelNameTextFieldDocumentListener);
         }
+        
+        // reload trigger group properties
+        xref.propertiesPanel.setCard(Propertie.TRIGGER_GROUP);
     } 
 }

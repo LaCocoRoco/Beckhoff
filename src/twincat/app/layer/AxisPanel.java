@@ -150,6 +150,12 @@ public class AxisPanel extends JScrollPane {
     /*********************************/
 
     private void buildAxisScope(AxisAcquisition axisAcquisition) {
+        // display scope view
+        xref.browserPanel.setCard(Browser.SCOPE);
+        xref.propertiesPanel.setCard(Propertie.EMPTY);
+        xref.windowPanel.setCard(Window.SCOPE);
+        xref.navigationPanel.setCard(Navigation.CHART);
+        
         // scope
         Scope scope = new Scope();
         scope.setScopeName(axisAcquisition.getAxisName());
@@ -329,13 +335,7 @@ public class AxisPanel extends JScrollPane {
 
         // add trigger group to chart
         scope.addTriggerGroup(triggerGroup);
- 
-        // display scope view
-        xref.browserPanel.setCard(Browser.SCOPE);
-        xref.propertiesPanel.setCard(Propertie.EMPTY);
-        xref.windowPanel.setCard(Window.SCOPE);
-        xref.navigationPanel.setCard(Navigation.CHART);
-        
+
         // add scope
         xref.scopeBrowser.addScope(scope);
     }

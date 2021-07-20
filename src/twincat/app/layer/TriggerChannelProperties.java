@@ -12,12 +12,19 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import twincat.Resources;
+import twincat.app.constant.Propertie;
 import twincat.java.ScrollablePanel;
 import twincat.java.WrapTopLayout;
 import twincat.scope.TriggerChannel;
 
 public class TriggerChannelProperties extends JPanel {
     private static final long serialVersionUID = 1L;
+
+    /*********************************/
+    /******** cross reference ********/
+    /*********************************/
+
+    private final XReference xref;
 
     /*********************************/
     /******** global variable ********/
@@ -36,6 +43,8 @@ public class TriggerChannelProperties extends JPanel {
     /*********************************/
 
     public TriggerChannelProperties(XReference xref) {
+        this.xref = xref;
+        
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new WrapTopLayout(FlowLayout.LEADING));
@@ -86,6 +95,7 @@ public class TriggerChannelProperties extends JPanel {
     /*********************************/
 
     private void reload() {
-
+        // reload trigger channel properties
+        xref.propertiesPanel.setCard(Propertie.TRIGGER_CHANNEL);
     }    
 }

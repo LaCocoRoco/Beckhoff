@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -21,8 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import twincat.Resources;
 import twincat.ads.common.Route;
@@ -31,6 +31,8 @@ import twincat.ads.worker.RouteLoader;
 import twincat.app.components.ComboBox;
 import twincat.app.components.TextField;
 import twincat.app.components.TitleBorder;
+import twincat.app.constant.Browser;
+import twincat.app.constant.Propertie;
 import twincat.java.ScrollablePanel;
 import twincat.java.WrapTopLayout;
 import twincat.scope.Acquisition;
@@ -103,19 +105,9 @@ public class AcquisitionProperties extends JPanel {
         }
     };
 
-    private final DocumentListener symbolNameTextFieldDocumentListener = new DocumentListener() {
+    private PropertyChangeListener symbolNamePropertyChanged = new PropertyChangeListener() {
         @Override
-        public void insertUpdate(DocumentEvent documentEvent) {
-            acquisition.setSymbolName(symbolNameTextField.getText());
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent documentEvent) {
-            acquisition.setSymbolName(symbolNameTextField.getText());
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent documentEvent) {
+        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
             acquisition.setSymbolName(symbolNameTextField.getText());
         }
     };
@@ -153,8 +145,8 @@ public class AcquisitionProperties extends JPanel {
         targetPanel.add(targetPortComboBox);
 
         symbolNameTextField.setText(acquisition.getSymbolName());
-        symbolNameTextField.getDocument().addDocumentListener(symbolNameTextFieldDocumentListener); 
-        symbolNameTextField.setBounds(15, 25, 265, 25);
+        symbolNameTextField.addPropertyChangeListener(symbolNamePropertyChanged);
+        symbolNameTextField.setBounds(15, 25, 265, 23);
         
         JPanel symbolInfoPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_SYMBOL_INFO));
         symbolInfoPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
@@ -261,6 +253,10 @@ public class AcquisitionProperties extends JPanel {
         // reload symbol information
         symbolNameTextField.setText(acquisition.getSymbolName());
         symbolNameTextField.setCaretPosition(0);
+        
+        // display acquisition properties
+        xref.browserPanel.setCard(Browser.SYMBOL);
+        xref.propertiesPanel.setCard(Propertie.ACQUISITION);
     }
     
     private void buildTargetComboBoxItemList() {

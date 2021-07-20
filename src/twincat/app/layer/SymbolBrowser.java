@@ -101,10 +101,8 @@ public class SymbolBrowser extends JPanel {
 
     private final JTextField searchTextField = new JTextField();
 
-    //private final JComboBox<String> routeComboBox = new JComboBox<String>();
     private final ComboBox routeComboBox = new ComboBox();
 
-    //private final JComboBox<String> portComboBox = new JComboBox<String>();
     private final ComboBox portComboBox = new ComboBox();  
 
     private final List<SymbolNode> searchSymbolNodeList = new ArrayList<SymbolNode>();
@@ -309,20 +307,10 @@ public class SymbolBrowser extends JPanel {
         treePanel.setBorder(BorderFactory.createEmptyBorder());
         treePanel.setViewportView(browseTree);
 
-        //Border routeBorderInside = BorderFactory.createLoweredBevelBorder();
-        //Border routeBorderOutside = BorderFactory.createEmptyBorder(0, 0, 0, 1);
-        //CompoundBorder routeCompoundBorder = new CompoundBorder(routeBorderOutside, routeBorderInside);
-
         routeComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        //routeComboBox.setBorder(routeCompoundBorder);
-        //routeComboBox.setUI(routeComboBoxBasicUI);
-        //routeComboBox.setRenderer(routeComboBoxDefaultListCellRenderer);
         routeComboBox.addItem(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_LOADING));
 
         portComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        //portComboBox.setBorder(BorderFactory.createLoweredBevelBorder());
-        //portComboBox.setUI(portComboBoxBasicUI);
-        //portComboBox.setRenderer(portComboBoxDefaultListCellRenderer);
         portComboBox.addItem(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_LOADING));
 
         JToolBar routeToolBar = new JToolBar();

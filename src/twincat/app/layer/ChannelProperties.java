@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
@@ -11,12 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import twincat.Resources;
 import twincat.app.components.TextField;
 import twincat.app.components.TitleBorder;
+import twincat.app.constant.Propertie;
 import twincat.java.ScrollablePanel;
 import twincat.java.WrapTopLayout;
 import twincat.scope.Channel;
@@ -48,21 +49,9 @@ public class ChannelProperties extends JPanel {
     /****** predefined variable ******/
     /*********************************/
 
-    private final DocumentListener channelNameTextFieldDocumentListener = new DocumentListener() {
+    private PropertyChangeListener channelNamePropertyChanged = new PropertyChangeListener() {
         @Override
-        public void insertUpdate(DocumentEvent documentEvent) {
-            channel.setChannelName(channelNameTextField.getText());
-            xref.scopeBrowser.reloadSelectedTreeNode();
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent documentEvent) {
-            channel.setChannelName(channelNameTextField.getText());
-            xref.scopeBrowser.reloadSelectedTreeNode();
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent documentEvent) {
+        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
             channel.setChannelName(channelNameTextField.getText());
             xref.scopeBrowser.reloadSelectedTreeNode();
         }
@@ -77,11 +66,11 @@ public class ChannelProperties extends JPanel {
  
         // common properties
         channelNameTextField.setText(channel.getChannelName());   
-        channelNameTextField.getDocument().addDocumentListener(channelNameTextFieldDocumentListener); 
-        channelNameTextField.setBounds(15, 25, 210, 25);
+        channelNameTextField.addPropertyChangeListener(channelNamePropertyChanged);
+        channelNameTextField.setBounds(15, 25, 210, 23);
         
         JPanel commonPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 80));
         commonPanel.add(channelNameTextField);
         
         // default content
@@ -137,10 +126,11 @@ public class ChannelProperties extends JPanel {
     private void reload() {
         // reload common properties
         if (!channelNameTextField.getText().equals(channel.getChannelName())) {
-            channelNameTextField.getDocument().removeDocumentListener(channelNameTextFieldDocumentListener);
             channelNameTextField.setText(channel.getChannelName());   
-            channelNameTextField.setCaretPosition(0);
-            channelNameTextField.getDocument().addDocumentListener(channelNameTextFieldDocumentListener);           
+            channelNameTextField.setCaretPosition(0);        
         }
+        
+        // display channel properties
+        xref.propertiesPanel.setCard(Propertie.CHANNEL);
     }    
 }

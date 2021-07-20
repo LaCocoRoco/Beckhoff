@@ -9,7 +9,7 @@ public class Resources {
 
     public static final String DEFAULT_FONT = "Dialog";
     
-    public static final int DEFAULT_FONT_SIZE_SMALL = 12;
+    public static final int DEFAULT_FONT_SIZE_SMALL = 13;
     
     public static final int DEFAULT_FONT_SIZE_NORMAL = 15;
     

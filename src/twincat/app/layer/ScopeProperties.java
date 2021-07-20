@@ -4,20 +4,21 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import twincat.Resources;
 import twincat.app.components.TextField;
+import twincat.app.components.TimeTextField;
 import twincat.app.components.TitleBorder;
+import twincat.app.constant.Propertie;
 import twincat.java.ScrollablePanel;
 import twincat.java.WrapTopLayout;
 import twincat.scope.Scope;
@@ -43,7 +44,7 @@ public class ScopeProperties extends JPanel {
 
     private final TextField scopeNameTextField = new TextField();
 
-    private final TextField recordTimeTextField = new TextField();
+    private final TimeTextField recordTimeTextField = new TimeTextField();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
@@ -51,94 +52,17 @@ public class ScopeProperties extends JPanel {
     /****** predefined variable ******/
     /*********************************/
 
-    private final DocumentListener recordTimeTextFieldDocumentListener = new DocumentListener() {
-        private String recordTime = Scope.TIME_FORMAT_MIN_TIME;
-
-        private final Runnable task = new Runnable() {
-            @Override
-            public void run() {
-                String input = recordTimeTextField.getText();
-                if (!recordTime.equals(recordTimeTextField.getText())) {
-                    StringBuilder builder = new StringBuilder(input);
-                    int caret = recordTimeTextField.getCaretPosition();
-                    if (input.length() > recordTime.length()) {
-                        // value added
-                        if (caret <= recordTime.length()) {
-                            char value = recordTime.charAt(caret - 1);
-
-                            if (value == ':' || value == '.') {
-                                input = recordTime;
-                            } else {
-                                builder.deleteCharAt(caret);
-                                input = builder.toString();
-                            }
-                        } else {
-                            caret = caret - 1;
-                            input = recordTime;
-                        }
-                    } else {
-                        // value removed
-                        if (caret < recordTime.length()) {
-                            char value = recordTime.charAt(caret);
-
-                            if (value == ':' || value == '.') {
-                                input = recordTime;
-                            } else {
-                                builder.insert(caret, "0");
-                                input = builder.toString();
-                            }
-                        }
-                    }
-
-                    // format time
-                    String formatedInput = Scope.timeFormaterParse(input);
-
-                    // set time
-                    if (formatedInput.length() > Scope.TIME_FORMAT_MIN_TIME.length()) {
-                        recordTime = formatedInput.substring(1);
-                    } else {
-                        recordTime = formatedInput;
-                    }
-
-                    // set record time
-                    scope.setRecordTime(recordTime);
-                    recordTimeTextField.setText(recordTime);
-                    recordTimeTextField.setCaretPosition(caret);
-                }
-            }
-        };
-
+    private PropertyChangeListener recordTimePropertyChanged = new PropertyChangeListener() {
         @Override
-        public void insertUpdate(DocumentEvent documentEvent) {
-            SwingUtilities.invokeLater(task);
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent documentEvent) {
-            SwingUtilities.invokeLater(task);
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent documentEvent) {
-            SwingUtilities.invokeLater(task);
+        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+            TimeTextField component = (TimeTextField) propertyChangeEvent.getSource();
+            scope.setRecordTime(component.getText());
         }
     };
 
-    private final DocumentListener scopeNameTextFieldDocumentListener = new DocumentListener() {
+    private PropertyChangeListener scopeNamePropertyChanged = new PropertyChangeListener() {
         @Override
-        public void insertUpdate(DocumentEvent documentEvent) {
-            scope.setScopeName(scopeNameTextField.getText());
-            xref.scopeBrowser.reloadSelectedTreeNode();
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent documentEvent) {
-            scope.setScopeName(scopeNameTextField.getText());
-            xref.scopeBrowser.reloadSelectedTreeNode();
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent documentEvent) {
+        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
             scope.setScopeName(scopeNameTextField.getText());
             xref.scopeBrowser.reloadSelectedTreeNode();
         }
@@ -153,26 +77,24 @@ public class ScopeProperties extends JPanel {
 
         // common properties
         scopeNameTextField.setText(scope.getScopeName());
-        scopeNameTextField.getDocument().addDocumentListener(scopeNameTextFieldDocumentListener);
-        scopeNameTextField.setBounds(15, 25, 210, 25);
+        scopeNameTextField.addPropertyChangeListener("text", scopeNamePropertyChanged);
+        scopeNameTextField.setBounds(15, 25, 210, 23);
 
         JPanel commonPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_COMMON_NAME));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
+        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
         commonPanel.add(scopeNameTextField);
 
         // record mode properties
         recordTimeTextField.setText(Scope.TIME_FORMAT_MIN_TIME);
-        recordTimeTextField.setHorizontalAlignment(JTextField.CENTER);
-        recordTimeTextField.getDocument().addDocumentListener(recordTimeTextFieldDocumentListener);
-        recordTimeTextField.setBounds(15, 25, 100, 25);
+        recordTimeTextField.addPropertyChangeListener("time", recordTimePropertyChanged);
+        recordTimeTextField.setBounds(15, 25, 100, 23);
 
         JLabel recordTimeText = new JLabel("[" + Scope.TIME_FORMAT_TEMPLATE + "]");
-        recordTimeText.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        recordTimeText.setBounds(125, 23, 120, 25);
-        
-        
+        recordTimeText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
+        recordTimeText.setBounds(125, 24, 120, 23);
+
         JPanel recordTimePanel = new TitleBorder(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_RECORD_TIME));
-        recordTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
+        recordTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
         recordTimePanel.add(recordTimeTextField);
         recordTimePanel.add(recordTimeText);
 
@@ -191,7 +113,7 @@ public class ScopeProperties extends JPanel {
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-        
+
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this.add(textHeader, BorderLayout.PAGE_START);
@@ -230,13 +152,14 @@ public class ScopeProperties extends JPanel {
     private void reload() {
         // reload common properties
         if (!scopeNameTextField.getText().equals(scope.getScopeName())) {
-            scopeNameTextField.getDocument().removeDocumentListener(scopeNameTextFieldDocumentListener);
             scopeNameTextField.setText(scope.getScopeName());
             scopeNameTextField.setCaretPosition(0);
-            scopeNameTextField.getDocument().addDocumentListener(scopeNameTextFieldDocumentListener);         
         }
 
         // reload record mode properties
         recordTimeTextField.setText(Scope.timeFormaterToString(scope.getRecordTime()));
+        
+        // display scope properties
+        xref.propertiesPanel.setCard(Propertie.SCOPE);
     }
 }
