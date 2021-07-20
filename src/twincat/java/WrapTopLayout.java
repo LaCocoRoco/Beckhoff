@@ -5,26 +5,26 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Point;
 
-public class TopFlowLayout extends WrapLayout {
+public class WrapTopLayout extends WrapLayout {
     private static final long serialVersionUID = 1L;
     
     /**
-     * Constructs a new <code>TopFlowLayout</code> with a left alignment and a default
+     * Constructs a new <code>WrapTopLayout</code> with a left alignment and a default
      * 5-unit horizontal and vertical gap.
      */
-    public TopFlowLayout() {
+    public WrapTopLayout() {
         super();
     }
     
     /**
      * Constructs a new <code>FlowLayout</code> with the specified alignment and a
      * default 5-unit horizontal and vertical gap. The value of the alignment
-     * argument must be one of <code>TopFlowLayout</code>, <code>TopFlowLayout</code>, or
-     * <code>TopFlowLayout</code>.
+     * argument must be one of <code>WrapTopLayout</code>, <code>WrapTopLayout</code>, or
+     * <code>WrapTopLayout</code>.
      * 
      * @param align the alignment value
      */
-    public TopFlowLayout(int align) {
+    public WrapTopLayout(int align) {
         super(align);
     }
 

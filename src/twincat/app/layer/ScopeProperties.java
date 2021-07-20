@@ -18,6 +18,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import twincat.Resources;
+import twincat.app.components.AppTextField;
 import twincat.java.ScrollablePanel;
 import twincat.java.WrapLayout;
 import twincat.scope.Scope;
@@ -41,9 +42,11 @@ public class ScopeProperties extends JPanel {
     /****** local final variable *****/
     /*********************************/
 
-    private final JTextField scopeNameTextField = new JTextField();
-
-    private final JTextField recordTimeTextField = new JTextField();
+    //private final JTextField scopeNameTextField = new JTextField();
+    private final AppTextField scopeNameTextField = new AppTextField();
+    
+    //private final JTextField recordTimeTextField = new JTextField();
+    private final AppTextField recordTimeTextField = new AppTextField();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
@@ -152,13 +155,13 @@ public class ScopeProperties extends JPanel {
         this.xref = xref;
 
         // common properties
-        Border scopeNameOuterBorder = scopeNameTextField.getBorder();
-        Border scopeNameInnerBorder = BorderFactory.createEmptyBorder(0, 4, 0, 4);
-        CompoundBorder scopeNameCompoundBorder = BorderFactory.createCompoundBorder(scopeNameOuterBorder, scopeNameInnerBorder);
+        //Border scopeNameOuterBorder = scopeNameTextField.getBorder();
+        //Border scopeNameInnerBorder = BorderFactory.createEmptyBorder(0, 4, 0, 4);
+        //CompoundBorder scopeNameCompoundBorder = BorderFactory.createCompoundBorder(scopeNameOuterBorder, scopeNameInnerBorder);
 
         scopeNameTextField.setText(scope.getScopeName());
-        scopeNameTextField.setBorder(scopeNameCompoundBorder);
-        scopeNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        //scopeNameTextField.setBorder(scopeNameCompoundBorder);
+        //scopeNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         scopeNameTextField.getDocument().addDocumentListener(scopeNameTextFieldDocumentListener);
         scopeNameTextField.setBounds(15, 25, 210, 25);
         
@@ -168,7 +171,7 @@ public class ScopeProperties extends JPanel {
 
         // record mode properties
         recordTimeTextField.setText(Scope.TIME_FORMAT_MIN_TIME);
-        recordTimeTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        //recordTimeTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         recordTimeTextField.setHorizontalAlignment(JTextField.CENTER);
         recordTimeTextField.getDocument().addDocumentListener(recordTimeTextFieldDocumentListener);
         recordTimeTextField.setBounds(15, 25, 100, 25);

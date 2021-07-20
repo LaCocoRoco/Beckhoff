@@ -70,9 +70,8 @@ public class PropertiesPanel extends JPanel {
     public static final JPanel buildTemplate(String borderTitle) {
         LineBorder lineBorder = new LineBorder(Color.BLACK);
         TitledBorder titleBorder = BorderFactory.createTitledBorder(lineBorder, borderTitle);
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(null);
         panel.setBorder(titleBorder);
-        panel.setLayout(null);
         return panel;
     }
 }

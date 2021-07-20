@@ -70,6 +70,7 @@ import twincat.app.common.SymbolNode;
 import twincat.app.common.SymbolTreeModel;
 import twincat.app.common.SymbolTreeNode;
 import twincat.app.common.SymbolTreeRenderer;
+import twincat.app.components.AppComboBox;
 import twincat.app.constant.Filter;
 
 public class SymbolBrowser extends JPanel {
@@ -105,9 +106,11 @@ public class SymbolBrowser extends JPanel {
 
     private final JTextField searchTextField = new JTextField();
 
-    private final JComboBox<String> routeComboBox = new JComboBox<String>();
+    //private final JComboBox<String> routeComboBox = new JComboBox<String>();
+    private final AppComboBox routeComboBox = new AppComboBox();
 
-    private final JComboBox<String> portComboBox = new JComboBox<String>();
+    //private final JComboBox<String> portComboBox = new JComboBox<String>();
+    private final AppComboBox portComboBox = new AppComboBox();  
 
     private final List<SymbolNode> searchSymbolNodeList = new ArrayList<SymbolNode>();
 
@@ -357,20 +360,20 @@ public class SymbolBrowser extends JPanel {
         treePanel.setBorder(BorderFactory.createEmptyBorder());
         treePanel.setViewportView(browseTree);
 
-        Border routeBorderInside = BorderFactory.createLoweredBevelBorder();
-        Border routeBorderOutside = BorderFactory.createEmptyBorder(0, 0, 0, 1);
-        CompoundBorder routeCompoundBorder = new CompoundBorder(routeBorderOutside, routeBorderInside);
+        //Border routeBorderInside = BorderFactory.createLoweredBevelBorder();
+        //Border routeBorderOutside = BorderFactory.createEmptyBorder(0, 0, 0, 1);
+        //CompoundBorder routeCompoundBorder = new CompoundBorder(routeBorderOutside, routeBorderInside);
 
         routeComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        routeComboBox.setBorder(routeCompoundBorder);
-        routeComboBox.setUI(routeComboBoxBasicUI);
-        routeComboBox.setRenderer(routeComboBoxDefaultListCellRenderer);
+        //routeComboBox.setBorder(routeCompoundBorder);
+        //routeComboBox.setUI(routeComboBoxBasicUI);
+        //routeComboBox.setRenderer(routeComboBoxDefaultListCellRenderer);
         routeComboBox.addItem(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_LOADING));
 
         portComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        portComboBox.setBorder(BorderFactory.createLoweredBevelBorder());
-        portComboBox.setUI(portComboBoxBasicUI);
-        portComboBox.setRenderer(portComboBoxDefaultListCellRenderer);
+        //portComboBox.setBorder(BorderFactory.createLoweredBevelBorder());
+        //portComboBox.setUI(portComboBoxBasicUI);
+        //portComboBox.setRenderer(portComboBoxDefaultListCellRenderer);
         portComboBox.addItem(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_LOADING));
 
         JToolBar routeToolBar = new JToolBar();

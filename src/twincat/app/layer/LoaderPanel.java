@@ -380,87 +380,89 @@ public class LoaderPanel extends JPanel {
         
         return triggerGroup;
     }
- 
+
+    private Scope getScope(Node scopeNode) {
+        Scope scope = new Scope();
+        
+        if (scopeNode.getNodeType() == Node.ELEMENT_NODE) {
+            Element scopeElement = (Element) scopeNode;
+            String scopeName = scopeElement.getElementsByTagName("Title").item(0).getTextContent();
+            scope.setScopeName(scopeName);
+            
+            logger.fine(String.format("%-14s", "Scope") + " | " + scopeName);
+            
+            Node operationNode = scopeElement.getElementsByTagName("Operating").item(0);
+            if (operationNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element operationElement = (Element) operationNode;
+                String recordTimeText = operationElement.getElementsByTagName("RecordTime").item(0).getTextContent();
+
+                long recordTime = Long.valueOf(recordTimeText) / 10000;
+                long recordTimeMax = Scope.timeFormaterToLong(Scope.TIME_FORMAT_MAX_TIME);
+
+                if (recordTime > recordTimeMax) recordTime = recordTimeMax;
+
+                scope.setRecordTime(recordTime);
+            }
+
+            // charts node
+            Node chartsNode = scopeElement.getElementsByTagName("Charts").item(0);
+            if (chartsNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element chartsElement = (Element) chartsNode;
+
+                // chart node array
+                NodeList chartNodeList = chartsElement.getElementsByTagName("ScopeChartSerializable");
+                for (int chartIndex = 0; chartIndex < chartNodeList.getLength(); chartIndex++) {
+                    Node chartNode = chartNodeList.item(chartIndex);
+                    Chart chart = getChart(chartNode);
+
+                    // scope add chart
+                    scope.addChart(chart);
+                }
+            }
+
+            // trigger module
+            Node triggerModuleNode = scopeElement.getElementsByTagName("TriggerModule").item(0);
+            if (triggerModuleNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element triggerModuleElement = (Element) triggerModuleNode;
+                
+                // trigger group node
+                Node triggerGroupsNode = triggerModuleElement.getElementsByTagName("TriggerGroups").item(0);
+                if (triggerGroupsNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element triggerGroupsElement = (Element) triggerGroupsNode;
+                    
+                    // trigger group node array
+                    NodeList triggerGroupNodeList = triggerGroupsElement.getElementsByTagName("ScopeTriggerGroupSerializable");
+                    for (int triggerGroupIndex = 0; triggerGroupIndex < triggerGroupNodeList.getLength(); triggerGroupIndex++) {
+                        Node triggerGroupNode = triggerGroupNodeList.item(triggerGroupIndex);
+                        TriggerGroup triggerGroup = getTriggerGroup(triggerGroupNode, scope);
+
+                        // scope add trigger group
+                        scope.addTriggerGroup(triggerGroup);
+                    }
+                }
+            }
+        }
+        
+        return scope;
+    }
+    
     private Scope loadScopeFile(String path) {
         try {
+            // build document
             documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(new File(path));
             document.getDocumentElement().normalize();
 
             logger.fine(String.format("%-14s", "Loading Scope") + " | " + path);
             
-            // scope data
+            // build scope
             Node scopeNode = document.getElementsByTagName("ScopeViewSerializable").item(0);
+            Scope scope = getScope(scopeNode);
             
-            // TODO : split scope
+            logger.fine("Scope Loaded");
             
-            if (scopeNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element scopeElement = (Element) scopeNode;
-
-                Scope scope = new Scope();
-                
-                String scopeName = scopeElement.getElementsByTagName("Title").item(0).getTextContent();
-                scope.setScopeName(scopeName);
-                
-                logger.fine(String.format("%-14s", "Scope") + " | " + scopeName);
-                
-                Node operationNode = scopeElement.getElementsByTagName("Operating").item(0);
-                if (operationNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element operationElement = (Element) operationNode;
-                    String recordTimeText = operationElement.getElementsByTagName("RecordTime").item(0).getTextContent();
-
-                    long recordTime = Long.valueOf(recordTimeText) / 10000;
-                    long recordTimeMax = Scope.timeFormaterToLong(Scope.TIME_FORMAT_MAX_TIME);
-
-                    if (recordTime > recordTimeMax) recordTime = recordTimeMax;
-
-                    scope.setRecordTime(recordTime);
-                }
-
-                // charts node
-                Node chartsNode = scopeElement.getElementsByTagName("Charts").item(0);
-                if (chartsNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element chartsElement = (Element) chartsNode;
-
-                    // chart node array
-                    NodeList chartNodeList = chartsElement.getElementsByTagName("ScopeChartSerializable");
-                    for (int chartIndex = 0; chartIndex < chartNodeList.getLength(); chartIndex++) {
-                        Node chartNode = chartNodeList.item(chartIndex);
-                        Chart chart = getChart(chartNode);
-
-                        // scope add chart
-                        scope.addChart(chart);
-                    }
-                }
-
-                // trigger module
-                Node triggerModuleNode = scopeElement.getElementsByTagName("TriggerModule").item(0);
-                if (triggerModuleNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element triggerModuleElement = (Element) triggerModuleNode;
-                    
-                    // trigger group node
-                    Node triggerGroupsNode = triggerModuleElement.getElementsByTagName("TriggerGroups").item(0);
-                    if (triggerGroupsNode.getNodeType() == Node.ELEMENT_NODE) {
-                        Element triggerGroupsElement = (Element) triggerGroupsNode;
-                        
-                        // trigger group node array
-                        NodeList triggerGroupNodeList = triggerGroupsElement.getElementsByTagName("ScopeTriggerGroupSerializable");
-                        for (int triggerGroupIndex = 0; triggerGroupIndex < triggerGroupNodeList.getLength(); triggerGroupIndex++) {
-                            Node triggerGroupNode = triggerGroupNodeList.item(triggerGroupIndex);
-                            TriggerGroup triggerGroup = getTriggerGroup(triggerGroupNode, scope);
-
-                            // scope add trigger group
-                            scope.addTriggerGroup(triggerGroup);
-                        }
-                    }
-                }
-                
-                logger.fine("Scope Loaded");
-                
-                return scope;
-            }
+            return scope;
         } catch (Exception e) {
             logger.fine(Utilities.exceptionToString(e));
         }
