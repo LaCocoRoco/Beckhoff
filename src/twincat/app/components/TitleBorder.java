@@ -7,14 +7,14 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-public class AppTitleBorder extends JPanel {
+public class TitleBorder extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /*********************************/
     /********** constructor **********/
     /*********************************/
 
-    public AppTitleBorder(String title) {
+    public TitleBorder(String title) {
         super(null, true);
         
         LineBorder lineBorder = new LineBorder(Color.BLACK);

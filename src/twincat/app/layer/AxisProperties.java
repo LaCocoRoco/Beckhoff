@@ -13,16 +13,15 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import twincat.Resources;
+import twincat.app.components.TextField;
+import twincat.app.components.TitleBorder;
 import twincat.java.ScrollablePanel;
-import twincat.java.WrapLayout;
+import twincat.java.WrapTopLayout;
 import twincat.scope.Axis;
 
 public class AxisProperties extends JPanel {
@@ -46,7 +45,7 @@ public class AxisProperties extends JPanel {
 
     private final JCheckBox axisNameCheckBox = new JCheckBox();
     
-    private final JTextField axisNameTextField = new JTextField();
+    private final TextField axisNameTextField = new TextField();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
@@ -100,24 +99,18 @@ public class AxisProperties extends JPanel {
         axisNameCheckBox.setFocusPainted(false);
         axisNameCheckBox.setBounds(20, 55, 150, 20);
 
-        Border axisNameOuterBorder = axisNameTextField.getBorder();
-        Border axisNameInnerBorder = BorderFactory.createEmptyBorder(0, 4, 0, 4);
-        CompoundBorder axisNameCompoundBorder = BorderFactory.createCompoundBorder(axisNameOuterBorder, axisNameInnerBorder);
-
         axisNameTextField.setText(axis.getAxisName());
-        axisNameTextField.setBorder(axisNameCompoundBorder);
-        axisNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         axisNameTextField.getDocument().addDocumentListener(axisNameTextFieldDocumentListener);
         axisNameTextField.setBounds(15, 25, 210, 25);
-
-        JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
+        
+        JPanel commonPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_COMMON_NAME));
         commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 90));
         commonPanel.add(axisNameTextField);
         commonPanel.add(axisNameCheckBox);
 
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
-        contentPanel.setLayout(new WrapLayout(FlowLayout.LEADING));
+        contentPanel.setLayout(new WrapTopLayout(FlowLayout.LEADING));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);

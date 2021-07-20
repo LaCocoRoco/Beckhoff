@@ -7,11 +7,44 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
+import javax.swing.text.Document;
 
 import twincat.Resources;
 
-public class AppTextField extends JTextField {
+// TODO : lose focus on enter
+
+public class TextField extends JTextField {
     private static final long serialVersionUID = 1L;
+
+    /*********************************/
+    /****** predefined variable ******/
+    /*********************************/
+
+    
+    
+    /*********************************/
+    /********** constructor **********/
+    /*********************************/
+
+    public TextField() {
+        super();
+    }
+
+    public TextField(Document doc, String text, int columns) {
+        super(doc, text, columns);
+    }
+
+    public TextField(int columns) {
+        super(columns);
+    }
+
+    public TextField(String text, int columns) {
+        super(text, columns);
+    }
+
+    public TextField(String text) {
+        super(text);
+    }
 
     /*********************************/
     /******** override method ********/

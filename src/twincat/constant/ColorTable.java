@@ -1,4 +1,4 @@
-package twincat.ads.constant;
+package twincat.constant;
 
 import java.awt.Color;
 
@@ -40,9 +40,9 @@ public enum ColorTable {
     /*********************************/
 
     public static final ColorTable getByValue(Color color) {
-        for (ColorTable primitiveColor : ColorTable.values()) {
-            if (primitiveColor.color == color) {
-                return primitiveColor;
+        for (ColorTable colorTable : ColorTable.values()) {
+            if (colorTable.color == color) {
+                return colorTable;
             }
         }
         
@@ -50,9 +50,9 @@ public enum ColorTable {
     }
     
     public static final ColorTable getByString(String value) {
-        for (ColorTable primitiveColor : ColorTable.values()) {
-            if (primitiveColor.name().equalsIgnoreCase(value)) {
-                return primitiveColor;
+        for (ColorTable colorTable : ColorTable.values()) {
+            if (colorTable.name().equalsIgnoreCase(value)) {
+                return colorTable;
             }
         }
         

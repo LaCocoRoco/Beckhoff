@@ -3,7 +3,6 @@ package twincat.app.layer;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -36,11 +35,8 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ComboBoxEditor;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -52,7 +48,6 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -70,7 +65,7 @@ import twincat.app.common.SymbolNode;
 import twincat.app.common.SymbolTreeModel;
 import twincat.app.common.SymbolTreeNode;
 import twincat.app.common.SymbolTreeRenderer;
-import twincat.app.components.AppComboBox;
+import twincat.app.components.ComboBox;
 import twincat.app.constant.Filter;
 
 public class SymbolBrowser extends JPanel {
@@ -107,10 +102,10 @@ public class SymbolBrowser extends JPanel {
     private final JTextField searchTextField = new JTextField();
 
     //private final JComboBox<String> routeComboBox = new JComboBox<String>();
-    private final AppComboBox routeComboBox = new AppComboBox();
+    private final ComboBox routeComboBox = new ComboBox();
 
     //private final JComboBox<String> portComboBox = new JComboBox<String>();
-    private final AppComboBox portComboBox = new AppComboBox();  
+    private final ComboBox portComboBox = new ComboBox();  
 
     private final List<SymbolNode> searchSymbolNodeList = new ArrayList<SymbolNode>();
 
@@ -195,52 +190,6 @@ public class SymbolBrowser extends JPanel {
                 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
                 schedule = scheduler.schedule(task, 0, TimeUnit.MILLISECONDS);
             }
-        }
-    };
-
-    private final BasicComboBoxUI routeComboBoxBasicUI = new BasicComboBoxUI() {
-        protected JButton createArrowButton() {
-            return new JButton() {
-                private static final long serialVersionUID = 1L;
-
-                public int getWidth() {
-                    return 0;
-                }
-            };
-        }
-    };
-
-    private final DefaultListCellRenderer routeComboBoxDefaultListCellRenderer = new DefaultListCellRenderer() {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public Component getListCellRendererComponent(JList<?> l, Object v, int i, boolean is, boolean chF) {
-            JLabel lbl = (JLabel) super.getListCellRendererComponent(l, v, i, is, chF);
-            lbl.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-            return lbl;
-        }
-    };
-
-    private final BasicComboBoxUI portComboBoxBasicUI = new BasicComboBoxUI() {
-        protected JButton createArrowButton() {
-            return new JButton() {
-                private static final long serialVersionUID = 1L;
-
-                public int getWidth() {
-                    return 0;
-                }
-            };
-        }
-    };
-
-    private final DefaultListCellRenderer portComboBoxDefaultListCellRenderer = new DefaultListCellRenderer() {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public Component getListCellRendererComponent(JList<?> l, Object v, int i, boolean is, boolean chF) {
-            JLabel lbl = (JLabel) super.getListCellRendererComponent(l, v, i, is, chF);
-            lbl.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-            return lbl;
         }
     };
 

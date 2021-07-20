@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
 
 import twincat.Resources;
 import twincat.java.ScrollablePanel;
-import twincat.java.WrapLayout;
+import twincat.java.WrapTopLayout;
 import twincat.scope.TriggerChannel;
 
 public class TriggerChannelProperties extends JPanel {
@@ -32,17 +32,13 @@ public class TriggerChannelProperties extends JPanel {
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
     /*********************************/
-    /****** predefined variable ******/
-    /*********************************/
-    
-    /*********************************/
     /********** constructor **********/
     /*********************************/
 
     public TriggerChannelProperties(XReference xref) {
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
-        contentPanel.setLayout(new WrapLayout(FlowLayout.LEADING));
+        contentPanel.setLayout(new WrapTopLayout(FlowLayout.LEADING));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         

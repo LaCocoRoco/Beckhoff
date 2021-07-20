@@ -10,16 +10,15 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import twincat.Resources;
+import twincat.app.components.TextField;
+import twincat.app.components.TitleBorder;
 import twincat.java.ScrollablePanel;
-import twincat.java.WrapLayout;
+import twincat.java.WrapTopLayout;
 import twincat.scope.Channel;
 
 public class ChannelProperties extends JPanel {
@@ -41,7 +40,7 @@ public class ChannelProperties extends JPanel {
     /****** local final variable *****/
     /*********************************/
 
-    private final JTextField channelNameTextField = new JTextField();
+    private final TextField channelNameTextField = new TextField();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
@@ -77,23 +76,17 @@ public class ChannelProperties extends JPanel {
         this.xref = xref;
  
         // common properties
-        Border channelNameOuterBorder = channelNameTextField.getBorder();
-        Border channelNameInnerBorder = BorderFactory.createEmptyBorder(0, 4, 0, 4);
-        CompoundBorder channelNameCompoundBorder = BorderFactory.createCompoundBorder(channelNameOuterBorder, channelNameInnerBorder);
-
-        channelNameTextField.setText(channel.getChannelName());
-        channelNameTextField.setBorder(channelNameCompoundBorder);
-        channelNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));       
+        channelNameTextField.setText(channel.getChannelName());   
         channelNameTextField.getDocument().addDocumentListener(channelNameTextFieldDocumentListener); 
         channelNameTextField.setBounds(15, 25, 210, 25);
-
-        JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
+        
+        JPanel commonPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_COMMON_NAME));
         commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
         commonPanel.add(channelNameTextField);
         
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
-        contentPanel.setLayout(new WrapLayout(FlowLayout.LEADING));
+        contentPanel.setLayout(new WrapTopLayout(FlowLayout.LEADING));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);

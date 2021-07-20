@@ -1,12 +1,8 @@
 package twincat.app.layer;
 
 import java.awt.CardLayout;
-import java.awt.Color;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 
 import twincat.app.constant.Propertie;
 
@@ -26,6 +22,8 @@ public class PropertiesPanel extends JPanel {
     /*********************************/
    
     private Propertie card = Propertie.EMPTY;
+
+    private Propertie last = Propertie.EMPTY;
 
     /*********************************/
     /****** local final variable *****/
@@ -47,6 +45,7 @@ public class PropertiesPanel extends JPanel {
         this.add(xref.channelProperties, Propertie.CHANNEL.toString());
         this.add(xref.acquisitionProperties, Propertie.ACQUISITION.toString());
         this.add(xref.scopeProperties, Propertie.SCOPE.toString());
+        this.add(xref.colorProperties, Propertie.COLOR.toString());
     }
 
     /*********************************/
@@ -60,18 +59,15 @@ public class PropertiesPanel extends JPanel {
     public void setCard(Propertie card) {
         CardLayout cardLayout = (CardLayout) (this.getLayout());
         cardLayout.show(this, card.toString());
+        
+        this.last = this.card;
         this.card = card;
     }
     
-    /*********************************/
-    /** public static final method ***/
-    /*********************************/
-    
-    public static final JPanel buildTemplate(String borderTitle) {
-        LineBorder lineBorder = new LineBorder(Color.BLACK);
-        TitledBorder titleBorder = BorderFactory.createTitledBorder(lineBorder, borderTitle);
-        JPanel panel = new JPanel(null);
-        panel.setBorder(titleBorder);
-        return panel;
+    public void lastCard() {
+        CardLayout cardLayout = (CardLayout) (this.getLayout());
+        cardLayout.show(this, last.toString());
+        
+        this.card = this.last;
     }
 }

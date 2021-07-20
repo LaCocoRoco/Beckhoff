@@ -14,7 +14,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.ComboBoxUI;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
-public class AppComboBox extends JComboBox<String> {
+public class ComboBox extends JComboBox<String> {
     private static final long serialVersionUID = 1L;
 
     /*********************************/
@@ -22,7 +22,7 @@ public class AppComboBox extends JComboBox<String> {
     /*********************************/
 
     @Override
-    public void setUI(ComboBoxUI ui) {   
+    public void setUI(ComboBoxUI comboBoxUI) {   
         super.setUI(new BasicComboBoxUI() {
             protected JButton createArrowButton() {
                 return new JButton() {
@@ -45,7 +45,7 @@ public class AppComboBox extends JComboBox<String> {
     }
 
     @Override
-    public void setRenderer(ListCellRenderer<? super String> aRenderer) {
+    public void setRenderer(ListCellRenderer<? super String> renderer) {
         super.setRenderer(new DefaultListCellRenderer() {
             private static final long serialVersionUID = 1L;
 

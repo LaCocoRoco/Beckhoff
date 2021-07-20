@@ -137,8 +137,9 @@ public class Resources {
     public static final String TEXT_CHART_PROPERTIES_TITLE = "chartPropertiesTitle";
     
     public static final String TEXT_CHART_PROPERTIES_DISPLAY_TIME = "chartPropertiesDisplayTime";
-    
-    
+
+    public static final String TEXT_CHART_PROPERTIES_DISPLAY_STYLE = "chartPropertiesStyle";
+
     
     public static final String TEXT_AXIS_PROPERTIES_TITLE = "axisPropertiesTitle";
 

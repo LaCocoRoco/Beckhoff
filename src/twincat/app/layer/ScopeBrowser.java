@@ -52,8 +52,6 @@ public class ScopeBrowser extends JPanel {
     /****** local final variable *****/
     /*********************************/
 
-    private Propertie card = Propertie.EMPTY;
-
     private final JTree browseTree = new JTree();
 
     private final List<Scope> scopeList = new ArrayList<Scope>();
@@ -304,7 +302,7 @@ public class ScopeBrowser extends JPanel {
 
     public void abortSymbolAcquisition() {
         xref.browserPanel.setCard(Browser.SCOPE);
-        xref.propertiesPanel.setCard(card);
+        xref.propertiesPanel.lastCard();
     }
 
     public void applySymbolAcquisition(Acquisition acquisition) {
@@ -399,7 +397,6 @@ public class ScopeBrowser extends JPanel {
         }
 
         // display symbol acquisition view
-        card = xref.propertiesPanel.getCard();
         xref.acquisitionProperties.reloadAcquisition();
         xref.browserPanel.setCard(Browser.SYMBOL);
         xref.propertiesPanel.setCard(Propertie.ACQUISITION);

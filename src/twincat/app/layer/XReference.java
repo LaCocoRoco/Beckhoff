@@ -4,7 +4,13 @@ public class XReference {
     /*********************************/
     /************ layer 6 ************/
     /*********************************/
-    
+
+    public final ScopeBrowser scopeBrowser = new ScopeBrowser(this);
+
+    public final SymbolBrowser symbolBrowser = new SymbolBrowser(this);
+
+    public final ColorProperties colorProperties = new ColorProperties(this);
+      
     public final ScopeProperties scopeProperties = new ScopeProperties(this);
 
     public final ChartProperties chartProperties = new ChartProperties(this);
@@ -19,22 +25,18 @@ public class XReference {
 
     public final TriggerChannelProperties triggerChannelProperties = new TriggerChannelProperties(this);
 
-    public final ScopeBrowser scopeBrowser = new ScopeBrowser(this);
-
-    public final SymbolBrowser symbolBrowser = new SymbolBrowser(this);
-
     /*********************************/
     /************ layer 5 ************/
     /*********************************/
 
-    public final PropertiesPanel propertiesPanel = new PropertiesPanel(this);
+    public final ChartPanel chartPanel = new ChartPanel(this);
+
+    public final LoaderPanel loaderPanel = new LoaderPanel(this);
 
     public final BrowserPanel browserPanel = new BrowserPanel(this);
+      
+    public final PropertiesPanel propertiesPanel = new PropertiesPanel(this);
 
-    public final ChartPanel chartPanel = new ChartPanel(this);
-    
-    public final LoaderPanel loaderPanel = new LoaderPanel(this);
-    
     /*********************************/
     /************ layer 4 ************/
     /*********************************/
@@ -47,13 +49,13 @@ public class XReference {
     /************ layer 3 ************/
     /*********************************/
 
-    public final SettingsPanel settingsPanel = new SettingsPanel(this);
-
-    public final ScopePanel scopePanel = new ScopePanel(this);
-
     public final AdsPanel adsPanel = new AdsPanel(this);
 
     public final AxisPanel axisPanel = new AxisPanel(this);
+
+    public final SettingsPanel settingsPanel = new SettingsPanel(this);
+
+    public final ScopePanel scopePanel = new ScopePanel(this);
 
     /*********************************/
     /************ layer 2 ************/

@@ -12,15 +12,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import twincat.Resources;
-import twincat.app.components.AppTextField;
+import twincat.app.components.TextField;
+import twincat.app.components.TitleBorder;
 import twincat.java.ScrollablePanel;
-import twincat.java.WrapLayout;
+import twincat.java.WrapTopLayout;
 import twincat.scope.Scope;
 
 public class ScopeProperties extends JPanel {
@@ -42,11 +41,9 @@ public class ScopeProperties extends JPanel {
     /****** local final variable *****/
     /*********************************/
 
-    //private final JTextField scopeNameTextField = new JTextField();
-    private final AppTextField scopeNameTextField = new AppTextField();
-    
-    //private final JTextField recordTimeTextField = new JTextField();
-    private final AppTextField recordTimeTextField = new AppTextField();
+    private final TextField scopeNameTextField = new TextField();
+
+    private final TextField recordTimeTextField = new TextField();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
@@ -155,23 +152,16 @@ public class ScopeProperties extends JPanel {
         this.xref = xref;
 
         // common properties
-        //Border scopeNameOuterBorder = scopeNameTextField.getBorder();
-        //Border scopeNameInnerBorder = BorderFactory.createEmptyBorder(0, 4, 0, 4);
-        //CompoundBorder scopeNameCompoundBorder = BorderFactory.createCompoundBorder(scopeNameOuterBorder, scopeNameInnerBorder);
-
         scopeNameTextField.setText(scope.getScopeName());
-        //scopeNameTextField.setBorder(scopeNameCompoundBorder);
-        //scopeNameTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         scopeNameTextField.getDocument().addDocumentListener(scopeNameTextFieldDocumentListener);
         scopeNameTextField.setBounds(15, 25, 210, 25);
-        
-        JPanel commonPanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_COMMON_NAME));
+
+        JPanel commonPanel = new TitleBorder(languageBundle.getString(Resources.TEXT_COMMON_NAME));
         commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
         commonPanel.add(scopeNameTextField);
 
         // record mode properties
         recordTimeTextField.setText(Scope.TIME_FORMAT_MIN_TIME);
-        //recordTimeTextField.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         recordTimeTextField.setHorizontalAlignment(JTextField.CENTER);
         recordTimeTextField.getDocument().addDocumentListener(recordTimeTextFieldDocumentListener);
         recordTimeTextField.setBounds(15, 25, 100, 25);
@@ -180,14 +170,15 @@ public class ScopeProperties extends JPanel {
         recordTimeText.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL));
         recordTimeText.setBounds(125, 23, 120, 25);
         
-        JPanel recordTimePanel = PropertiesPanel.buildTemplate(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_RECORD_TIME));
+        
+        JPanel recordTimePanel = new TitleBorder(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_RECORD_TIME));
         recordTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
         recordTimePanel.add(recordTimeTextField);
         recordTimePanel.add(recordTimeText);
 
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
-        contentPanel.setLayout(new WrapLayout(FlowLayout.LEADING));
+        contentPanel.setLayout(new WrapTopLayout(FlowLayout.LEADING));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);
