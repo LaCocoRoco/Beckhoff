@@ -2,7 +2,6 @@ package twincat.app.layer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
@@ -11,6 +10,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -21,7 +21,6 @@ import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TextField;
 import twincat.app.components.TimeTextField;
 import twincat.app.components.TitledPanel;
-import twincat.app.components.WrapTopLayout;
 import twincat.app.constant.Propertie;
 import twincat.scope.Scope;
 
@@ -43,7 +42,9 @@ public class ScopeProperties extends JPanel {
     /*********************************/
     /****** local final variable *****/
     /*********************************/
-
+    
+    private final JScrollPane scrollPanel = new JScrollPane();
+    
     private final TextField scopeName = new TextField();
 
     private final TimeTextField recordTimeTextField = new TimeTextField();
@@ -111,13 +112,12 @@ public class ScopeProperties extends JPanel {
 
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
-        contentPanel.setLayout(new WrapTopLayout(FlowLayout.LEADING));
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);
         contentPanel.add(recordTimePanel);
 
-        JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
@@ -171,6 +171,7 @@ public class ScopeProperties extends JPanel {
         recordTimeTextField.setText(scope.getRecordTime());
 
         // display scope properties
+        scrollPanel.getVerticalScrollBar().setValue(0);
         xref.propertiesPanel.setCard(Propertie.SCOPE);
     }
 }

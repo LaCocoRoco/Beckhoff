@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -15,6 +14,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,7 +26,6 @@ import twincat.app.components.NumberTextField;
 import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TextField;
 import twincat.app.components.TitledPanel;
-import twincat.app.components.WrapTopLayout;
 import twincat.app.constant.Propertie;
 import twincat.scope.Channel;
 
@@ -48,7 +47,9 @@ public class ChannelProperties extends JPanel {
     /*********************************/
     /****** local final variable *****/
     /*********************************/
-
+    
+    private final JScrollPane scrollPanel = new JScrollPane();
+    
     private final TextField channelNameTextField = new TextField();
 
     private final JPanel lineColor = new JPanel();
@@ -84,6 +85,7 @@ public class ChannelProperties extends JPanel {
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
             Component component = (Component) propertyChangeEvent.getSource();
             channel.setLineColor(component.getBackground());
+            xref.scopeBrowser.reloadSelectedTreeNode();
         }
     };
 
@@ -260,14 +262,13 @@ public class ChannelProperties extends JPanel {
         
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
-        contentPanel.setLayout(new WrapTopLayout(FlowLayout.LEADING));
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);
         contentPanel.add(colorPanel);
         contentPanel.add(stylePanel);
 
-        JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
@@ -316,7 +317,6 @@ public class ChannelProperties extends JPanel {
         // reload common properties
         channelNameTextField.setText(channel.getChannelName());
         channelNameTextField.setCaretPosition(0);
-
         
         // color properties
         lineColor.setBackground(channel.getLineColor());
@@ -330,6 +330,7 @@ public class ChannelProperties extends JPanel {
         plotVisible.setSelected(channel.isPlotVisible());
 
         // display channel properties
+        scrollPanel.getVerticalScrollBar().setValue(0);
         xref.propertiesPanel.setCard(Propertie.CHANNEL);
     }
 }

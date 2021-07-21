@@ -248,7 +248,7 @@ public class AxisPanel extends JScrollPane {
         channelSetPos.setAcquisition(acquisitionSetPos);
         channelSetPos.setChannelName("SETPOS");
         channelSetPos.setLineColor(Color.CYAN);
-        channelActPos.setPlotColor(Color.CYAN);
+        channelSetPos.setPlotColor(Color.CYAN);
 
         // add POS to chart
         chart.addAxis(axisPosition);
@@ -275,7 +275,7 @@ public class AxisPanel extends JScrollPane {
         channelActAcc.setAcquisition(acquisitionActAcc);
         channelActAcc.setChannelName("ACTACC");
         channelActAcc.setLineColor(Color.MAGENTA);
-        channelActPos.setPlotColor(Color.MAGENTA);
+        channelActAcc.setPlotColor(Color.MAGENTA);
 
         // acquisition SETACC
         String setAccSymbolName = axisAcquisition.getAxisSymbolName() + ".SETACC";
@@ -293,7 +293,7 @@ public class AxisPanel extends JScrollPane {
         channelSetAcc.setAcquisition(acquisitionSetAcc);
         channelSetAcc.setChannelName("SETACC");
         channelSetAcc.setLineColor(Color.BLACK);
-        channelActPos.setPlotColor(Color.BLACK);
+        channelSetAcc.setPlotColor(Color.BLACK);
 
         // add ACC to chart
         chart.addAxis(axisAcceleration);

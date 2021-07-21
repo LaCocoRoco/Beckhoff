@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
@@ -13,6 +12,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,7 +24,6 @@ import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TextField;
 import twincat.app.components.TimeTextField;
 import twincat.app.components.TitledPanel;
-import twincat.app.components.WrapTopLayout;
 import twincat.app.constant.Propertie;
 import twincat.scope.Chart;
 import twincat.scope.Scope;
@@ -47,7 +46,9 @@ public class ChartProperties extends JPanel {
     /*********************************/
     /****** local final variable *****/
     /*********************************/
-
+    
+    private final JScrollPane scrollPanel = new JScrollPane();
+    
     private final TextField chartName = new TextField();
 
     private final TimeTextField displayTime = new TimeTextField();
@@ -80,7 +81,7 @@ public class ChartProperties extends JPanel {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
             Component component = (Component) propertyChangeEvent.getSource();
-            chart.setBorderColor(component.getBackground());
+            chart.setChartColor(component.getBackground());
         }
     };
 
@@ -233,7 +234,7 @@ public class ChartProperties extends JPanel {
 
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
-        contentPanel.setLayout(new WrapTopLayout(FlowLayout.LEADING));
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);
@@ -241,7 +242,6 @@ public class ChartProperties extends JPanel {
         contentPanel.add(colorPanel);
         contentPanel.add(stylePanel);
 
-        JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
@@ -304,6 +304,7 @@ public class ChartProperties extends JPanel {
         axisTickCount.setValue(chart.getAxisTickCount());
 
         // display chart properties
+        scrollPanel.getVerticalScrollBar().setValue(0);
         xref.propertiesPanel.setCard(Propertie.CHART);
     }
 }

@@ -2,7 +2,6 @@ package twincat.app.layer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -13,6 +12,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,7 +24,6 @@ import twincat.app.components.NumberTextField;
 import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TextField;
 import twincat.app.components.TitledPanel;
-import twincat.app.components.WrapTopLayout;
 import twincat.app.constant.Propertie;
 import twincat.scope.TriggerGroup;
 
@@ -46,7 +45,9 @@ public class TriggerGroupProperties extends JPanel {
     /*********************************/
     /****** local final variable *****/
     /*********************************/
-
+    
+    private final JScrollPane scrollPanel = new JScrollPane();
+    
     private final TextField triggerGroupNameTextField = new TextField();
 
     private final NumberTextField offset = new NumberTextField();
@@ -140,13 +141,12 @@ public class TriggerGroupProperties extends JPanel {
         
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
-        contentPanel.setLayout(new WrapTopLayout(FlowLayout.LEADING));
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);
         contentPanel.add(modulePanel);
         
-        JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
@@ -201,6 +201,7 @@ public class TriggerGroupProperties extends JPanel {
         enabled.setSelected(triggerGroup.isEnabled());
 
         // reload trigger group properties
+        scrollPanel.getVerticalScrollBar().setValue(0);
         xref.propertiesPanel.setCard(Propertie.TRIGGER_GROUP);
     } 
 }

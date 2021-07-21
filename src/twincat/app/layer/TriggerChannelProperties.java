@@ -2,7 +2,6 @@ package twincat.app.layer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -13,6 +12,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,9 +24,10 @@ import twincat.app.components.ComboBox;
 import twincat.app.components.NumberTextField;
 import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TitledPanel;
-import twincat.app.components.WrapTopLayout;
 import twincat.app.constant.Propertie;
 import twincat.scope.TriggerChannel;
+import twincat.scope.TriggerChannel.Combine;
+import twincat.scope.TriggerChannel.Release;
 
 public class TriggerChannelProperties extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -47,6 +48,8 @@ public class TriggerChannelProperties extends JPanel {
     /****** local final variable *****/
     /*********************************/
 
+    private final JScrollPane scrollPanel = new JScrollPane();
+
     private final ComboBox combine = new ComboBox();
 
     private final ComboBox release = new ComboBox();
@@ -63,7 +66,11 @@ public class TriggerChannelProperties extends JPanel {
         @Override
         public void itemStateChanged(ItemEvent itemEvent) {
             if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
-
+                if (combine.getSelectedIndex() == 0) {
+                    triggerChannel.setCombine(Combine.AND);
+                } else {
+                    triggerChannel.setCombine(Combine.OR);
+                }
             }
         }
     };
@@ -72,7 +79,11 @@ public class TriggerChannelProperties extends JPanel {
         @Override
         public void itemStateChanged(ItemEvent itemEvent) {
             if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
-
+                if (release.getSelectedIndex() == 0) {
+                    triggerChannel.setRelease(Release.RISING_EDGE);
+                } else {
+                    triggerChannel.setRelease(Release.FALLING_EDGE);
+                }
             }
         }
     };
@@ -93,17 +104,19 @@ public class TriggerChannelProperties extends JPanel {
             /* empty */
         }
     };
-    
+
     /*********************************/
     /********** constructor **********/
     /*********************************/
 
     public TriggerChannelProperties(XReference xref) {
         this.xref = xref;
+
+        // TODO : name of channel
         
         // build trigger combo box
         buildTriggerComboBox();
-        
+
         // trigger properties
         JLabel combineLabel = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_COMBINE));
         combineLabel.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
@@ -115,7 +128,7 @@ public class TriggerChannelProperties extends JPanel {
         JLabel releaseLabel = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_RELEASE));
         releaseLabel.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
         releaseLabel.setBounds(20, 70, 205, 20);
-     
+
         release.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
         release.setBounds(18, 90, 205, 22);
 
@@ -127,33 +140,32 @@ public class TriggerChannelProperties extends JPanel {
         JLabel thresholdText = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_THRESHOLD));
         thresholdText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
         thresholdText.setBounds(150, 130, 80, 23);
-        
+
         TitledPanel triggerPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_TRIGGER));
         triggerPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 170));
         triggerPanel.add(combine);
-        triggerPanel.add(combineLabel);      
+        triggerPanel.add(combineLabel);
         triggerPanel.add(release);
-        triggerPanel.add(releaseLabel);   
+        triggerPanel.add(releaseLabel);
         triggerPanel.add(threshold);
-        triggerPanel.add(thresholdText); 
- 
+        triggerPanel.add(thresholdText);
+
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
-        contentPanel.setLayout(new WrapTopLayout(FlowLayout.LEADING));
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(triggerPanel);
-        
-        JScrollPane scrollPanel = new JScrollPane();
+
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
         scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
-        
+
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-        
+
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this.add(textHeader, BorderLayout.PAGE_START);
@@ -163,7 +175,7 @@ public class TriggerChannelProperties extends JPanel {
     /*********************************/
     /******** setter & getter ********/
     /*********************************/
-    
+
     public TriggerChannel getTriggerChannel() {
         return triggerChannel;
     }
@@ -191,20 +203,33 @@ public class TriggerChannelProperties extends JPanel {
 
     private void reload() {
         // reload trigger properties
-        // TODO : reload and set combo box
+        if (triggerChannel.getCombine() == Combine.AND) {
+            combine.setSelectedIndex(0);
+        } else {
+            combine.setSelectedIndex(1);
+        }
+        
+        if (triggerChannel.getRelease() == Release.RISING_EDGE) {
+            release.setSelectedIndex(0);
+        } else {
+            release.setSelectedIndex(1);
+        }
+
+        threshold.setValue((long) triggerChannel.getThreshold());
 
         // reload trigger channel properties
+        scrollPanel.getVerticalScrollBar().setValue(0);
         xref.propertiesPanel.setCard(Propertie.TRIGGER_CHANNEL);
     }
-    
+
     private void buildTriggerComboBox() {
         combine.addItem(TriggerChannel.Combine.AND.toString());
         combine.addItem(TriggerChannel.Combine.OR.toString());
         combine.addItemListener(combineItemListener);
-        
+
         release.addItem(TriggerChannel.Release.RISING_EDGE.toString().replace("_", " "));
         release.addItem(TriggerChannel.Release.FALLING_EDGE.toString().replace("_", " "));
         release.addItemListener(releaseItemListener);
     }
-    
+
 }

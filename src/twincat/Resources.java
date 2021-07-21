@@ -209,9 +209,9 @@ public class Resources {
      
     public static final String TEXT_ACQUISITION_PROPERTIES_CONNETION = "acquisitionPropertiesConnection";
     
-    public static final String TEXT_ACQUISITION_PROPERTIES_SAMPLE_TIME = "acquisitionPropertiesSympleTime";
+    public static final String TEXT_ACQUISITION_PROPERTIES_SAMPLE_TIME = "acquisitionPropertiesSampleTime";
     
-    public static final String TEXT_ACQUISITION_PROPERTIES_SAMPLE_BASED = "acquisitionPropertiesSympleBased";
+    public static final String TEXT_ACQUISITION_PROPERTIES_SYMBOL_BASED = "acquisitionPropertiesSymbolBased";
           
     public static final String TEXT_ACQUISITION_PROPERTIES_SYMBOL_INFO = "acquisitionPropertiesSymbolInfo";
     

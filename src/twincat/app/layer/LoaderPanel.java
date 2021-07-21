@@ -94,7 +94,10 @@ public class LoaderPanel extends JPanel {
                     protected Void doInBackground() throws Exception {
                         try {
                             Scope scope = loadScopeFile(fileChooser.getSelectedFile().getPath());
-                            xref.scopeBrowser.addScope(scope);    
+                            
+                            if (scope != null) {
+                                xref.scopeBrowser.addScope(scope);                   
+                            }
                         } catch (Exception e) {
                             logger.fine(Utilities.exceptionToString(e));
                         }
@@ -102,7 +105,7 @@ public class LoaderPanel extends JPanel {
                         return null;
                     }
                 }.execute();
-                
+
                 // display chart
                 xref.navigationPanel.setCard(Navigation.CHART);
             }
@@ -135,80 +138,145 @@ public class LoaderPanel extends JPanel {
     /******** private method *********/
     /*********************************/
 
-    // TODO : catch getter problems and log
-    
-    @SuppressWarnings("unused")
-    private Node getFirstNodeOfElement() {
-        return null;
-    }
-    
-    private String getFirstElementTextContentByTagName(Element element, String tagName) {
-        if (element.getElementsByTagName(tagName).getLength() != 0) {
-            return element.getElementsByTagName(tagName).item(0).getTextContent();
-        } else {
-            return new String();
-        }
-    }
-    
     private Channel getChannel(Node channelNode) {
         Channel channel = new Channel();
         Acquisition acquisition = new Acquisition();
         channel.setAcquisition(acquisition);
 
-        // symbol data
         if (channelNode.getNodeType() == Node.ELEMENT_NODE) {
             Element channelElement = (Element) channelNode;
+            NodeList nameList = channelElement.getElementsByTagName("Name");
+            NodeList identHandleList = channelElement.getElementsByTagName("IdentHandle");
             
-            String channelName = getFirstElementTextContentByTagName(channelElement, "Name");
-            String identHandle = getFirstElementTextContentByTagName(channelElement, "IdentHandle");
-
-            channel.setChannelName(channelName);
-            channel.setIdentHandle(Integer.valueOf(identHandle));
-
-            logger.fine(String.format("%-14s", "Channel") + " | " + channelName);
-
-            // acquisition data
-            Node acquisitionNode = channelElement.getElementsByTagName("Acquisition").item(0);
-            if (acquisitionNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element acquisitionElement = (Element) acquisitionNode;
-
-                String dataType = getFirstElementTextContentByTagName(acquisitionElement, "DataType");
-                String indexGroup = getFirstElementTextContentByTagName(acquisitionElement, "IndexGroup");
-                String indexOffset = getFirstElementTextContentByTagName(acquisitionElement, "IndexOffset");
-                String amsPort = getFirstElementTextContentByTagName(acquisitionElement, "TargetPort");
-                String symbolName = getFirstElementTextContentByTagName(acquisitionElement, "SymbolName");       
-                String amsNetId = getFirstElementTextContentByTagName(acquisitionElement, "AmsNetIdString");
-                String symbolBased = getFirstElementTextContentByTagName(acquisitionElement, "IsSymbolBased");
-
-                acquisition.setDataType(DataType.valueOf(dataType));
-                acquisition.setIndexGroup(Integer.valueOf(indexGroup));
-                acquisition.setIndexOffset(Integer.valueOf(indexOffset));
-                acquisition.setAmsPort(AmsPort.getByValue(Integer.valueOf(amsPort)));
-                acquisition.setSymbolName(symbolName);
-                acquisition.setAmsNetId(amsNetId);
-                acquisition.setSymbolBased(Boolean.valueOf(symbolBased));
+            // channel name
+            if (nameList.getLength() > 0) {
+                String channelName = nameList.item(0).getTextContent();
+                channel.setChannelName(channelName);
             }
 
-            // channel style data
-            Node channelStyleNode = channelElement.getElementsByTagName("Style").item(0);
-            if (channelStyleNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element channelStyleElement = (Element) channelStyleNode;
+            // channel identification handle
+            if (identHandleList.getLength() > 0) {
+                String identHandle = identHandleList.item(0).getTextContent();
+                channel.setIdentHandle(Integer.valueOf(identHandle));
+            }
 
-                String lineWidth = getFirstElementTextContentByTagName(channelStyleElement, "LineWidth");
-                String lineColor = getFirstElementTextContentByTagName(channelStyleElement, "ColorValue");
-                String plotColor = getFirstElementTextContentByTagName(channelStyleElement, "MarkColorValue");
-                String plotSize = getFirstElementTextContentByTagName(channelStyleElement, "MarkSize");
-                String antialias = getFirstElementTextContentByTagName(channelStyleElement, "Antialias");
-                String plotVisible = getFirstElementTextContentByTagName(channelStyleElement, "Marks");
-                String channelVisible = getFirstElementTextContentByTagName(channelStyleElement, "Visible");
+            // acquisition list
+            NodeList acquisitionList = channelElement.getElementsByTagName("Acquisition");  
+            if (acquisitionList.getLength() > 0) {
+                Node acquisitionNode = acquisitionList.item(0);
+                if (acquisitionNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element acquisitionElement = (Element) acquisitionNode;
 
-                channel.setLineWidth(Integer.valueOf(lineWidth));
-                channel.setLineColor(new Color(0xFFFFFF & Integer.valueOf(lineColor)));
-                channel.setPlotColor(new Color(0xFFFFFF & Integer.valueOf(plotColor)));
-                channel.setPlotSize(Integer.valueOf(plotSize));
-                channel.setAntialias(Boolean.valueOf(antialias));
-                channel.setPlotVisible(Boolean.valueOf(plotVisible));
-                channel.setLineVisible(Boolean.valueOf(channelVisible));
+                    NodeList dataTypeList = acquisitionElement.getElementsByTagName("DataType");
+                    NodeList indexGroupList = acquisitionElement.getElementsByTagName("IndexGroup");
+                    NodeList indexOffsetList = acquisitionElement.getElementsByTagName("IndexOffset");
+                    NodeList targetPortList = acquisitionElement.getElementsByTagName("TargetPort");
+                    NodeList symbolNameList = acquisitionElement.getElementsByTagName("SymbolName");
+                    NodeList amsNetIdStringList = acquisitionElement.getElementsByTagName("AmsNetIdString");
+                    NodeList isSymbolBasedList = acquisitionElement.getElementsByTagName("IsSymbolBased");
+                    
+                    // channel data type
+                    if (dataTypeList.getLength() > 0) {
+                        String dataType = dataTypeList.item(0).getTextContent();
+                        acquisition.setDataType(DataType.valueOf(dataType));
+                    }
+
+                    // channel index group
+                    if (indexGroupList.getLength() > 0) {
+                        String indexGroup = indexGroupList.item(0).getTextContent();
+                        acquisition.setIndexGroup(Integer.valueOf(indexGroup));
+                    }
+
+                    // channel index offset
+                    if (indexOffsetList.getLength() > 0) {
+                        String indexOffset = indexOffsetList.item(0).getTextContent();
+                        acquisition.setIndexOffset(Integer.valueOf(indexOffset));
+                    }
+
+                    // channel target port
+                    if (targetPortList.getLength() > 0) {
+                        String amsPort = targetPortList.item(0).getTextContent();
+                        acquisition.setAmsPort(AmsPort.getByValue(Integer.valueOf(amsPort)));
+                    }
+
+                    // channel symbol name
+                    if (symbolNameList.getLength() > 0) {
+                        String symbolName = symbolNameList.item(0).getTextContent();
+                        acquisition.setSymbolName(symbolName);
+                    }
+
+                    // channel ams net id
+                    if (amsNetIdStringList.getLength() > 0) {
+                        String amsNetId = amsNetIdStringList.item(0).getTextContent();
+                        acquisition.setAmsNetId(amsNetId);
+                    }
+                    
+                    // channel symbol based
+                    if (isSymbolBasedList.getLength() > 0) {
+                        String symbolBased = isSymbolBasedList.item(0).getTextContent();
+                        acquisition.setSymbolBased(Boolean.valueOf(symbolBased));
+                    }
+                }  
+                
+            }
+            
+            // channel style list
+            NodeList channelStyleList = channelElement.getElementsByTagName("Style");
+            if (channelStyleList.getLength() > 0) {
+                Node channelStyleNode = channelStyleList.item(0); 
+                if (channelStyleNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element channelStyleElement = (Element) channelStyleNode;
+
+                    NodeList lineWidthList = channelStyleElement.getElementsByTagName("LineWidth");
+                    NodeList colorValueList = channelStyleElement.getElementsByTagName("ColorValue");
+                    NodeList markColorValueList = channelStyleElement.getElementsByTagName("MarkColorValue");
+                    NodeList markSizeList = channelStyleElement.getElementsByTagName("MarkSize");
+                    NodeList antialiasList = channelStyleElement.getElementsByTagName("Antialias");
+                    NodeList marksList = channelStyleElement.getElementsByTagName("Marks");
+                    NodeList visibleList = channelStyleElement.getElementsByTagName("Visible");
+
+                    // channel line width
+                    if (lineWidthList.getLength() > 0) {
+                        String lineWidth = lineWidthList.item(0).getTextContent();
+                        channel.setLineWidth(Integer.valueOf(lineWidth));
+                    }
+
+                    // channel line color
+                    if (colorValueList.getLength() > 0) {
+                        String lineColor = colorValueList.item(0).getTextContent();
+                        channel.setLineColor(new Color(0xFFFFFF & Integer.valueOf(lineColor)));
+                    }
+
+                    // channel plot color
+                    if (markColorValueList.getLength() > 0) {
+                        String plotColor = markColorValueList.item(0).getTextContent();
+                        channel.setPlotColor(new Color(0xFFFFFF & Integer.valueOf(plotColor)));
+                    }
+
+                    // channel plot size
+                    if (markSizeList.getLength() > 0) {
+                        String plotSize = markSizeList.item(0).getTextContent();
+                        channel.setPlotSize(Integer.valueOf(plotSize));
+                    }
+
+                    // channel anti alias
+                    if (antialiasList.getLength() > 0) {
+                        String antialias = antialiasList.item(0).getTextContent();
+                        channel.setAntialias(Boolean.valueOf(antialias));
+                    }
+
+                    // channel plot visible
+                    if (marksList.getLength() > 0) {
+                        String plotVisible = marksList.item(0).getTextContent();
+                        channel.setPlotVisible(Boolean.valueOf(plotVisible));
+                    }
+
+                    // channel line visible
+                    if (visibleList.getLength() > 0) {
+                        String channelVisible = visibleList.item(0).getTextContent();
+                        channel.setLineVisible(Boolean.valueOf(channelVisible));
+                    }
+                }
             }
         }
 
@@ -218,59 +286,92 @@ public class LoaderPanel extends JPanel {
     private Axis getAxis(Node axisNode) {
         Axis axis = new Axis();
 
-        // axis data
         if (axisNode.getNodeType() == Node.ELEMENT_NODE) {
             Element axisElement = (Element) axisNode;
-            String axisName = axisElement.getElementsByTagName("Name").item(0).getTextContent();
-            axis.setAxisName(axisName);
-
-            logger.fine(String.format("%-14s", "Axis") + " | " + axisName);
-
-            Node axisStyleNode = axisElement.getElementsByTagName("Style").item(0);
-            if (axisStyleNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element axisStyleElement = (Element) axisStyleNode;
-
-                String axisVisible = getFirstElementTextContentByTagName(axisStyleElement, "Enabled");
-                String axisColor = getFirstElementTextContentByTagName(axisStyleElement, "ColorValue");
-                String lineWidth = getFirstElementTextContentByTagName(axisStyleElement, "LineWidth");
-                String autoscale = getFirstElementTextContentByTagName(axisStyleElement, "AutoScale");
-                String axisNameVisible = getFirstElementTextContentByTagName(axisStyleElement, "ShowName");
-                String axisMin = getFirstElementTextContentByTagName(axisStyleElement, "AxisMin");
-                String axisMax = getFirstElementTextContentByTagName(axisStyleElement, "AxisMax");
-  
-                axis.setAxisVisible(Boolean.valueOf(axisVisible));
-                axis.setAxisColor(new Color(0xFFFFFF & Integer.valueOf(axisColor)));
-                axis.setLineWidth(Integer.valueOf(lineWidth));
-                axis.setAutoscale(Boolean.valueOf(autoscale));
-                axis.setAxisNameVisible(Boolean.valueOf(axisNameVisible));
-                
-                // TODO : problem
-                
-                double valueMin = Double.valueOf(axisMin);
-                double valueMax = Double.valueOf(axisMax);
-                
-                valueMin = valueMin > 0 ? (long) Math.round(valueMin + 0.5d) : (long) Math.floor(valueMin - 0.5d);
-                valueMax = valueMax > 0 ? (long) Math.round(valueMax + 0.5d) : (long) Math.floor(valueMax - 0.5d);
-
-                axis.setValueMin(valueMin);
-                axis.setValueMax(valueMax);
-
+            NodeList axisNameList = axisElement.getElementsByTagName("Name");
+            
+            // axis name
+            if (axisNameList.getLength() > 0) {
+                String axisName = axisNameList.item(0).getTextContent();
+                axis.setAxisName(axisName);
             }
+            
+            // axis style list
+            NodeList axisStyleList = axisElement.getElementsByTagName("Style");
+            if (axisStyleList.getLength() > 0) {
+                Node axisStyleNode = axisStyleList.item(0);
+                if (axisStyleNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element axisStyleElement = (Element) axisStyleNode;
 
-            // channels node
-            Node channelsNode = axisElement.getElementsByTagName("Channels").item(0);
-            if (channelsNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element channelsElement = (Element) channelsNode;
+                    NodeList enabledList = axisStyleElement.getElementsByTagName("Enabled");
+                    NodeList colorValueList = axisStyleElement.getElementsByTagName("ColorValue");
+                    NodeList lineWidthList = axisStyleElement.getElementsByTagName("LineWidth");
+                    NodeList autoScaleList = axisStyleElement.getElementsByTagName("AutoScale");
+                    NodeList showNameList = axisStyleElement.getElementsByTagName("ShowName");
+                    NodeList axisMinList = axisStyleElement.getElementsByTagName("AxisMin");
+                    NodeList axisMaxList = axisStyleElement.getElementsByTagName("AxisMax");
+                    
+                    // axis visible
+                    if (enabledList.getLength() > 0) {
+                        String axisVisible = enabledList.item(0).getTextContent();
+                        axis.setAxisVisible(Boolean.valueOf(axisVisible));
+                    }
+                    
+                    // axis color
+                    if (colorValueList.getLength() > 0) {
+                        String axisColor = colorValueList.item(0).getTextContent();
+                        axis.setAxisColor(new Color(0xFFFFFF & Integer.valueOf(axisColor)));
+                    }
+                    
+                    // line width
+                    if (lineWidthList.getLength() > 0) {
+                        String lineWidth = lineWidthList.item(0).getTextContent();
+                        axis.setLineWidth(Integer.valueOf(lineWidth));
+                    } 
+                    
+                    // auto scale
+                    if (autoScaleList.getLength() > 0) {
+                        String autoscale = autoScaleList.item(0).getTextContent();
+                        axis.setAutoscale(Boolean.valueOf(autoscale));
+                    }   
+                    
+                    // axis name visible
+                    if (showNameList.getLength() > 0) {
+                        String axisNameVisible = showNameList.item(0).getTextContent();
+                        axis.setAxisNameVisible(Boolean.valueOf(axisNameVisible));
+                    } 
+                    
+                    // value minimum
+                    if (axisMinList.getLength() > 0) {
+                        String valueMin = axisMinList.item(0).getTextContent();
+                        axis.setValueMin(Double.valueOf(valueMin));
+                    }   
+               
+                    // value maximum
+                    if (axisMaxList.getLength() > 0) {
+                        String valueMax = axisMaxList.item(0).getTextContent();
+                        axis.setValueMax(Double.valueOf(valueMax));
+                    }   
+                }  
+            }
+            
+            // channels list
+            NodeList channelList = axisElement.getElementsByTagName("Channels");
+            if (channelList.getLength() > 0 ) {
+                Node channelsNode = channelList.item(0);
+                if (channelsNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element channelsElement = (Element) channelsNode;
 
-                // channel node array
-                NodeList channelNodeList = channelsElement.getElementsByTagName("ScopeChannelSerializable");
-                for (int channelIndex = 0; channelIndex < channelNodeList.getLength(); channelIndex++) {
-                    Node channelNode = channelNodeList.item(channelIndex);
-                    Channel channel = getChannel(channelNode);
+                    // serialized channel list
+                    NodeList channelNodeList = channelsElement.getElementsByTagName("ScopeChannelSerializable");
+                    for (int channelIndex = 0; channelIndex < channelNodeList.getLength(); channelIndex++) {
+                        Node channelNode = channelNodeList.item(channelIndex);
+                        Channel channel = getChannel(channelNode);
 
-                    // axis add channel
-                    axis.addChannel(channel);
-                }
+                        // axis add channel
+                        axis.addChannel(channel);
+                    }
+                }  
             }
         }
 
@@ -280,65 +381,113 @@ public class LoaderPanel extends JPanel {
     private Chart getChart(Node chartNode) {
         Chart chart = new Chart();
 
-        // chart data
         if (chartNode.getNodeType() == Node.ELEMENT_NODE) {
             Element chartElement = (Element) chartNode;
-            String chartName = chartElement.getElementsByTagName("Name").item(0).getTextContent();
-            chart.setChartName(chartName);
-
-            logger.fine(String.format("%-14s", "Chart") + " | " + chartName);
-
-            Node chartStyleNode = chartElement.getElementsByTagName("Style").item(0);
-            if (chartStyleNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element chartStyleElement = (Element) chartStyleNode;
-
-                String chartColor = getFirstElementTextContentByTagName(chartStyleElement, "BackgroundColorValue");
-                String borderColor = getFirstElementTextContentByTagName(chartStyleElement, "BorderColorValue");
-                String displayTimeText = getFirstElementTextContentByTagName(chartStyleElement, "BaseTime");
-
-                chart.setChartColor(new Color(0xFFFFFF & Integer.valueOf(chartColor)));
-                chart.setBorderColor(new Color(0xFFFFFF & Integer.valueOf(borderColor)));
-
-                long displayTime = Long.valueOf(displayTimeText) / 10000;
-                long displayTimeMax = Scope.timeFormaterToLong(Scope.TIME_FORMAT_MAX_TIME);
-
-                if (displayTime > displayTimeMax) displayTime = displayTimeMax;
-
-                chart.setDisplayTime(displayTime);
+            NodeList nameList = chartElement.getElementsByTagName("Name");
+            
+            // chart name
+            if (nameList.getLength() > 0) {
+                String chartName = nameList.item(0).getTextContent();    
+                chart.setChartName(chartName);  
             }
+            
+            // chart style list
+            NodeList chartStyleList = chartElement.getElementsByTagName("Style");
+            if (chartStyleList.getLength() > 0)  {
+                Node chartStyleNode = chartStyleList.item(0);
+                if (chartStyleNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element chartStyleElement = (Element) chartStyleNode;
 
-            Node xAxisNode = chartElement.getElementsByTagName("XAxis").item(0);
-            if (xAxisNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element xAxisElement = (Element) xAxisNode;
-                Node xAxisStyleNode = xAxisElement.getElementsByTagName("Style").item(0);
-                if (xAxisStyleNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element xAxisStyleElement = (Element) xAxisStyleNode;
-
-                    String timeLineColor = getFirstElementTextContentByTagName(xAxisStyleElement, "ColorValue");
-                    String timeTickCount = getFirstElementTextContentByTagName(xAxisStyleElement, "Ticks");
-                    String gridLineColor = getFirstElementTextContentByTagName(xAxisStyleElement, "GridColorValue");
-                    String lineWidth = getFirstElementTextContentByTagName(xAxisStyleElement, "GridLineWidth");
-
-                    chart.setTimeLineColor(new Color(0xFFFFFF & Integer.valueOf(timeLineColor)));
-                    chart.setTimeTickCount(Integer.valueOf(timeTickCount));
-                    chart.setGridLineColor(new Color(0xFFFFFF & Integer.valueOf(gridLineColor)));
-                    chart.setLineWidth(Integer.valueOf(lineWidth));
-                }
+                    NodeList backgroundColorValueList = chartStyleElement.getElementsByTagName("BackgroundColorValue");
+                    NodeList borderColorValueList = chartStyleElement.getElementsByTagName("BorderColorValue");
+                    NodeList baseTimeList = chartStyleElement.getElementsByTagName("BaseTime");
+                    
+                    // chart color
+                    if (backgroundColorValueList.getLength() > 0) {
+                        String chartColor = backgroundColorValueList.item(0).getTextContent();    
+                        chart.setChartColor(new Color(0xFFFFFF & Integer.valueOf(chartColor)));
+                    }
+                    
+                    // chart border color
+                    if (borderColorValueList.getLength() > 0) {
+                        String borderColor = borderColorValueList.item(0).getTextContent();    
+                        chart.setBorderColor(new Color(0xFFFFFF & Integer.valueOf(borderColor)));
+                    }
+                    
+                    // chart display time
+                    if (baseTimeList.getLength() > 0) {
+                        String displayTimeText = baseTimeList.item(0).getTextContent();    
+                        long displayTime = Long.valueOf(displayTimeText) / 10000;
+                        long displayTimeMax = Scope.timeFormaterToLong(Scope.TIME_FORMAT_MAX_TIME);
+                        if (displayTime > displayTimeMax) displayTime = displayTimeMax;
+                        chart.setDisplayTime(displayTime);
+                    }
+                } 
             }
+            
+            // xAxis list
+            NodeList xAxisList = chartElement.getElementsByTagName("XAxis");
+            if (xAxisList.getLength() > 0) {
+                Node xAxisNode = xAxisList.item(0);
+                if (xAxisNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element xAxisElement = (Element) xAxisNode;
+                    
+                    // xAxis style list
+                    NodeList xAxisStyleList = xAxisElement.getElementsByTagName("Style");
+                    if (xAxisStyleList.getLength() > 0) {
+                        Node xAxisStyleNode = xAxisStyleList.item(0);
+                        if (xAxisStyleNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element xAxisStyleElement = (Element) xAxisStyleNode;
 
-            // axis node
-            Node yAxisNode = chartElement.getElementsByTagName("YAxes").item(0);
-            if (yAxisNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element yAxisElement = (Element) yAxisNode;
+                            NodeList backgroundColorValueList = xAxisStyleElement.getElementsByTagName("BackgroundColorValue");
+                            NodeList ticksList = xAxisStyleElement.getElementsByTagName("Ticks");
+                            NodeList gridColorValueList = xAxisStyleElement.getElementsByTagName("GridColorValue");
+                            NodeList gridLineWidthList = xAxisStyleElement.getElementsByTagName("GridLineWidth");
+                            
+                            // chart time line color
+                            if (backgroundColorValueList.getLength() > 0) {
+                                String timeLineColor = backgroundColorValueList.item(0).getTextContent();
+                                chart.setTimeLineColor(new Color(0xFFFFFF & Integer.valueOf(timeLineColor)));
+                            }
+                            
+                            // chart time line color
+                            if (ticksList.getLength() > 0) {
+                                String timeTickCount = ticksList.item(0).getTextContent();
+                                chart.setTimeTickCount(Integer.valueOf(timeTickCount));
+                            }  
+                            
+                            // chart grid line color
+                            if (gridColorValueList.getLength() > 0) {
+                                String gridLineColor = gridColorValueList.item(0).getTextContent();
+                                chart.setGridLineColor(new Color(0xFFFFFF & Integer.valueOf(gridLineColor)));
+                            }  
+     
+                            // chart line width
+                            if (gridLineWidthList.getLength() > 0) {
+                                String lineWidth = gridLineWidthList.item(0).getTextContent();
+                                chart.setLineWidth(Integer.valueOf(lineWidth));
+                            }       
+                        }   
+                    }
+                } 
+            }
+            
+            // yAxis list
+            NodeList yAxisList = chartElement.getElementsByTagName("YAxes");
+            if (yAxisList.getLength() > 0) {
+                Node yAxisNode = yAxisList.item(0);
+                if (yAxisNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element yAxisElement = (Element) yAxisNode;
+                    
+                    // serialized yAxis list
+                    NodeList axisNodeList = yAxisElement.getElementsByTagName("ScopeYAxisSerializable");
+                    for (int axisIndex = 0; axisIndex < axisNodeList.getLength(); axisIndex++) {
+                        Node axisNode = axisNodeList.item(axisIndex);
+                        Axis axis = getAxis(axisNode);
 
-                // axis node array
-                NodeList axisNodeList = yAxisElement.getElementsByTagName("ScopeYAxisSerializable");
-                for (int axisIndex = 0; axisIndex < axisNodeList.getLength(); axisIndex++) {
-                    Node axisNode = axisNodeList.item(axisIndex);
-                    Axis axis = getAxis(axisNode);
-
-                    // chart add axis
-                    chart.addAxis(axis);
+                        // chart add axis
+                        chart.addAxis(axis);
+                    }
                 }
             }
         }
@@ -351,23 +500,41 @@ public class LoaderPanel extends JPanel {
 
         if (triggerChannelNode.getNodeType() == Node.ELEMENT_NODE) {
             Element triggerChannelElement = (Element) triggerChannelNode;
+
+            NodeList thresholdList = triggerChannelElement.getElementsByTagName("Threshold");
+            NodeList combineOptionList = triggerChannelElement.getElementsByTagName("CombineOption");
+            NodeList releaseOptionList = triggerChannelElement.getElementsByTagName("ReleaseOption");
+            NodeList connectedChannelHandleList = triggerChannelElement.getElementsByTagName("ConnectedChannelHandle");
             
-            String threshold = getFirstElementTextContentByTagName(triggerChannelElement, "Threshold");
-            String combine = getFirstElementTextContentByTagName(triggerChannelElement, "CombineOption");
-            String release = getFirstElementTextContentByTagName(triggerChannelElement, "ReleaseOption");
-            String identHandle = getFirstElementTextContentByTagName(triggerChannelElement, "ConnectedChannelHandle");
-
-            triggerChannel.setThreshold(Double.valueOf(threshold));
-            triggerChannel.setCombine(Combine.valueOf(combine));
-            triggerChannel.setRelease(release.contains("RisingEdge") ? Release.RISING_EDGE : Release.FALLING_EDGE);
-
-            triggerChannelLocated: for (Chart chart : scope.getChartList()) {
-                for (Axis axis : chart.getAxisList()) {
-                    for (Channel channel : axis.getChannelList()) {
-                        if (channel.getIdentHandle() == Integer.valueOf(identHandle)) {
-                            triggerChannel.setChannel(channel);
-                            logger.fine(String.format("%-14s", "TriggerChannel") + " | " + channel.getChannelName());
-                            break triggerChannelLocated;
+            // trigger channel threshold
+            if (thresholdList.getLength() > 0) {
+                String threshold = thresholdList.item(0).getTextContent();
+                triggerChannel.setThreshold(Double.valueOf(threshold));
+            }    
+            
+            // trigger channel combine
+            if (combineOptionList.getLength() > 0) {
+                String combine = combineOptionList.item(0).getTextContent();
+                triggerChannel.setCombine(Combine.valueOf(combine));
+            }   
+            
+            // trigger channel release
+            if (releaseOptionList.getLength() > 0) {
+                String release = releaseOptionList.item(0).getTextContent();
+                triggerChannel.setRelease(release.contains("RisingEdge") ? Release.RISING_EDGE : Release.FALLING_EDGE);
+            }   
+            
+            // trigger channel handle
+            if (connectedChannelHandleList.getLength() > 0) {
+                String identHandle = connectedChannelHandleList.item(0).getTextContent();
+                
+                triggerChannelLocated: for (Chart chart : scope.getChartList()) {
+                    for (Axis axis : chart.getAxisList()) {
+                        for (Channel channel : axis.getChannelList()) {
+                            if (channel.getIdentHandle() == Integer.valueOf(identHandle)) {
+                                triggerChannel.setChannel(channel);
+                                break triggerChannelLocated;
+                            }
                         }
                     }
                 }
@@ -380,33 +547,48 @@ public class LoaderPanel extends JPanel {
     private TriggerGroup getTriggerGroup(Node triggerGroupNode, Scope scope) {
         TriggerGroup triggerGroup = new TriggerGroup();
 
-        // group data
         if (triggerGroupNode.getNodeType() == Node.ELEMENT_NODE) {
             Element triggerGroupElement = (Element) triggerGroupNode;
+
+            NodeList titleList = triggerGroupElement.getElementsByTagName("Title");
+            NodeList triggerPrePercentList = triggerGroupElement.getElementsByTagName("TriggerPrePercent");
+            NodeList enabledList = triggerGroupElement.getElementsByTagName("Enabled");
             
-            String triggerGroupName = getFirstElementTextContentByTagName(triggerGroupElement, "Title");
-            String triggerOffset = getFirstElementTextContentByTagName(triggerGroupElement, "TriggerPrePercent");
-            String enabled = getFirstElementTextContentByTagName(triggerGroupElement, "Enabled");
+            // trigger group name
+            if (titleList.getLength() > 0) {
+                String triggerGroupName = titleList.item(0).getTextContent();
+                triggerGroup.setTriggerGroupName(triggerGroupName);
+            }   
+           
+            // trigger group offset
+            if (triggerPrePercentList.getLength() > 0) {
+                String triggerOffset = triggerPrePercentList.item(0).getTextContent();
+                triggerGroup.setTriggerOffset(Integer.valueOf(triggerOffset));
+            }  
+            
+            // trigger group enabled
+            if (enabledList.getLength() > 0) {
+                String enabled = enabledList.item(0).getTextContent();
+                triggerGroup.setEnabled(Boolean.valueOf(enabled));
+            }  
 
-            logger.fine(String.format("%-14s", "TriggerGroup") + " | " + triggerGroupName);
+            // trigger set list
+            NodeList triggerSetsList = triggerGroupElement.getElementsByTagName("TriggerSets");
+            if (triggerSetsList.getLength() > 0) {
+                Node triggerSetsNode = triggerSetsList.item(0);
+                if (triggerSetsNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element triggerSetsElement = (Element) triggerSetsNode;
 
-            triggerGroup.setTriggerGroupName(triggerGroupName);
-            triggerGroup.setTriggerOffset(Integer.valueOf(triggerOffset));
-            triggerGroup.setEnabled(Boolean.valueOf(enabled));
+                    // serialized trigger list
+                    NodeList triggerChannelList = triggerSetsElement.getElementsByTagName("ScopeTriggerSingleSetSerializable");
+                    for (int triggerChannelIndex = 0; triggerChannelIndex < triggerChannelList.getLength(); triggerChannelIndex++) {
+                        Node triggerChannelNode = triggerChannelList.item(triggerChannelIndex);
+                        TriggerChannel triggerChannel = getTriggerChannel(triggerChannelNode, scope);
 
-            // trigger sets node
-            Node triggerSetsNode = triggerGroupElement.getElementsByTagName("TriggerSets").item(0);
-            if (triggerSetsNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element triggerSetsElement = (Element) triggerSetsNode;
-
-                NodeList triggerChannelList = triggerSetsElement.getElementsByTagName("ScopeTriggerSingleSetSerializable");
-                for (int triggerChannelIndex = 0; triggerChannelIndex < triggerChannelList.getLength(); triggerChannelIndex++) {
-                    Node triggerChannelNode = triggerChannelList.item(triggerChannelIndex);
-                    TriggerChannel triggerChannel = getTriggerChannel(triggerChannelNode, scope);
-
-                    // scope add trigger channel
-                    triggerGroup.addTriggerChannel(triggerChannel);
-                }
+                        // scope add trigger channel
+                        triggerGroup.addTriggerChannel(triggerChannel);
+                    }
+                }    
             }
         }
 
@@ -418,61 +600,78 @@ public class LoaderPanel extends JPanel {
 
         if (scopeNode.getNodeType() == Node.ELEMENT_NODE) {
             Element scopeElement = (Element) scopeNode;
-            String scopeName = getFirstElementTextContentByTagName(scopeElement, "Title");     
-            scope.setScopeName(scopeName);
+            NodeList titleList = scopeElement.getElementsByTagName("Title");
             
-            logger.fine(String.format("%-14s", "Scope") + " | " + scopeName);
-
-            // operation node
-            Node operationNode = scopeElement.getElementsByTagName("Operating").item(0);
-            if (operationNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element operationElement = (Element) operationNode;
-                String recordTimeText = operationElement.getElementsByTagName("RecordTime").item(0).getTextContent();
-
-                long recordTime = Long.valueOf(recordTimeText) / 10000;
-                long recordTimeMax = Scope.timeFormaterToLong(Scope.TIME_FORMAT_MAX_TIME);
-
-                if (recordTime > recordTimeMax) recordTime = recordTimeMax;
-
-                scope.setRecordTime(recordTime);
+            // scope name
+            if (titleList.getLength() > 0) {
+                String scopeName = titleList.item(0).getTextContent();
+                scope.setScopeName(scopeName);
             }
-
-            // charts node
-            Node chartsNode = scopeElement.getElementsByTagName("Charts").item(0);
-            if (chartsNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element chartsElement = (Element) chartsNode;
-
-                // chart node array
-                NodeList chartNodeList = chartsElement.getElementsByTagName("ScopeChartSerializable");
-                for (int chartIndex = 0; chartIndex < chartNodeList.getLength(); chartIndex++) {
-                    Node chartNode = chartNodeList.item(chartIndex);
-                    Chart chart = getChart(chartNode);
-
-                    // scope add chart
-                    scope.addChart(chart);
-                }
+            
+            // operating list
+            NodeList operationList = scopeElement.getElementsByTagName("Operating");
+            if (operationList.getLength() > 0) {
+                Node operationNode = operationList.item(0);
+                if (operationNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element operationElement = (Element) operationNode;
+                    NodeList recordTimeList = operationElement.getElementsByTagName("RecordTime");
+                    
+                    // scope record time
+                    if (recordTimeList.getLength() > 0) {
+                        String recordTimeText = recordTimeList.item(0).getTextContent();
+                        long recordTime = Long.valueOf(recordTimeText) / 10000;
+                        long recordTimeMax = Scope.timeFormaterToLong(Scope.TIME_FORMAT_MAX_TIME);
+                        if (recordTime > recordTimeMax) recordTime = recordTimeMax;
+                        scope.setRecordTime(recordTime);
+                    }
+                }         
             }
+            
+            // charts list
+            NodeList chartsList = scopeElement.getElementsByTagName("Charts");
+            if (chartsList.getLength() > 0) {
+                Node chartsNode = chartsList.item(0);
+                if (chartsNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element chartsElement = (Element) chartsNode;
 
-            // trigger module
-            Node triggerModuleNode = scopeElement.getElementsByTagName("TriggerModule").item(0);
-            if (triggerModuleNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element triggerModuleElement = (Element) triggerModuleNode;
+                    // serialized chart list
+                    NodeList chartNodeList = chartsElement.getElementsByTagName("ScopeChartSerializable");
+                    for (int chartIndex = 0; chartIndex < chartNodeList.getLength(); chartIndex++) {
+                        Node chartNode = chartNodeList.item(chartIndex);
+                        Chart chart = getChart(chartNode);
 
-                // trigger group node
-                Node triggerGroupsNode = triggerModuleElement.getElementsByTagName("TriggerGroups").item(0);
-                if (triggerGroupsNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element triggerGroupsElement = (Element) triggerGroupsNode;
-
-                    // trigger group node array
-                    NodeList triggerGroupNodeList = triggerGroupsElement.getElementsByTagName("ScopeTriggerGroupSerializable");
-                    for (int triggerGroupIndex = 0; triggerGroupIndex < triggerGroupNodeList.getLength(); triggerGroupIndex++) {
-                        Node triggerGroupNode = triggerGroupNodeList.item(triggerGroupIndex);
-                        TriggerGroup triggerGroup = getTriggerGroup(triggerGroupNode, scope);
-
-                        // scope add trigger group
-                        scope.addTriggerGroup(triggerGroup);
+                        // scope add chart
+                        scope.addChart(chart);
                     }
                 }
+            }
+            
+            // trigger module list
+            NodeList triggerModuleList = scopeElement.getElementsByTagName("TriggerModule");
+            if (triggerModuleList.getLength() > 0) {
+                Node triggerModuleNode = triggerModuleList.item(0);
+                if (triggerModuleNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element triggerModuleElement = (Element) triggerModuleNode;
+
+                    // trigger group node
+                    NodeList triggerGroupsList = triggerModuleElement.getElementsByTagName("TriggerGroups");
+                    if (triggerGroupsList.getLength() > 0) {
+                        Node triggerGroupsNode = triggerGroupsList.item(0); 
+                        if (triggerGroupsNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element triggerGroupsElement = (Element) triggerGroupsNode;
+
+                            // serialized trigger group list
+                            NodeList triggerGroupNodeList = triggerGroupsElement.getElementsByTagName("ScopeTriggerGroupSerializable");
+                            for (int triggerGroupIndex = 0; triggerGroupIndex < triggerGroupNodeList.getLength(); triggerGroupIndex++) {
+                                Node triggerGroupNode = triggerGroupNodeList.item(triggerGroupIndex);
+                                TriggerGroup triggerGroup = getTriggerGroup(triggerGroupNode, scope);
+
+                                // scope add trigger group
+                                scope.addTriggerGroup(triggerGroup);
+                            }
+                        } 
+                    }
+                }  
             }
         }
 
@@ -486,14 +685,16 @@ public class LoaderPanel extends JPanel {
         Document document = documentBuilder.parse(new File(path));
         document.getDocumentElement().normalize();
 
-        logger.fine(String.format("%-14s", "Loading Scope") + " | " + path);
-
-        // build scope
-        Node scopeNode = document.getElementsByTagName("ScopeViewSerializable").item(0);
-        Scope scope = getScope(scopeNode);
-
-        logger.fine("Scope Loaded");
-
-        return scope;
+        // serialized scope list
+        NodeList scopeNodeList = document.getElementsByTagName("ScopeViewSerializable");
+        
+        // get scope
+        if  (scopeNodeList.getLength() > 0) {
+            Node scopeNode = scopeNodeList.item(0);
+            
+            return getScope(scopeNode);  
+        } else {
+            return null;
+        }
     }
 }

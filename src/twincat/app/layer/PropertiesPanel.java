@@ -13,6 +13,8 @@ public class PropertiesPanel extends JPanel {
     /*** global constant variable ****/
     /*********************************/
 
+    public static final boolean WRAP_LAYOUT = false; 
+    
     public static final int TEMPLATE_WIDTH_BIG = 300;
     
     public static final int TEMPLATE_WIDTH_SMALL = 240;
