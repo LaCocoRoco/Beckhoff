@@ -31,9 +31,9 @@ public class Axis implements Observer {
 
     private int lineWidth = 1;
 
-    private long valueMin = 0;
+    private double valueMin = 0;
 
-    private long valueMax = 0;
+    private double valueMax = 0;
 
     private boolean autoscale = true;
 
@@ -107,20 +107,20 @@ public class Axis implements Observer {
         this.refresh = true;
     }
 
-    public long getValueMin() {
+    public double getValueMin() {
         return valueMin;
     }
 
-    public void setValueMin(long valueMin) {
+    public void setValueMin(double valueMin) {
         this.valueMin = valueMin;
         this.refresh = true;
     }
 
-    public long getValueMax() {
+    public double getValueMax() {
         return valueMax;
     }
 
-    public void setValueMax(long valueMax) {
+    public void setValueMax(double valueMax) {
         this.valueMax = valueMax;
         this.refresh = true;
     }

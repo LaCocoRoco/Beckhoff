@@ -32,19 +32,21 @@ public class Channel extends Observable implements Observer {
 
     private Acquisition acquisition = new Acquisition();
 
-    private boolean channelVisible = true;
-
     private boolean antialias = true;
 
     private Color lineColor = Color.RED;
 
     private int lineWidth = 1;
 
+    private boolean lineVisible = true;
+
     private Color plotColor = Color.RED;
 
     private int plotSize = 4;
 
     private boolean plotVisible = false;
+
+    private int identHandle = 0;
 
     private boolean watchdogEnabled = true;
 
@@ -124,12 +126,12 @@ public class Channel extends Observable implements Observer {
         this.refresh = true;
     }
 
-    public boolean isChannelVisible() {
-        return channelVisible;
+    public boolean isLineVisible() {
+        return lineVisible;
     }
 
-    public void setChannelVisible(boolean channelVisible) {
-        this.channelVisible = channelVisible;
+    public void setLineVisible(boolean channelVisible) {
+        this.lineVisible = channelVisible;
         this.refresh = true;
     }
 
@@ -176,6 +178,14 @@ public class Channel extends Observable implements Observer {
     public void setPlotVisible(boolean plotVisible) {
         this.plotVisible = plotVisible;
         this.refresh = true;
+    }
+    
+    public int getIdentHandle() {
+        return identHandle;
+    }
+
+    public void setIdentHandle(int identHandle) {
+        this.identHandle = identHandle;
     }
 
     public boolean isWatchdogEnabled() {

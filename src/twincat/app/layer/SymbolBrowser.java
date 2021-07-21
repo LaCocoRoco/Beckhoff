@@ -249,16 +249,6 @@ public class SymbolBrowser extends JPanel {
         }
     };
 
-    private final SwingWorker<Void, Void> buildSymbolTreeTask = new SwingWorker<Void, Void>() {
-        @Override
-        protected Void doInBackground() throws Exception {
-            disableSymbolTree();
-            buildSymbolTree();
-            enableSymbolTree();
-            return null;
-        }
-    };
-
     private final Observer routeLoadObserver = new Observer() {
         @Override
         public void update(Observable observable, Object object) {
@@ -384,7 +374,20 @@ public class SymbolBrowser extends JPanel {
         viewPanel.add(loadingPanel, View.LOADING.toString());
         viewPanel.add(treePanel, View.TREE.toString());
 
-        buildSymbolTreeTask.execute();
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                try {
+                    disableSymbolTree();
+                    buildSymbolTree();
+                    enableSymbolTree();
+                } catch (Exception e) {
+                    logger.fine(Utilities.exceptionToString(e));
+                }
+
+                return null; 
+            }
+        }.execute();
 
         this.addComponentListener(symbolBrowserComponentAdapter);
         this.setLayout(new BorderLayout());

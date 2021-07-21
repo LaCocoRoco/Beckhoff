@@ -53,15 +53,15 @@ public class ChartProperties extends JPanel {
     private final TimeTextField displayTime = new TimeTextField();
 
     private final JPanel borderColor = new JPanel();
-    
+
     private final JPanel chartColor = new JPanel();
-    
+
     private final NumberTextField lineWidth = new NumberTextField();
-    
+
     private final NumberTextField timeTickCount = new NumberTextField();
-    
+
     private final NumberTextField axisTickCount = new NumberTextField();
-    
+
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
     /*********************************/
@@ -95,32 +95,32 @@ public class ChartProperties extends JPanel {
     private PropertyChangeListener displayTimePropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            TimeTextField component = (TimeTextField) propertyChangeEvent.getSource();
-            chart.setDisplayTime(component.getText());
+            TimeTextField timeTextField = (TimeTextField) propertyChangeEvent.getSource();
+            chart.setDisplayTime(timeTextField.getText());
         }
     };
 
     private PropertyChangeListener lineWidthPropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            NumberTextField component = (NumberTextField) propertyChangeEvent.getSource();
-            chart.setLineWidth(Integer.valueOf(component.getText()));
+            NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
+            chart.setLineWidth((int) numberTextField.getValue());
         }
     };
 
     private PropertyChangeListener timeTickCountPropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            NumberTextField component = (NumberTextField) propertyChangeEvent.getSource();
-            chart.setTimeTickCount(Integer.valueOf(component.getText()));
+            NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
+            chart.setTimeTickCount((int) numberTextField.getValue());
         }
     };
 
     private PropertyChangeListener axisTickCountPropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            NumberTextField component = (NumberTextField) propertyChangeEvent.getSource();
-            chart.setAxisTickCount(Integer.valueOf(component.getText()));
+            NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
+            chart.setAxisTickCount((int) numberTextField.getValue());
         }
     };
 
@@ -132,7 +132,7 @@ public class ChartProperties extends JPanel {
             /* empty */
         }
     };
-    
+
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -192,32 +192,38 @@ public class ChartProperties extends JPanel {
         colorPanel.add(chartColorText);
 
         // style properties
-        lineWidth.setText(String.valueOf(chart.getLineWidth()));
+        lineWidth.setValue(chart.getLineWidth());
+        lineWidth.setMinValue(0);
+        lineWidth.setMaxValue(100);
         lineWidth.addPropertyChangeListener("number", lineWidthPropertyChanged);
-        lineWidth.setBounds(15, 25, 40, 23);
+        lineWidth.setBounds(15, 25, 40, 20);
 
         JLabel lineWidthText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_LINE_WIDTH));
         lineWidthText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        lineWidthText.setBounds(60, 25, 120, 23);
+        lineWidthText.setBounds(60, 25, 120, 21);
 
-        timeTickCount.setText(String.valueOf(chart.getTimeTickCount()));
-        lineWidth.addPropertyChangeListener("number", timeTickCountPropertyChanged);
-        timeTickCount.setBounds(15, 60, 40, 23);
+        timeTickCount.setValue(chart.getTimeTickCount());
+        timeTickCount.setMinValue(0);
+        timeTickCount.setMaxValue(100);
+        timeTickCount.addPropertyChangeListener("number", timeTickCountPropertyChanged);
+        timeTickCount.setBounds(15, 55, 40, 20);
 
         JLabel timeTickCountText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_TIME_TICK_COUNT));
         timeTickCountText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        timeTickCountText.setBounds(60, 60, 120, 23);
+        timeTickCountText.setBounds(60, 55, 120, 21);
 
-        axisTickCount.setText(String.valueOf(chart.getAxisTickCount()));
-        lineWidth.addPropertyChangeListener("number", axisTickCountPropertyChanged);
-        axisTickCount.setBounds(15, 95, 40, 23);
+        axisTickCount.setValue(chart.getAxisTickCount());
+        axisTickCount.setMinValue(0);
+        axisTickCount.setMaxValue(100);
+        axisTickCount.addPropertyChangeListener("number", axisTickCountPropertyChanged);
+        axisTickCount.setBounds(15, 85, 40, 20);
 
         JLabel axisTickCountText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_AXIS_TICK_COUNT));
         axisTickCountText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        axisTickCountText.setBounds(60, 95, 120, 23);
+        axisTickCountText.setBounds(60, 85, 120, 21);
 
         TitledPanel stylePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_STYLE));
-        stylePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 130));
+        stylePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 120));
         stylePanel.add(lineWidth);
         stylePanel.add(lineWidthText);
         stylePanel.add(timeTickCount);
@@ -282,23 +288,21 @@ public class ChartProperties extends JPanel {
 
     private void reload() {
         // reload common properties
-        if (!chartName.getText().equals(chart.getChartName())) {
-            chartName.setText(chart.getChartName());
-            chartName.setCaretPosition(0);
-        }
+        chartName.setText(chart.getChartName());
+        chartName.setCaretPosition(0);
 
         // reload display time properties
-        displayTime.setText(Scope.timeFormaterToString(chart.getDisplayTime()));
+        displayTime.setText(chart.getDisplayTime());
 
         // reload color properties
         borderColor.setBackground(chart.getBorderColor());
         chartColor.setBackground(chart.getChartColor());
 
         // reload style properties
-        lineWidth.setText(String.valueOf(chart.getLineWidth()));
-        timeTickCount.setText(String.valueOf(chart.getTimeTickCount()));
-        axisTickCount.setText(String.valueOf(chart.getAxisTickCount()));
-        
+        lineWidth.setValue(chart.getLineWidth());
+        timeTickCount.setValue(chart.getTimeTickCount());
+        axisTickCount.setValue(chart.getAxisTickCount());
+
         // display chart properties
         xref.propertiesPanel.setCard(Propertie.CHART);
     }

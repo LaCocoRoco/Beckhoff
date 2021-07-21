@@ -677,7 +677,7 @@ public class Chart extends Observable {
                 while (channelIterator.hasNext()) {
                     Channel channel = channelIterator.next();
                     
-                    if (channel.isChannelVisible() || channel.isPlotVisible()) {
+                    if (channel.isLineVisible() || channel.isPlotVisible()) {
 
                         GeneralPath generalPath = new GeneralPath();
                         List<Rectangle2D> rectangleList = new ArrayList<Rectangle2D>();
@@ -719,7 +719,7 @@ public class Chart extends Observable {
                             double samplePositionY = channelPositionY + samplePositionOffset;
 
                             // build channel line
-                            if (channel.isChannelVisible()) {
+                            if (channel.isLineVisible()) {
                                 if (generalPath.getCurrentPoint() == null) {
                                     generalPath.moveTo(samplePositionX, samplePositionY);
                                 } else {
@@ -745,7 +745,7 @@ public class Chart extends Observable {
                         }
                         
                         // draw channel line
-                        if (channel.isChannelVisible()) {
+                        if (channel.isLineVisible()) {
                             graphics.setColor(channel.getLineColor());
                             graphics.setStroke(new BasicStroke(channel.getLineWidth(), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
                             graphics.draw(generalPath);    

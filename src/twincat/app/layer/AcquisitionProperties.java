@@ -57,12 +57,12 @@ public class AcquisitionProperties extends JPanel {
     /****** local final variable *****/
     /*********************************/
 
-    private final ComboBox targetSystemComboBox = new ComboBox();
+    private final ComboBox targetSystem = new ComboBox();
 
-    private final ComboBox targetPortComboBox = new ComboBox();
+    private final ComboBox targetPort = new ComboBox();
 
-    private final TextField symbolNameTextField = new TextField();
-       
+    private final TextField symbolName = new TextField();
+
     private final RouteLoader routeLoader = new RouteLoader();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
@@ -71,30 +71,30 @@ public class AcquisitionProperties extends JPanel {
     /****** predefined variable ******/
     /*********************************/
 
-    private final ActionListener applyButtonActionListener = new ActionListener() {
+    private final ActionListener applyActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             applyAcquisition();
         }
     };
 
-    private final ItemListener targetPortComboBoxItemListener = new ItemListener() {
+    private final ItemListener targetPortItemListener = new ItemListener() {
         @Override
         public void itemStateChanged(ItemEvent itemEvent) {
             if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
-                Object selectedTargetPort = targetPortComboBox.getSelectedItem();
+                Object selectedTargetPort = targetPort.getSelectedItem();
                 AmsPort amsPort = AmsPort.getByString(selectedTargetPort.toString());
                 acquisition.setAmsPort(amsPort);
             }
         }
     };
 
-    private final ItemListener targetSystemComboBoxItemListener = new ItemListener() {
+    private final ItemListener targetSystemItemListener = new ItemListener() {
         @Override
         public void itemStateChanged(ItemEvent itemEvent) {
             if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
-                Object selectedTargetSystem = targetSystemComboBox.getSelectedItem();
-                
+                Object selectedTargetSystem = targetSystem.getSelectedItem();
+
                 Pattern pattern = Pattern.compile("\\(([^)]+)\\)");
                 Matcher matcher = pattern.matcher(selectedTargetSystem.toString());
                 matcher.find();
@@ -109,7 +109,7 @@ public class AcquisitionProperties extends JPanel {
     private PropertyChangeListener symbolNamePropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            acquisition.setSymbolName(symbolNameTextField.getText());
+            acquisition.setSymbolName(symbolName.getText());
         }
     };
 
@@ -121,7 +121,7 @@ public class AcquisitionProperties extends JPanel {
             /* empty */
         }
     };
-    
+
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -129,39 +129,49 @@ public class AcquisitionProperties extends JPanel {
     public AcquisitionProperties(XReference xref) {
         this.xref = xref;
 
-        // build target combo box item list
-        buildTargetComboBoxItemList();
+        // build target combo box
+        buildTargetComboBox();
 
         // target properties
         JLabel targetSystemLabel = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TARGET_SYSTEM));
-        targetSystemLabel.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        targetSystemLabel.setBounds(20, 15, 140, 20);
+        targetSystemLabel.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
+        targetSystemLabel.setBounds(20, 20, 265, 20);
 
-        targetSystemComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        targetSystemComboBox.setBounds(18, 35, 265, 22);
+        targetSystem.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
+        targetSystem.setBounds(18, 40, 265, 22);
 
         JLabel targetPortLabel = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TARGET_PORT));
-        targetPortLabel.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        targetPortLabel.setBounds(20, 57, 140, 20);
+        targetPortLabel.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
+        targetPortLabel.setBounds(20, 70, 265, 20);
 
-        targetPortComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        targetPortComboBox.setBounds(18, 77, 265, 22);
+        targetPort.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
+        targetPort.setBounds(18, 90, 265, 22);
 
         TitledPanel targetPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TARGET));
-        targetPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 115));
+        targetPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 130));
         targetPanel.add(targetSystemLabel);
-        targetPanel.add(targetSystemComboBox);
+        targetPanel.add(targetSystem);
         targetPanel.add(targetPortLabel);
-        targetPanel.add(targetPortComboBox);
+        targetPanel.add(targetPort);
 
-        symbolNameTextField.setText(acquisition.getSymbolName());
-        symbolNameTextField.addPropertyChangeListener(symbolNamePropertyChanged);
-        symbolNameTextField.setBounds(15, 25, 265, 23);
+        // TODO : connection properties
+        // sampleTime
+        // symbolBased
         
+        // TODO : symbol information
+        // dataType;   
+        symbolName.setText(acquisition.getSymbolName());
+        symbolName.addPropertyChangeListener(symbolNamePropertyChanged);
+        symbolName.setBounds(15, 25, 265, 23);
+
         TitledPanel symbolInfoPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_SYMBOL_INFO));
         symbolInfoPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
-        symbolInfoPanel.add(symbolNameTextField);
-        
+        symbolInfoPanel.add(symbolName);
+
+        // TODO : symbol connect
+        // indexGroup 
+        // indexOffset;
+
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new WrapTopLayout(FlowLayout.LEADING));
@@ -169,12 +179,12 @@ public class AcquisitionProperties extends JPanel {
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(targetPanel);
         contentPanel.add(symbolInfoPanel);
-        
+
         JButton applyButton = new JButton(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_APPLY));
         applyButton.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         applyButton.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         applyButton.setFocusable(false);
-        applyButton.addActionListener(applyButtonActionListener);
+        applyButton.addActionListener(applyActionListener);
 
         JToolBar applyToolBar = new JToolBar();
         applyToolBar.setLayout(new BorderLayout());
@@ -192,7 +202,7 @@ public class AcquisitionProperties extends JPanel {
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-        
+
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this.add(textHeader, BorderLayout.PAGE_START);
@@ -243,35 +253,35 @@ public class AcquisitionProperties extends JPanel {
     /*********************************/
     /******** private method *********/
     /*********************************/
- 
+
     private void reload() {
         // reload target properties
-        for (int i = 0; i < targetSystemComboBox.getItemCount(); i++) {
-            String system = targetSystemComboBox.getItemAt(i);
+        for (int i = 0; i < targetSystem.getItemCount(); i++) {
+            String system = targetSystem.getItemAt(i);
 
             if (system.contains(acquisition.getAmsNetId())) {
-                targetSystemComboBox.setSelectedIndex(i);
+                targetSystem.setSelectedIndex(i);
             }
         }
 
-        for (int i = 0; i < targetPortComboBox.getItemCount(); i++) {
-            String port = targetPortComboBox.getItemAt(i);
+        for (int i = 0; i < targetPort.getItemCount(); i++) {
+            String port = targetPort.getItemAt(i);
 
             if (port.contains(acquisition.getAmsPort().toString())) {
-                targetPortComboBox.setSelectedIndex(i);
+                targetPort.setSelectedIndex(i);
             }
         }
-        
+
         // reload symbol information
-        symbolNameTextField.setText(acquisition.getSymbolName());
-        symbolNameTextField.setCaretPosition(0);
-        
+        symbolName.setText(acquisition.getSymbolName());
+        symbolName.setCaretPosition(0);
+
         // display acquisition properties
         xref.browserPanel.setCard(Browser.SYMBOL);
         xref.propertiesPanel.setCard(Propertie.ACQUISITION);
     }
-    
-    private void buildTargetComboBoxItemList() {
+
+    private void buildTargetComboBox() {
         List<Route> routeList = routeLoader.loadRouteList();
         List<String> systemList = new ArrayList<String>();
         List<String> portList = new ArrayList<String>();
@@ -287,24 +297,22 @@ public class AcquisitionProperties extends JPanel {
             }
         }
 
+        for (String system : systemList) {
+            targetSystem.addItem(system);
+        }
+        
+        targetSystem.addItemListener(targetSystemItemListener);
+        
         for (AmsPort amsPort : AmsPort.values()) {
             if (!amsPort.equals(AmsPort.NONE)) {
                 portList.add(amsPort.toString());
             }
         }
 
-        targetSystemComboBox.removeAllItems();
-        targetPortComboBox.removeAllItems();
-
-        for (String system : systemList) {
-            targetSystemComboBox.addItem(system);
-        }
-
         for (String port : portList) {
-            targetPortComboBox.addItem(port);
+            targetPort.addItem(port);
         }
-
-        targetSystemComboBox.addItemListener(targetSystemComboBoxItemListener);
-        targetPortComboBox.addItemListener(targetPortComboBoxItemListener);
+   
+        targetPort.addItemListener(targetPortItemListener);
     }
 }

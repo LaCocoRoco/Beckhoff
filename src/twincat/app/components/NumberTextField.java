@@ -28,9 +28,9 @@ public class NumberTextField extends JTextField {
     /******** global variable ********/
     /*********************************/
 
-    private long minValue = 0;
+    private long minValue = - Long.MIN_VALUE;
 
-    private long maxValue = 1000;
+    private long maxValue = + Long.MAX_VALUE;
     
     /*********************************/
     /******** local variable *********/
@@ -88,8 +88,10 @@ public class NumberTextField extends JTextField {
     private final DocumentListener documentListener = new DocumentListener() {
         private final Runnable task = new Runnable() {
             @Override
-            public void run() {
-                updateNumber();
+            public void run() {   
+                if (!number.equals(getText())) {
+                    updateNumber();
+                }
             }
         };
         
@@ -159,6 +161,18 @@ public class NumberTextField extends JTextField {
     }
 
     /*********************************/
+    /********* public method *********/
+    /*********************************/
+
+    public long getValue() {
+        return Long.valueOf(getText());
+    }
+
+    public void setValue(long value) {
+        setText(String.valueOf(value));
+    }
+    
+    /*********************************/
     /******** private method *********/
     /*********************************/
 
@@ -171,13 +185,13 @@ public class NumberTextField extends JTextField {
     }
     
     private void addValue() {
-        int value = Integer.valueOf(number);
+        long value = Long.valueOf(number);
         value += VALUE_KEY_RESOLUTION; 
         setText(String.valueOf(value));
     }
     
     private void subValue() {
-        int value = Integer.valueOf(number);
+        long value = Long.valueOf(number);
         value -= VALUE_KEY_RESOLUTION;    
         setText(String.valueOf(value));
     }
@@ -201,7 +215,7 @@ public class NumberTextField extends JTextField {
         if (text.charAt(0) == '-') {
             negate = true;
         }
-        
+
         // replace none numbers
         text = text.replaceAll("[^0-9]", "");
 

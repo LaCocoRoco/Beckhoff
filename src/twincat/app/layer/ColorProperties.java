@@ -47,19 +47,19 @@ public class ColorProperties extends JPanel {
     /*********************************/
     /****** predefined variable ******/
     /*********************************/
-    
+
     private final MouseAdapter colorPropertieMouseAdapter = new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
-            component = mouseEvent.getComponent();  
-            xref.propertiesPanel.setCard(Propertie.COLOR); 
+            component = mouseEvent.getComponent();
+            xref.propertiesPanel.setCard(Propertie.COLOR);
         }
     };
-    
+
     private final MouseAdapter colorPickerMouseAdapter = new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
-            component.setBackground(mouseEvent.getComponent().getBackground());    
+            component.setBackground(mouseEvent.getComponent().getBackground());
             xref.propertiesPanel.lastCard();
         }
     };
@@ -69,17 +69,17 @@ public class ColorProperties extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            /* empty */ 
+            /* empty */
         }
     };
-       
+
     /*********************************/
     /********** constructor **********/
     /*********************************/
 
     public ColorProperties(XReference xref) {
         this.xref = xref;
-   
+
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new WrapTopLayout(FlowLayout.LEADING));
         contentPanel.setBorder(BorderFactory.createEmptyBorder());
@@ -89,13 +89,13 @@ public class ColorProperties extends JPanel {
             Border outerBorder = BorderFactory.createLineBorder(Color.BLACK);
             Border innerBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
             CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(outerBorder, innerBorder);
-            
+
             JPanel colorPicker = new JPanel();
             colorPicker.setBorder(compoundBorder);
             colorPicker.setBackground(tableCell.color);
             colorPicker.setPreferredSize(new Dimension(60, 60));
-            colorPicker.addMouseListener(colorPickerMouseAdapter); 
-            
+            colorPicker.addMouseListener(colorPickerMouseAdapter);
+
             contentPanel.add(colorPicker);
         }
 
@@ -104,7 +104,7 @@ public class ColorProperties extends JPanel {
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
         scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
-        
+
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         this.setLayout(new BorderLayout());
         this.add(scrollPanel, BorderLayout.CENTER);

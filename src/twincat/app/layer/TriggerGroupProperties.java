@@ -5,18 +5,22 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import twincat.Resources;
+import twincat.app.components.NumberTextField;
 import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TextField;
 import twincat.app.components.TitledPanel;
@@ -45,6 +49,10 @@ public class TriggerGroupProperties extends JPanel {
 
     private final TextField triggerGroupNameTextField = new TextField();
 
+    private final NumberTextField offset = new NumberTextField();
+    
+    private final JCheckBox enabled = new JCheckBox();
+    
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
     /*********************************/
@@ -56,6 +64,25 @@ public class TriggerGroupProperties extends JPanel {
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
             triggerGroup.setTriggerGroupName(triggerGroupNameTextField.getText());
             xref.scopeBrowser.reloadSelectedTreeNode();
+        }
+    };
+
+    private PropertyChangeListener offsetPropertyChanged = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+            NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
+            triggerGroup.setTriggerOffset((int) numberTextField.getValue());
+        }
+    };
+
+    private final ItemListener enabledItemListener = new ItemListener() {
+        @Override
+        public void itemStateChanged(ItemEvent itemEvent) {
+            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
+                triggerGroup.setEnabled(true);
+            } else {
+                triggerGroup.setEnabled(false);
+            }
         }
     };
 
@@ -84,9 +111,32 @@ public class TriggerGroupProperties extends JPanel {
         commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
         commonPanel.add(triggerGroupNameTextField);
         
-        // TODO : SETTINGS
-        // enabled
-        // triggerOffset
+        // module properties
+        offset.setValue(triggerGroup.getTriggerOffset());
+        offset.setMinValue(0);
+        offset.setMaxValue(100);
+        offset.addPropertyChangeListener("number", offsetPropertyChanged);
+        offset.setBounds(15, 25, 40, 20);
+
+        JLabel offsetText = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_OFFSET));
+        offsetText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
+        offsetText.setBounds(60, 25, 120, 21);
+        
+        enabled.setSelected(triggerGroup.isEnabled());
+        enabled.addItemListener(enabledItemListener);
+        enabled.setFocusPainted(false);
+        enabled.setBounds(25, 55, 20, 20);
+
+        JLabel enableText = new JLabel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_LINE_VISIBLE));
+        enableText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
+        enableText.setBounds(60, 55, 120, 23);
+
+        TitledPanel modulePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_ENABLED));
+        modulePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 90));
+        modulePanel.add(offset);
+        modulePanel.add(offsetText);
+        modulePanel.add(enabled);
+        modulePanel.add(enableText);
         
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
@@ -94,6 +144,7 @@ public class TriggerGroupProperties extends JPanel {
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(commonPanel);
+        contentPanel.add(modulePanel);
         
         JScrollPane scrollPanel = new JScrollPane();
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
@@ -142,11 +193,13 @@ public class TriggerGroupProperties extends JPanel {
 
     private void reload() {
         // reload common properties
-        if (!triggerGroupNameTextField.getText().equals(triggerGroup.getTriggerGroupName())) {
-            triggerGroupNameTextField.setText(triggerGroup.getTriggerGroupName());
-            triggerGroupNameTextField.setCaretPosition(0);
-        }
+        triggerGroupNameTextField.setText(triggerGroup.getTriggerGroupName());
+        triggerGroupNameTextField.setCaretPosition(0);
         
+        // reload module properties
+        offset.setValue(triggerGroup.getTriggerOffset());
+        enabled.setSelected(triggerGroup.isEnabled());
+
         // reload trigger group properties
         xref.propertiesPanel.setCard(Propertie.TRIGGER_GROUP);
     } 

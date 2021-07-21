@@ -83,7 +83,9 @@ public class TimeTextField extends JTextField {
         private final Runnable task = new Runnable() {
             @Override
             public void run() {
-                updateTime();
+                if (!time.equals(getText())) {
+                    updateTime();                   
+                }
             }
         };
         
@@ -132,6 +134,14 @@ public class TimeTextField extends JTextField {
         this.initialize();
     }
 
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
+
+    public void setText(long time) {
+        setText(Scope.timeFormaterToString(time));
+    }
+    
     /*********************************/
     /******** private method *********/
     /*********************************/

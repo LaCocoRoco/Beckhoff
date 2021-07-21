@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingWorker;
 
 import twincat.TwincatLogger;
+import twincat.Utilities;
 import twincat.ads.common.RouteSymbolData;
 import twincat.ads.common.Symbol;
 import twincat.ads.constant.AmsPort;
@@ -22,10 +23,6 @@ import twincat.ads.worker.SymbolLoader;
 import twincat.app.common.AxisAcquisition;
 import twincat.app.components.ScrollablePanel;
 import twincat.app.components.WrapLayout;
-import twincat.app.constant.Browser;
-import twincat.app.constant.Navigation;
-import twincat.app.constant.Propertie;
-import twincat.app.constant.Window;
 import twincat.scope.Acquisition;
 import twincat.scope.Axis;
 import twincat.scope.Channel;
@@ -48,15 +45,15 @@ public class AxisPanel extends JScrollPane {
     /*********************************/
 
     private static final int BUTTON_WIDTH = 150;
-    
+
     private static final int BUTTON_HEIGHT = 60;
-    
+
     private static final int MAX_TEXT_LENGTH = 40;
-    
+
     private static final String HTML_PREPEND = "<html><div style='text-align: center;'>";
 
     private static final String HTML_APPEND = "</div></html>";
-    
+
     /*********************************/
     /****** local final variable *****/
     /*********************************/
@@ -71,7 +68,7 @@ public class AxisPanel extends JScrollPane {
 
     public AxisPanel(XReference xref) {
         this.xref = xref;
-        
+
         ScrollablePanel scrollablePanel = new ScrollablePanel(new WrapLayout(FlowLayout.LEADING));
         scrollablePanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
 
@@ -96,7 +93,7 @@ public class AxisPanel extends JScrollPane {
 
                 String axisName = symbolName.substring(rangeBeg + 1, rangeEnd);
                 String axisSymbolName = symbolName.substring(0, rangeEnd);
-                
+
                 if (!axisNameList.contains(axisName)) {
                     // build axis acquisition
                     AxisAcquisition axisAcquisition = new AxisAcquisition();
@@ -111,33 +108,38 @@ public class AxisPanel extends JScrollPane {
                     JButton axisButton = new JButton();
                     StringBuilder stringBuilder = new StringBuilder(axisName);
 
-                    if (stringBuilder.length() > MAX_TEXT_LENGTH)  {
+                    if (stringBuilder.length() > MAX_TEXT_LENGTH) {
                         stringBuilder.delete(MAX_TEXT_LENGTH, stringBuilder.length());
                     }
-                    
+
                     stringBuilder.insert(0, HTML_PREPEND);
-                    stringBuilder.append(HTML_APPEND);  
-     
+                    stringBuilder.append(HTML_APPEND);
+
                     axisButton.setText(stringBuilder.toString());
                     axisButton.setFocusPainted(false);
                     axisButton.setContentAreaFilled(false);
                     axisButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 
-                    axisButton.addActionListener(new ActionListener() {      
+                    axisButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent actionEvent) {
+
                             new SwingWorker<Void, Void>() {
                                 @Override
                                 protected Void doInBackground() throws Exception {
-                                    // build axis scope process
-                                    buildAxisScope(axisAcquisition);
+                                    try {
+                                        buildAxisScope(axisAcquisition);
+                                    } catch (Exception e) {
+                                        logger.fine(Utilities.exceptionToString(e));
+                                    }
+
                                     return null;
                                 }
-                            }.execute();; 
+                            }.execute();
                         }
                     });
 
-                    scrollablePanel.add(axisButton); 
+                    scrollablePanel.add(axisButton);
                 }
             }
         }
@@ -150,12 +152,6 @@ public class AxisPanel extends JScrollPane {
     /*********************************/
 
     private void buildAxisScope(AxisAcquisition axisAcquisition) {
-        // display scope view
-        xref.browserPanel.setCard(Browser.SCOPE);
-        xref.propertiesPanel.setCard(Propertie.EMPTY);
-        xref.windowPanel.setCard(Window.SCOPE);
-        xref.navigationPanel.setCard(Navigation.CHART);
-        
         // scope
         Scope scope = new Scope();
         scope.setScopeName(axisAcquisition.getAxisName());
@@ -176,7 +172,7 @@ public class AxisPanel extends JScrollPane {
         // acquisition ACTVELO
         String actVeloSymbolName = axisAcquisition.getAxisSymbolName() + ".ACTVELO";
         logger.fine(actVeloSymbolName);
-        
+
         Acquisition acquisitionActVelo = new Acquisition();
         acquisitionActVelo.setSampleTime(1);
         acquisitionActVelo.setSymbolBased(true);
@@ -189,29 +185,31 @@ public class AxisPanel extends JScrollPane {
         channelActVelo.setAcquisition(acquisitionActVelo);
         channelActVelo.setChannelName("ACTVELO");
         channelActVelo.setLineColor(Color.RED);
+        channelActVelo.setPlotColor(Color.RED);
 
         // acquisition SETVELO
         String setVeloSymbolName = axisAcquisition.getAxisSymbolName() + ".SETVELO";
         logger.fine(setVeloSymbolName);
-        
+
         Acquisition acquisitionSetVelo = new Acquisition();
         acquisitionSetVelo.setSampleTime(1);
         acquisitionSetVelo.setSymbolBased(true);
         acquisitionSetVelo.setSymbolName(setVeloSymbolName);
         acquisitionSetVelo.setAmsNetId(axisAcquisition.getAmsNetId());
         acquisitionSetVelo.setAmsPort(axisAcquisition.getAmsPort());
-        
+
         // channel SETVELO
         Channel channelSetVelo = new Channel();
         channelSetVelo.setAcquisition(acquisitionSetVelo);
         channelSetVelo.setChannelName("SETVELO");
         channelSetVelo.setLineColor(Color.GREEN);
-
+        channelSetVelo.setPlotColor(Color.GREEN);
+        
         // add VELO to chart
         chart.addAxis(axisVelo);
         axisVelo.addChannel(channelActVelo);
-        axisVelo.addChannel(channelSetVelo); 
-        
+        axisVelo.addChannel(channelSetVelo);
+
         // axis POS
         Axis axisPosition = new Axis();
         axisPosition.setAxisName("Pos");
@@ -219,42 +217,44 @@ public class AxisPanel extends JScrollPane {
         // acquisition ACTPOS
         String actPosSymbolName = axisAcquisition.getAxisSymbolName() + ".ACTPOS";
         logger.fine(actPosSymbolName);
-        
+
         Acquisition acquisitionActPos = new Acquisition();
         acquisitionActPos.setSampleTime(1);
         acquisitionActPos.setSymbolBased(true);
         acquisitionActPos.setSymbolName(actPosSymbolName);
         acquisitionActPos.setAmsNetId(axisAcquisition.getAmsNetId());
         acquisitionActPos.setAmsPort(axisAcquisition.getAmsPort());
-        
+
         // channel ACTPOS
         Channel channelActPos = new Channel();
         channelActPos.setAcquisition(acquisitionActPos);
         channelActPos.setChannelName("ACTPOS");
         channelActPos.setLineColor(Color.ORANGE);
+        channelActPos.setPlotColor(Color.ORANGE);
 
         // acquisition SETPOS
         String setPosSymbolName = axisAcquisition.getAxisSymbolName() + ".SETPOS";
         logger.fine(setPosSymbolName);
-        
+
         Acquisition acquisitionSetPos = new Acquisition();
         acquisitionSetPos.setSampleTime(1);
         acquisitionSetPos.setSymbolBased(true);
         acquisitionSetPos.setSymbolName(setPosSymbolName);
         acquisitionSetPos.setAmsNetId(axisAcquisition.getAmsNetId());
         acquisitionSetPos.setAmsPort(axisAcquisition.getAmsPort());
-        
+
         // channel SETPOS
         Channel channelSetPos = new Channel();
         channelSetPos.setAcquisition(acquisitionSetPos);
         channelSetPos.setChannelName("SETPOS");
         channelSetPos.setLineColor(Color.CYAN);
+        channelActPos.setPlotColor(Color.CYAN);
 
         // add POS to chart
         chart.addAxis(axisPosition);
         axisPosition.addChannel(channelActPos);
-        axisPosition.addChannel(channelSetPos); 
-        
+        axisPosition.addChannel(channelSetPos);
+
         // axis ACCEL
         Axis axisAcceleration = new Axis();
         axisAcceleration.setAxisName("Accel");
@@ -262,42 +262,44 @@ public class AxisPanel extends JScrollPane {
         // acquisition ACTACC
         String actAccSymbolName = axisAcquisition.getAxisSymbolName() + ".ACTACC";
         logger.fine(actAccSymbolName);
-        
+
         Acquisition acquisitionActAcc = new Acquisition();
         acquisitionActAcc.setSampleTime(1);
         acquisitionActAcc.setSymbolBased(true);
         acquisitionActAcc.setSymbolName(actAccSymbolName);
         acquisitionActAcc.setAmsNetId(axisAcquisition.getAmsNetId());
         acquisitionActAcc.setAmsPort(axisAcquisition.getAmsPort());
-        
+
         // channel ACTACC
         Channel channelActAcc = new Channel();
         channelActAcc.setAcquisition(acquisitionActAcc);
         channelActAcc.setChannelName("ACTACC");
         channelActAcc.setLineColor(Color.MAGENTA);
+        channelActPos.setPlotColor(Color.MAGENTA);
 
         // acquisition SETACC
         String setAccSymbolName = axisAcquisition.getAxisSymbolName() + ".SETACC";
         logger.fine(setAccSymbolName);
-        
+
         Acquisition acquisitionSetAcc = new Acquisition();
         acquisitionSetAcc.setSampleTime(1);
         acquisitionSetAcc.setSymbolBased(true);
         acquisitionSetAcc.setSymbolName(setAccSymbolName);
         acquisitionSetAcc.setAmsNetId(axisAcquisition.getAmsNetId());
         acquisitionSetAcc.setAmsPort(axisAcquisition.getAmsPort());
-        
+
         // channel SETACC
         Channel channelSetAcc = new Channel();
         channelSetAcc.setAcquisition(acquisitionSetAcc);
         channelSetAcc.setChannelName("SETACC");
         channelSetAcc.setLineColor(Color.BLACK);
+        channelActPos.setPlotColor(Color.BLACK);
 
         // add ACC to chart
         chart.addAxis(axisAcceleration);
         axisAcceleration.addChannel(channelActAcc);
-        axisAcceleration.addChannel(channelSetAcc); 
-        
+        axisAcceleration.addChannel(channelSetAcc);
+
         // axis POSDIFF
         Axis axisPosDiff = new Axis();
         axisPosDiff.setAxisName("PosDiff");
@@ -305,19 +307,20 @@ public class AxisPanel extends JScrollPane {
         // acquisition POSDIFF
         String posDiffSymbolName = axisAcquisition.getAxisSymbolName() + ".POSDIFF";
         logger.fine(posDiffSymbolName);
-        
+
         Acquisition acquisitionPosDiff = new Acquisition();
         acquisitionPosDiff.setSampleTime(1);
         acquisitionPosDiff.setSymbolBased(true);
         acquisitionPosDiff.setSymbolName(posDiffSymbolName);
         acquisitionPosDiff.setAmsNetId(axisAcquisition.getAmsNetId());
         acquisitionPosDiff.setAmsPort(axisAcquisition.getAmsPort());
-        
+
         // channel POSDIFF
         Channel channelPosDiff = new Channel();
         channelPosDiff.setAcquisition(acquisitionPosDiff);
         channelPosDiff.setChannelName("POSDIFF");
         channelPosDiff.setLineColor(Color.BLUE);
+        channelPosDiff.setPlotColor(Color.BLUE);
 
         // add POS to chart
         chart.addAxis(axisPosDiff);
@@ -327,7 +330,7 @@ public class AxisPanel extends JScrollPane {
         TriggerChannel triggerChannelSetVelo = new TriggerChannel();
         triggerChannelSetVelo.setChannel(channelSetVelo);
         triggerChannelSetVelo.setThreshold(0.1);
-        
+
         // trigger group
         TriggerGroup triggerGroup = new TriggerGroup();
         triggerGroup.addTriggerChannel(triggerChannelSetVelo);

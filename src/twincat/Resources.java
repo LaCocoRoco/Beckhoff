@@ -179,21 +179,24 @@ public class Resources {
 
     public static final String TEXT_CHANNEL_PROPERTIES_COLOR = "channelPropertiesColor";
 
-    public static final String TEXT_CHANNEL_PROPERTIES_LINE_STYLE = "channelPropertiesLineStyle";
+    public static final String TEXT_CHANNEL_PROPERTIES_LINE_COLOR = "channelPropertiesLineColor";
 
-    public static final String TEXT_CHANNEL_PROPERTIES_PLOT_STYLE = "channelPropertiesPlotStyle";
+    public static final String TEXT_CHANNEL_PROPERTIES_PLOT_COLOR = "channelPropertiesPlotColor";
 
-       
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    public static final String TEXT_CHANNEL_PROPERTIES_ANTIALIAS = "channelPropertiesAntialias";
 
+    public static final String TEXT_CHANNEL_PROPERTIES_STYLE = "channelPropertiesStyle";
+
+    public static final String TEXT_CHANNEL_PROPERTIES_LINE_WIDTH = "channelPropertiesLineWidth";
+
+    public static final String TEXT_CHANNEL_PROPERTIES_PLOT_SIZE = "channelPropertiesPlotSize";
+    
+    public static final String TEXT_CHANNEL_PROPERTIES_LINE_VISIBLE = "channelPropertiesLineVisible";
+
+    public static final String TEXT_CHANNEL_PROPERTIES_PLOT_VISIBLE = "channelPropertiesPlotVisible";
+
+    
+    
     public static final String TEXT_ACQUISITION_PROPERTIES_TITLE = "acquisitionPropertiesTitle";
 
     public static final String TEXT_ACQUISITION_PROPERTIES_APPLY = "acquisitionPropertiesApply";
@@ -227,10 +230,24 @@ public class Resources {
     public static final String TEXT_TRIGGER_GROUP_PROPERTIES_TITLE = "triggerGroupPropertiesTitle";
     
     public static final String TEXT_TRIGGER_GROUP_PROPERTIES_COMMON = "triggerGroupPropertiesCommon";
+    
+    public static final String TEXT_TRIGGER_GROUP_PROPERTIES_MODULE = "triggerGroupPropertiesModule";
 
+    public static final String TEXT_TRIGGER_GROUP_PROPERTIES_OFFSET = "triggerGroupPropertiesOffset";
+
+    public static final String TEXT_TRIGGER_GROUP_PROPERTIES_ENABLED = "triggerGroupPropertiesEnabled";
 
     
+    
     public static final String TEXT_TRIGGER_CHANNEL_PROPERTIES_TITLE = "triggerChannelPropertiesTitle";
+
+    public static final String TEXT_TRIGGER_CHANNEL_PROPERTIES_TRIGGER = "triggerChannelPropertiesTrigger";
+
+    public static final String TEXT_TRIGGER_CHANNEL_PROPERTIES_COMBINE = "triggerChannelPropertiesCombine";
+
+    public static final String TEXT_TRIGGER_CHANNEL_PROPERTIES_RELEASE = "triggerChannelPropertiesRelease";
+
+    public static final String TEXT_TRIGGER_CHANNEL_PROPERTIES_THRESHOLD = "triggerChannelPropertiesThreshold";
 
     
     

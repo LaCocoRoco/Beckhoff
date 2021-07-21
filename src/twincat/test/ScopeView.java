@@ -166,7 +166,7 @@ public class ScopeView {
         Channel channel1 = new Channel();
         channel1.setAcquisition(acquisition1);
         channel1.setChannelName("Channel1");
-        channel1.setChannelVisible(true);
+        channel1.setLineVisible(true);
         channel1.setAntialias(true);
         channel1.setLineColor(Color.RED);
         channel1.setLineWidth(1);
@@ -179,7 +179,7 @@ public class ScopeView {
         Channel channel2 = new Channel();
         channel2.setAcquisition(acquisition2);
         channel2.setChannelName("Channel2");
-        channel2.setChannelVisible(true);
+        channel2.setLineVisible(true);
         channel2.setAntialias(true);
         channel2.setLineColor(Color.BLACK);
         channel2.setLineWidth(1);
@@ -192,7 +192,7 @@ public class ScopeView {
         Channel channel3 = new Channel();
         channel3.setAcquisition(acquisition3);
         channel3.setChannelName("Channel3");
-        channel3.setChannelVisible(true);
+        channel3.setLineVisible(true);
         channel3.setAntialias(true);
         channel3.setLineColor(Color.BLUE);
         channel3.setLineWidth(1);
@@ -205,7 +205,7 @@ public class ScopeView {
         Channel channel4 = new Channel();
         channel4.setAcquisition(acquisition4);
         channel4.setChannelName("Channel4");
-        channel4.setChannelVisible(true);
+        channel4.setLineVisible(true);
         channel4.setAntialias(true);
         channel4.setLineColor(Color.ORANGE);
         channel4.setLineWidth(1);
@@ -218,7 +218,7 @@ public class ScopeView {
         Channel channel5 = new Channel();
         channel5.setAcquisition(acquisition5);
         channel5.setChannelName("Channel5");
-        channel5.setChannelVisible(true);
+        channel5.setLineVisible(true);
         channel5.setAntialias(false);
         channel5.setLineColor(Color.GREEN);
         channel5.setLineWidth(1);
@@ -231,7 +231,7 @@ public class ScopeView {
         Channel channel6 = new Channel();
         channel6.setAcquisition(acquisition6);
         channel6.setChannelName("Channel6");
-        channel2.setChannelVisible(true);
+        channel2.setLineVisible(true);
         channel6.setAntialias(false);
         channel6.setLineColor(Color.GRAY);
         channel6.setLineWidth(1);
@@ -244,7 +244,7 @@ public class ScopeView {
         Channel channel7 = new Channel();
         channel7.setAcquisition(acquisition7);
         channel7.setChannelName("Channel7");
-        channel7.setChannelVisible(true);
+        channel7.setLineVisible(true);
         channel7.setAntialias(false);
         channel7.setLineColor(Color.MAGENTA);
         channel7.setLineWidth(1);
@@ -257,7 +257,7 @@ public class ScopeView {
         Channel channel8 = new Channel();
         channel8.setAcquisition(acquisition8);
         channel8.setChannelName("Channel8");
-        channel8.setChannelVisible(true);
+        channel8.setLineVisible(true);
         channel8.setAntialias(false);
         channel8.setLineColor(Color.WHITE);
         channel8.setLineWidth(1);

@@ -57,8 +57,8 @@ public class ScopeProperties extends JPanel {
     private PropertyChangeListener recordTimePropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            TimeTextField component = (TimeTextField) propertyChangeEvent.getSource();
-            scope.setRecordTime(component.getText());
+            TimeTextField timeTextField = (TimeTextField) propertyChangeEvent.getSource();
+            scope.setRecordTime(timeTextField.getText());
         }
     };
 
@@ -78,7 +78,7 @@ public class ScopeProperties extends JPanel {
             /* empty */
         }
     };
-    
+
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -122,7 +122,7 @@ public class ScopeProperties extends JPanel {
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
         scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
-        
+
         JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_TITLE));
         textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
@@ -164,14 +164,12 @@ public class ScopeProperties extends JPanel {
 
     private void reload() {
         // reload common properties
-        if (!scopeName.getText().equals(scope.getScopeName())) {
-            scopeName.setText(scope.getScopeName());
-            scopeName.setCaretPosition(0);
-        }
+        scopeName.setText(scope.getScopeName());
+        scopeName.setCaretPosition(0);
 
         // reload record mode properties
-        recordTimeTextField.setText(Scope.timeFormaterToString(scope.getRecordTime()));
-        
+        recordTimeTextField.setText(scope.getRecordTime());
+
         // display scope properties
         xref.propertiesPanel.setCard(Propertie.SCOPE);
     }

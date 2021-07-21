@@ -31,6 +31,12 @@ public class TextField extends JTextField {
     private final Font font = new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_NORMAL);
     
     /*********************************/
+    /******** local variable *********/
+    /*********************************/
+
+    private String text = new String();
+   
+    /*********************************/
     /****** predefined variable ******/
     /*********************************/
 
@@ -59,7 +65,10 @@ public class TextField extends JTextField {
 
     private final DocumentListener documentListener = new DocumentListener() {
         private void updateText() {
-            firePropertyChange("text", null, null);
+            if (!text.equals(getText())) {
+                text = getText();
+                firePropertyChange("text", null, null);
+            }
         }
 
         @Override

@@ -29,7 +29,7 @@ public class ScopeApp extends JFrame {
     /*********************************/
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
-    
+
     /*********************************/
     /********** constructor **********/
     /*********************************/

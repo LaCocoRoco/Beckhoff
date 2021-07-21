@@ -5,6 +5,8 @@ public enum DataType {
     /*** global constant variable ****/
     /*********************************/
 
+    VOID        (0x0000, 0x00),
+    
 	BIT			(0x0021, 0x01),
 	BOOL		(0x0021, 0x01),
 	
