@@ -2,6 +2,7 @@ package twincat.app.layer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
@@ -92,10 +93,14 @@ public class ScopeProperties extends JPanel {
         scopeName.addPropertyChangeListener("text", scopeNamePropertyChanged);
         scopeName.setBounds(15, 25, 210, 23);
 
-        TitledPanel commonPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_COMMON));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
-        commonPanel.add(scopeName);
-
+        TitledPanel namePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_NAME));
+        namePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
+        namePanel.add(scopeName);
+        
+        JPanel namePanelContainer = new JPanel();
+        namePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        namePanelContainer.add(namePanel); 
+        
         // record mode properties
         recordTimeTextField.setText(Scope.TIME_FORMAT_MIN_TIME);
         recordTimeTextField.addPropertyChangeListener("time", recordTimePropertyChanged);
@@ -109,27 +114,26 @@ public class ScopeProperties extends JPanel {
         recordTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
         recordTimePanel.add(recordTimeTextField);
         recordTimePanel.add(recordTimeText);
-
+        
+        JPanel recordTimePanelContainer = new JPanel();
+        recordTimePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        recordTimePanelContainer.add(recordTimePanel); 
+        
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
-        contentPanel.add(commonPanel);
-        contentPanel.add(recordTimePanel);
+        contentPanel.add(namePanelContainer);
+        contentPanel.add(recordTimePanelContainer);
 
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
         scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
 
-        JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_TITLE));
-        textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
-        this.add(textHeader, BorderLayout.PAGE_START);
         this.add(scrollPanel, BorderLayout.CENTER);
     }
 

@@ -2,6 +2,7 @@ package twincat.app.layer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -108,10 +109,14 @@ public class TriggerGroupProperties extends JPanel {
         triggerGroupNameTextField.addPropertyChangeListener(triggerChannelNamePropertyChanged);
         triggerGroupNameTextField.setBounds(15, 25, 210, 23);
 
-        TitledPanel commonPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_COMMON));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
-        commonPanel.add(triggerGroupNameTextField);
+        TitledPanel namePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_NAME));
+        namePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
+        namePanel.add(triggerGroupNameTextField);
         
+        JPanel namePanelContainer = new JPanel();
+        namePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        namePanelContainer.add(namePanel); 
+             
         // module properties
         offset.setValue(triggerGroup.getTriggerOffset());
         offset.setMinValue(0);
@@ -128,37 +133,36 @@ public class TriggerGroupProperties extends JPanel {
         enabled.setFocusPainted(false);
         enabled.setBounds(25, 55, 20, 20);
 
-        JLabel enableText = new JLabel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_LINE_VISIBLE));
+        JLabel enableText = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_ENABLED));
         enableText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
         enableText.setBounds(60, 55, 120, 23);
 
-        TitledPanel modulePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_ENABLED));
+        TitledPanel modulePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_MODULE));
         modulePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 90));
         modulePanel.add(offset);
         modulePanel.add(offsetText);
         modulePanel.add(enabled);
         modulePanel.add(enableText);
         
+        JPanel modulePanelContainer = new JPanel();
+        modulePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        modulePanelContainer.add(modulePanel); 
+                  
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
-        contentPanel.add(commonPanel);
-        contentPanel.add(modulePanel);
+        contentPanel.add(namePanelContainer);
+        contentPanel.add(modulePanelContainer);
         
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
         scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
-        
-        JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_TITLE));
-        textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-        
+   
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
-        this.add(textHeader, BorderLayout.PAGE_START);
         this.add(scrollPanel, BorderLayout.CENTER);
     }
 

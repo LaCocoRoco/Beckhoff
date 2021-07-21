@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -172,10 +173,14 @@ public class AxisProperties extends JPanel {
         axisName.addPropertyChangeListener(axisNamePropertyChanged);
         axisName.setBounds(15, 25, 210, 23);
 
-        TitledPanel commonPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_COMMON));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
-        commonPanel.add(axisName);
-
+        TitledPanel namePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_NAME));
+        namePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
+        namePanel.add(axisName);
+        
+        JPanel namePanelContainer = new JPanel();
+        namePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        namePanelContainer.add(namePanel); 
+        
         // color properties
         axisColor.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         axisColor.setBackground(axis.getAxisColor());
@@ -185,13 +190,17 @@ public class AxisProperties extends JPanel {
 
         JLabel axisColorText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_AXIS_COLOR));
         axisColorText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        axisColorText.setBounds(60, 34, 120, 23);
+        axisColorText.setBounds(60, 34, 160, 23);
 
         TitledPanel colorPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_COLOR));
         colorPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 80));
         colorPanel.add(axisColor);
         colorPanel.add(axisColorText);
-
+        
+        JPanel colorPanelContainer = new JPanel();
+        colorPanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        colorPanelContainer.add(colorPanel); 
+        
         // style properties
         lineWidth.setValue(axis.getLineWidth());
         lineWidth.setMinValue(0);
@@ -201,7 +210,7 @@ public class AxisProperties extends JPanel {
 
         JLabel lineWidthText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_LINE_WIDTH));
         lineWidthText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        lineWidthText.setBounds(60, 25, 120, 21);
+        lineWidthText.setBounds(60, 25, 160, 21);
 
         axisNameVisible.setSelected(axis.isAxisNameVisible());
         axisNameVisible.addItemListener(axisNameVisibleItemListener);
@@ -210,7 +219,7 @@ public class AxisProperties extends JPanel {
 
         JLabel axisNameVisibleText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_NAME_VISIBLE));
         axisNameVisibleText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        axisNameVisibleText.setBounds(60, 55, 120, 23);
+        axisNameVisibleText.setBounds(60, 55, 160, 23);
 
         axisVisible.setSelected(axis.isAxisVisible());
         axisVisible.addItemListener(axisVisibleItemListener);
@@ -219,7 +228,7 @@ public class AxisProperties extends JPanel {
 
         JLabel axisVisibleText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_AXIS_VISIBLE));
         axisVisibleText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        axisVisibleText.setBounds(60, 85, 150, 23);
+        axisVisibleText.setBounds(60, 85, 160, 23);
 
         TitledPanel stylePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_STYLE));
         stylePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 120));
@@ -229,7 +238,11 @@ public class AxisProperties extends JPanel {
         stylePanel.add(axisNameVisibleText);
         stylePanel.add(axisVisible);
         stylePanel.add(axisVisibleText);
-
+        
+        JPanel stylePanelContainer = new JPanel();
+        stylePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        stylePanelContainer.add(stylePanel); 
+        
         // scale properties
         valueMin.setValue((long) axis.getValueMin());
         valueMin.setHorizontalAlignment(JTextField.LEFT);
@@ -238,7 +251,7 @@ public class AxisProperties extends JPanel {
 
         JLabel valueMinText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_VALUE_MIN));
         valueMinText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        valueMinText.setBounds(145, 25, 60, 23);
+        valueMinText.setBounds(145, 25, 160, 23);
 
         valueMax.setValue((long) axis.getValueMax());
         valueMax.setHorizontalAlignment(JTextField.LEFT);
@@ -247,7 +260,7 @@ public class AxisProperties extends JPanel {
 
         JLabel valueMaxText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_VALUE_MAX));
         valueMaxText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        valueMaxText.setBounds(145, 55, 60, 23);
+        valueMaxText.setBounds(145, 55, 160, 23);
 
         autoscale.setSelected(axis.isAxisNameVisible());
         autoscale.addItemListener(autoscaleItemListener);
@@ -266,29 +279,28 @@ public class AxisProperties extends JPanel {
         scalePanel.add(valueMaxText);
         scalePanel.add(autoscale);
         scalePanel.add(autoscaleText);
-
+        
+        JPanel scalePanelContainer = new JPanel();
+        scalePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        scalePanelContainer.add(scalePanel); 
+        
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
-        contentPanel.add(commonPanel);
-        contentPanel.add(colorPanel);
-        contentPanel.add(stylePanel);
-        contentPanel.add(scalePanel);
+        contentPanel.add(namePanelContainer);
+        contentPanel.add(colorPanelContainer);
+        contentPanel.add(stylePanelContainer);
+        contentPanel.add(scalePanelContainer);
 
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
         scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
 
-        JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_TITLE));
-        textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
-        this.add(textHeader, BorderLayout.PAGE_START);
         this.add(scrollPanel, BorderLayout.CENTER);
     }
 

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
@@ -146,10 +147,14 @@ public class ChartProperties extends JPanel {
         chartName.addPropertyChangeListener("text", chartNamePropertyChanged);
         chartName.setBounds(15, 25, 210, 23);
 
-        TitledPanel commonPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_COMMON));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
-        commonPanel.add(chartName);
-
+        TitledPanel namePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_NAME));
+        namePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
+        namePanel.add(chartName);
+        
+        JPanel namePanelContainer = new JPanel();
+        namePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        namePanelContainer.add(namePanel); 
+        
         // display time properties
         displayTime.setText(Scope.TIME_FORMAT_MIN_TIME);
         displayTime.addPropertyChangeListener("time", displayTimePropertyChanged);
@@ -157,13 +162,17 @@ public class ChartProperties extends JPanel {
 
         JLabel displayTimeText = new JLabel("[" + Scope.TIME_FORMAT_TEMPLATE + "]");
         displayTimeText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        displayTimeText.setBounds(125, 24, 120, 23);
+        displayTimeText.setBounds(125, 24, 160, 23);
 
         TitledPanel displayTimePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_DISPLAY_TIME));
         displayTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
         displayTimePanel.add(displayTime);
         displayTimePanel.add(displayTimeText);
-
+        
+        JPanel displayTimePanelContainer = new JPanel();
+        displayTimePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        displayTimePanelContainer.add(displayTimePanel); 
+        
         // color properties
         borderColor.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         borderColor.setBackground(chart.getBorderColor());
@@ -191,7 +200,11 @@ public class ChartProperties extends JPanel {
         colorPanel.add(borderColorText);
         colorPanel.add(chartColor);
         colorPanel.add(chartColorText);
-
+        
+        JPanel colorPanelContainer = new JPanel();
+        colorPanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        colorPanelContainer.add(colorPanel); 
+        
         // style properties
         lineWidth.setValue(chart.getLineWidth());
         lineWidth.setMinValue(0);
@@ -201,7 +214,7 @@ public class ChartProperties extends JPanel {
 
         JLabel lineWidthText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_LINE_WIDTH));
         lineWidthText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        lineWidthText.setBounds(60, 25, 120, 21);
+        lineWidthText.setBounds(60, 25, 160, 21);
 
         timeTickCount.setValue(chart.getTimeTickCount());
         timeTickCount.setMinValue(0);
@@ -211,7 +224,7 @@ public class ChartProperties extends JPanel {
 
         JLabel timeTickCountText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_TIME_TICK_COUNT));
         timeTickCountText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        timeTickCountText.setBounds(60, 55, 120, 21);
+        timeTickCountText.setBounds(60, 55, 160, 21);
 
         axisTickCount.setValue(chart.getAxisTickCount());
         axisTickCount.setMinValue(0);
@@ -221,7 +234,7 @@ public class ChartProperties extends JPanel {
 
         JLabel axisTickCountText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_AXIS_TICK_COUNT));
         axisTickCountText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        axisTickCountText.setBounds(60, 85, 120, 21);
+        axisTickCountText.setBounds(60, 85, 160, 21);
 
         TitledPanel stylePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_STYLE));
         stylePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 120));
@@ -231,29 +244,28 @@ public class ChartProperties extends JPanel {
         stylePanel.add(timeTickCountText);
         stylePanel.add(axisTickCount);
         stylePanel.add(axisTickCountText);
-
+        
+        JPanel stylePanelContainer = new JPanel();
+        stylePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        stylePanelContainer.add(stylePanel); 
+        
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
-        contentPanel.add(commonPanel);
-        contentPanel.add(displayTimePanel);
-        contentPanel.add(colorPanel);
-        contentPanel.add(stylePanel);
+        contentPanel.add(namePanelContainer);
+        contentPanel.add(displayTimePanelContainer);
+        contentPanel.add(colorPanelContainer);
+        contentPanel.add(stylePanelContainer);
 
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
         scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
 
-        JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_TITLE));
-        textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
-        this.add(textHeader, BorderLayout.PAGE_START);
         this.add(scrollPanel, BorderLayout.CENTER);
     }
 

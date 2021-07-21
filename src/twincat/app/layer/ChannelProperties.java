@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -167,10 +168,14 @@ public class ChannelProperties extends JPanel {
         channelNameTextField.addPropertyChangeListener(channelNamePropertyChanged);
         channelNameTextField.setBounds(15, 25, 210, 23);
 
-        TitledPanel commonPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_COMMON));
-        commonPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
-        commonPanel.add(channelNameTextField);
-
+        TitledPanel namePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_NAME));
+        namePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
+        namePanel.add(channelNameTextField);
+        
+        JPanel namePanelContainer = new JPanel();
+        namePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        namePanelContainer.add(namePanel);
+        
         // color properties
         lineColor.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         lineColor.setBackground(channel.getLineColor());
@@ -198,6 +203,10 @@ public class ChannelProperties extends JPanel {
         colorPanel.add(lineColorText);     
         colorPanel.add(plotColor);
         colorPanel.add(plotColorText); 
+       
+        JPanel colorPanelContainer = new JPanel();
+        colorPanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        colorPanelContainer.add(colorPanel);
         
         // line style properties
         lineWidth.setValue(channel.getLineWidth());
@@ -232,23 +241,23 @@ public class ChannelProperties extends JPanel {
         plotVisible.setSelected(channel.isPlotVisible());
         plotVisible.addItemListener(plotVisibleItemListener);
         plotVisible.setFocusPainted(false);
-        plotVisible.setBounds(25, 110, 20, 20);
+        plotVisible.setBounds(25, 115, 20, 20);
 
         JLabel plotVisibleText = new JLabel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_PLOT_VISIBLE));
         plotVisibleText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        plotVisibleText.setBounds(60, 110, 120, 23);
+        plotVisibleText.setBounds(60, 115, 120, 23);
         
         antialias.setSelected(channel.isAntialias());
         antialias.addItemListener(antialiasItemListener);
         antialias.setFocusPainted(false);
-        antialias.setBounds(25, 135, 20, 20);
+        antialias.setBounds(25, 145, 20, 20);
 
         JLabel antialiasText = new JLabel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_ANTIALIAS));
         antialiasText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        antialiasText.setBounds(60, 135, 120, 23);
+        antialiasText.setBounds(60, 145, 120, 23);
  
         TitledPanel stylePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_STYLE));
-        stylePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 169));
+        stylePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 180));
         stylePanel.add(lineWidth);
         stylePanel.add(lineWidthText);
         stylePanel.add(plotSize);
@@ -260,27 +269,26 @@ public class ChannelProperties extends JPanel {
         stylePanel.add(antialias);
         stylePanel.add(antialiasText);   
         
+        JPanel stylePanelContainer = new JPanel();
+        stylePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        stylePanelContainer.add(stylePanel);
+        
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
-        contentPanel.add(commonPanel);
-        contentPanel.add(colorPanel);
-        contentPanel.add(stylePanel);
+        contentPanel.add(namePanelContainer);
+        contentPanel.add(colorPanelContainer);
+        contentPanel.add(stylePanelContainer);
 
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
         scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
 
-        JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_CHANNEL_PROPERTIES_TITLE));
-        textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
-        this.add(textHeader, BorderLayout.PAGE_START);
         this.add(scrollPanel, BorderLayout.CENTER);
     }
 

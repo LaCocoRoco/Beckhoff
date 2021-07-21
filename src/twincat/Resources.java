@@ -117,17 +117,13 @@ public class Resources {
  
  
 
-    public static final String TEXT_SCOPE_PROPERTIES_TITLE = "scopePropertiesTitle";
-    
-    public static final String TEXT_SCOPE_PROPERTIES_COMMON = "scopePropertiesCommon";
+    public static final String TEXT_SCOPE_PROPERTIES_NAME = "scopePropertiesName";
       
     public static final String TEXT_SCOPE_PROPERTIES_RECORD_TIME = "scopePropertiesRecordTime";
     
     
-    
-    public static final String TEXT_CHART_PROPERTIES_TITLE = "chartPropertiesTitle";
-    
-    public static final String TEXT_CHART_PROPERTIES_COMMON = "chartPropertiesCommon";
+
+    public static final String TEXT_CHART_PROPERTIES_NAME = "chartPropertiesName";
       
     public static final String TEXT_CHART_PROPERTIES_DISPLAY_TIME = "chartPropertiesDisplayTime";
 
@@ -146,10 +142,8 @@ public class Resources {
     public static final String TEXT_CHART_PROPERTIES_AXIS_TICK_COUNT= "chartPropertiesAxisTickCount";    
     
     
-    
-    public static final String TEXT_AXIS_PROPERTIES_TITLE = "axisPropertiesTitle";
 
-    public static final String TEXT_AXIS_PROPERTIES_COMMON = "axisPropertiesCommon";
+    public static final String TEXT_AXIS_PROPERTIES_NAME = "axisPropertiesName";
 
     public static final String TEXT_AXIS_PROPERTIES_COLOR = "axisPropertiesColor";
 
@@ -173,9 +167,7 @@ public class Resources {
    
     
 
-    public static final String TEXT_CHANNEL_PROPERTIES_TITLE = "channelPropertiesTitle";
-
-    public static final String TEXT_CHANNEL_PROPERTIES_COMMON = "channelPropertiesCommon";
+    public static final String TEXT_CHANNEL_PROPERTIES_NAME = "channelPropertiesName";
 
     public static final String TEXT_CHANNEL_PROPERTIES_COLOR = "channelPropertiesColor";
 
@@ -197,8 +189,6 @@ public class Resources {
 
     
     
-    public static final String TEXT_ACQUISITION_PROPERTIES_TITLE = "acquisitionPropertiesTitle";
-
     public static final String TEXT_ACQUISITION_PROPERTIES_APPLY = "acquisitionPropertiesApply";
 
     public static final String TEXT_ACQUISITION_PROPERTIES_TARGET = "acquisitionPropertiesTarget";
@@ -226,10 +216,8 @@ public class Resources {
     public static final String TEXT_ACQUISITION_PROPERTIES_INDEX_OFFSET = "acquisitionPropertiesIndexOffset";
         
     
-  
-    public static final String TEXT_TRIGGER_GROUP_PROPERTIES_TITLE = "triggerGroupPropertiesTitle";
-    
-    public static final String TEXT_TRIGGER_GROUP_PROPERTIES_COMMON = "triggerGroupPropertiesCommon";
+
+    public static final String TEXT_TRIGGER_GROUP_PROPERTIES_NAME = "triggerGroupPropertiesName";
     
     public static final String TEXT_TRIGGER_GROUP_PROPERTIES_MODULE = "triggerGroupPropertiesModule";
 
@@ -238,8 +226,8 @@ public class Resources {
     public static final String TEXT_TRIGGER_GROUP_PROPERTIES_ENABLED = "triggerGroupPropertiesEnabled";
 
     
-    
-    public static final String TEXT_TRIGGER_CHANNEL_PROPERTIES_TITLE = "triggerChannelPropertiesTitle";
+
+    public static final String TEXT_TRIGGER_CHANNEL_PROPERTIES_NAME = "triggerChannelPropertiesName";
 
     public static final String TEXT_TRIGGER_CHANNEL_PROPERTIES_TRIGGER = "triggerChannelPropertiesTrigger";
 

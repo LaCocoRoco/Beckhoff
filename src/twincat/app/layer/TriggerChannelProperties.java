@@ -2,6 +2,7 @@ package twincat.app.layer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -23,6 +24,7 @@ import twincat.Resources;
 import twincat.app.components.ComboBox;
 import twincat.app.components.NumberTextField;
 import twincat.app.components.ScrollablePanel;
+import twincat.app.components.TextField;
 import twincat.app.components.TitledPanel;
 import twincat.app.constant.Propertie;
 import twincat.scope.TriggerChannel;
@@ -49,6 +51,8 @@ public class TriggerChannelProperties extends JPanel {
     /*********************************/
 
     private final JScrollPane scrollPanel = new JScrollPane();
+    
+    private final TextField triggerChannelNameTextField = new TextField();
 
     private final ComboBox combine = new ComboBox();
 
@@ -61,6 +65,14 @@ public class TriggerChannelProperties extends JPanel {
     /*********************************/
     /****** predefined variable ******/
     /*********************************/
+
+    private PropertyChangeListener triggerChannelNamePropertyChanged = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+            triggerChannel.getChannel().setChannelName(triggerChannelNameTextField.getText());
+            xref.scopeBrowser.reloadSelectedTreeNode();
+        }
+    };
 
     private final ItemListener combineItemListener = new ItemListener() {
         @Override
@@ -112,7 +124,18 @@ public class TriggerChannelProperties extends JPanel {
     public TriggerChannelProperties(XReference xref) {
         this.xref = xref;
 
-        // TODO : name of channel
+        // common properties
+        triggerChannelNameTextField.setText(triggerChannel.getChannel().getChannelName());
+        triggerChannelNameTextField.addPropertyChangeListener(triggerChannelNamePropertyChanged);
+        triggerChannelNameTextField.setBounds(15, 25, 210, 23);
+
+        TitledPanel namePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_NAME));
+        namePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
+        namePanel.add(triggerChannelNameTextField);
+        
+        JPanel namePanelContainer = new JPanel();
+        namePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        namePanelContainer.add(namePanel);
         
         // build trigger combo box
         buildTriggerComboBox();
@@ -135,11 +158,11 @@ public class TriggerChannelProperties extends JPanel {
         threshold.setValue((int) triggerChannel.getThreshold());
         threshold.setHorizontalAlignment(JTextField.LEFT);
         threshold.addPropertyChangeListener("number", thresholdPropertyChanged);
-        threshold.setBounds(20, 130, 120, 23);
+        threshold.setBounds(20, 130, 90, 23);
 
         JLabel thresholdText = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_THRESHOLD));
         thresholdText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        thresholdText.setBounds(150, 130, 80, 23);
+        thresholdText.setBounds(150, 130, 110, 23);
 
         TitledPanel triggerPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_TRIGGER));
         triggerPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 170));
@@ -149,26 +172,26 @@ public class TriggerChannelProperties extends JPanel {
         triggerPanel.add(releaseLabel);
         triggerPanel.add(threshold);
         triggerPanel.add(thresholdText);
-
+        
+        JPanel triggerPanelContainer = new JPanel();
+        triggerPanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        triggerPanelContainer.add(triggerPanel); 
+        
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
-        contentPanel.add(triggerPanel);
+        contentPanel.add(namePanelContainer);
+        contentPanel.add(triggerPanelContainer);
 
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
         scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
 
-        JLabel textHeader = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_TITLE));
-        textHeader.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
-        textHeader.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
-        this.add(textHeader, BorderLayout.PAGE_START);
         this.add(scrollPanel, BorderLayout.CENTER);
     }
 
@@ -202,6 +225,10 @@ public class TriggerChannelProperties extends JPanel {
     /*********************************/
 
     private void reload() {
+        // reload common properties
+        triggerChannelNameTextField.setText(triggerChannel.getChannel().getChannelName());
+        triggerChannelNameTextField.setCaretPosition(0);
+        
         // reload trigger properties
         if (triggerChannel.getCombine() == Combine.AND) {
             combine.setSelectedIndex(0);
