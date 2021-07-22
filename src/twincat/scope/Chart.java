@@ -14,7 +14,6 @@ import java.awt.Transparency;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.VolatileImage;
-import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,8 +25,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
-
-import com.sun.management.OperatingSystemMXBean;
 
 import twincat.TwincatLogger;
 import twincat.Utilities;
@@ -585,7 +582,7 @@ public class Chart extends Observable {
         boolean updateStatic = false;
         boolean updateDynamic = false;
         boolean updatePerformance = false;
-
+ 
         if (!Chart.isVolatileImageOk(image)) updateStatic = true;
         if (!Chart.isVolatileImageOk(staticImage)) updateStatic = true;
         if (!Chart.isVolatileImageOk(dynamicImage)) updateStatic = true;
@@ -865,13 +862,7 @@ public class Chart extends Observable {
             graphics.setColor(Color.BLACK);
             graphics.setFont(font);
 
-            OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-
             graphics.drawString("General Data", debugPositionX, debugPositionY += 15);
-
-            graphics.drawString("CPULoad:", debugPositionX, debugPositionY += 15);
-            String cpuLoadText = Integer.toString((int) (osBean.getProcessCpuLoad() * 100));
-            graphics.drawString(cpuLoadText, debugPositionX + 110, debugPositionY);
 
             graphics.drawString("RefreshRate:", debugPositionX, debugPositionY += 15);
             String deltaTimeText = refreshTime > 0 ? Long.toString(refreshTime) : "0";

@@ -345,14 +345,9 @@ public class AxisProperties extends JPanel {
 
     public void setAxis(Axis axis) {
         this.axis = axis;
-        this.reloadAxis();
     }
 
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
-
-    private void reloadAxis() {
+    public void load() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -360,6 +355,10 @@ public class AxisProperties extends JPanel {
             }
         });
     }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
     private void reload() {
         // reload common properties

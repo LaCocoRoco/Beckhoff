@@ -225,22 +225,20 @@ public class ChartPanel extends JPanel {
     /********* public method *********/
     /*********************************/
 
+    public void hideGraph() {
+        graphPanel.setVisible(false);
+    }
+    
     public void setChart(Chart chart) {
         if (!chart.equals(this.chart)) {          
             this.chart.close();
             this.chart = chart;
-            this.reloadChart();
-
-            System.out.println("setChartNewChart");
+            
+            graphPanel.setChart(chart);
         }  
     }
 
-
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
-
-    private void reloadChart() {
+    public void load() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -249,10 +247,12 @@ public class ChartPanel extends JPanel {
         });
     }
 
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+
     private void reload()  {
-        // reload chart
-        
         // reload graph
-        graphPanel.setChart(chart);
+        
     }
 }

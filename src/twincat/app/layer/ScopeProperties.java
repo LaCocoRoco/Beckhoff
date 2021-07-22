@@ -181,14 +181,9 @@ public class ScopeProperties extends JPanel {
 
     public void setScope(Scope scope) {
         this.scope = scope;
-        this.reloadScope();
     }
 
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
-
-    private void reloadScope() {
+    public void load() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -196,6 +191,10 @@ public class ScopeProperties extends JPanel {
             }
         });
     }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
     private void reload() {       
         // reload common properties

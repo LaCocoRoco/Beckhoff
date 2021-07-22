@@ -284,14 +284,9 @@ public class ChartProperties extends JPanel {
 
     public void setChart(Chart chart) {
         this.chart = chart;
-        this.reloadChart();
     }
 
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
-
-    private void reloadChart() {
+    public void load() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -299,6 +294,10 @@ public class ChartProperties extends JPanel {
             }
         });
     }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
     private void reload() {
         // reload common properties

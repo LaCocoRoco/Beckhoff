@@ -65,6 +65,7 @@ import twincat.app.common.SymbolTreeModel;
 import twincat.app.common.SymbolTreeNode;
 import twincat.app.common.SymbolTreeRenderer;
 import twincat.app.components.ComboBox;
+import twincat.app.constant.Browser;
 import twincat.app.constant.Filter;
 
 public class SymbolBrowser extends JPanel {
@@ -372,23 +373,6 @@ public class SymbolBrowser extends JPanel {
         viewPanel.add(loadingPanel, View.LOADING.toString());
         viewPanel.add(scrollPanel, View.TREE.toString());
 
-        new SwingWorker<Void, Void>() {
-            @Override
-            protected Void doInBackground() throws Exception {
-                try {
-                    disableSymbolTree();
-                    buildSymbolTree();
-                    enableSymbolTree();
-                    
-                    logger.fine("Build Symbol Tree Finished");
-                } catch (Exception e) {
-                    logger.fine(Utilities.exceptionToString(e));
-                }
-
-                return null; 
-            }
-        }.execute();
-
         this.addComponentListener(symbolBrowserComponentAdapter);
         this.setLayout(new BorderLayout());
         this.add(acquisitionToolbar, BorderLayout.PAGE_START);
@@ -397,6 +381,40 @@ public class SymbolBrowser extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder());
     }
 
+    /*********************************/
+    /********* public method *********/
+    /*********************************/
+
+    public void load() {
+        // display symbol browser
+        xref.browserPanel.setCard(Browser.SYMBOL);  
+        
+        // load symbol tree 
+        build();
+    }
+    
+    public void build() {
+        // build symbol tree
+        if (routeLoader.getRouteSymbolDataList().isEmpty()) {
+            new SwingWorker<Void, Void>() {
+                @Override
+                protected Void doInBackground() throws Exception {
+                    try {
+                        disableSymbolTree();
+                        buildSymbolTree();
+                        enableSymbolTree();
+                        
+                        logger.fine("Build Symbol Tree Finished");
+                    } catch (Exception e) {
+                        logger.fine(Utilities.exceptionToString(e));
+                    }
+
+                    return null; 
+                }
+            }.execute(); 
+        }
+    }
+    
     /***********************************/
     /******** private function *********/
     /***********************************/
@@ -687,7 +705,7 @@ public class SymbolBrowser extends JPanel {
                 xref.acquisitionProperties.getAcquisition().setAmsNetId(amsNetId);
                 xref.acquisitionProperties.getAcquisition().setAmsPort(amsPort);
                 xref.acquisitionProperties.getAcquisition().setSymbolBased(true);
-                xref.acquisitionProperties.reloadAcquisition();
+                xref.acquisitionProperties.load();
                 
                 // send symbol acquisition data to console
                 xref.consolePanel.setClipboard(symbolName);

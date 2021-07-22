@@ -181,14 +181,9 @@ public class TriggerGroupProperties extends JPanel {
 
     public void setTriggerGroup(TriggerGroup triggerGroup) {
         this.triggerGroup = triggerGroup;
-        this.reloadTriggerGroup();
     }
 
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
-
-    private void reloadTriggerGroup() {
+    public void load() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -196,6 +191,10 @@ public class TriggerGroupProperties extends JPanel {
             }
         });
     }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
     private void reload() {
         // reload common properties

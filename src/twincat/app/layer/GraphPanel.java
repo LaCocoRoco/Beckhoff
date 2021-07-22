@@ -32,7 +32,6 @@ public class GraphPanel extends JPanel implements Observer {
             Component component = componentEvent.getComponent();
             chart.setWidth(component.getWidth());
             chart.setHeight(component.getHeight());
-            System.out.println("componentResized");
         }
     };
 
@@ -93,6 +92,7 @@ public class GraphPanel extends JPanel implements Observer {
         this.chart.setWidth(this.getWidth());
         this.chart.setHeight(this.getHeight());
         this.chart.start();
+        this.setVisible(true);
     }
   
     /*********************************/

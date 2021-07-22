@@ -44,6 +44,7 @@ public class ScopeApp extends JFrame {
         
         // scope setup
         ScopeFrame scopeFrame = new ScopeFrame();
+        scopeFrame.preloadSymbolBrowser();
         scopeFrame.setMenuVisible(true);
         scopeFrame.setConsoleVisible(false);
         scopeFrame.setWindow(Window.SCOPE);

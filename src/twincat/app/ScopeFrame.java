@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import twincat.Resources;
 import twincat.TwincatLogger;
+import twincat.app.constant.Browser;
 import twincat.app.constant.Navigation;
 import twincat.app.constant.Propertie;
 import twincat.app.constant.Window;
@@ -100,6 +101,7 @@ public class ScopeFrame extends JPanel {
             public void actionPerformed(ActionEvent actionEvent) {
                 xref.scopeBrowser.removeScope();
                 xref.propertiesPanel.setCard(Propertie.EMPTY);
+                xref.browserPanel.setCard(Browser.SCOPE);
             }
         });
 
@@ -163,6 +165,10 @@ public class ScopeFrame extends JPanel {
         xref.windowPanel.setCard(card);
     }
 
+    public void preloadSymbolBrowser() {
+        xref.symbolBrowser.build();
+    }
+    
     public void minifyMenuItems() {
         menuItemFileNew.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         menuItemFileNew.setHorizontalAlignment(JMenuItem.LEFT);

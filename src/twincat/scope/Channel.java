@@ -295,8 +295,7 @@ public class Channel extends Observable implements Observer {
             try {
                 variable.close();
             } catch (AdsException adsException) {
-                if (!channelError.contains("Watchdog Timeout") &&
-                        !channelError.contains("Notification Timeout")) {
+                if (!channelError.contains("Watchdog Timeout") && !channelError.contains("Notification Timeout")) {
                     channelError = "Notification Stop | " + adsException.getAdsErrorMessage();
                 }
             }

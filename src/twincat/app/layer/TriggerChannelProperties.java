@@ -210,14 +210,9 @@ public class TriggerChannelProperties extends JPanel {
 
     public void setTriggerChannel(TriggerChannel triggerChannel) {
         this.triggerChannel = triggerChannel;
-        this.reloadTriggerChannel();
     }
 
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
-
-    private void reloadTriggerChannel() {
+    public void load() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -225,6 +220,10 @@ public class TriggerChannelProperties extends JPanel {
             }
         });
     }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
     private void reload() {
         // reload common properties

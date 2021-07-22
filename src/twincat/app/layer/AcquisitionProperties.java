@@ -39,7 +39,6 @@ import twincat.app.components.NumberTextField;
 import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TextField;
 import twincat.app.components.TitledPanel;
-import twincat.app.constant.Browser;
 import twincat.app.constant.Propertie;
 import twincat.scope.Acquisition;
 
@@ -383,7 +382,7 @@ public class AcquisitionProperties extends JPanel {
         this.acquisition.setSampleTime(acquisition.getSampleTime());
     }
 
-    public void reloadAcquisition() {
+    public void load() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -487,7 +486,6 @@ public class AcquisitionProperties extends JPanel {
         dataType.setEnabled(!acquisition.isSymbolBased());   
 
         // display acquisition properties
-        xref.browserPanel.setCard(Browser.SYMBOL);
         xref.propertiesPanel.setCard(Propertie.ACQUISITION);
     }
 }

@@ -307,14 +307,9 @@ public class ChannelProperties extends JPanel {
 
     public void setChannel(Channel channel) {
         this.channel = channel;
-        this.reloadChannel();
     }
 
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
-
-    private void reloadChannel() {
+    public void load() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -322,6 +317,10 @@ public class ChannelProperties extends JPanel {
             }
         });
     }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
 
     private void reload() {
         // reload common properties
