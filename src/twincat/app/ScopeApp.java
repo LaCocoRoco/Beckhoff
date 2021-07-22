@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
@@ -20,15 +21,17 @@ public class ScopeApp extends JFrame {
     /**** local constant variable ****/
     /*********************************/
 
-    private static final int WIDTH_FRAME = 800;
+    private static final int WIDTH_FRAME = 1000;
 
-    private static final int HEIGHT_FRAME = 800;
+    private static final int HEIGHT_FRAME = 1000;
 
     /*********************************/
     /******** local variable *********/
     /*********************************/
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
+
+    private final Logger logger = TwincatLogger.getLogger();
 
     /*********************************/
     /********** constructor **********/
@@ -37,12 +40,15 @@ public class ScopeApp extends JFrame {
     public ScopeApp(String[] args) {
         parseArgs(args);
         
+        logger.fine("Application Started");
+        
+        // scope setup
         ScopeFrame scopeFrame = new ScopeFrame();
-        scopeFrame.minifyMenuItems();
         scopeFrame.setMenuVisible(true);
         scopeFrame.setConsoleVisible(false);
         scopeFrame.setWindow(Window.SCOPE);
         
+        // application setup
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int framePositionX = screenSize.width / 2 - WIDTH_FRAME / 2;
         int framePositionY = screenSize.height / 2 - HEIGHT_FRAME / 2;
@@ -55,6 +61,8 @@ public class ScopeApp extends JFrame {
         this.setBounds(framePositionX, framePositionY, WIDTH_FRAME, HEIGHT_FRAME);
         this.pack();
         this.setVisible(true);
+        
+        logger.fine("Application Initialized");
     }
 
     /*********************************/

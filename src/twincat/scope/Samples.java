@@ -55,6 +55,6 @@ public class Samples {
 	}
 	
 	public double getCurrentValue() {
-		return getTimeStamp(index - 1);
+		return getValue(index - 1);
 	}
 }

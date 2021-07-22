@@ -15,9 +15,9 @@ public class Resources {
     
     public static final int DEFAULT_FONT_SIZE_BIG = 18;
     
-    public static final int DEFAULT_DIVIDER_SIZE = 6;
+    public static final int DEFAULT_DIVIDER_SIZE = 18;
     
-    public static final int DEFAULT_SCROLLBAR_WIDTH = 23;
+    public static final int DEFAULT_SCROLLBAR_WIDTH = 30;
     
     /*********************************/
     /************* path **************/
@@ -54,10 +54,22 @@ public class Resources {
     public static final String PATH_ICON_APP_FOLDER_CLOSED = PATH_PACKAGE_IMAGES + "folder_closed.png";
     
     public static final String PATH_ICON_CONTROL_PLAY = PATH_PACKAGE_IMAGES + "control_play.png";
-    
+
     public static final String PATH_ICON_CONTROL_PAUSE = PATH_PACKAGE_IMAGES + "control_pause.png";
-     
+    
+    public static final String PATH_ICON_CONTROL_PLAY_PAUSE = PATH_PACKAGE_IMAGES + "control_play_pause.png";
+       
     public static final String PATH_ICON_CONTROL_STOP = PATH_PACKAGE_IMAGES + "control_stop.png";
+    
+    public static final String PATH_ICON_CONTROL_BACKWARD = PATH_PACKAGE_IMAGES + "control_backward.png";
+    
+    public static final String PATH_ICON_CONTROL_FORWARD = PATH_PACKAGE_IMAGES + "control_forward.png";
+    
+    public static final String PATH_ICON_CONTROL_ZOOM_IN = PATH_PACKAGE_IMAGES + "control_zoom_in.png";
+    
+    public static final String PATH_ICON_CONTROL_ZOOM_OUT = PATH_PACKAGE_IMAGES + "control_zoom_out.png";
+         
+
     
     public static final String PATH_ICON_CONTROL_MINIMIZE = PATH_PACKAGE_IMAGES + "control_minimize.png";
 
@@ -121,7 +133,9 @@ public class Resources {
       
     public static final String TEXT_SCOPE_PROPERTIES_RECORD_TIME = "scopePropertiesRecordTime";
     
+    public static final String TEXT_SCOPE_PROPERTIES_AUTO_RECORD = "scopePropertiesAutoRecord";
     
+       
 
     public static final String TEXT_CHART_PROPERTIES_NAME = "chartPropertiesName";
       
@@ -163,9 +177,10 @@ public class Resources {
 
     public static final String TEXT_AXIS_PROPERTIES_VALUE_MAX = "axisPropertiesValueMax";
 
-    public static final String TEXT_AXIS_PROPERTIES_VALUE_AUTOSCALE = "axisPropertiesAutoscale";
+    public static final String TEXT_AXIS_PROPERTIES_AUTOSCALE = "axisPropertiesAutoscale";
    
-    
+    public static final String TEXT_AXIS_PROPERTIES_SCALE_SYMETRICAL = "axisPropertiesScaleSymetrical";
+       
 
     public static final String TEXT_CHANNEL_PROPERTIES_NAME = "channelPropertiesName";
 
@@ -196,25 +211,27 @@ public class Resources {
     public static final String TEXT_ACQUISITION_PROPERTIES_TARGET_SYSTEM = "acquisitionPropertiesTargetSystem";
     
     public static final String TEXT_ACQUISITION_PROPERTIES_TARGET_PORT = "acquisitionPropertiesTargetPort";
-     
-    public static final String TEXT_ACQUISITION_PROPERTIES_CONNETION = "acquisitionPropertiesConnection";
-    
-    public static final String TEXT_ACQUISITION_PROPERTIES_SAMPLE_TIME = "acquisitionPropertiesSampleTime";
-    
-    public static final String TEXT_ACQUISITION_PROPERTIES_SYMBOL_BASED = "acquisitionPropertiesSymbolBased";
-          
+
     public static final String TEXT_ACQUISITION_PROPERTIES_SYMBOL_INFO = "acquisitionPropertiesSymbolInfo";
-    
-    public static final String TEXT_ACQUISITION_PROPERTIES_NAME = "acquisitionPropertiesName";
-    
-    public static final String TEXT_ACQUISITION_PROPERTIES_DATA_TYPE = "acquisitionPropertiesDataType";
-     
-    public static final String TEXT_ACQUISITION_PROPERTIES_SYMBOL_CONNECT = "acquisitionPropertiesSymbolConnect";
+
+    public static final String TEXT_ACQUISITION_PROPERTIES_SYMBOL_NAME = "acquisitionPropertiesSymbolName";
     
     public static final String TEXT_ACQUISITION_PROPERTIES_INDEX_GROUP = "acquisitionPropertiesIndexGroup";
     
     public static final String TEXT_ACQUISITION_PROPERTIES_INDEX_OFFSET = "acquisitionPropertiesIndexOffset";
-        
+
+    public static final String TEXT_ACQUISITION_PROPERTIES_DATA_TYPE = "acquisitionPropertiesDataType";
+ 
+    public static final String TEXT_ACQUISITION_PROPERTIES_SYMBOL_BASED = "acquisitionPropertiesSymbolBased";
+   
+    public static final String TEXT_ACQUISITION_PROPERTIES_SYMBOL_CONNECT = "acquisitionPropertiesSymbolConnect";
+
+    
+    
+   public static final String TEXT_ACQUISITION_PROPERTIES_CONNETION = "acquisitionPropertiesConnection";
+   
+   public static final String TEXT_ACQUISITION_PROPERTIES_SAMPLE_TIME = "acquisitionPropertiesSampleTime";
+      
     
 
     public static final String TEXT_TRIGGER_GROUP_PROPERTIES_NAME = "triggerGroupPropertiesName";

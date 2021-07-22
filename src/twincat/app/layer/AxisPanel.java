@@ -1,6 +1,5 @@
 package twincat.app.layer;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -23,6 +22,7 @@ import twincat.ads.worker.SymbolLoader;
 import twincat.app.common.AxisAcquisition;
 import twincat.app.components.ScrollablePanel;
 import twincat.app.components.WrapLayout;
+import twincat.constant.ColorTable;
 import twincat.scope.Acquisition;
 import twincat.scope.Axis;
 import twincat.scope.Channel;
@@ -158,7 +158,7 @@ public class AxisPanel extends JScrollPane {
         scope.setRecordTime("00:00:00.000");
 
         // chart
-        Chart chart = new Chart(20);
+        Chart chart = new Chart();
         chart.setDisplayTime(500);
         chart.setDebug(true);
 
@@ -168,13 +168,13 @@ public class AxisPanel extends JScrollPane {
         // axis VELO
         Axis axisVelo = new Axis();
         axisVelo.setAxisName("Velo");
+        axisVelo.setAxisColor(ColorTable.RED.color);
 
         // acquisition ACTVELO
         String actVeloSymbolName = axisAcquisition.getAxisSymbolName() + ".ACTVELO";
         logger.fine(actVeloSymbolName);
 
         Acquisition acquisitionActVelo = new Acquisition();
-        acquisitionActVelo.setSampleTime(1);
         acquisitionActVelo.setSymbolBased(true);
         acquisitionActVelo.setSymbolName(actVeloSymbolName);
         acquisitionActVelo.setAmsNetId(axisAcquisition.getAmsNetId());
@@ -184,15 +184,14 @@ public class AxisPanel extends JScrollPane {
         Channel channelActVelo = new Channel();
         channelActVelo.setAcquisition(acquisitionActVelo);
         channelActVelo.setChannelName("ACTVELO");
-        channelActVelo.setLineColor(Color.RED);
-        channelActVelo.setPlotColor(Color.RED);
+        channelActVelo.setLineColor(ColorTable.RED.color);
+        channelActVelo.setPlotColor(ColorTable.RED.color);
 
         // acquisition SETVELO
         String setVeloSymbolName = axisAcquisition.getAxisSymbolName() + ".SETVELO";
         logger.fine(setVeloSymbolName);
 
         Acquisition acquisitionSetVelo = new Acquisition();
-        acquisitionSetVelo.setSampleTime(1);
         acquisitionSetVelo.setSymbolBased(true);
         acquisitionSetVelo.setSymbolName(setVeloSymbolName);
         acquisitionSetVelo.setAmsNetId(axisAcquisition.getAmsNetId());
@@ -202,9 +201,9 @@ public class AxisPanel extends JScrollPane {
         Channel channelSetVelo = new Channel();
         channelSetVelo.setAcquisition(acquisitionSetVelo);
         channelSetVelo.setChannelName("SETVELO");
-        channelSetVelo.setLineColor(Color.GREEN);
-        channelSetVelo.setPlotColor(Color.GREEN);
-        
+        channelSetVelo.setLineColor(ColorTable.DARK_GREEN.color);
+        channelSetVelo.setPlotColor(ColorTable.DARK_GREEN.color);
+
         // add VELO to chart
         chart.addAxis(axisVelo);
         axisVelo.addChannel(channelActVelo);
@@ -213,13 +212,13 @@ public class AxisPanel extends JScrollPane {
         // axis POS
         Axis axisPosition = new Axis();
         axisPosition.setAxisName("Pos");
+        axisPosition.setAxisColor(ColorTable.ORANGE.color);
 
         // acquisition ACTPOS
         String actPosSymbolName = axisAcquisition.getAxisSymbolName() + ".ACTPOS";
         logger.fine(actPosSymbolName);
 
         Acquisition acquisitionActPos = new Acquisition();
-        acquisitionActPos.setSampleTime(1);
         acquisitionActPos.setSymbolBased(true);
         acquisitionActPos.setSymbolName(actPosSymbolName);
         acquisitionActPos.setAmsNetId(axisAcquisition.getAmsNetId());
@@ -229,15 +228,14 @@ public class AxisPanel extends JScrollPane {
         Channel channelActPos = new Channel();
         channelActPos.setAcquisition(acquisitionActPos);
         channelActPos.setChannelName("ACTPOS");
-        channelActPos.setLineColor(Color.ORANGE);
-        channelActPos.setPlotColor(Color.ORANGE);
+        channelActPos.setLineColor(ColorTable.ORANGE.color);
+        channelActPos.setPlotColor(ColorTable.ORANGE.color);
 
         // acquisition SETPOS
         String setPosSymbolName = axisAcquisition.getAxisSymbolName() + ".SETPOS";
         logger.fine(setPosSymbolName);
 
         Acquisition acquisitionSetPos = new Acquisition();
-        acquisitionSetPos.setSampleTime(1);
         acquisitionSetPos.setSymbolBased(true);
         acquisitionSetPos.setSymbolName(setPosSymbolName);
         acquisitionSetPos.setAmsNetId(axisAcquisition.getAmsNetId());
@@ -247,8 +245,8 @@ public class AxisPanel extends JScrollPane {
         Channel channelSetPos = new Channel();
         channelSetPos.setAcquisition(acquisitionSetPos);
         channelSetPos.setChannelName("SETPOS");
-        channelSetPos.setLineColor(Color.CYAN);
-        channelSetPos.setPlotColor(Color.CYAN);
+        channelSetPos.setLineColor(ColorTable.PURPLE.color);
+        channelSetPos.setPlotColor(ColorTable.PURPLE.color);
 
         // add POS to chart
         chart.addAxis(axisPosition);
@@ -258,13 +256,13 @@ public class AxisPanel extends JScrollPane {
         // axis ACCEL
         Axis axisAcceleration = new Axis();
         axisAcceleration.setAxisName("Accel");
+        axisAcceleration.setAxisColor(ColorTable.GOLDENROD.color);
 
         // acquisition ACTACC
         String actAccSymbolName = axisAcquisition.getAxisSymbolName() + ".ACTACC";
         logger.fine(actAccSymbolName);
 
         Acquisition acquisitionActAcc = new Acquisition();
-        acquisitionActAcc.setSampleTime(1);
         acquisitionActAcc.setSymbolBased(true);
         acquisitionActAcc.setSymbolName(actAccSymbolName);
         acquisitionActAcc.setAmsNetId(axisAcquisition.getAmsNetId());
@@ -274,15 +272,14 @@ public class AxisPanel extends JScrollPane {
         Channel channelActAcc = new Channel();
         channelActAcc.setAcquisition(acquisitionActAcc);
         channelActAcc.setChannelName("ACTACC");
-        channelActAcc.setLineColor(Color.MAGENTA);
-        channelActAcc.setPlotColor(Color.MAGENTA);
+        channelActAcc.setLineColor(ColorTable.GOLDENROD.color);
+        channelActAcc.setPlotColor(ColorTable.GOLDENROD.color);
 
         // acquisition SETACC
         String setAccSymbolName = axisAcquisition.getAxisSymbolName() + ".SETACC";
         logger.fine(setAccSymbolName);
 
         Acquisition acquisitionSetAcc = new Acquisition();
-        acquisitionSetAcc.setSampleTime(1);
         acquisitionSetAcc.setSymbolBased(true);
         acquisitionSetAcc.setSymbolName(setAccSymbolName);
         acquisitionSetAcc.setAmsNetId(axisAcquisition.getAmsNetId());
@@ -292,8 +289,8 @@ public class AxisPanel extends JScrollPane {
         Channel channelSetAcc = new Channel();
         channelSetAcc.setAcquisition(acquisitionSetAcc);
         channelSetAcc.setChannelName("SETACC");
-        channelSetAcc.setLineColor(Color.BLACK);
-        channelSetAcc.setPlotColor(Color.BLACK);
+        channelSetAcc.setLineColor(ColorTable.BLACK.color);
+        channelSetAcc.setPlotColor(ColorTable.BLACK.color);
 
         // add ACC to chart
         chart.addAxis(axisAcceleration);
@@ -303,13 +300,13 @@ public class AxisPanel extends JScrollPane {
         // axis POSDIFF
         Axis axisPosDiff = new Axis();
         axisPosDiff.setAxisName("PosDiff");
+        axisPosDiff.setAxisColor(ColorTable.BLUE.color);
 
         // acquisition POSDIFF
         String posDiffSymbolName = axisAcquisition.getAxisSymbolName() + ".POSDIFF";
         logger.fine(posDiffSymbolName);
 
         Acquisition acquisitionPosDiff = new Acquisition();
-        acquisitionPosDiff.setSampleTime(1);
         acquisitionPosDiff.setSymbolBased(true);
         acquisitionPosDiff.setSymbolName(posDiffSymbolName);
         acquisitionPosDiff.setAmsNetId(axisAcquisition.getAmsNetId());
@@ -319,8 +316,8 @@ public class AxisPanel extends JScrollPane {
         Channel channelPosDiff = new Channel();
         channelPosDiff.setAcquisition(acquisitionPosDiff);
         channelPosDiff.setChannelName("POSDIFF");
-        channelPosDiff.setLineColor(Color.BLUE);
-        channelPosDiff.setPlotColor(Color.BLUE);
+        channelPosDiff.setLineColor(ColorTable.BLUE.color);
+        channelPosDiff.setPlotColor(ColorTable.BLUE.color);
 
         // add POS to chart
         chart.addAxis(axisPosDiff);

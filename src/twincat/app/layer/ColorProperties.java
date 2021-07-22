@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
+import twincat.Resources;
 import twincat.app.components.ScrollablePanel;
 import twincat.app.components.WrapTopLayout;
 import twincat.app.constant.Propertie;
@@ -36,6 +37,12 @@ public class ColorProperties extends JPanel {
 
     private Component component = null;
 
+    /*********************************/
+    /****** local final variable *****/
+    /*********************************/
+    
+    private final JScrollPane scrollPanel = new JScrollPane();
+    
     /*********************************/
     /******** setter & getter ********/
     /*********************************/
@@ -99,7 +106,7 @@ public class ColorProperties extends JPanel {
             contentPanel.add(colorPicker);
         }
 
-        JScrollPane scrollPanel = new JScrollPane();
+        scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);

@@ -155,7 +155,8 @@ public class TriggerGroupProperties extends JPanel {
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(namePanelContainer);
         contentPanel.add(modulePanelContainer);
-        
+
+        scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
@@ -174,15 +175,20 @@ public class TriggerGroupProperties extends JPanel {
         return triggerGroup;
     }
 
-    public void setTriggerGroup(TriggerGroup triggerGroup) {
-        this.triggerGroup = triggerGroup;
-    }
-
     /*********************************/
     /********* public method *********/
     /*********************************/
 
-    public void reloadTriggerGroup() {
+    public void setTriggerGroup(TriggerGroup triggerGroup) {
+        this.triggerGroup = triggerGroup;
+        this.reloadTriggerGroup();
+    }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+
+    private void reloadTriggerGroup() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -190,10 +196,6 @@ public class TriggerGroupProperties extends JPanel {
             }
         });
     }
-
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
 
     private void reload() {
         // reload common properties

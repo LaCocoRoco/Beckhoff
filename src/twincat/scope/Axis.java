@@ -37,6 +37,8 @@ public class Axis implements Observer {
 
     private boolean autoscale = true;
 
+    private boolean scaleSymetrical = false;
+
     /*********************************/
     /****** local final variable *****/
     /*********************************/
@@ -134,6 +136,14 @@ public class Axis implements Observer {
         this.refresh = true;
     }
 
+    public boolean isScaleSymetrical() {
+        return scaleSymetrical;
+    }
+
+    public void setScaleSymetrical(boolean scaleSymetrical) {
+        this.scaleSymetrical = scaleSymetrical;
+    }
+
     public CopyOnWriteArrayList<Channel> getChannelList() {
         return channelList;
     }
@@ -210,6 +220,16 @@ public class Axis implements Observer {
                 autoscaleValueMax = value;
             }
 
+            if (scaleSymetrical) {
+                if (Math.abs(autoscaleValueMax) > Math.abs(autoscaleValueMin)) {
+                    autoscaleValueMax = + Math.abs(autoscaleValueMax);
+                    autoscaleValueMin = - Math.abs(autoscaleValueMax);
+                } else {
+                    autoscaleValueMax = + Math.abs(autoscaleValueMin);
+                    autoscaleValueMin = - Math.abs(autoscaleValueMin);            
+                }
+            }
+ 
             double autoscaleRange = autoscaleValueMax - autoscaleValueMin;
             double autoscaleOffset = autoscaleRange * AUTOSCALE_OFFSET;
             double autoscaleMin = autoscaleValueMin - autoscaleOffset;

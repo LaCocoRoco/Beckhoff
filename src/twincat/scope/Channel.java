@@ -179,7 +179,7 @@ public class Channel extends Observable implements Observer {
         this.plotVisible = plotVisible;
         this.refresh = true;
     }
-    
+
     public int getIdentHandle() {
         return identHandle;
     }
@@ -222,7 +222,7 @@ public class Channel extends Observable implements Observer {
     /*********************************/
     /******** override method ********/
     /*********************************/
-    
+
     @Override
     public String toString() {
         return channelName;
@@ -234,7 +234,7 @@ public class Channel extends Observable implements Observer {
         notificationTimeout = System.currentTimeMillis();
         setChanged();
         notifyObservers();
-    }    
+    }
 
     /*********************************/
     /********* public method *********/
@@ -266,6 +266,7 @@ public class Channel extends Observable implements Observer {
 
             try {
                 adsClient.open();
+                adsClient.setTimeout(AdsClient.DEFAULT_TIMEOUT);
                 adsClient.setAmsNetId(acquisition.getAmsNetId());
                 adsClient.setAmsPort(acquisition.getAmsPort());
 
@@ -294,7 +295,10 @@ public class Channel extends Observable implements Observer {
             try {
                 variable.close();
             } catch (AdsException adsException) {
-                channelError = "Notification Stop | " + adsException.getAdsErrorMessage();
+                if (!channelError.contains("Watchdog Timeout") &&
+                        !channelError.contains("Notification Timeout")) {
+                    channelError = "Notification Stop | " + adsException.getAdsErrorMessage();
+                }
             }
         }
     }
@@ -329,7 +333,12 @@ public class Channel extends Observable implements Observer {
             notificationError++;
             stopNotification();
             startNotification();
+            channelError = "Notification Timeout";
             return;
+        }
+
+        if (channelError.contains("Notification Timeout")) {
+            channelError = new String();
         }
 
         watchdogTimeout = System.currentTimeMillis();

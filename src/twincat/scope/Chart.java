@@ -32,9 +32,6 @@ import com.sun.management.OperatingSystemMXBean;
 import twincat.TwincatLogger;
 import twincat.Utilities;
 
-// TODO : rework graphic task start
-// TODO : rework grap
-
 public class Chart extends Observable {
     /*********************************/
     /**** local constant variable ****/
@@ -52,6 +49,8 @@ public class Chart extends Observable {
 
     private static final int CHART_TICK_LENGTH = 10;
 
+    private static final int DEFAULT_REFRESH_RATE = 50;
+    
     /*********************************/
     /******** global variable ********/
     /*********************************/
@@ -60,7 +59,7 @@ public class Chart extends Observable {
 
     private int height = 600;
 
-    private boolean debug = false;
+    private int refreshRate = DEFAULT_REFRESH_RATE;
 
     private String chartName = "Chart";
 
@@ -82,6 +81,10 @@ public class Chart extends Observable {
     
     private long recordTime = 0;
 
+    private boolean autoRecord = true;
+
+    private boolean debug = true;
+
     private VolatileImage image = Chart.createBitmaskVolatileImage(width, height);
 
     /*********************************/
@@ -96,13 +99,15 @@ public class Chart extends Observable {
     /******** local variable *********/
     /*********************************/
 
+    private boolean running = false;
+    
     private boolean refresh = true;
 
     private long cycleTime = 0;
 
     private long drawTime = 0;
 
-    private long deltaTime = 0;
+    private long refreshTime = 0;
 
     private long currentTime = 0;
 
@@ -158,16 +163,9 @@ public class Chart extends Observable {
     /*********************************/
 
     public Chart() {
-        /* empty */
-    }
-    
-    public Chart(int framesPerSecond) {
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
-        long refreshTime = 1000 / framesPerSecond;
-        schedule = scheduler.scheduleAtFixedRate(task, 0, refreshTime, TimeUnit.MILLISECONDS);
         Chart.accelerateTranslucentVolatileImage();
     }
-    
+
     /*********************************/
     /******** setter & getter ********/
     /*********************************/
@@ -188,6 +186,14 @@ public class Chart extends Observable {
     public void setHeight(int height) {
         this.height = height;
         this.refresh = true;
+    }
+
+    public int getRefreshRate() {
+        return refreshRate;
+    }
+
+    public void setRefreshRate(int refreshRate) {
+        this.refreshRate = refreshRate;
     }
 
     public boolean isDebug() {
@@ -288,6 +294,14 @@ public class Chart extends Observable {
         this.displayTime = displayTime;
         this.refresh = true;
     }
+    
+    public boolean isAutoRecord() {
+        return autoRecord;
+    }
+
+    public void setAutoRecord(boolean autoRecord) {
+        this.autoRecord = autoRecord;
+    }
 
     public VolatileImage getImage() {
         return image;
@@ -318,9 +332,18 @@ public class Chart extends Observable {
     /*********************************/
     /********* public method *********/
     /*********************************/
-
+    
     public void setDisplayTime(String displayTime) {
         this.displayTime = Scope.timeFormaterToLong(displayTime);
+        this.refresh = true;
+    }
+
+    public int getFramesPerSecond() {
+        return refreshRate > 0 ? 1000 / refreshRate : 0; 
+    }
+    
+    public void setFramesPerSecond(int fps) {
+        refreshRate = fps > 0 ? 1000 / fps : DEFAULT_REFRESH_RATE;
     }
 
     public void play() {
@@ -331,6 +354,14 @@ public class Chart extends Observable {
         pauseTimeStamp = currentTimeStamp;
     }
 
+    public void togglePlayPause() {
+        if (pauseTimeStamp == 0) {
+            pause();
+        } else {
+            play();
+        }
+    }
+    
     public long getRunTime() {
         return currentTimeStamp - startTimeStamp;
     }
@@ -339,35 +370,69 @@ public class Chart extends Observable {
         return pauseTimeStamp - startTimeStamp;
     }
 
-    public int getFramesPerSecond() {
-        return (int) (deltaTime > 0 ? 1000 / deltaTime : 0);
-    }
-
     public void start() {
-        reset();
+        // update components
         Iterator<Axis> axisIterator = axisList.iterator();
         while (axisIterator.hasNext()) {
             Axis axis = axisIterator.next();
             axis.start();
         }
+        
+        // start graphics
+        startSchedule();
+    
+        // reset general
+        running = true;
+        refresh = true;
+        chartError = "None";
+        
+        // reset time
+        cycleTime = 0;
+        refreshTime = 0;
+        currentTime = 0;
+        triggerTime = 0;
+        pauseTime = 0;
+        referenceTime = 0;
+        
+        // reset time stamp
+        deltaTimeStamp = 0;
+        currentTimeStamp = 0;
+        triggerTimeStamp = 0;
+        pauseTimeStamp = 0;
+        startTimeStamp = 0;
+        recordTimeStamp = 0;
+        referenceTimeStamp = 0;
     }
 
     public void stop() {
+        // update components
         Iterator<Axis> axisIterator = axisList.iterator();
         while (axisIterator.hasNext()) {
             Axis axis = axisIterator.next();
             axis.stop();
         }
+        
+        // update general
+        running = false;
     }
 
+    public void toggleStartStop() {
+        if (running) {
+            stop();
+        } else {
+            start();
+        }
+    }
+    
     public void close() {
-        Utilities.stopSchedule(schedule);
-
         Iterator<Axis> axisIterator = axisList.iterator();
         while (axisIterator.hasNext()) {
             Axis axis = axisIterator.next();
             axis.close();
         }
+        
+        // stop schedule
+        stopSchedule();
     }
 
     public void addAxis(Axis axis) {
@@ -393,10 +458,22 @@ public class Chart extends Observable {
         setChanged();
         notifyObservers();
     }
+   
+    private void startSchedule() {
+        if (Utilities.isScheduleDone(schedule)) {
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
+            long refreshTime = refreshRate;
+            schedule = scheduler.scheduleAtFixedRate(task, 0, refreshTime, TimeUnit.MILLISECONDS);
+        }    
+    }
+    
+    private void stopSchedule() {
+        Utilities.stopSchedule(schedule);
+    }
 
     private void updateTiming() {
-        // update delta time
-        deltaTime = System.currentTimeMillis() - cycleTime;
+        // update refresh time
+        refreshTime = System.currentTimeMillis() - cycleTime;
 
         // update cycle time
         cycleTime = System.currentTimeMillis();
@@ -461,8 +538,7 @@ public class Chart extends Observable {
         recordTimeStamp = startTimeStamp + recordTime;
 
         // get reference time stamp
-        if (recordTimeStamp != startTimeStamp &&
-                recordTimeStamp < currentTimeStamp) {
+        if (!autoRecord && recordTimeStamp < currentTimeStamp) {
             // priority 1 : use record time stamp
             referenceTimeStamp = recordTimeStamp;
             stop();
@@ -487,10 +563,18 @@ public class Chart extends Observable {
         axisIterator = axisList.iterator();
         while (axisIterator.hasNext()) {
             Axis axis = axisIterator.next();
-
+            
+            // refresh from axis
+            if (axis.isRefresh()) {
+                axis.setRefresh(false);
+                refresh = true;
+            }
+            
             Iterator<Channel> channelIterator = axis.getChannelList().iterator();
             while (channelIterator.hasNext()) {
                 Channel channel = channelIterator.next();
+                
+                // refresh from channel
                 if (channel.isRefresh()) {
                     channel.setRefresh(false);
                     refresh = true;
@@ -789,8 +873,8 @@ public class Chart extends Observable {
             String cpuLoadText = Integer.toString((int) (osBean.getProcessCpuLoad() * 100));
             graphics.drawString(cpuLoadText, debugPositionX + 110, debugPositionY);
 
-            graphics.drawString("FramesPerSecond:", debugPositionX, debugPositionY += 15);
-            String deltaTimeText = getFramesPerSecond() > 0 ? Long.toString(getFramesPerSecond()) : "0";
+            graphics.drawString("RefreshRate:", debugPositionX, debugPositionY += 15);
+            String deltaTimeText = refreshTime > 0 ? Long.toString(refreshTime) : "0";
             graphics.drawString(deltaTimeText, debugPositionX + 110, debugPositionY);
 
             graphics.drawString("DrawTime:", debugPositionX, debugPositionY += 15);
@@ -857,27 +941,6 @@ public class Chart extends Observable {
         this.image = image;
 
         drawTime = System.currentTimeMillis() - graphicTime;
-    }
-
-    private void reset() {
-        refresh = true;
-
-        cycleTime = 0;
-        deltaTime = 0;
-        currentTime = 0;
-        triggerTime = 0;
-        pauseTime = 0;
-        referenceTime = 0;
-
-        deltaTimeStamp = 0;
-        currentTimeStamp = 0;
-        triggerTimeStamp = 0;
-        pauseTimeStamp = 0;
-        startTimeStamp = 0;
-        recordTimeStamp = 0;
-        referenceTimeStamp = 0;
-
-        chartError = "None";
     }
 
     private static final void accelerateTranslucentVolatileImage() {

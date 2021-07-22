@@ -53,46 +53,51 @@ public class ScopeView {
 
         // scope
         Scope scope = new Scope();
-        scope.setRecordTime("00:00:00.000");
+        scope.setRecordTime("00:00:05.000");
+        scope.setAutoRecord(true);
 
         // chart
-        Chart chart = new Chart(20);
+        Chart chart = new Chart();
         chart.setHeight(FRAME_HEIGHT);
         chart.setWidth(FRAME_WIDTH);
-        chart.setDisplayTime(100);
+        chart.setDisplayTime(1500);
         chart.setDebug(true);
 
         // axis 1
         Axis axis1 = new Axis();
         axis1.setAxisColor(Color.RED);
-        axis1.setAutoscale(false);
+        axis1.setAutoscale(true);
+        axis1.setScaleSymetrical(true);
         axis1.setValueMax(120);
         axis1.setValueMin(-30);
 
         // axis 2
         Axis axis2 = new Axis();
         axis2.setAxisColor(Color.BLUE);
-        axis2.setAutoscale(false);
+        axis2.setAutoscale(true);
+        axis2.setScaleSymetrical(true);
         axis2.setValueMax(300);
         axis2.setValueMin(-450);
 
         // axis 3
         Axis axis3 = new Axis();
         axis3.setAxisColor(Color.BLACK);
-        axis3.setAutoscale(false);
+        axis3.setAutoscale(true);
+        axis3.setScaleSymetrical(true);
         axis3.setValueMax(225);
         axis3.setValueMin(-275);
 
         // axis 4
         Axis axis4 = new Axis();
         axis4.setAxisColor(Color.ORANGE);
-        axis4.setAutoscale(false);
+        axis4.setAutoscale(true);
+        axis4.setScaleSymetrical(true);
         axis4.setValueMax(750);
         axis4.setValueMin(-750);
 
         // acquisition 1
         Acquisition acquisition1 = new Acquisition();
-        acquisition1.setSampleTime(1);
+        acquisition1.setSampleTime(2);
         acquisition1.setSymbolBased(true);
         acquisition1.setSymbolName("Main.lr_channel_1");
         acquisition1.setDataType(DataType.REAL64);
@@ -101,7 +106,7 @@ public class ScopeView {
 
         // acquisition 2
         Acquisition acquisition2 = new Acquisition();
-        acquisition2.setSampleTime(1);
+        acquisition2.setSampleTime(2);
         acquisition2.setSymbolBased(true);
         acquisition2.setSymbolName("Main.lr_channel_2");
         acquisition2.setDataType(DataType.REAL64);
@@ -110,7 +115,7 @@ public class ScopeView {
 
         // acquisition 3
         Acquisition acquisition3 = new Acquisition();
-        acquisition3.setSampleTime(1);
+        acquisition3.setSampleTime(2);
         acquisition3.setSymbolBased(true);
         acquisition3.setSymbolName("Main.lr_channel_3");
         acquisition3.setDataType(DataType.REAL64);
@@ -119,7 +124,7 @@ public class ScopeView {
 
         // acquisition 4
         Acquisition acquisition4 = new Acquisition();
-        acquisition4.setSampleTime(1);
+        acquisition4.setSampleTime(2);
         acquisition4.setSymbolBased(true);
         acquisition4.setSymbolName("Main.lr_channel_4");
         acquisition4.setDataType(DataType.REAL64);
@@ -128,7 +133,7 @@ public class ScopeView {
 
         // acquisition 5
         Acquisition acquisition5 = new Acquisition();
-        acquisition5.setSampleTime(1);
+        acquisition5.setSampleTime(2);
         acquisition5.setSymbolBased(true);
         acquisition5.setSymbolName("Main.lr_channel_5");
         acquisition5.setDataType(DataType.REAL64);
@@ -137,7 +142,7 @@ public class ScopeView {
 
         // acquisition 6
         Acquisition acquisition6 = new Acquisition();
-        acquisition6.setSampleTime(1);
+        acquisition6.setSampleTime(2);
         acquisition6.setSymbolBased(true);
         acquisition6.setSymbolName("Main.lr_channel_6");
         acquisition6.setDataType(DataType.REAL64);
@@ -146,7 +151,7 @@ public class ScopeView {
 
         // acquisition 7
         Acquisition acquisition7 = new Acquisition();
-        acquisition7.setSampleTime(1);
+        acquisition7.setSampleTime(2);
         acquisition7.setSymbolBased(true);
         acquisition7.setSymbolName("Main.lr_channel_7");
         acquisition7.setDataType(DataType.REAL64);
@@ -155,7 +160,7 @@ public class ScopeView {
 
         // acquisition 8
         Acquisition acquisition8 = new Acquisition();
-        acquisition8.setSampleTime(1);
+        acquisition8.setSampleTime(2);
         acquisition8.setSymbolBased(true);
         acquisition8.setSymbolName("Main.lr_channel_8");
         acquisition8.setDataType(DataType.REAL64);

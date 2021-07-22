@@ -42,7 +42,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingWorker;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -91,7 +90,7 @@ public class SymbolBrowser extends JPanel {
 
     private final JLabel loadingState = new JLabel();
 
-    private final JScrollPane treePanel = new JScrollPane();
+    private final JScrollPane scrollPanel = new JScrollPane();
     
     private final JTree searchTree = new JTree();
 
@@ -291,11 +290,6 @@ public class SymbolBrowser extends JPanel {
         searchTree.addMouseListener(searchTreeMouseAdapter);
         searchTree.setUI(searchTreeUI);
         searchTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        
-        treePanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
-        treePanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        treePanel.setBorder(BorderFactory.createEmptyBorder());
-        treePanel.setViewportView(browseTree);
 
         routeComboBox.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         routeComboBox.addItem(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_LOADING));
@@ -369,10 +363,14 @@ public class SymbolBrowser extends JPanel {
         loadingPanel.add(Box.createVerticalGlue());
         loadingPanel.add(loadingBackground);
         loadingPanel.add(Box.createVerticalGlue());
-
+ 
+        scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
+        scrollPanel.setBorder(BorderFactory.createEmptyBorder());
+        scrollPanel.setViewportView(browseTree);
+        
         viewPanel.setLayout(new CardLayout());
         viewPanel.add(loadingPanel, View.LOADING.toString());
-        viewPanel.add(treePanel, View.TREE.toString());
+        viewPanel.add(scrollPanel, View.TREE.toString());
 
         new SwingWorker<Void, Void>() {
             @Override
@@ -381,6 +379,8 @@ public class SymbolBrowser extends JPanel {
                     disableSymbolTree();
                     buildSymbolTree();
                     enableSymbolTree();
+                    
+                    logger.fine("Build Symbol Tree Finished");
                 } catch (Exception e) {
                     logger.fine(Utilities.exceptionToString(e));
                 }
@@ -661,10 +661,10 @@ public class SymbolBrowser extends JPanel {
             }
             
             reloadAndExpandSearchTree();
-            treePanel.setViewportView(searchTree);
+            scrollPanel.setViewportView(searchTree);
             searchTextField.requestFocus();
         } else {
-            treePanel.setViewportView(browseTree);
+            scrollPanel.setViewportView(browseTree);
         }
     }
 
@@ -686,6 +686,7 @@ public class SymbolBrowser extends JPanel {
                 xref.acquisitionProperties.getAcquisition().setSymbolName(symbolName);
                 xref.acquisitionProperties.getAcquisition().setAmsNetId(amsNetId);
                 xref.acquisitionProperties.getAcquisition().setAmsPort(amsPort);
+                xref.acquisitionProperties.getAcquisition().setSymbolBased(true);
                 xref.acquisitionProperties.reloadAcquisition();
                 
                 // send symbol acquisition data to console
@@ -711,7 +712,7 @@ public class SymbolBrowser extends JPanel {
                 // update symbol tree
                 List<Symbol> symbolList = symbolLoader.getSymbolList(selectedSymbol);
                 for (Symbol symbol : symbolList) {
-                    if (treePanel.getViewport().getView().equals(searchTree)) {
+                    if (scrollPanel.getViewport().getView().equals(searchTree)) {
                         // add symbol node to search tree
                         SymbolNode symbolNodeChild = new SymbolNode(symbol, symbolLoader, true);
                         symbolTreeNode.addSymbolNodeFullName(symbolNode, symbolNodeChild);
@@ -727,7 +728,7 @@ public class SymbolBrowser extends JPanel {
                 TreePath symbolTreePath = new TreePath(symbolTreeNode.getPath());
 
                 // update search tree model
-                if (treePanel.getViewport().getView().equals(searchTree)) {
+                if (scrollPanel.getViewport().getView().equals(searchTree)) {
                     symbolTreeNode.removeFromParent();
                     SymbolTreeModel searchSymbolTreeModel = (SymbolTreeModel) searchTree.getModel();
                     searchSymbolTreeModel.reload();

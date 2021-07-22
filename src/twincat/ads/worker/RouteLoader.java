@@ -89,7 +89,6 @@ public class RouteLoader extends Observable {
     public void loadRouteSymbolDataList(AmsPort amsPort) {
         List<Route> routeList = loadRouteList();
 
-        logger.fine("Load Route List");
         for (Route route : routeList) {
             String amsNetId = route.getAmsNetId();
 
@@ -121,14 +120,10 @@ public class RouteLoader extends Observable {
                 adsClient.close();
             }
         }
-
-        logger.fine("Load Route Symbol Data Done");
     }
 
     public void loadRouteSymbolDataList() {
         List<Route> routeList = loadRouteList();
-
-        logger.fine("Load Route Symbol List");
 
         for (Route route : routeList) {
             String amsNetId = route.getAmsNetId();
@@ -163,8 +158,6 @@ public class RouteLoader extends Observable {
                 }
             }
         }
-
-        logger.fine("Load Route Symbol Data Done");
     }
 
     public void clearRouteSymbolDataList() {

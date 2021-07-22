@@ -78,7 +78,7 @@ public class Utilities {
         
         return true;
     }
-    
+
     public static final void stopSchedule(ScheduledFuture<?> schedule) {
         if (schedule != null) {
             if (!schedule.isCancelled()) {

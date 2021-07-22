@@ -11,7 +11,7 @@ public class Acquisition {
 	
 	private int sampleTime = 2;
 
-	private boolean symbolBased = false;
+	private boolean symbolBased = true;
 
     private String symbolName = "Channel";
 	

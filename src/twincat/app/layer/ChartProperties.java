@@ -259,6 +259,7 @@ public class ChartProperties extends JPanel {
         contentPanel.add(colorPanelContainer);
         contentPanel.add(stylePanelContainer);
 
+        scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
@@ -277,15 +278,20 @@ public class ChartProperties extends JPanel {
         return chart;
     }
 
-    public void setChart(Chart chart) {
-        this.chart = chart;
-    }
-
     /*********************************/
     /********* public method *********/
     /*********************************/
 
-    public void reloadChart() {
+    public void setChart(Chart chart) {
+        this.chart = chart;
+        this.reloadChart();
+    }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+
+    private void reloadChart() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -293,10 +299,6 @@ public class ChartProperties extends JPanel {
             }
         });
     }
-
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
 
     private void reload() {
         // reload common properties

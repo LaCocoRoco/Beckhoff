@@ -282,6 +282,7 @@ public class ChannelProperties extends JPanel {
         contentPanel.add(colorPanelContainer);
         contentPanel.add(stylePanelContainer);
 
+        scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
@@ -300,15 +301,20 @@ public class ChannelProperties extends JPanel {
         return channel;
     }
 
-    public void setChannel(Channel channel) {
-        this.channel = channel;
-    }
-
     /*********************************/
     /********* public method *********/
     /*********************************/
 
-    public void reloadChannel() {
+    public void setChannel(Channel channel) {
+        this.channel = channel;
+        this.reloadChannel();
+    }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+
+    private void reloadChannel() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -316,10 +322,6 @@ public class ChannelProperties extends JPanel {
             }
         });
     }
-
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
 
     private void reload() {
         // reload common properties

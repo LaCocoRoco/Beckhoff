@@ -88,25 +88,7 @@ public class LoaderPanel extends JPanel {
     private final ActionListener fileOpenListener = new ActionListener() {
         public void actionPerformed(ActionEvent actionEvent) {
             if (actionEvent.getActionCommand().equals(JFileChooser.APPROVE_SELECTION)) {
-
-                new SwingWorker<Void, Void>() {
-                    @Override
-                    protected Void doInBackground() throws Exception {
-                        try {
-                            Scope scope = loadScopeFile(fileChooser.getSelectedFile().getPath());
-                            
-                            if (scope != null) {
-                                xref.scopeBrowser.addScope(scope);                   
-                            }
-                        } catch (Exception e) {
-                            logger.fine(Utilities.exceptionToString(e));
-                        }
-
-                        return null;
-                    }
-                }.execute();
-
-                // display chart
+                buildScope();
                 xref.navigationPanel.setCard(Navigation.CHART);
             }
 
@@ -138,6 +120,25 @@ public class LoaderPanel extends JPanel {
     /******** private method *********/
     /*********************************/
 
+    private void buildScope() {
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() {
+                try {
+                    Scope scope = loadScopeFromScopeFile(fileChooser.getSelectedFile().getPath());
+                    
+                    if (scope != null) {
+                        xref.scopeBrowser.addScope(scope);                   
+                    }
+                } catch (Exception e) {
+                    logger.fine(Utilities.exceptionToString(e));
+                }
+
+                return null;
+            }
+        }.execute(); 
+    }
+    
     private Channel getChannel(Node channelNode) {
         Channel channel = new Channel();
         Acquisition acquisition = new Acquisition();
@@ -678,7 +679,7 @@ public class LoaderPanel extends JPanel {
         return scope;
     }
 
-    private Scope loadScopeFile(String path) throws ParserConfigurationException, SAXException, IOException {
+    private Scope loadScopeFromScopeFile(String path) throws ParserConfigurationException, SAXException, IOException {
         // build document
         documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();

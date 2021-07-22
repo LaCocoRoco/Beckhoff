@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ResourceBundle;
@@ -12,6 +14,7 @@ import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -48,7 +51,9 @@ public class ScopeProperties extends JPanel {
     
     private final TextField scopeName = new TextField();
 
-    private final TimeTextField recordTimeTextField = new TimeTextField();
+    private final TimeTextField recordTime = new TimeTextField();
+
+    private final JCheckBox autoRecord = new JCheckBox();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
@@ -69,6 +74,19 @@ public class ScopeProperties extends JPanel {
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
             scope.setScopeName(scopeName.getText());
             xref.scopeBrowser.reloadSelectedTreeNode();
+        }
+    };
+
+    private final ItemListener autoRecordItemListener = new ItemListener() {
+        @Override
+        public void itemStateChanged(ItemEvent itemEvent) {
+            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
+                scope.setAutoRecord(true);
+                recordTime.setEnabled(false);
+            } else {
+                scope.setAutoRecord(false);
+                recordTime.setEnabled(true);
+            }
         }
     };
 
@@ -102,18 +120,29 @@ public class ScopeProperties extends JPanel {
         namePanelContainer.add(namePanel); 
         
         // record mode properties
-        recordTimeTextField.setText(Scope.TIME_FORMAT_MIN_TIME);
-        recordTimeTextField.addPropertyChangeListener("time", recordTimePropertyChanged);
-        recordTimeTextField.setBounds(15, 25, 100, 23);
+        recordTime.setText(Scope.TIME_FORMAT_MIN_TIME);
+        recordTime.addPropertyChangeListener("time", recordTimePropertyChanged);
+        recordTime.setBounds(15, 25, 100, 23);
 
         JLabel recordTimeText = new JLabel("[" + Scope.TIME_FORMAT_TEMPLATE + "]");
         recordTimeText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
         recordTimeText.setBounds(125, 24, 120, 23);
 
+        autoRecord.setSelected(scope.isAutoRecord());
+        autoRecord.addItemListener(autoRecordItemListener);
+        autoRecord.setFocusPainted(false);
+        autoRecord.setBounds(25, 55, 20, 20);
+
+        JLabel autoRecordText = new JLabel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_AUTO_RECORD));
+        autoRecordText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
+        autoRecordText.setBounds(60, 55, 180, 23);
+
         TitledPanel recordTimePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_RECORD_TIME));
-        recordTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
-        recordTimePanel.add(recordTimeTextField);
+        recordTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 90));
+        recordTimePanel.add(recordTime);
         recordTimePanel.add(recordTimeText);
+        recordTimePanel.add(autoRecord);
+        recordTimePanel.add(autoRecordText);
         
         JPanel recordTimePanelContainer = new JPanel();
         recordTimePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
@@ -126,7 +155,8 @@ public class ScopeProperties extends JPanel {
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
         contentPanel.add(namePanelContainer);
         contentPanel.add(recordTimePanelContainer);
-
+        
+        scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
@@ -145,15 +175,20 @@ public class ScopeProperties extends JPanel {
         return scope;
     }
 
-    public void setScope(Scope scope) {
-        this.scope = scope;
-    }
-
     /*********************************/
     /********* public method *********/
     /*********************************/
 
-    public void reloadScope() {
+    public void setScope(Scope scope) {
+        this.scope = scope;
+        this.reloadScope();
+    }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+
+    private void reloadScope() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -162,17 +197,15 @@ public class ScopeProperties extends JPanel {
         });
     }
 
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
-
-    private void reload() {
+    private void reload() {       
         // reload common properties
         scopeName.setText(scope.getScopeName());
         scopeName.setCaretPosition(0);
 
         // reload record mode properties
-        recordTimeTextField.setText(scope.getRecordTime());
+        recordTime.setText(scope.getRecordTime());
+        autoRecord.setSelected(scope.isAutoRecord());
+        recordTime.setEnabled(!scope.isAutoRecord());
 
         // display scope properties
         scrollPanel.getVerticalScrollBar().setValue(0);

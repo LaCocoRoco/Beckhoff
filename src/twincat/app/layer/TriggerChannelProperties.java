@@ -123,6 +123,9 @@ public class TriggerChannelProperties extends JPanel {
 
     public TriggerChannelProperties(XReference xref) {
         this.xref = xref;
+        
+        // build trigger combo box
+        buildComboBox();
 
         // common properties
         triggerChannelNameTextField.setText(triggerChannel.getChannel().getChannelName());
@@ -136,9 +139,6 @@ public class TriggerChannelProperties extends JPanel {
         JPanel namePanelContainer = new JPanel();
         namePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
         namePanelContainer.add(namePanel);
-        
-        // build trigger combo box
-        buildTriggerComboBox();
 
         // trigger properties
         JLabel combineLabel = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_COMBINE));
@@ -158,7 +158,7 @@ public class TriggerChannelProperties extends JPanel {
         threshold.setValue((int) triggerChannel.getThreshold());
         threshold.setHorizontalAlignment(JTextField.LEFT);
         threshold.addPropertyChangeListener("number", thresholdPropertyChanged);
-        threshold.setBounds(20, 130, 90, 23);
+        threshold.setBounds(20, 130, 120, 23);
 
         JLabel thresholdText = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_THRESHOLD));
         thresholdText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
@@ -185,6 +185,7 @@ public class TriggerChannelProperties extends JPanel {
         contentPanel.add(namePanelContainer);
         contentPanel.add(triggerPanelContainer);
 
+        scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
@@ -203,15 +204,20 @@ public class TriggerChannelProperties extends JPanel {
         return triggerChannel;
     }
 
-    public void setTriggerChannel(TriggerChannel triggerChannel) {
-        this.triggerChannel = triggerChannel;
-    }
-
     /*********************************/
     /********* public method *********/
     /*********************************/
 
-    public void reloadTriggerChannel() {
+    public void setTriggerChannel(TriggerChannel triggerChannel) {
+        this.triggerChannel = triggerChannel;
+        this.reloadTriggerChannel();
+    }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+
+    private void reloadTriggerChannel() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -219,10 +225,6 @@ public class TriggerChannelProperties extends JPanel {
             }
         });
     }
-
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
 
     private void reload() {
         // reload common properties
@@ -249,7 +251,7 @@ public class TriggerChannelProperties extends JPanel {
         xref.propertiesPanel.setCard(Propertie.TRIGGER_CHANNEL);
     }
 
-    private void buildTriggerComboBox() {
+    private void buildComboBox() {
         combine.addItem(TriggerChannel.Combine.AND.toString());
         combine.addItem(TriggerChannel.Combine.OR.toString());
         combine.addItemListener(combineItemListener);

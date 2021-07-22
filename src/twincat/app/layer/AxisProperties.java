@@ -68,6 +68,8 @@ public class AxisProperties extends JPanel {
 
     private final JCheckBox autoscale = new JCheckBox();
 
+    private final JCheckBox scaleSymetric = new JCheckBox();
+
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
     /*********************************/
@@ -142,12 +144,25 @@ public class AxisProperties extends JPanel {
         public void itemStateChanged(ItemEvent itemEvent) {
             if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
                 axis.setAutoscale(true);
+                scaleSymetric.setEnabled(true);
                 valueMin.setEnabled(false);
                 valueMax.setEnabled(false);
             } else {
                 axis.setAutoscale(false);
+                scaleSymetric.setEnabled(false);
                 valueMin.setEnabled(true);
                 valueMax.setEnabled(true);
+            }
+        }
+    };
+
+    private final ItemListener scaleSymetricItemListener = new ItemListener() {
+        @Override
+        public void itemStateChanged(ItemEvent itemEvent) {
+            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
+                axis.setScaleSymetrical(true);
+            } else {
+                axis.setScaleSymetrical(false);
             }
         }
     };
@@ -267,18 +282,29 @@ public class AxisProperties extends JPanel {
         autoscale.setFocusPainted(false);
         autoscale.setBounds(25, 85, 20, 20);
 
-        JLabel autoscaleText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_VALUE_AUTOSCALE));
+        JLabel autoscaleText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_AUTOSCALE));
         autoscaleText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
         autoscaleText.setBounds(60, 85, 150, 23);
 
+        scaleSymetric.setSelected(axis.isScaleSymetrical());
+        scaleSymetric.addItemListener(scaleSymetricItemListener);
+        scaleSymetric.setFocusPainted(false);
+        scaleSymetric.setBounds(25, 115, 20, 20);
+
+        JLabel scaleSymetricText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_SCALE_SYMETRICAL));
+        scaleSymetricText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
+        scaleSymetricText.setBounds(60, 115, 150, 23);
+
         TitledPanel scalePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_SCALE));
-        scalePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 120));
+        scalePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 150));
         scalePanel.add(valueMin);
         scalePanel.add(valueMinText);
         scalePanel.add(valueMax);
         scalePanel.add(valueMaxText);
         scalePanel.add(autoscale);
         scalePanel.add(autoscaleText);
+        scalePanel.add(scaleSymetric);
+        scalePanel.add(scaleSymetricText);
         
         JPanel scalePanelContainer = new JPanel();
         scalePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
@@ -294,6 +320,7 @@ public class AxisProperties extends JPanel {
         contentPanel.add(stylePanelContainer);
         contentPanel.add(scalePanelContainer);
 
+        scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
@@ -312,15 +339,20 @@ public class AxisProperties extends JPanel {
         return axis;
     }
 
-    public void setAxis(Axis axis) {
-        this.axis = axis;
-    }
-
     /*********************************/
     /********* public method *********/
     /*********************************/
 
-    public void reloadAxis() {
+    public void setAxis(Axis axis) {
+        this.axis = axis;
+        this.reloadAxis();
+    }
+
+    /*********************************/
+    /******** private method *********/
+    /*********************************/
+
+    private void reloadAxis() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -328,10 +360,6 @@ public class AxisProperties extends JPanel {
             }
         });
     }
-
-    /*********************************/
-    /******** private method *********/
-    /*********************************/
 
     private void reload() {
         // reload common properties
@@ -354,7 +382,9 @@ public class AxisProperties extends JPanel {
         valueMin.setValue((long) axis.getValueMin());
         valueMax.setValue((long) axis.getValueMax());
         autoscale.setSelected(axis.isAutoscale());
-
+        scaleSymetric.setSelected(axis.isScaleSymetrical());
+        
+        scaleSymetric.setEnabled(axis.isAutoscale());
         valueMin.setEnabled(!axis.isAutoscale());
         valueMax.setEnabled(!axis.isAutoscale());
 

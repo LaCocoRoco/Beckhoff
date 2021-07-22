@@ -39,6 +39,8 @@ public final class Scope {
     private String scopeName = "Scope";
 
     private long recordTime = 0;
+    
+    private boolean autoRecord = true;
 
     /*********************************/
     /***** global final variable *****/
@@ -67,6 +69,14 @@ public final class Scope {
     public void setRecordTime(long recordTime) {
         this.recordTime = recordTime;
     }
+    
+    public boolean isAutoRecord() {
+        return autoRecord;
+    }
+
+    public void setAutoRecord(boolean autoRecord) {
+        this.autoRecord = autoRecord;
+    }
 
     public CopyOnWriteArrayList<Chart> getChartList() {
         return chartList;
@@ -93,6 +103,7 @@ public final class Scope {
         Iterator<Chart> chartIterator = chartList.iterator();
         while (chartIterator.hasNext()) {
             Chart chart = chartIterator.next();
+            chart.setAutoRecord(autoRecord);
             chart.setRecordTime(recordTime);
             chart.start();
         }
@@ -117,11 +128,11 @@ public final class Scope {
     public void setRecordTime(String recordTime) {
         setRecordTime(Scope.timeFormaterToLong(recordTime));
     }
-    
+
     public void addChart(Chart chart) {
         chartList.add(chart);
-
-        //chart.getTriggerGroupList().addAll(triggerGroupList);           
+        chart.getTriggerGroupList().clear();
+        chart.getTriggerGroupList().addAll(triggerGroupList); 
     }
 
     public void removeChart(Chart remove) {
@@ -140,7 +151,8 @@ public final class Scope {
         triggerGroupList.add(triggerGroup);
         
         for (Chart chart : chartList) {
-            chart.getTriggerGroupList().add(triggerGroup);
+            chart.getTriggerGroupList().clear();
+            chart.getTriggerGroupList().addAll(triggerGroupList);
         }    
     }
 
@@ -151,22 +163,13 @@ public final class Scope {
 
             if (triggerGroup.equals(triggerGroupRemove)) {
                 triggerGroupIterator.remove();
-            }  
-        }
-        
-        Iterator<Chart> chartIterator = chartList.iterator();
-        while (chartIterator.hasNext()) {
-            Chart chart = chartIterator.next();
-            
-            Iterator<TriggerGroup> chartTriggerGroupIterator = chart.getTriggerGroupList().iterator();
-            while (chartTriggerGroupIterator.hasNext()) {
-                TriggerGroup chartTriggerGroup = chartTriggerGroupIterator.next();
-
-                if (chartTriggerGroup.equals(triggerGroupRemove)) {
-                    chartTriggerGroupIterator.remove();
-                }  
             }
         }
+        
+        for (Chart chart : chartList) {
+            chart.getTriggerGroupList().clear();
+            chart.getTriggerGroupList().addAll(triggerGroupList);
+        }  
     }
 
     /*********************************/
