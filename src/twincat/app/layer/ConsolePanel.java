@@ -43,6 +43,8 @@ public class ConsolePanel extends JPanel {
 
     private final CommandLine commandLine = new CommandLine();
 
+    private final Logger logger = TwincatLogger.getLogger();
+    
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -73,7 +75,6 @@ public class ConsolePanel extends JPanel {
 
         consoleHandler.setFormatter(TwincatLogger.getFormatter());
 
-        Logger logger = TwincatLogger.getLogger();
         logger.addHandler(consoleHandler);
 
         JScrollPane consolePanel = new JScrollPane(textArea);

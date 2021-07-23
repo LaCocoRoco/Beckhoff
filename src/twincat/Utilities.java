@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 
-import twincat.constant.ColorTable;
+import twincat.constant.RandomColorTable;
 
 public class Utilities {
     /*********************************/
@@ -94,7 +94,7 @@ public class Utilities {
     
     public static final Color getRandomTableColor() {
         Random random = new Random();
-        int index = random.nextInt(ColorTable.values().length);
-        return ColorTable.values()[index].color;
+        int index = random.nextInt(RandomColorTable.values().length);
+        return RandomColorTable.values()[index].color;
     }
 }

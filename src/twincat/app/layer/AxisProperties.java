@@ -259,23 +259,22 @@ public class AxisProperties extends JPanel {
         stylePanelContainer.add(stylePanel); 
         
         // scale properties
-        valueMin.setValue((long) axis.getValueMin());
-        valueMin.setHorizontalAlignment(JTextField.LEFT);
-        valueMin.addPropertyChangeListener("number", valueMinPropertyChanged);
-        valueMin.setBounds(15, 25, 120, 23);
-
-        JLabel valueMinText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_VALUE_MIN));
-        valueMinText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        valueMinText.setBounds(145, 25, 160, 23);
-
         valueMax.setValue((long) axis.getValueMax());
         valueMax.setHorizontalAlignment(JTextField.LEFT);
         valueMax.addPropertyChangeListener("number", valueMaxPropertyChanged);
-        valueMax.setBounds(15, 55, 120, 23);
+        valueMax.setBounds(15, 25, 120, 23);
 
         JLabel valueMaxText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_VALUE_MAX));
         valueMaxText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        valueMaxText.setBounds(145, 55, 160, 23);
+        valueMaxText.setBounds(145, 25, 160, 23);
+        valueMin.setValue((long) axis.getValueMin());
+        valueMin.setHorizontalAlignment(JTextField.LEFT);
+        valueMin.addPropertyChangeListener("number", valueMinPropertyChanged);
+        valueMin.setBounds(15, 55, 120, 23);
+
+        JLabel valueMinText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_VALUE_MIN));
+        valueMinText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
+        valueMinText.setBounds(145, 55, 160, 23);
 
         autoscale.setSelected(axis.isAxisNameVisible());
         autoscale.addItemListener(autoscaleItemListener);

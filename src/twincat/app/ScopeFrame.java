@@ -165,7 +165,7 @@ public class ScopeFrame extends JPanel {
         xref.windowPanel.setCard(card);
     }
 
-    public void preloadSymbolBrowser() {
+    public void preBuildSymbolBrowser() {
         xref.symbolBrowser.build();
     }
     

@@ -6,15 +6,9 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import twincat.constant.DefaultColorTable;
+
 public class Axis implements Observer {
-    /*********************************/
-    /**** local constant variable ****/
-    /*********************************/
-
-    private static final double AUTOSCALE_OFFSET = 0.1;
-
-    private static final int AUTOSCALE_MODULATE = 10;
-
     /*********************************/
     /******** global variable ********/
     /*********************************/
@@ -23,7 +17,7 @@ public class Axis implements Observer {
 
     private String axisName = "Axis";
 
-    private Color axisColor = new Color(41, 61, 74, 255);
+    private Color axisColor = DefaultColorTable.DEEPBLUE.color;
 
     private boolean axisVisible = true;
 
@@ -49,9 +43,7 @@ public class Axis implements Observer {
     /******** local variable *********/
     /*********************************/
 
-    private double autoscaleValueMin = 0;
-
-    private double autoscaleValueMax = 0;
+    private double symetricalValue = 0;
 
     /*********************************/
     /******** setter & getter ********/
@@ -134,6 +126,9 @@ public class Axis implements Observer {
     public void setAutoscale(boolean autoscale) {
         this.autoscale = autoscale;
         this.refresh = true;
+        this.symetricalValue = 0;
+        this.valueMin = autoscale ? 0 : valueMin;
+        this.valueMax = autoscale ? 0 : valueMax;
     }
 
     public boolean isScaleSymetrical() {
@@ -142,6 +137,10 @@ public class Axis implements Observer {
 
     public void setScaleSymetrical(boolean scaleSymetrical) {
         this.scaleSymetrical = scaleSymetrical;
+        this.refresh = true;
+        this.symetricalValue = 0;
+        this.valueMin = autoscale ? 0 : valueMin;;
+        this.valueMax = autoscale ? 0 : valueMax;;
     }
 
     public CopyOnWriteArrayList<Channel> getChannelList() {
@@ -212,33 +211,24 @@ public class Axis implements Observer {
         if (autoscale) {
             double value = channel.getSamples().getCurrentValue();
 
-            if (value < autoscaleValueMin) {
-                autoscaleValueMin = value;
-            }
-
-            if (value > autoscaleValueMax) {
-                autoscaleValueMax = value;
-            }
-
             if (scaleSymetrical) {
-                if (Math.abs(autoscaleValueMax) > Math.abs(autoscaleValueMin)) {
-                    autoscaleValueMax = + Math.abs(autoscaleValueMax);
-                    autoscaleValueMin = - Math.abs(autoscaleValueMax);
-                } else {
-                    autoscaleValueMax = + Math.abs(autoscaleValueMin);
-                    autoscaleValueMin = - Math.abs(autoscaleValueMin);            
+                if (Math.abs(Math.ceil(value)) > Math.abs(symetricalValue)) {          
+                    symetricalValue = Math.abs(Math.ceil(value));
+                    valueMax = (long) + symetricalValue;
+                    valueMin = (long) - symetricalValue;
+                    refresh = true;
                 }
-            }
- 
-            double autoscaleRange = autoscaleValueMax - autoscaleValueMin;
-            double autoscaleOffset = autoscaleRange * AUTOSCALE_OFFSET;
-            double autoscaleMin = autoscaleValueMin - autoscaleOffset;
-            double autoscaleMax = autoscaleValueMax + autoscaleOffset;
-            double autosclaeMinMod = AUTOSCALE_MODULATE + autoscaleMin % AUTOSCALE_MODULATE;
-            double autoscaleMaxMod = AUTOSCALE_MODULATE - autoscaleMax % AUTOSCALE_MODULATE;
+            } else {
+                if (Math.floor(value) < valueMin) {
+                    valueMin = (long) value;
+                    refresh = true;
+                }
 
-            valueMin = (long) (autoscaleValueMin - autoscaleOffset - autosclaeMinMod);
-            valueMax = (long) (autoscaleValueMax + autoscaleOffset + autoscaleMaxMod);
+                if (Math.ceil(value) > valueMax) {
+                    valueMax = (long) value;
+                    refresh = true;
+                }  
+            }
         }
     }
 }

@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
@@ -31,20 +30,16 @@ public class ScopeApp extends JFrame {
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
-    private final Logger logger = TwincatLogger.getLogger();
-
     /*********************************/
     /********** constructor **********/
     /*********************************/
 
     public ScopeApp(String[] args) {
         parseArgs(args);
-        
-        logger.fine("Application Started");
-        
+
         // scope setup
         ScopeFrame scopeFrame = new ScopeFrame();
-        scopeFrame.preloadSymbolBrowser();
+        scopeFrame.preBuildSymbolBrowser();
         scopeFrame.setMenuVisible(true);
         scopeFrame.setConsoleVisible(false);
         scopeFrame.setWindow(Window.SCOPE);
@@ -62,8 +57,6 @@ public class ScopeApp extends JFrame {
         this.setBounds(framePositionX, framePositionY, WIDTH_FRAME, HEIGHT_FRAME);
         this.pack();
         this.setVisible(true);
-        
-        logger.fine("Application Initialized");
     }
 
     /*********************************/

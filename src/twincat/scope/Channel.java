@@ -12,6 +12,7 @@ import twincat.Utilities;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
 import twincat.ads.wrapper.Variable;
+import twincat.constant.DefaultColorTable;
 
 public class Channel extends Observable implements Observer {
     /*********************************/
@@ -34,15 +35,15 @@ public class Channel extends Observable implements Observer {
 
     private boolean antialias = true;
 
-    private Color lineColor = Color.RED;
+    private Color lineColor = DefaultColorTable.RED.color;
 
-    private int lineWidth = 1;
+    private int lineWidth = 2;
 
     private boolean lineVisible = true;
 
-    private Color plotColor = Color.RED;
+    private Color plotColor = DefaultColorTable.RED.color;
 
-    private int plotSize = 4;
+    private int plotSize = 2;
 
     private boolean plotVisible = false;
 

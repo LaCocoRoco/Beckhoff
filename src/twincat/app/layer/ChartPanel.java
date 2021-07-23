@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -19,7 +18,6 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
 import twincat.Resources;
-import twincat.TwincatLogger;
 import twincat.Utilities;
 import twincat.scope.Chart;
 import twincat.scope.Scope;
@@ -27,6 +25,8 @@ import twincat.scope.Scope;
 public class ChartPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
+    // TODO : disable reload on node select (setter)
+    // TODO : on exit close everything
     // TODO : remove tree select parent properties
     // TODO : axis show hide problem (values)
     // TODO : remove trigger not recognized
@@ -50,6 +50,8 @@ public class ChartPanel extends JPanel {
 
     private final int DISPLAY_TIME_ZOOM_FACTOR = 100;
     
+    private final int DISPLAY_MOVE_RANGE = 100;
+    
     /*********************************/
     /******** global variable ********/
     /*********************************/
@@ -66,8 +68,6 @@ public class ChartPanel extends JPanel {
     
     private final GraphPanel graphPanel = new GraphPanel();
 
-    private final Logger logger = TwincatLogger.getLogger();
-  
     /*********************************/
     /****** predefined variable ******/
     /*********************************/
@@ -76,13 +76,11 @@ public class ChartPanel extends JPanel {
         @Override
         public void ancestorAdded(AncestorEvent event) { 
             chart.start();
-            logger.fine("ancestorAdded");
         }
 
         @Override
         public void ancestorRemoved(AncestorEvent event) {
             chart.stop();
-            logger.fine("ancestorRemoved");
         }
 
         @Override
@@ -101,28 +99,28 @@ public class ChartPanel extends JPanel {
     private final ActionListener backwardActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            // TODO
+            chart.forward(DISPLAY_MOVE_RANGE);
         }
     };
 
     private final ActionListener forwardActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-           // TODO  
+           chart.forward(DISPLAY_MOVE_RANGE);
         }
     };
 
     private final ActionListener zoomInActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            chart.setDisplayTime(chart.getDisplayTime() + DISPLAY_TIME_ZOOM_FACTOR);
+            chart.setDisplayTime(chart.getDisplayTime() - DISPLAY_TIME_ZOOM_FACTOR);
         }
     };
 
     private final ActionListener zoomOutActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            chart.setDisplayTime(chart.getDisplayTime() - DISPLAY_TIME_ZOOM_FACTOR);
+            chart.setDisplayTime(chart.getDisplayTime() + DISPLAY_TIME_ZOOM_FACTOR);
         }
     };
 

@@ -20,7 +20,7 @@ import twincat.Resources;
 import twincat.app.components.ScrollablePanel;
 import twincat.app.components.WrapTopLayout;
 import twincat.app.constant.Propertie;
-import twincat.constant.ColorTable;
+import twincat.constant.DefaultColorTable;
 
 public class ColorProperties extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -92,7 +92,7 @@ public class ColorProperties extends JPanel {
         contentPanel.setBorder(BorderFactory.createEmptyBorder());
         contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
 
-        for (ColorTable tableCell : ColorTable.values()) {
+        for (DefaultColorTable tableCell : DefaultColorTable.values()) {
             Border outerBorder = BorderFactory.createLineBorder(Color.BLACK);
             Border innerBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
             CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(outerBorder, innerBorder);

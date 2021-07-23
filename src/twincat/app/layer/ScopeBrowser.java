@@ -297,33 +297,6 @@ public class ScopeBrowser extends JPanel {
             
         }
 
-        /*
-        List<Chart> chartLists = scope.getChartList();
-        for (Chart chart : chartLists) {
-            System.out.println("chart");
-            
-            List<Axis> axisList = chart.getAxisList();
-            for (Axis axis : axisList) {
-                System.out.println("axis");
-
-                List<Channel> channelList = axis.getChannelList();
-                for (Channel channel : channelList) {
-                    System.out.println("channel");
-                }
-            }
-
-            List<TriggerGroup> triggerGroupList = chart.getTriggerGroupList();
-            if (!triggerGroupList.isEmpty()) { 
-                for (TriggerGroup triggerGroup : triggerGroupList) {
-                    List<TriggerChannel> triggerChannelList = triggerGroup.getTriggerChannelList();
-                    for (TriggerChannel triggerChannel : triggerChannelList) {
-                        System.out.println("triggerChannel");
-                    }
-                }
-            }    
-        }
-        */
-        
         // select scope
         reloadTreeNode(scopeTreeNode);
         loadScopeProperties(scopeTreeNode);
@@ -866,6 +839,7 @@ public class ScopeBrowser extends JPanel {
         ScopeTreeNode chartTreeNode = addChartTreeNode(chart);
 
         // load chart tree node properties
+        reloadTreeNode(chartTreeNode);
         loadChartProperties(chartTreeNode);
         
         return chartTreeNode;

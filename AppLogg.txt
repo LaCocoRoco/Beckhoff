@@ -1,0 +1,31 @@
+[06:50:58] RouteLoader : 192.168.12.129.1.1 | NCSAF 
+[06:50:58] SymbolLoader : Parse Symbol Table | 192.168.12.129.1.1 | NCSAF 
+[06:50:58] SymbolLoader : Symbol Info Bytes  | 16576 
+[06:50:58] SymbolLoader : Symbol List Size   | 14 
+[06:50:58] RouteLoader : 192.168.12.129.1.1 | TC2PLC1 
+[06:50:58] SymbolLoader : Parse Symbol Table | 192.168.12.129.1.1 | TC2PLC1 
+[06:50:58] SymbolLoader : Symbol Info Bytes  | 50340 
+[06:50:58] SymbolLoader : Symbol List Size   | 30 
+[06:50:58] SymbolBrowser$11 : Build Symbol Tree Finished 
+[06:50:59] ChartPanel$1 : ancestorAdded 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:50:59] updateGraphic 
+[06:51:00] updateGraphic 
+[06:51:00] updateGraphic 

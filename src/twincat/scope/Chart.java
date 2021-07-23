@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 
 import twincat.TwincatLogger;
 import twincat.Utilities;
+import twincat.constant.DefaultColorTable;
 
 public class Chart extends Observable {
     /*********************************/
@@ -46,7 +47,7 @@ public class Chart extends Observable {
 
     private static final int CHART_TICK_LENGTH = 10;
 
-    private static final int DEFAULT_REFRESH_RATE = 50;
+    private static final int DEFAULT_REFRESH_RATE = 30;
     
     /*********************************/
     /******** global variable ********/
@@ -60,17 +61,17 @@ public class Chart extends Observable {
 
     private String chartName = "Chart";
 
-    private Color timeLineColor = new Color(41, 61, 74, 255);
+    private Color timeLineColor = DefaultColorTable.DEEPBLUE.color;
 
-    private Color gridLineColor = new Color(41, 61, 74, 255);
+    private Color gridLineColor = DefaultColorTable.DEEPBLUE.color;
 
-    private Color borderColor = new Color(119, 136, 153, 255);
+    private Color borderColor = DefaultColorTable.LIGHTBLUE.color;
 
-    private Color chartColor = new Color(192, 192, 192, 255);
+    private Color chartColor = DefaultColorTable.LIGHTGRAY.color;
 
     private int lineWidth = 1;
 
-    private int timeTickCount = 11;
+    private int timeTickCount = 16;
 
     private int axisTickCount = 11;
 
@@ -137,6 +138,12 @@ public class Chart extends Observable {
     private VolatileImage dynamicImage = Chart.createBitmaskVolatileImage(width, height);
 
     private ScheduledFuture<?> schedule = null;
+
+    /*********************************/
+    /****** local final variable *****/
+    /*********************************/
+ 
+    private final Logger logger = TwincatLogger.getLogger();
     
     /*********************************/
     /****** predefined variable ******/
@@ -149,7 +156,6 @@ public class Chart extends Observable {
                 updateGraphic();
                 updateObserver();
             } catch (Exception e) {
-                Logger logger = TwincatLogger.getLogger();
                 logger.severe(Utilities.exceptionToString(e));
             }
         }
@@ -343,6 +349,18 @@ public class Chart extends Observable {
         refreshRate = fps > 0 ? 1000 / fps : DEFAULT_REFRESH_RATE;
     }
 
+    public void forward(int range) {
+        if (pauseTimeStamp != 0) {
+            pauseTimeStamp += range;
+        }
+    }
+    
+    public void backward(int range) {
+        if (pauseTimeStamp != 0) {
+            pauseTimeStamp -= range;
+        }       
+    }
+    
     public void play() {
         pauseTimeStamp = 0;
     }
@@ -619,7 +637,7 @@ public class Chart extends Observable {
                     graphics.setColor(axis.getAxisColor());
                     graphics.drawLine(axisPositionX, axisPositionY, axisPositionX, axisPositionY + axisLength);
 
-                    for (int i = 0; i < timeTickCount; i++) {
+                    for (int i = 0; i < axisTickCount; i++) {
                         int axisIndicatorPositionX = axisPositionX - CHART_TICK_LENGTH;
                         int axisIndicatorPositionY = axisPositionY + (int) (axisTickOffset * i);
                         double axisValueRangeOffset = axisValueRange / (axisTickCount - 1) * i;
@@ -657,7 +675,8 @@ public class Chart extends Observable {
                 int timeTickPositionX = timePositionX + (int) (timeTickOffset * i);
                 int timeTickPositionY = timePositionY + CHART_TICK_LENGTH;
 
-                double timeDisplayOffset = displayTime / (timeTickCount - 1) * i;
+                double timeDisplayOffset = (double) displayTime / 100 * 100 / (timeTickCount - 1) * i;
+                //double timeDisplayOffset = displayTime / (timeTickCount - 1) * i;
 
                 DecimalFormat decimalFormat = new DecimalFormat("0.0");
                 String timeText = decimalFormat.format(timeDisplayOffset);
