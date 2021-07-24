@@ -53,9 +53,9 @@ public class Chart extends Observable {
     /******** global variable ********/
     /*********************************/
 
-    private int width = 800;
+    private int width = 1000;
 
-    private int height = 600;
+    private int height = 1000;
 
     private int refreshRate = DEFAULT_REFRESH_RATE;
 
@@ -97,9 +97,9 @@ public class Chart extends Observable {
     /******** local variable *********/
     /*********************************/
 
-    private boolean running = false;
-    
     private boolean refresh = true;
+
+    private boolean running = false;
 
     private long cycleTime = 0;
 
@@ -297,7 +297,7 @@ public class Chart extends Observable {
         this.displayTime = displayTime;
         this.refresh = true;
     }
-    
+
     public boolean isAutoRecord() {
         return autoRecord;
     }
@@ -369,12 +369,12 @@ public class Chart extends Observable {
         pauseTimeStamp = currentTimeStamp;
     }
 
-    public void togglePlayPause() {
-        if (pauseTimeStamp == 0) {
-            pause();
-        } else {
-            play();
-        }
+    public boolean isPaused() {
+        return pauseTimeStamp != 0 ? true : false;
+    }
+
+    public boolean isStoped() {
+        return running;
     }
     
     public long getRunTime() {
@@ -384,9 +384,19 @@ public class Chart extends Observable {
     public long getPauseTime() {
         return pauseTimeStamp - startTimeStamp;
     }
-
+    
+    public long getCurrentDisplayTime() {
+        return referenceTime;
+    }
+    
+    public long getCurrentRecordTime() {
+        return currentTime;
+    }
+       
     public void start() {
-        // update components
+        System.out.println("start");
+        
+        // start components
         Iterator<Axis> axisIterator = axisList.iterator();
         while (axisIterator.hasNext()) {
             Axis axis = axisIterator.next();
@@ -396,12 +406,12 @@ public class Chart extends Observable {
         // start graphics
         startSchedule();
     
-        // reset general
-        running = true;
+        // start general
         refresh = true;
+        running = true;
         chartError = "None";
         
-        // reset time
+        // start time
         cycleTime = 0;
         refreshTime = 0;
         currentTime = 0;
@@ -409,7 +419,7 @@ public class Chart extends Observable {
         pauseTime = 0;
         referenceTime = 0;
         
-        // reset time stamp
+        // start time stamp
         deltaTimeStamp = 0;
         currentTimeStamp = 0;
         triggerTimeStamp = 0;
@@ -420,25 +430,19 @@ public class Chart extends Observable {
     }
 
     public void stop() {
-        // update components
+        System.out.println("stop");
+        
+        // stop components
         Iterator<Axis> axisIterator = axisList.iterator();
         while (axisIterator.hasNext()) {
             Axis axis = axisIterator.next();
             axis.stop();
         }
         
-        // update general
+        // stop general
         running = false;
     }
-
-    public void toggleStartStop() {
-        if (running) {
-            stop();
-        } else {
-            start();
-        }
-    }
-    
+ 
     public void close() {
         Iterator<Axis> axisIterator = axisList.iterator();
         while (axisIterator.hasNext()) {
@@ -505,6 +509,22 @@ public class Chart extends Observable {
         // update pause time
         pauseTime = pauseTimeStamp - startTimeStamp;
 
+        // reset trigger time stamp
+        triggerTimeStamp = 0;
+
+        // get trigger time stamp
+        Iterator<TriggerGroup> triggerGroupIterator = triggerGroupList.iterator();
+        while (triggerGroupIterator.hasNext()) {
+            TriggerGroup triggerGroup = triggerGroupIterator.next();
+
+            if (triggerGroup.isEnabled()) {
+                long triggerTime = triggerGroup.getTriggerTimeStamp(displayTime);
+                if (triggerTime != 0) {
+                    this.triggerTimeStamp = triggerTime;
+                }
+            }
+        }
+        
         // get current time stamp
         long channelTimeStamp = 0;
         Iterator<Axis> axisIterator = axisList.iterator();
@@ -524,19 +544,6 @@ public class Chart extends Observable {
                 } else {
                     currentTimeStamp = 0;
                     break;
-                }
-            }
-        }
-
-        // get trigger time stamp
-        Iterator<TriggerGroup> triggerGroupIterator = triggerGroupList.iterator();
-        while (triggerGroupIterator.hasNext()) {
-            TriggerGroup triggerGroup = triggerGroupIterator.next();
-
-            if (triggerGroup.isEnabled()) {
-                long triggerTime = triggerGroup.getTriggerTimeStamp(displayTime);
-                if (triggerTime != 0) {
-                    this.triggerTimeStamp = triggerTime;
                 }
             }
         }
@@ -676,7 +683,6 @@ public class Chart extends Observable {
                 int timeTickPositionY = timePositionY + CHART_TICK_LENGTH;
 
                 double timeDisplayOffset = (double) displayTime / 100 * 100 / (timeTickCount - 1) * i;
-                //double timeDisplayOffset = displayTime / (timeTickCount - 1) * i;
 
                 DecimalFormat decimalFormat = new DecimalFormat("0.0");
                 String timeText = decimalFormat.format(timeDisplayOffset);
@@ -927,21 +933,21 @@ public class Chart extends Observable {
                 while (channelIterator.hasNext()) {
                     Channel channel = channelIterator.next();
 
-                    String channelName = channel.getChannelName().length() > 10 ? channel.getChannelName().substring(0, 10)
-                            : channel.getChannelName();
+                    String channelName = channel.getChannelName().length() > 10 ?
+                            channel.getChannelName().substring(0, 10) : channel.getChannelName();
                     graphics.drawString(channelName, debugPositionX, debugPositionY += 15);
 
-                    graphics.drawString("NotErrCnt:", debugPositionX + 80, debugPositionY);
+                    graphics.drawString("NotErrCnt:", debugPositionX + 100, debugPositionY);
                     String notificationErrorCountText = Integer.toString(channel.getNotificationError());
-                    graphics.drawString(notificationErrorCountText, debugPositionX + 145, debugPositionY);
+                    graphics.drawString(notificationErrorCountText, debugPositionX + 165, debugPositionY);
 
-                    graphics.drawString("Memory:", debugPositionX + 180, debugPositionY);
+                    graphics.drawString("Memory:", debugPositionX + 200, debugPositionY);
                     String currentIndexText = Integer.toString(channel.getSamples().getCurrentIndex());
-                    graphics.drawString(currentIndexText, debugPositionX + 230, debugPositionY);
+                    graphics.drawString(currentIndexText, debugPositionX + 250, debugPositionY);
 
-                    graphics.drawString("Error:", debugPositionX + 300, debugPositionY);
+                    graphics.drawString("Error:", debugPositionX + 320, debugPositionY);
                     String errorText = channel.getChannelError();
-                    graphics.drawString(errorText, debugPositionX + 340, debugPositionY);
+                    graphics.drawString(errorText, debugPositionX + 360, debugPositionY);
                 }
             }
         }

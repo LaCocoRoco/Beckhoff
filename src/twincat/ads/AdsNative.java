@@ -227,6 +227,7 @@ public class AdsNative {
     protected void adsDeleteDeviceNotification(long notification, AdsCallback callback) throws AdsException {
         if (adsPort != 0) {
             JNILong jniLong = new JNILong(notification);
+
             long errorCode = AdsCallDllFunction.adsSyncDelDeviceNotificationReq(amsAddress, jniLong);
 
             AdsCallbackObject adsCallbackObject = new AdsCallbackObject();

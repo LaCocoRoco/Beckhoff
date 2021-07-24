@@ -1,10 +1,16 @@
 package twincat.app.layer;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -22,9 +28,11 @@ import twincat.Utilities;
 import twincat.scope.Chart;
 import twincat.scope.Scope;
 
-public class ChartPanel extends JPanel {
+public class ChartPanel extends JPanel implements Observer {
     private static final long serialVersionUID = 1L;
 
+    // TODO : delete on close
+    // TODO : take over data from channel to acquisition
     // TODO : disable reload on node select (setter)
     // TODO : on exit close everything
     // TODO : remove tree select parent properties
@@ -37,7 +45,7 @@ public class ChartPanel extends JPanel {
     // TODO : update static content set display
     // TODO : time marker problem
     // TODO : axis marker problem
-    
+
     /*********************************/
     /******** cross reference ********/
     /*********************************/
@@ -49,24 +57,26 @@ public class ChartPanel extends JPanel {
     /*********************************/
 
     private final int DISPLAY_TIME_ZOOM_FACTOR = 100;
-    
+
     private final int DISPLAY_MOVE_RANGE = 100;
-    
+
     /*********************************/
     /******** global variable ********/
     /*********************************/
 
     private Chart chart = new Chart();
-    
+
     /*********************************/
     /****** local final variable *****/
     /*********************************/
+    
+    private final JButton startStopButton = new JButton();
 
-    private final JButton stopButton = new JButton();
-    
+    private final JButton playPauseButton = new JButton();
+
+    private final JLabel recordTime = new JLabel();
+  
     private final JLabel displayTime = new JLabel();
-    
-    private final GraphPanel graphPanel = new GraphPanel();
 
     /*********************************/
     /****** predefined variable ******/
@@ -74,13 +84,13 @@ public class ChartPanel extends JPanel {
 
     private final AncestorListener acncestorListener = new AncestorListener() {
         @Override
-        public void ancestorAdded(AncestorEvent event) { 
-            chart.start();
+        public void ancestorAdded(AncestorEvent event) {
+            chartStart();
         }
 
         @Override
         public void ancestorRemoved(AncestorEvent event) {
-            chart.stop();
+            chartStop();
         }
 
         @Override
@@ -92,21 +102,38 @@ public class ChartPanel extends JPanel {
     private final ActionListener playPauseActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            chart.togglePlayPause();
+            if (chart.isPaused()) {
+                chartPlay();               
+            } else {
+                chartPause();
+            }
+        }
+    };
+    
+    private final ActionListener startStopActionListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            if (chart.isStoped()) {
+                chartStop();
+                chartPause();
+            } else {
+                chartStart();
+                chartPlay();                 
+            }
         }
     };
 
     private final ActionListener backwardActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            chart.forward(DISPLAY_MOVE_RANGE);
+            chart.backward(DISPLAY_MOVE_RANGE);
         }
     };
 
     private final ActionListener forwardActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-           chart.forward(DISPLAY_MOVE_RANGE);
+            chart.forward(DISPLAY_MOVE_RANGE);
         }
     };
 
@@ -124,13 +151,6 @@ public class ChartPanel extends JPanel {
         }
     };
 
-    private final ActionListener stopActionListener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            chart.toggleStartStop();
-        }
-    };
-
     private final ActionListener minimizeActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -138,6 +158,25 @@ public class ChartPanel extends JPanel {
         }
     };
 
+    private final ComponentAdapter componentListener = new ComponentAdapter() {
+        @Override
+        public void componentResized(ComponentEvent componentEvent) {
+            Component component = componentEvent.getComponent();
+            chart.setWidth(component.getWidth());
+            chart.setHeight(component.getHeight());
+        }
+    };
+    
+    private final JPanel graphPanel = new JPanel() {
+        private static final long serialVersionUID = 1L;
+        
+        @Override
+        protected void paintComponent(Graphics graphics) {
+            super.paintComponent(graphics);
+            graphics.drawImage(chart.getImage(), 0, 0, this);
+        }
+    };
+    
     /*********************************/
     /********** constructor **********/
     /*********************************/
@@ -145,19 +184,25 @@ public class ChartPanel extends JPanel {
     public ChartPanel(XReference xref) {
         this.xref = xref;
 
-        // tool bar
-        displayTime.setText(Scope.TIME_FORMAT_MIN_TIME);
-        displayTime.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        // graph panel
+        graphPanel.addComponentListener(componentListener);
+        graphPanel.setBorder(BorderFactory.createEmptyBorder());
 
-        JButton playPauseButton = new JButton();
-        playPauseButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PLAY_PAUSE)));
+        // tool bar
+        startStopButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_STOP)));
+        startStopButton.setFocusable(false);
+        startStopButton.addActionListener(startStopActionListener);     
+
+        recordTime.setText(Scope.TIME_FORMAT_MIN_TIME);
+        recordTime.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
+        
+        playPauseButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PAUSE)));
         playPauseButton.setFocusable(false);
         playPauseButton.addActionListener(playPauseActionListener);
-        
-        stopButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_STOP)));
-        stopButton.setFocusable(false);
-        stopButton.addActionListener(stopActionListener);
-        
+
+        displayTime.setText(Scope.TIME_FORMAT_MIN_TIME);
+        displayTime.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
+ 
         JButton backwardButton = new JButton();
         backwardButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_BACKWARD)));
         backwardButton.setFocusable(false);
@@ -167,7 +212,7 @@ public class ChartPanel extends JPanel {
         forwardButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_FORWARD)));
         forwardButton.setFocusable(false);
         forwardButton.addActionListener(forwardActionListener);
-        
+
         JButton zoomInButton = new JButton();
         zoomInButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_ZOOM_IN)));
         zoomInButton.setFocusable(false);
@@ -176,7 +221,7 @@ public class ChartPanel extends JPanel {
         JButton zoomOutButton = new JButton();
         zoomOutButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_ZOOM_OUT)));
         zoomOutButton.setFocusable(false);
-        zoomOutButton.addActionListener(zoomOutActionListener); 
+        zoomOutButton.addActionListener(zoomOutActionListener);
 
         JButton minimizeButton = new JButton();
         minimizeButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_MINIMIZE)));
@@ -187,22 +232,25 @@ public class ChartPanel extends JPanel {
         chartToolBar.setFloatable(false);
         chartToolBar.setRollover(false);
         chartToolBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        
+        chartToolBar.add(startStopButton);
+        chartToolBar.addSeparator(new Dimension(20, 0));
+        chartToolBar.add(recordTime);
+        chartToolBar.addSeparator(new Dimension(20, 0));
         chartToolBar.add(playPauseButton);
-        chartToolBar.addSeparator(new Dimension(5, 0));
-        chartToolBar.add(stopButton);
-        chartToolBar.addSeparator(new Dimension(30, 0));
+        chartToolBar.addSeparator(new Dimension(20, 0));
         chartToolBar.add(displayTime);
-        chartToolBar.addSeparator(new Dimension(30, 0)); 
+        chartToolBar.addSeparator(new Dimension(20, 0));
         chartToolBar.add(backwardButton);
-        chartToolBar.addSeparator(new Dimension(5, 0)); 
-        chartToolBar.add(forwardButton);      
-        chartToolBar.addSeparator(new Dimension(30, 0)); 
+        chartToolBar.addSeparator(new Dimension(5, 0));
+        chartToolBar.add(forwardButton);
+        chartToolBar.addSeparator(new Dimension(30, 0));
         chartToolBar.add(zoomInButton);
-        chartToolBar.addSeparator(new Dimension(5, 0)); 
-        chartToolBar.add(zoomOutButton); 
+        chartToolBar.addSeparator(new Dimension(5, 0));
+        chartToolBar.add(zoomOutButton);
         chartToolBar.add(Box.createHorizontalGlue());
         chartToolBar.add(minimizeButton);
-        
+
         // default content
         this.addAncestorListener(acncestorListener);
         this.setLayout(new BorderLayout());
@@ -220,20 +268,38 @@ public class ChartPanel extends JPanel {
     }
 
     /*********************************/
+    /******** override method ********/
+    /*********************************/
+
+    @Override
+    public void update(Observable observable, Object object) {
+        String displayTimeText = Scope.timeFormaterToString(chart.getCurrentDisplayTime());
+        displayTime.setText(displayTimeText);
+        
+        String recordTimeText = Scope.timeFormaterToString(chart.getCurrentRecordTime());
+        recordTime.setText(recordTimeText);
+        
+        graphPanel.repaint();
+    }   
+    
+    /*********************************/
     /********* public method *********/
     /*********************************/
 
     public void hideGraph() {
         graphPanel.setVisible(false);
     }
-    
+
     public void setChart(Chart chart) {
-        if (!chart.equals(this.chart)) {          
+        if (!chart.equals(this.chart)) {
             this.chart.close();
             this.chart = chart;
             
-            graphPanel.setChart(chart);
-        }  
+            this.chart.addObserver(this);
+            this.chart.setWidth(this.getWidth());
+            this.chart.setHeight(this.getHeight());
+            this.chart.start();
+        }
     }
 
     public void load() {
@@ -249,8 +315,43 @@ public class ChartPanel extends JPanel {
     /******** private method *********/
     /*********************************/
 
-    private void reload()  {
-        // reload graph
+    private void chartStart() {
+        chart.start();
+        playPauseButton.setEnabled(true);
+        startStopButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_STOP)));
+    }
+    
+    private void chartStop()  {
+        chart.stop();
+        playPauseButton.setEnabled(false);
+        startStopButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_START)));
+    }
+ 
+    private void chartPlay() {
+        chart.play();
+        playPauseButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PAUSE)));
+    }
+    
+    private void chartPause() {
+        chart.pause();
+        playPauseButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PLAY))); 
+    }
+
+    private void reload() {
+        // reload start stop state
+        if (chart.isStoped()) {
+            playPauseButton.setEnabled(true);
+            startStopButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_STOP)));
+        } else {
+            playPauseButton.setEnabled(false);
+            startStopButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_START)));
+        }
         
+        // reload play pause state
+        if (chart.isPaused()) {
+            playPauseButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PLAY))); 
+        } else {
+            playPauseButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PAUSE))); 
+        }
     }
 }

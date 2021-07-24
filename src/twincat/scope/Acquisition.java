@@ -97,6 +97,20 @@ public class Acquisition {
     /********* public method *********/
     /*********************************/
 
+	public Acquisition clone() {
+	    Acquisition acquisition = new Acquisition();
+        acquisition.setAmsNetId(amsNetId);
+        acquisition.setAmsPort(amsPort);
+        acquisition.setDataType(dataType);
+        acquisition.setIndexGroup(indexGroup);
+        acquisition.setIndexOffset(indexOffset);
+        acquisition.setSymbolBased(symbolBased);
+        acquisition.setSymbolName(symbolName);
+        acquisition.setSampleTime(sampleTime);
+        
+        return acquisition;
+	}
+	
 	public String getChannelName() {
 	    String[] symbolNameArray = symbolName.split("\\.");
 	    

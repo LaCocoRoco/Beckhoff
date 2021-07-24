@@ -56,9 +56,9 @@ public class Resources {
     public static final String PATH_ICON_CONTROL_PLAY = PATH_PACKAGE_IMAGES + "control_play.png";
 
     public static final String PATH_ICON_CONTROL_PAUSE = PATH_PACKAGE_IMAGES + "control_pause.png";
+
+    public static final String PATH_ICON_CONTROL_START = PATH_PACKAGE_IMAGES + "control_start.png";
     
-    public static final String PATH_ICON_CONTROL_PLAY_PAUSE = PATH_PACKAGE_IMAGES + "control_play_pause.png";
-       
     public static final String PATH_ICON_CONTROL_STOP = PATH_PACKAGE_IMAGES + "control_stop.png";
     
     public static final String PATH_ICON_CONTROL_BACKWARD = PATH_PACKAGE_IMAGES + "control_backward.png";

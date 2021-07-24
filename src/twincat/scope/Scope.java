@@ -135,14 +135,11 @@ public final class Scope {
         chart.getTriggerGroupList().addAll(triggerGroupList); 
     }
 
-    public void removeChart(Chart remove) {
-        Iterator<Chart> chartIterator = chartList.iterator();
-        while (chartIterator.hasNext()) {
-            Chart chart = chartIterator.next();
-
-            if (chart.equals(remove)) {
+    public void removeChart(Chart chartRemove) {
+        for (Chart chart : chartList) {
+            if (chart.equals(chartRemove)) {
                 chart.close();
-                chartIterator.remove();
+                chartList.remove(chart);
             }
         }
     }
@@ -156,16 +153,13 @@ public final class Scope {
         }    
     }
 
-    public void removeTrigger(TriggerGroup triggerGroupRemove) {
-        Iterator<TriggerGroup> triggerGroupIterator = triggerGroupList.iterator();
-        while (triggerGroupIterator.hasNext()) {
-            TriggerGroup triggerGroup = triggerGroupIterator.next();
-
+    public void removeTriggerGroup(TriggerGroup triggerGroupRemove) {
+        for (TriggerGroup triggerGroup : triggerGroupList) {
             if (triggerGroup.equals(triggerGroupRemove)) {
-                triggerGroupIterator.remove();
+                triggerGroupList.remove(triggerGroup);
             }
         }
-        
+         
         for (Chart chart : chartList) {
             chart.getTriggerGroupList().clear();
             chart.getTriggerGroupList().addAll(triggerGroupList);

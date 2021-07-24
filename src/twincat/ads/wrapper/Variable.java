@@ -64,12 +64,12 @@ public abstract class Variable extends Observable implements AdsCallback {
 
 	@Override
 	public void update(long notification, long timeStampe, byte[] data) {
-		if (notification == this.notification) {
-			System.arraycopy(data, 0, this.data, 0, this.data.length);
-			timeStamp = timeStampe / AdsNotification.TIME_RATIO_NS_TO_MS;
-
-			setChanged();
-			notifyObservers();
+		if (notification == this.notification && data.length != 0) {
+            System.arraycopy(data, 0, this.data, 0, this.data.length);
+            timeStamp = timeStampe / AdsNotification.TIME_RATIO_NS_TO_MS;
+            
+            setChanged();
+            notifyObservers();
 		}
 	}
 

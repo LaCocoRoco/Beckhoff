@@ -371,17 +371,6 @@ public class AcquisitionProperties extends JPanel {
         xref.scopeBrowser.applySymbolAcquisition(acquisition);
     }
 
-    public void cloneAcquisition(Acquisition acquisition) {
-        this.acquisition.setAmsNetId(acquisition.getAmsNetId());
-        this.acquisition.setAmsPort(acquisition.getAmsPort());
-        this.acquisition.setDataType(acquisition.getDataType());
-        this.acquisition.setIndexGroup(acquisition.getIndexGroup());
-        this.acquisition.setIndexOffset(acquisition.getIndexOffset());
-        this.acquisition.setSymbolBased(acquisition.isSymbolBased());
-        this.acquisition.setSymbolName(acquisition.getSymbolName());
-        this.acquisition.setSampleTime(acquisition.getSampleTime());
-    }
-
     public void load() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

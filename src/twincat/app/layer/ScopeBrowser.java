@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -116,7 +114,7 @@ public class ScopeBrowser extends JPanel {
         @Override
         protected boolean shouldPaintExpandControl(TreePath p, int r, boolean iE, boolean hBE, boolean iL) {
             return false;
-        }
+        }  
     };
 
     private final MouseAdapter browseTreeMouseAdapter = new MouseAdapter() {
@@ -124,27 +122,8 @@ public class ScopeBrowser extends JPanel {
             TreePath treePath = browseTree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
 
             if (treePath != null) {
-                loadPropertie(treePath);
+                loadProperties(treePath);
             }
-        }
-    };
-
-    private final KeyListener browseTreeKeyListener = new KeyListener() {
-        @Override
-        public void keyTyped(KeyEvent keyEvent) {
-            /* empty */
-        }
-
-        @Override
-        public void keyPressed(KeyEvent keyEvent) {
-            if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
-                removeTreeNode();
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent keyEvent) {
-            /* empty */
         }
     };
 
@@ -165,7 +144,6 @@ public class ScopeBrowser extends JPanel {
         browseTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         browseTree.addMouseListener(browseTreeMouseAdapter);
         browseTree.setUI(browseTreeUI);
-        browseTree.addKeyListener(browseTreeKeyListener);
 
         JScrollPane treePanel = new JScrollPane();
         treePanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
@@ -257,26 +235,35 @@ public class ScopeBrowser extends JPanel {
     }
 
     public void addScope(Scope scope) {
-        // TODO : custom add function needed
-        // TODO : call goes always down to last
+        // get root
+        ScopeTreeModel treeModel = (ScopeTreeModel) browseTree.getModel();
+        ScopeTreeNode rootTreeNode = (ScopeTreeNode) treeModel.getRoot();
         
         // add scope
-        ScopeTreeNode scopeTreeNode = addScopeTreeNode(scope);
+        ScopeTreeNode scopeTreeNode = new ScopeTreeNode();
+        scopeTreeNode.setUserObject(scope);
+        rootTreeNode.add(scopeTreeNode);
 
         List<Chart> chartList = scope.getChartList(); 
         for (Chart chart : chartList) {
             // add chart
-            addChartTreeNode(chart);
+            ScopeTreeNode chartTreeNode = new ScopeTreeNode();
+            chartTreeNode.setUserObject(chart);
+            rootTreeNode.add(chartTreeNode);
 
             List<Axis> axisList = chart.getAxisList();
             for (Axis axis : axisList) {
                 // add axis
-                addAxisTreeNode(axis);
+                ScopeTreeNode axisTreeNode = new ScopeTreeNode();
+                axisTreeNode.setUserObject(axis);
+                rootTreeNode.add(axisTreeNode);
 
                 List<Channel> channelList = axis.getChannelList();
                 for (Channel channel : channelList) {
                     // add channel
-                    addChannelTreeNode(channel);
+                    ScopeTreeNode channelTreeNode = new ScopeTreeNode();
+                    channelTreeNode.setUserObject(channel);
+                    rootTreeNode.add(channelTreeNode);
                 }
             }
 
@@ -285,67 +272,30 @@ public class ScopeBrowser extends JPanel {
                 
                 for (TriggerGroup triggerGroup : triggerGroupList) {
                     // add trigger group
-                    addTriggerGroupTreeNode(triggerGroup);
+                    ScopeTreeNode triggerGroupTreeNode = new ScopeTreeNode();
+                    triggerGroupTreeNode.setUserObject(triggerGroup);
+                    scopeTreeNode.add(triggerGroupTreeNode);
                     
                     List<TriggerChannel> triggerChannelList = triggerGroup.getTriggerChannelList();
                     for (TriggerChannel triggerChannel : triggerChannelList) {
                         // add trigger channel
-                        addTriggerChannelTreeNode(triggerChannel);
+                        ScopeTreeNode triggerChannelTreeNode = new ScopeTreeNode();
+                        triggerChannelTreeNode.setUserObject(triggerChannel);
+                        scopeTreeNode.add(triggerChannelTreeNode);
                     }
                 }
             }
             
         }
 
-        // select scope
-        reloadTreeNode(scopeTreeNode);
-        loadScopeProperties(scopeTreeNode);
-
-        // display first chart
-        // TODO : (first child of scope is group)
+        // update tree node
+        updateTreeNode(scopeTreeNode);
 
         // display scope tree
         xref.browserPanel.setCard(Browser.SCOPE);
         xref.propertiesPanel.setCard(Propertie.EMPTY);
         xref.windowPanel.setCard(Window.SCOPE);
         xref.navigationPanel.setCard(Navigation.CHART); 
-    }
-
-    public void abortSymbolAcquisition() {
-        xref.browserPanel.setCard(Browser.SCOPE);
-        xref.propertiesPanel.lastCard();
-    }
-
-    public void applySymbolAcquisition(Acquisition acquisition) {
-        // get selected tree node
-        ScopeTreeNode selectedTreeNode = (ScopeTreeNode) browseTree.getLastSelectedPathComponent();
-
-        // set acquisition of selected tree node
-        if (selectedTreeNode != null) {
-            Object userObject = selectedTreeNode.getUserObject();
-
-            if (userObject instanceof Channel) {
-                Channel Channel = (Channel) userObject;
-                xref.channelProperties.setChannel(Channel);
-                xref.channelProperties.load();
-            }
-        }
-
-        // set channel acquisition
-        ScopeTreeNode channelTreeNode = getChannelTreeNode();
-        Object userObject = channelTreeNode.getUserObject();
-        Channel channel = (Channel) userObject;
-        channel.close();
-        channel.setAcquisition(acquisition);
-        channel.setChannelName(acquisition.getChannelName());
-        channel.start();
-        
-        // expand path
-        reloadTreeNode(channelTreeNode);
-
-        // display scope tree view
-        xref.browserPanel.setCard(Browser.SCOPE);
-        xref.propertiesPanel.setCard(Propertie.CHANNEL);
     }
 
     public void reloadSelectedTreeNode() {
@@ -358,10 +308,70 @@ public class ScopeBrowser extends JPanel {
         }
     }
 
+    public void abortSymbolAcquisition() {
+        xref.browserPanel.setCard(Browser.SCOPE);
+        xref.propertiesPanel.lastCard();
+    }
+
+    public void applySymbolAcquisition(Acquisition acquisition) {
+        // get channel
+        ScopeTreeNode channelTreeNode = getChannelTreeNode();
+        Object userObject = channelTreeNode.getUserObject();
+
+        // set channel acquisition
+        Channel channel = (Channel) userObject;
+        channel.close();
+        channel.setChannelName(acquisition.getChannelName());
+        channel.setAcquisition(acquisition.clone());
+        channel.start();
+        
+        // update tree node
+        updateTreeNode(channelTreeNode);
+
+        // display scope tree view
+        xref.browserPanel.setCard(Browser.SCOPE);
+        xref.propertiesPanel.setCard(Propertie.CHANNEL);
+    }
+
     /*********************************/
     /******** private method *********/
     /*********************************/
 
+    private void searchSymbolAcquisition() {
+        // get selected tree node
+        ScopeTreeNode selectedTreeNode = (ScopeTreeNode) browseTree.getLastSelectedPathComponent();
+
+        if (selectedTreeNode != null) {
+            Object userObject = selectedTreeNode.getUserObject();
+
+            if (userObject instanceof Channel) {
+                // use channel acquisition data
+                Channel channel = (Channel) userObject;
+
+                // set acquisition
+                Acquisition acquisition = channel.getAcquisition().clone();
+                xref.acquisitionProperties.setAcquisition(acquisition);
+            } else {
+                // set acquisition
+                Acquisition acquisition = new Acquisition();
+                xref.acquisitionProperties.setAcquisition(acquisition); 
+            }
+        } else {
+            // set acquisition
+            Acquisition acquisition = new Acquisition();
+            xref.acquisitionProperties.setAcquisition(acquisition);
+        }
+
+        // display symbol acquisition view
+        xref.symbolBrowser.load();
+        xref.acquisitionProperties.load();
+    }
+
+    private void updateTreeNode(ScopeTreeNode treeNode) {
+        reloadTreeNode(treeNode);
+        loadProperties(treeNode);
+    }
+    
     private void reloadTreeNode(ScopeTreeNode treeNode) {
         // save path of all expanded nodes
         List<TreePath> expandedPath = new ArrayList<>();
@@ -388,35 +398,7 @@ public class ScopeBrowser extends JPanel {
         browseTree.scrollPathToVisible(treePath);
     }
 
-    private void searchSymbolAcquisition() {
-        // get selected tree node
-        ScopeTreeNode selectedTreeNode = (ScopeTreeNode) browseTree.getLastSelectedPathComponent();
-
-        if (selectedTreeNode != null) {
-            Object userObject = selectedTreeNode.getUserObject();
-
-            if (userObject instanceof Channel) {
-                // use channel acquisition data
-                Channel channel = (Channel) userObject;
-                xref.acquisitionProperties.cloneAcquisition(channel.getAcquisition());
-            }
-        } else {
-            // use new acquisition data
-            xref.acquisitionProperties.cloneAcquisition(new Acquisition());
-        }
-
-        // display symbol acquisition view
-        xref.symbolBrowser.load();
-        xref.acquisitionProperties.load();
-    }
-
-    private void loadPropertie(ScopeTreeNode treeNode) {
-        TreePath treePath = new TreePath(treeNode.getPath());
-        loadPropertie(treePath);
-    }
-    
-    private void loadPropertie(TreePath treePath) {
-        ScopeTreeNode treeNode = (ScopeTreeNode) treePath.getLastPathComponent();
+    private void loadProperties(ScopeTreeNode treeNode) {
         Object userObject = treeNode.getUserObject();
         
         if (userObject instanceof Scope) {
@@ -441,7 +423,12 @@ public class ScopeBrowser extends JPanel {
 
         if (userObject instanceof TriggerChannel) {
             loadTriggerChannelProperties(treeNode);
-        } 
+        }       
+    }
+    
+    private void loadProperties(TreePath treePath) {
+        ScopeTreeNode treeNode = (ScopeTreeNode) treePath.getLastPathComponent();
+        loadProperties(treeNode);
     }
     
     private void loadScopeProperties(ScopeTreeNode treeNode) {
@@ -516,135 +503,123 @@ public class ScopeBrowser extends JPanel {
 
             // remove scope
             if (selectedObject instanceof Scope) {
-                selectedTreeNode = removeScopeTreeNode(selectedTreeNode);
+                removeScopeTreeNode(selectedTreeNode);
             }
             
             // remove chart
             if (selectedObject instanceof Chart) {
-                selectedTreeNode = removeChartTreeNode(selectedTreeNode);
+                removeChartTreeNode(selectedTreeNode);
             }
             
             // remove axis
             if (selectedObject instanceof Axis) {
-                selectedTreeNode = removeAxisTreeNode(selectedTreeNode);
+                removeAxisTreeNode(selectedTreeNode);
             }
             
             // remove channel
             if (selectedObject instanceof Channel) {
-                selectedTreeNode = removeChannelTreeNode(selectedTreeNode);
+                removeChannelTreeNode(selectedTreeNode);
             }
 
             // remove trigger group
             if (selectedObject instanceof TriggerGroup) {
-                selectedTreeNode = removeTriggerGroupTreeNode(selectedTreeNode);
+                removeTriggerGroupTreeNode(selectedTreeNode);
             }
 
             // remove trigger channel
             if (selectedObject instanceof TriggerChannel) {
-                selectedTreeNode = removeTriggerChannelTreeNode(selectedTreeNode);
-            }
-
-            // expand tree node
-            if (selectedTreeNode != null) {
-                reloadTreeNode(selectedTreeNode);
-                loadPropertie(selectedTreeNode);
-            }
-
-            // display empty properties panel if root is empty
-            ScopeTreeNode rootTreeNode = (ScopeTreeNode) browseTree.getModel().getRoot();
-            if (rootTreeNode.getChildCount() == 0) {
-                xref.propertiesPanel.setCard(Propertie.EMPTY);
+                removeTriggerChannelTreeNode(selectedTreeNode);
             }
         }
     }
 
-    private ScopeTreeNode removeScopeTreeNode(ScopeTreeNode treeNode) {
-        // remove scope
-        Scope scope = (Scope) treeNode.getUserObject();
-        scope.close();
-        
-        // remove charts from scope
-        for (int i = 0; i < treeNode.getChildCount(); i++) {
-            ScopeTreeNode chartTreeNode = (ScopeTreeNode) treeNode.getChildAt(i);
-            removeChartTreeNode(chartTreeNode);
-        }
-        
+    private void removeScopeTreeNode(ScopeTreeNode treeNode) {
         // remove scope tree node
         ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
         treeNode.removeFromParent();
         
-        // hide graph if root is empty
+        // remove scope
+        Scope scope = (Scope) treeNode.getUserObject();
+        scope.close();
+        
+        // update tree node
+        updateTreeNode(parentTreeNode);
+
+        // display empty properties panel if root is empty
+        if (parentTreeNode.getChildCount() == 0) {
+            xref.propertiesPanel.setCard(Propertie.EMPTY);
+        } 
+    }
+
+    private void removeChartTreeNode(ScopeTreeNode treeNode) {
+        // remove chart tree node
+        ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
+        treeNode.removeFromParent();
+        
+        // remove chart
+        Chart chart = (Chart) treeNode.getUserObject();
+        Scope scope = (Scope) parentTreeNode.getUserObject();
+        scope.removeChart(chart);
+        
+        // update tree node
+        updateTreeNode(parentTreeNode);
+        
+        // hide graph if scope is empty
         if (parentTreeNode.getChildCount() == 0) {
             xref.chartPanel.hideGraph();
         }
-        
-        return parentTreeNode;
-    }
-
-
-    private ScopeTreeNode removeChartTreeNode(ScopeTreeNode treeNode) {
-        // remove chart
-        Chart chart = (Chart) treeNode.getUserObject();
-        chart.close();
-        
-        // remove axis from chart
-        for (int i = 0; i < treeNode.getChildCount(); i++) {
-            ScopeTreeNode axisTreeNode = (ScopeTreeNode) treeNode.getChildAt(i);
-            removeAxisTreeNode(axisTreeNode);
-        }
-        
-        // remove chart
-        ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
-        treeNode.removeFromParent();
-
-        return parentTreeNode;
     }
  
-    private ScopeTreeNode removeAxisTreeNode(ScopeTreeNode treeNode) {
-        // remove axis
+    private void removeAxisTreeNode(ScopeTreeNode treeNode) {
+        // remove axis tree node
+        ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
+        treeNode.removeFromParent();
+
+        // remove axis from chart
         Axis axis = (Axis) treeNode.getUserObject();
-        axis.close();
+        Chart chart = (Chart) parentTreeNode.getUserObject();
+        chart.removeAxis(axis);
         
-        // remove channel from axis
-        for (int i = 0; i < treeNode.getChildCount(); i++) {
-            ScopeTreeNode channelTreeNode = (ScopeTreeNode) treeNode.getChildAt(i);
-            removeChannelTreeNode(channelTreeNode);
-        }
-        
-        // remove axis
+        // update tree node
+        updateTreeNode(parentTreeNode);
+    }
+
+    private void removeChannelTreeNode(ScopeTreeNode treeNode) {
+        // remove channel tree node
         ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
         treeNode.removeFromParent();
         
-        return parentTreeNode;
-    }
-
-    private ScopeTreeNode removeChannelTreeNode(ScopeTreeNode treeNode) {
-        // remove channel
+        // remove channel from axis
         Channel channel = (Channel) treeNode.getUserObject();
-        channel.close();
+        Axis axis = (Axis) parentTreeNode.getUserObject();
+        axis.removeChannel(channel);
         
         // lookup for trigger channel
         TreePath treePath = browseTree.getSelectionPath();
         Object[] objectArray = (Object[]) treePath.getPath();
         for (Object object : objectArray) {
-            ScopeTreeNode chartTreeNode = (ScopeTreeNode) object;
-            Object chartUserObject = chartTreeNode.getUserObject();
+            ScopeTreeNode selectedTreeNode = (ScopeTreeNode) object;
+            Object selectedUserObject = selectedTreeNode.getUserObject();
 
-            // get scope of channel
-            if (chartUserObject instanceof Scope) {
-                for (int i = 0; i < chartTreeNode.getChildCount(); i++) {
-                    ScopeTreeNode triggerGroupTreeNode = (ScopeTreeNode) chartTreeNode.getChildAt(i);
-                    Object triggerGroupUserObject = triggerGroupTreeNode.getUserObject();
-
-                    // get trigger group of scope
-                    if (triggerGroupUserObject instanceof TriggerGroup) {
+            // get scope tree node of channel
+            if (selectedUserObject instanceof Scope) {
+                ScopeTreeNode scopeTreeNode = (ScopeTreeNode) selectedTreeNode;
+                 
+                for (int i = 0; i < scopeTreeNode.getChildCount(); i++) {
+                    ScopeTreeNode scopeTreeNodeChild = (ScopeTreeNode) scopeTreeNode.getChildAt(i);
+                    Object scopeChildUserObject = scopeTreeNodeChild.getUserObject();
+                    
+                    // get trigger group tree node of scope
+                    if (scopeChildUserObject instanceof TriggerGroup) {
+                        ScopeTreeNode triggerGroupTreeNode = (ScopeTreeNode) scopeTreeNodeChild;
+                        
                         for (int x = 0; x < triggerGroupTreeNode.getChildCount(); x++) {
                             ScopeTreeNode triggerChannelTreeNode = (ScopeTreeNode) triggerGroupTreeNode.getChildAt(x);
                             Object triggerChannelUserObject = triggerChannelTreeNode.getUserObject();
                             TriggerChannel triggerChannel = (TriggerChannel) triggerChannelUserObject;
 
-                            // remove trigger channel
                             if (triggerChannel.getChannel().equals(channel)) {
+                                // remove trigger channel tree node
                                 removeTriggerChannelTreeNode(triggerChannelTreeNode);
                             }
                         }
@@ -653,30 +628,41 @@ public class ScopeBrowser extends JPanel {
             }
         }
 
-        // remove channel
-        ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
-        treeNode.removeFromParent();
-
-        return parentTreeNode;
+        // update tree node
+        updateTreeNode(parentTreeNode);
     }
   
-    private ScopeTreeNode removeTriggerGroupTreeNode(ScopeTreeNode treeNode) {
+    private void removeTriggerGroupTreeNode(ScopeTreeNode treeNode) {
+        // remove trigger group
         ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
         treeNode.removeFromParent();
         
-        return parentTreeNode;
+        // remove trigger group from scope
+        Scope scope = (Scope) parentTreeNode.getUserObject();
+        TriggerGroup triggerGroup = (TriggerGroup) treeNode.getUserObject();
+        scope.removeTriggerGroup(triggerGroup);
+ 
+        // update tree node
+        updateTreeNode(parentTreeNode);
     }
 
-    private ScopeTreeNode removeTriggerChannelTreeNode(ScopeTreeNode treeNode) {
+    private void removeTriggerChannelTreeNode(ScopeTreeNode treeNode) {
+        // remove trigger channel
         ScopeTreeNode parentTreeNode = (ScopeTreeNode) treeNode.getParent();
         treeNode.removeFromParent();
 
+        // remove trigger channel from trigger group
+        TriggerGroup triggerGroup = (TriggerGroup) parentTreeNode.getUserObject();
+        TriggerChannel triggerChannel = (TriggerChannel) treeNode.getUserObject();
+        triggerGroup.removeTrigger(triggerChannel);
+  
         // remove trigger group if it is empty
         if (parentTreeNode.getChildCount() == 0) {
-            return removeTriggerGroupTreeNode(parentTreeNode);
+            removeTriggerGroupTreeNode(parentTreeNode);
         }
-
-        return parentTreeNode;
+        
+        // update tree node
+        updateTreeNode(parentTreeNode);
     }
 
     private ScopeTreeNode getScopeTreeNode() {
@@ -779,45 +765,11 @@ public class ScopeBrowser extends JPanel {
         return channelTreeNode;
     }
 
-    private ScopeTreeNode getTriggerGroupTreeNode() {
-        // get chart node from this tree path
-        TreePath selectedTreePath = browseTree.getSelectionPath();
 
-        if (selectedTreePath != null) {
-            Object[] selectedObjectArray = (Object[]) selectedTreePath.getPath();
-
-            // loop through tree path
-            for (Object selectedObject : selectedObjectArray) {
-                ScopeTreeNode selectedTreeNode = (ScopeTreeNode) selectedObject;
-                Object userObject = selectedTreeNode.getUserObject();
-
-                // get trigger group
-                if (userObject instanceof TriggerGroup) {
-                    return selectedTreeNode;
-                }
-            }
-        }
-
-        // add new trigger group node if none present
-        ScopeTreeNode channelTreeNode = addTriggerGroupTreeNode();
-
-        return channelTreeNode;
-    }
- 
     private ScopeTreeNode addScopeTreeNode() {
         // initialize scope
         Scope scope = new Scope();
         
-        // add scope tree node
-        ScopeTreeNode scopeTreeNode = addScopeTreeNode(scope);
-        
-        // load scope tree node properties
-        loadScopeProperties(scopeTreeNode);
-        
-        return scopeTreeNode;
-    }
-
-    private ScopeTreeNode addScopeTreeNode(Scope scope) {
         // add scope node
         ScopeTreeModel treeModel = (ScopeTreeModel) browseTree.getModel();
         ScopeTreeNode rootTreeNode = (ScopeTreeNode) treeModel.getRoot();
@@ -825,9 +777,9 @@ public class ScopeBrowser extends JPanel {
         scopeTreeNode.setUserObject(scope);
         rootTreeNode.add(scopeTreeNode);
 
-        // reload tree node
-        reloadTreeNode(scopeTreeNode);
- 
+        // update tree node
+        updateTreeNode(scopeTreeNode);
+        
         return scopeTreeNode;
     }
 
@@ -836,17 +788,6 @@ public class ScopeBrowser extends JPanel {
         Chart chart = new Chart();
 
         // add chart tree node
-        ScopeTreeNode chartTreeNode = addChartTreeNode(chart);
-
-        // load chart tree node properties
-        reloadTreeNode(chartTreeNode);
-        loadChartProperties(chartTreeNode);
-        
-        return chartTreeNode;
-    }
-
-    private ScopeTreeNode addChartTreeNode(Chart chart) {
-        // add chart node
         ScopeTreeNode scopeTreeNode = getScopeTreeNode();
         ScopeTreeNode chartTreeNode = new ScopeTreeNode();
         chartTreeNode.setUserObject(chart);
@@ -856,9 +797,9 @@ public class ScopeBrowser extends JPanel {
         Scope scope = (Scope) scopeTreeNode.getUserObject();
         scope.addChart(chart);
 
-        // reload tree node
-        reloadTreeNode(chartTreeNode);
-
+        // update tree node
+        updateTreeNode(chartTreeNode);
+        
         return chartTreeNode;
     }
 
@@ -867,29 +808,19 @@ public class ScopeBrowser extends JPanel {
         Axis axis = new Axis();
         axis.setAxisColor(Utilities.getRandomTableColor());
 
-        // add axis tree node
-        ScopeTreeNode axisTreeNode =  addAxisTreeNode(axis);
-        
-        // reload axis tree node properties
-        loadAxisProperties(axisTreeNode);
-        
-        return axisTreeNode;
-    }
-
-    private ScopeTreeNode addAxisTreeNode(Axis axis) {
         // add axis node
         ScopeTreeNode chartTreeNode = getChartTreeNode();
         ScopeTreeNode axisTreeNode = new ScopeTreeNode();
         axisTreeNode.setUserObject(axis);
         chartTreeNode.add(axisTreeNode);
-
+        
         // add axis
         Chart chart = (Chart) chartTreeNode.getUserObject();
         chart.addAxis(axis);
-
-        // reload tree node
-        reloadTreeNode(axisTreeNode);
- 
+        
+        // update tree node
+        updateTreeNode(axisTreeNode);
+        
         return axisTreeNode;
     }
 
@@ -900,60 +831,20 @@ public class ScopeBrowser extends JPanel {
         channel.setLineColor(color);
         channel.setPlotColor(color);
 
-        // add channel tree node
-        ScopeTreeNode channelTreeNode =  addChannelTreeNode(channel);
-        
-        // reload channel tree node properties
-        loadChannelProperties(channelTreeNode);
-        
-        return channelTreeNode;
-    }
-
-    private ScopeTreeNode addChannelTreeNode(Channel channel) {
         // add channel node
         ScopeTreeNode axisTreeNode = getAxisTreeNode();
         ScopeTreeNode channelTreeNode = new ScopeTreeNode();
         channelTreeNode.setUserObject(channel);
         axisTreeNode.add(channelTreeNode);
-
-        // add axis
+        
+        // add channel
         Axis axis = (Axis) axisTreeNode.getUserObject();
-        axis.addChannel(channel);
-
-        // reload tree node
-        reloadTreeNode(channelTreeNode);
-
+        //axis.addChannel(channel);
+        
+        // update tree node
+        updateTreeNode(channelTreeNode);
+        
         return channelTreeNode;
-    }
-
-    private ScopeTreeNode addTriggerGroupTreeNode() {
-        // initialize trigger group
-        TriggerGroup triggerGroup = new TriggerGroup();
-        
-        // add trigger group tree node
-        ScopeTreeNode triggerGroupTreeNode =  addTriggerGroupTreeNode(triggerGroup);
-        
-        // load trigger group tree node properties
-        loadTriggerGroupProperties(triggerGroupTreeNode);
-        
-        return triggerGroupTreeNode;
-    }
-
-    private ScopeTreeNode addTriggerGroupTreeNode(TriggerGroup triggerGroup) {
-        // add trigger group node
-        ScopeTreeNode scopeTreeNode = getScopeTreeNode();
-        ScopeTreeNode triggerGroupTreeNode = new ScopeTreeNode();
-        triggerGroupTreeNode.setUserObject(triggerGroup);
-        scopeTreeNode.insert(triggerGroupTreeNode, 0);
-
-        // add trigger group
-        Scope scope = (Scope) scopeTreeNode.getUserObject();
-        scope.getTriggerGroupList().add(triggerGroup);
-
-        // reload tree node
-        reloadTreeNode(triggerGroupTreeNode);
-
-        return triggerGroupTreeNode;
     }
 
     private ScopeTreeNode addTriggerChannelTreeNode() {
@@ -1011,11 +902,8 @@ public class ScopeBrowser extends JPanel {
                         triggerChannelTreeNode.setUserObject(triggerChannel);
                         triggerGroupTreeNode.add(triggerChannelTreeNode);
                         
-                        // reload tree node
-                        reloadTreeNode(triggerChannelTreeNode);
-                        
-                        // load trigger channel properties
-                        loadTriggerChannelProperties(triggerChannelTreeNode);
+                        // update tree node
+                        updateTreeNode(triggerChannelTreeNode);
 
                         // add trigger channel to trigger group
                         TriggerGroup triggerGroup = scope.getTriggerGroupList().get(0);
@@ -1029,22 +917,4 @@ public class ScopeBrowser extends JPanel {
 
         return null;
     }
-
-    private ScopeTreeNode addTriggerChannelTreeNode(TriggerChannel triggerChannel) {
-        // add trigger channel node
-        ScopeTreeNode triggerGroupTreeNode = getTriggerGroupTreeNode();
-        ScopeTreeNode triggerChannelTreeNode = new ScopeTreeNode();
-        triggerChannelTreeNode.setUserObject(triggerChannel);
-        triggerGroupTreeNode.add(triggerChannelTreeNode);
-
-        // add trigger channel
-        TriggerGroup triggerGroup = (TriggerGroup) triggerGroupTreeNode.getUserObject();
-        triggerGroup.addTriggerChannel(triggerChannel);
-
-        // reload tree node
-        reloadTreeNode(triggerChannelTreeNode);
-
-        return triggerChannelTreeNode;
-    }
-
 }
