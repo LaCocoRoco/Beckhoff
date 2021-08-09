@@ -99,21 +99,21 @@ public class SettingsPanel extends JPanel {
         settingDebugEnabled.setSelected(debugEnabled);
         settingDebugEnabled.addItemListener(debugEnabledItemListener);
         settingDebugEnabled.setFocusPainted(false);
-        settingDebugEnabled.setBounds(25, 25, 20, 20);
+        settingDebugEnabled.setBounds(15, 15, 20, 20);
 
         JLabel settingDebugEnabledText = new JLabel(languageBundle.getString(Resources.TEXT_SETTINGS_CHART_DEBUG_ENABLED));
         settingDebugEnabledText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        settingDebugEnabledText.setBounds(60, 25, 300, 23);
+        settingDebugEnabledText.setBounds(50, 15, 300, 23);
  
         settingRefreshRate.setValue(refreshRate);
         settingRefreshRate.setMinValue(0);
         settingRefreshRate.setMaxValue(99);
         settingRefreshRate.addPropertyChangeListener(refreshRatePropertyChangeListener);
-        settingRefreshRate.setBounds(20, 55, 30, 20);
+        settingRefreshRate.setBounds(10, 45, 30, 20);
 
         JLabel settingRefreshRateText = new JLabel(languageBundle.getString(Resources.TEXT_SETTINGS_CHART_REFRESH_RATE));
         settingRefreshRateText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        settingRefreshRateText.setBounds(60, 55, 300, 21);
+        settingRefreshRateText.setBounds(50, 45, 300, 21);
 
         // default content
         JPanel contentPanel = new JPanel();
