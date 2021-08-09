@@ -286,5 +286,7 @@ public class Resources {
     
     
     
-    public static final String TEXT_SETTINGS_TITLE = "settingsTitle";
+    public static final String TEXT_SETTINGS_CHART_DEBUG_ENABLED = "settingsChartDebugEnabled";
+    
+    public static final String TEXT_SETTINGS_CHART_REFRESH_RATE = "settingsChartRefreshRate";
 }

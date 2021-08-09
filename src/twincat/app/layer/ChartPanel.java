@@ -31,13 +31,6 @@ import twincat.scope.Scope;
 public class ChartPanel extends JPanel implements Observer {
     private static final long serialVersionUID = 1L;
 
-    // TODO : hide card panel (no controls)
-    // TODO : update start stop button
-    // TODO : remove scope delete chart
-    // TODO : on exit close everything
-    // TODO : chart add axis name design
-    // TODO : adapted setter & getter
-
     /*********************************/
     /******** cross reference ********/
     /*********************************/
@@ -81,6 +74,7 @@ public class ChartPanel extends JPanel implements Observer {
         public void ancestorAdded(AncestorEvent event) {
             chart.start();
             updateStartStopButton();
+
         }
 
         @Override
@@ -258,13 +252,17 @@ public class ChartPanel extends JPanel implements Observer {
         if (!chart.equals(this.chart)) {
             int width = graphPanel.getWidth() > 0 ? graphPanel.getWidth() : this.getWidth();
             int height = graphPanel.getHeight() > 0 ? graphPanel.getHeight() : this.getHeight() - toolBar.getHeight();
-            
+            int refreshRate = xref.settingsPanel.getRefreshRate();
+            boolean debugEnabled = xref.settingsPanel.isDebugEnabled();
+              
             this.chart.deleteObserver(this);
             this.chart.close();
             this.chart = chart;
             this.chart.addObserver(this);
             this.chart.setWidth(width);
             this.chart.setHeight(height);
+            this.chart.setRefreshRate(refreshRate);
+            this.chart.setDebug(debugEnabled);
             this.chart.start();
         }
     }
@@ -298,7 +296,10 @@ public class ChartPanel extends JPanel implements Observer {
     /*********************************/
 
     public void resetChart() {
+        // reset chart
         this.chart = new Chart();
+        
+        // hide graph
         graphPanel.setVisible(false);
     }
     
@@ -352,7 +353,7 @@ public class ChartPanel extends JPanel implements Observer {
     }
     
     private void reload() {
-        // reload graph
+        // show graph
         graphPanel.setVisible(true);
         
         // update start stop button

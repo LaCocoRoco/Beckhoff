@@ -33,6 +33,12 @@ import twincat.constant.DefaultColorTable;
 
 public class Chart extends Observable {
     /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
+
+    public static final int DEFAULT_REFRESH_RATE = 30;  
+    
+    /*********************************/
     /**** local constant variable ****/
     /*********************************/
 
@@ -48,8 +54,6 @@ public class Chart extends Observable {
 
     private static final int CHART_TICK_LENGTH = 10;
 
-    private static final int DEFAULT_REFRESH_RATE = 30;
-    
     private static final int MAX_VALUE_LENGTH = 6;
     
     /*********************************/
@@ -200,6 +204,7 @@ public class Chart extends Observable {
 
     public void setRefreshRate(int refreshRate) {
         this.refreshRate = refreshRate;
+        this.refresh = true;
     }
 
     public boolean isDebug() {
@@ -301,6 +306,11 @@ public class Chart extends Observable {
         this.refresh = true;
     }
 
+    public void setDisplayTime(String displayTime) {
+        this.displayTime = Scope.timeFormaterToLong(displayTime);
+        this.refresh = true;
+    }
+ 
     public boolean isAutoRecord() {
         return autoRecord;
     }
@@ -338,19 +348,6 @@ public class Chart extends Observable {
     /*********************************/
     /********* public method *********/
     /*********************************/
-    
-    public void setDisplayTime(String displayTime) {
-        this.displayTime = Scope.timeFormaterToLong(displayTime);
-        this.refresh = true;
-    }
-
-    public int getFramesPerSecond() {
-        return refreshRate > 0 ? 1000 / refreshRate : 0; 
-    }
-    
-    public void setFramesPerSecond(int fps) {
-        refreshRate = fps > 0 ? 1000 / fps : DEFAULT_REFRESH_RATE;
-    }
 
     public void forward(int range) {
         if (pauseTimeStamp != 0) {
@@ -476,12 +473,11 @@ public class Chart extends Observable {
         setChanged();
         notifyObservers();
     }
-   
+
     private void startSchedule() {
         if (Utilities.isScheduleDone(schedule)) {
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
-            long refreshTime = refreshRate;
-            schedule = scheduler.scheduleAtFixedRate(task, 0, refreshTime, TimeUnit.MILLISECONDS);
+            schedule = scheduler.scheduleAtFixedRate(task, 0, refreshRate, TimeUnit.MILLISECONDS);
         }    
     }
     
