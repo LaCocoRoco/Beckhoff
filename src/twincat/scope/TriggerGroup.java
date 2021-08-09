@@ -138,8 +138,10 @@ public class TriggerGroup implements Observer {
 					}
 				}
 	        }
+	        
 			return true;
 		}
+		
 		return false;
 	}
 }

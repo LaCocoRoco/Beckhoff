@@ -52,7 +52,7 @@ public class TriggerChannelProperties extends JPanel {
 
     private final JScrollPane scrollPanel = new JScrollPane();
     
-    private final TextField triggerChannelNameTextField = new TextField();
+    private final TextField triggerChannelName = new TextField();
 
     private final ComboBox combine = new ComboBox();
 
@@ -66,10 +66,10 @@ public class TriggerChannelProperties extends JPanel {
     /****** predefined variable ******/
     /*********************************/
 
-    private PropertyChangeListener triggerChannelNamePropertyChanged = new PropertyChangeListener() {
+    private PropertyChangeListener triggerChannelNamePropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            triggerChannel.getChannel().setChannelName(triggerChannelNameTextField.getText());
+            triggerChannel.getChannel().setChannelName(triggerChannelName.getText());
             xref.scopeBrowser.reloadSelectedTreeNode();
         }
     };
@@ -100,11 +100,13 @@ public class TriggerChannelProperties extends JPanel {
         }
     };
 
-    private PropertyChangeListener thresholdPropertyChanged = new PropertyChangeListener() {
+    private PropertyChangeListener thresholdPropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
-            triggerChannel.setThreshold((int) numberTextField.getValue());
+            if (propertyChangeEvent.getPropertyName().equals("number")) {
+                NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
+                triggerChannel.setThreshold((int) numberTextField.getValue());            
+            }
         }
     };
 
@@ -124,17 +126,17 @@ public class TriggerChannelProperties extends JPanel {
     public TriggerChannelProperties(XReference xref) {
         this.xref = xref;
         
-        // build trigger combo box
+        // build combo box
         buildComboBox();
 
-        // common properties
-        triggerChannelNameTextField.setText(triggerChannel.getChannel().getChannelName());
-        triggerChannelNameTextField.addPropertyChangeListener(triggerChannelNamePropertyChanged);
-        triggerChannelNameTextField.setBounds(15, 25, 210, 23);
+        // name properties
+        triggerChannelName.setText(triggerChannel.getChannel().getChannelName());
+        triggerChannelName.addPropertyChangeListener(triggerChannelNamePropertyChangeListener);
+        triggerChannelName.setBounds(15, 25, 210, 23);
 
         TitledPanel namePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_NAME));
         namePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
-        namePanel.add(triggerChannelNameTextField);
+        namePanel.add(triggerChannelName);
         
         JPanel namePanelContainer = new JPanel();
         namePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
@@ -157,7 +159,7 @@ public class TriggerChannelProperties extends JPanel {
 
         threshold.setValue((int) triggerChannel.getThreshold());
         threshold.setHorizontalAlignment(JTextField.LEFT);
-        threshold.addPropertyChangeListener("number", thresholdPropertyChanged);
+        threshold.addPropertyChangeListener(thresholdPropertyChangeListener);
         threshold.setBounds(20, 130, 120, 23);
 
         JLabel thresholdText = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_CHANNEL_PROPERTIES_THRESHOLD));
@@ -227,8 +229,10 @@ public class TriggerChannelProperties extends JPanel {
 
     private void reload() {
         // reload common properties
-        triggerChannelNameTextField.setText(triggerChannel.getChannel().getChannelName());
-        triggerChannelNameTextField.setCaretPosition(0);
+        triggerChannelName.removePropertyChangeListener(triggerChannelNamePropertyChangeListener);
+        triggerChannelName.setText(triggerChannel.getChannel().getChannelName());
+        triggerChannelName.setCaretPosition(0);
+        triggerChannelName.addPropertyChangeListener(triggerChannelNamePropertyChangeListener);
         
         // reload trigger properties
         if (triggerChannel.getCombine() == Combine.AND) {

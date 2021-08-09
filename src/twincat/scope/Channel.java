@@ -29,6 +29,8 @@ public class Channel extends Observable implements Observer {
 
     private boolean refresh = false;
 
+    private boolean enabled = true;
+
     private String channelName = "Channel";
 
     private Acquisition acquisition = new Acquisition();
@@ -37,13 +39,13 @@ public class Channel extends Observable implements Observer {
 
     private Color lineColor = DefaultColorTable.RED.color;
 
-    private int lineWidth = 2;
+    private int lineWidth = 1;
 
     private boolean lineVisible = true;
 
     private Color plotColor = DefaultColorTable.RED.color;
 
-    private int plotSize = 2;
+    private int plotSize = 3;
 
     private boolean plotVisible = false;
 
@@ -99,6 +101,15 @@ public class Channel extends Observable implements Observer {
 
     public void setRefresh(boolean refresh) {
         this.refresh = refresh;
+    }
+    
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        this.refresh = true;
     }
 
     public String getChannelName() {

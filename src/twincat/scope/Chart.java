@@ -11,6 +11,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.VolatileImage;
@@ -43,11 +44,13 @@ public class Chart extends Observable {
 
     private static final int CHART_AXIS_WIDTH = 80;
 
-    private static final int CHART_TIME_HEIGHT = 60;
+    private static final int CHART_TIME_HEIGHT = 30;
 
     private static final int CHART_TICK_LENGTH = 10;
 
     private static final int DEFAULT_REFRESH_RATE = 30;
+    
+    private static final int MAX_VALUE_LENGTH = 6;
     
     /*********************************/
     /******** global variable ********/
@@ -61,13 +64,13 @@ public class Chart extends Observable {
 
     private String chartName = "Chart";
 
-    private Color timeLineColor = DefaultColorTable.DEEPBLUE.color;
+    private Color timeLineColor = DefaultColorTable.SCOPEGREEN.color;
 
-    private Color gridLineColor = DefaultColorTable.DEEPBLUE.color;
+    private Color gridLineColor = DefaultColorTable.SCOPEGREEN.color;
 
-    private Color borderColor = DefaultColorTable.LIGHTBLUE.color;
+    private Color borderColor = DefaultColorTable.SCOPEBLUE.color;
 
-    private Color chartColor = DefaultColorTable.LIGHTGRAY.color;
+    private Color chartColor = DefaultColorTable.SCOPEGRAY.color;
 
     private int lineWidth = 1;
 
@@ -99,7 +102,7 @@ public class Chart extends Observable {
 
     private boolean refresh = true;
 
-    private boolean running = false;
+    private boolean recording = false;
 
     private long cycleTime = 0;
 
@@ -129,7 +132,7 @@ public class Chart extends Observable {
 
     private long referenceTimeStamp = 0;
 
-    private int visibleAxis = 0;
+    private int axisOffset = 0;
 
     private String chartError = new String();
 
@@ -373,8 +376,8 @@ public class Chart extends Observable {
         return pauseTimeStamp != 0 ? true : false;
     }
 
-    public boolean isStoped() {
-        return running;
+    public boolean isRecording() {
+        return recording;
     }
     
     public long getRunTime() {
@@ -394,8 +397,6 @@ public class Chart extends Observable {
     }
        
     public void start() {
-        System.out.println("start");
-        
         // start components
         Iterator<Axis> axisIterator = axisList.iterator();
         while (axisIterator.hasNext()) {
@@ -408,7 +409,7 @@ public class Chart extends Observable {
     
         // start general
         refresh = true;
-        running = true;
+        recording = true;
         chartError = "None";
         
         // start time
@@ -430,8 +431,6 @@ public class Chart extends Observable {
     }
 
     public void stop() {
-        System.out.println("stop");
-        
         // stop components
         Iterator<Axis> axisIterator = axisList.iterator();
         while (axisIterator.hasNext()) {
@@ -440,7 +439,7 @@ public class Chart extends Observable {
         }
         
         // stop general
-        running = false;
+        recording = false;
     }
  
     public void close() {
@@ -541,9 +540,6 @@ public class Chart extends Observable {
 
                     if (channelTimeStamp < currentTimeStamp)
                         currentTimeStamp = channelTimeStamp;
-                } else {
-                    currentTimeStamp = 0;
-                    break;
                 }
             }
         }
@@ -559,14 +555,15 @@ public class Chart extends Observable {
         // get record time stamp
         recordTimeStamp = startTimeStamp + recordTime;
 
-        // get reference time stamp
-        if (!autoRecord && recordTimeStamp < currentTimeStamp) {
-            // priority 1 : use record time stamp
-            referenceTimeStamp = recordTimeStamp;
-            stop();
-        } else if (pauseTimeStamp != 0) {
-            // priority 2 : use pause time stamp
+        // update reference time stamp
+        if (pauseTimeStamp != 0) {
+            // priority 1 : use pause time stamp
             referenceTimeStamp = pauseTimeStamp;
+        } else if (!autoRecord && recordTimeStamp < currentTimeStamp) {
+            // priority 2 : use record time stamp
+            referenceTimeStamp = pauseTimeStamp = recordTimeStamp;
+            // stop recording
+            stop();
         } else if (triggerTimeStamp != 0) {
             // priority 3 : use trigger time stamp
             referenceTimeStamp = triggerTimeStamp;
@@ -625,15 +622,14 @@ public class Chart extends Observable {
             graphics.fillRect(0, 0, width, height);
 
             // draw axis
-            visibleAxis = 0;
+            axisOffset = 0;
             axisIterator = axisList.iterator();
             while (axisIterator.hasNext()) {
                 Axis axis = axisIterator.next();
 
                 if (axis.isAxisVisible()) {
-                    visibleAxis++;
-
-                    int axisPositionX = CHART_AXIS_WIDTH * visibleAxis + CHART_MARGIN - CHART_PADDING;
+                    axisOffset += CHART_AXIS_WIDTH + CHART_PADDING;   
+                    int axisPositionX = axisOffset - CHART_PADDING;
                     int axisPositionY = CHART_MARGIN;
                     int axisLength = height - CHART_TIME_HEIGHT - CHART_MARGIN * 2;
 
@@ -644,33 +640,66 @@ public class Chart extends Observable {
                     graphics.setColor(axis.getAxisColor());
                     graphics.drawLine(axisPositionX, axisPositionY, axisPositionX, axisPositionY + axisLength);
 
+                    if (axis.isAxisNameVisible()) {
+                        AffineTransform affineTransform = graphics.getTransform();
+                        affineTransform.rotate(Math.toRadians(-90), 0, 0);
+                        
+                        String axisNameText =  axis.getAxisName();
+                        Font axisNameFont = new Font("Arial", Font.BOLD, CHART_FONT_SIZE);
+                        Font rotatedAxisNameFont = axisNameFont.deriveFont(affineTransform);
+                        FontMetrics axisNameFontMetrics = graphics.getFontMetrics(axisNameFont);
+                        
+                        int axisNameOffset = axisNameFontMetrics.stringWidth(axisNameText) / 2;
+                        int axisNamePositionX = axisPositionX - CHART_AXIS_WIDTH + axisNameFontMetrics.getAscent() + CHART_PADDING;
+                        int axisNamePositionY = axisPositionY + axisLength / 2 + axisNameOffset;
+
+                        graphics.setFont(rotatedAxisNameFont);
+                        graphics.setColor(axis.getAxisColor());
+                        graphics.drawString(axisNameText, axisNamePositionX, axisNamePositionY);    
+                    }
+
                     for (int i = 0; i < axisTickCount; i++) {
                         int axisIndicatorPositionX = axisPositionX - CHART_TICK_LENGTH;
                         int axisIndicatorPositionY = axisPositionY + (int) (axisTickOffset * i);
                         double axisValueRangeOffset = axisValueRange / (axisTickCount - 1) * i;
 
+                        double axisValue = axis.getValueMax() - axisValueRangeOffset;
                         DecimalFormat decimalFormat = new DecimalFormat("0.0");
-                        String yAxisText = decimalFormat.format(axis.getValueMax() - axisValueRangeOffset);
+                        String axisValueText = decimalFormat.format(axisValue);
+                        Font axisValueFont = new Font("Arial", Font.PLAIN, CHART_FONT_SIZE);
+                        FontMetrics axisValueFontMetrics = graphics.getFontMetrics(axisValueFont);
+                     
+                        if (axisValueText.length() > MAX_VALUE_LENGTH) {
+                            decimalFormat = new DecimalFormat("0");
+                            axisValueText = decimalFormat.format(axisValue);
 
-                        Font font = new Font("Arial", Font.PLAIN, CHART_FONT_SIZE);
-                        FontMetrics fontMetrics = graphics.getFontMetrics(font);
+                            if (axisValueText.length() > MAX_VALUE_LENGTH)  {
+                                int scientificLength = MAX_VALUE_LENGTH - 2;
+                                int scientificOffset = axisValueText.length() - scientificLength;
+                                axisValueText = axisValueText.substring(0, scientificLength);
+                                axisValueText = axisValueText.concat("E").concat(String.valueOf(scientificOffset));  
+                            }
+                        }
 
-                        int axisFontPositionX = axisPositionX - fontMetrics.stringWidth(yAxisText) - CHART_TICK_LENGTH - 4;
-                        int axixFontPositionY = axisIndicatorPositionY + fontMetrics.getAscent() / 2 - 2;
+                        int axisValuePositionX = axisPositionX - axisValueFontMetrics.stringWidth(axisValueText) - CHART_TICK_LENGTH - 4;
+                        int axixValuePositionY = axisIndicatorPositionY + axisValueFontMetrics.getAscent() / 2 - 2;
 
                         graphics.setColor(axis.getAxisColor());
                         graphics.setStroke(new BasicStroke(axis.getLineWidth()));
                         graphics.drawLine(axisPositionX, axisIndicatorPositionY, axisIndicatorPositionX, axisIndicatorPositionY);
-                        graphics.setFont(font);
-                        graphics.drawString(yAxisText, axisFontPositionX, axixFontPositionY);
+                        graphics.setFont(axisValueFont);
+                        graphics.drawString(axisValueText, axisValuePositionX, axixValuePositionY);
                     }
                 }
             }
+            
+            // margin axis offset
+            axisOffset = axisOffset != 0 ? axisOffset : CHART_MARGIN;
 
             // draw time
-            int timePositionX = CHART_AXIS_WIDTH * visibleAxis + CHART_MARGIN;
+            int timePositionX = axisOffset;
             int timePositionY = height - CHART_TIME_HEIGHT - CHART_MARGIN + CHART_PADDING;
-            int timeWidth = width - CHART_AXIS_WIDTH * visibleAxis - CHART_MARGIN * 2;
+            int timeWidth = width - axisOffset - CHART_MARGIN;
 
             double timeTickOffset = (double) timeWidth / (timeTickCount - 1);
 
@@ -684,11 +713,17 @@ public class Chart extends Observable {
 
                 double timeDisplayOffset = (double) displayTime / 100 * 100 / (timeTickCount - 1) * i;
 
-                DecimalFormat decimalFormat = new DecimalFormat("0.0");
+                DecimalFormat decimalFormat = new DecimalFormat("0");
                 String timeText = decimalFormat.format(timeDisplayOffset);
                 Font timeFont = new Font("Arial", Font.PLAIN, CHART_FONT_SIZE);
                 FontMetrics fontMetrics = graphics.getFontMetrics(timeFont);
 
+                if (timeText.length() > MAX_VALUE_LENGTH) {
+                    timeText = timeText.substring(0, MAX_VALUE_LENGTH - 2).concat("..");
+                }
+                
+                timeText = timeText.concat("ms");
+                
                 int timeFontPositionX = timeTickPositionX - fontMetrics.stringWidth(timeText) / 2;
                 int timeFontPositionY = timePositionY + fontMetrics.getAscent() + CHART_TICK_LENGTH;
 
@@ -702,9 +737,9 @@ public class Chart extends Observable {
             }
 
             // draw chart
-            int chartPositionX = CHART_AXIS_WIDTH * visibleAxis + CHART_MARGIN;
+            int chartPositionX = axisOffset;
             int chartPositionY = CHART_MARGIN;
-            int chartWidth = width - CHART_AXIS_WIDTH * visibleAxis - CHART_MARGIN * 2;
+            int chartWidth = width - axisOffset - CHART_MARGIN;
             int chartHeight = height - CHART_TIME_HEIGHT - CHART_MARGIN * 2;
 
             double chartTickOffsetTime = (double) chartWidth / (timeTickCount - 1);
@@ -736,9 +771,9 @@ public class Chart extends Observable {
 
         if (updateStatic || updateDynamic || updatePerformance) {
             // draw channel
-            int channelPositionX = CHART_AXIS_WIDTH * visibleAxis + CHART_MARGIN;
+            int channelPositionX = axisOffset;
             int channelPositionY = CHART_MARGIN;
-            int channelWidth = width - CHART_AXIS_WIDTH * visibleAxis - CHART_MARGIN * 2;
+            int channelWidth = width - axisOffset - CHART_MARGIN;
             int channelHeight = height - CHART_TIME_HEIGHT - CHART_MARGIN * 2;
 
             long stopTimeStamp, startTimeStamp;
@@ -783,7 +818,7 @@ public class Chart extends Observable {
                 while (channelIterator.hasNext()) {
                     Channel channel = channelIterator.next();
                     
-                    if (channel.isLineVisible() || channel.isPlotVisible()) {
+                    if (channel.isEnabled()) {
 
                         GeneralPath generalPath = new GeneralPath();
                         List<Rectangle2D> rectangleList = new ArrayList<Rectangle2D>();
@@ -877,7 +912,7 @@ public class Chart extends Observable {
         graphics.drawImage(dynamicImage, 0, 0, null);
 
         if (debug) {
-            int debugPositionX = CHART_AXIS_WIDTH * visibleAxis + CHART_MARGIN + 5;
+            int debugPositionX = axisOffset + CHART_PADDING;
             int debugPositionY = CHART_MARGIN;
 
             graphics = image.createGraphics();

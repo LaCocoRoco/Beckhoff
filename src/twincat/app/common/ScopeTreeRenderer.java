@@ -10,6 +10,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import twincat.Resources;
 import twincat.Utilities;
+import twincat.constant.DefaultColorTable;
 import twincat.scope.Axis;
 import twincat.scope.Channel;
 import twincat.scope.Chart;
@@ -19,13 +20,20 @@ import twincat.scope.TriggerGroup;
 
 public class ScopeTreeRenderer extends DefaultTreeCellRenderer {
     private static final long serialVersionUID = 1L;
+    
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
+
+    public static final Color DEFAULT_BACKGROUND_COLOR = DefaultColorTable.WHITE.color;
+    
     /*********************************/
     /**** local constant variable ****/
     /*********************************/
 
-    private static final Color BORDER_SELECTION_COLOR = new Color(150, 150, 150);
+    private static final Color BORDER_SELECTION_COLOR = DefaultColorTable.GRAY.color;
     
-    private static final Color BACKGROUND_SELECTION_COLOR = new Color(234, 234, 234);
+    private static final Color BACKGROUND_SELECTION_COLOR = DefaultColorTable.JAVAGRAY.color;
     
     private static final ImageIcon ICON_SCOPE = new ImageIcon(Utilities.getScaledIamgeFromFilePath(Resources.PATH_ICON_APP_SCOPE, 0.8));
 
@@ -50,15 +58,13 @@ public class ScopeTreeRenderer extends DefaultTreeCellRenderer {
 
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
         Object userObject = node.getUserObject();
-
-        // remove trailing space
+ 
         if (this.getText().length() > 0) {
             if (this.getText().charAt(0) == ' ') {
                 this.setText(this.getText().trim());
             }
         }
         
-        // placeholder
         if (this.getText().length() == 0) {
             this.setText(" ");
         }
@@ -89,6 +95,7 @@ public class ScopeTreeRenderer extends DefaultTreeCellRenderer {
         
         if (userObject instanceof Channel) {
             Channel channel = (Channel) userObject;
+            this.setEnabled(channel.isEnabled());
             this.setForeground(channel.getLineColor());
             this.setIcon(ICON_CHANNEL);
         }
@@ -104,5 +111,10 @@ public class ScopeTreeRenderer extends DefaultTreeCellRenderer {
     @Override
     public void setBackgroundSelectionColor(Color newColor) {
         super.setBackgroundSelectionColor(BACKGROUND_SELECTION_COLOR);
+    }
+    
+    @Override
+    public Color getBackgroundNonSelectionColor() {
+        return DEFAULT_BACKGROUND_COLOR;
     }
 }

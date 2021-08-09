@@ -125,8 +125,7 @@ public class AdsClient extends AdsNative {
         super.adsReadWrite(idxGrp, idxOffs, readBuffer, writeBuffer);
     }
 
-    public long addDeviceNotification(long idxGrp, long idxOffs, AdsNotification notification, AdsCallback callback)
-            throws AdsException {
+    public long addDeviceNotification(long idxGrp, long idxOffs, AdsNotification notification, AdsCallback callback) throws AdsException {
         return super.adsAddDeviceNotification(idxGrp, idxOffs, 0, notification, callback);
     }
 

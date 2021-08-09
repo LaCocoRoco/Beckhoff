@@ -49,7 +49,7 @@ public class TriggerGroupProperties extends JPanel {
     
     private final JScrollPane scrollPanel = new JScrollPane();
     
-    private final TextField triggerGroupNameTextField = new TextField();
+    private final TextField triggerGroupName = new TextField();
 
     private final NumberTextField offset = new NumberTextField();
     
@@ -64,7 +64,7 @@ public class TriggerGroupProperties extends JPanel {
     private PropertyChangeListener triggerChannelNamePropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            triggerGroup.setTriggerGroupName(triggerGroupNameTextField.getText());
+            triggerGroup.setTriggerGroupName(triggerGroupName.getText());
             xref.scopeBrowser.reloadSelectedTreeNode();
         }
     };
@@ -72,8 +72,10 @@ public class TriggerGroupProperties extends JPanel {
     private PropertyChangeListener offsetPropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
-            triggerGroup.setTriggerOffset((int) numberTextField.getValue());
+            if (propertyChangeEvent.getPropertyName().equals("number")) {
+                NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
+                triggerGroup.setTriggerOffset((int) numberTextField.getValue());        
+            }
         }
     };
 
@@ -104,14 +106,14 @@ public class TriggerGroupProperties extends JPanel {
     public TriggerGroupProperties(XReference xref) {
         this.xref = xref;
 
-        // common properties
-        triggerGroupNameTextField.setText(triggerGroup.getTriggerGroupName());
-        triggerGroupNameTextField.addPropertyChangeListener(triggerChannelNamePropertyChanged);
-        triggerGroupNameTextField.setBounds(15, 25, 210, 23);
+        // name properties
+        triggerGroupName.setText(triggerGroup.getTriggerGroupName());
+        triggerGroupName.addPropertyChangeListener(triggerChannelNamePropertyChanged);
+        triggerGroupName.setBounds(15, 25, 210, 23);
 
         TitledPanel namePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_NAME));
         namePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
-        namePanel.add(triggerGroupNameTextField);
+        namePanel.add(triggerGroupName);
         
         JPanel namePanelContainer = new JPanel();
         namePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
@@ -121,7 +123,7 @@ public class TriggerGroupProperties extends JPanel {
         offset.setValue(triggerGroup.getTriggerOffset());
         offset.setMinValue(0);
         offset.setMaxValue(100);
-        offset.addPropertyChangeListener("number", offsetPropertyChanged);
+        offset.addPropertyChangeListener(offsetPropertyChanged);
         offset.setBounds(15, 25, 40, 20);
 
         JLabel offsetText = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_OFFSET));
@@ -198,8 +200,10 @@ public class TriggerGroupProperties extends JPanel {
 
     private void reload() {
         // reload common properties
-        triggerGroupNameTextField.setText(triggerGroup.getTriggerGroupName());
-        triggerGroupNameTextField.setCaretPosition(0);
+        triggerGroupName.removePropertyChangeListener(triggerChannelNamePropertyChanged);
+        triggerGroupName.setText(triggerGroup.getTriggerGroupName());
+        triggerGroupName.setCaretPosition(0);
+        triggerGroupName.addPropertyChangeListener(triggerChannelNamePropertyChanged);
         
         // reload module properties
         offset.setValue(triggerGroup.getTriggerOffset());

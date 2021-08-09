@@ -16,7 +16,7 @@ public final class TwincatLogger {
     /*** global constant variable ****/
     /*********************************/
 
-    public static final Level LOGGER_DEFAULT_LEVEL = Level.INFO;   
+    public static final Level LOGGER_DEFAULT_LEVEL = Level.FINE;   
 
     public static final String LOGGER_NAME = "TwincatLogger";
 

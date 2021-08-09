@@ -31,20 +31,12 @@ import twincat.scope.Scope;
 public class ChartPanel extends JPanel implements Observer {
     private static final long serialVersionUID = 1L;
 
-    // TODO : delete on close
-    // TODO : take over data from channel to acquisition
-    // TODO : disable reload on node select (setter)
+    // TODO : hide card panel (no controls)
+    // TODO : update start stop button
+    // TODO : remove scope delete chart
     // TODO : on exit close everything
-    // TODO : remove tree select parent properties
-    // TODO : axis show hide problem (values)
-    // TODO : remove trigger not recognized
-    // TODO : auto restart channel when new channel
-    // TODO : swap start stop button
-    // TODO : swap play pause button
     // TODO : chart add axis name design
-    // TODO : update static content set display
-    // TODO : time marker problem
-    // TODO : axis marker problem
+    // TODO : adapted setter & getter
 
     /*********************************/
     /******** cross reference ********/
@@ -78,6 +70,8 @@ public class ChartPanel extends JPanel implements Observer {
   
     private final JLabel displayTime = new JLabel();
 
+    private final JToolBar toolBar = new JToolBar();
+    
     /*********************************/
     /****** predefined variable ******/
     /*********************************/
@@ -85,12 +79,14 @@ public class ChartPanel extends JPanel implements Observer {
     private final AncestorListener acncestorListener = new AncestorListener() {
         @Override
         public void ancestorAdded(AncestorEvent event) {
-            chartStart();
+            chart.start();
+            updateStartStopButton();
         }
 
         @Override
         public void ancestorRemoved(AncestorEvent event) {
-            chartStop();
+            chart.stop();
+            updateStartStopButton();
         }
 
         @Override
@@ -102,24 +98,16 @@ public class ChartPanel extends JPanel implements Observer {
     private final ActionListener playPauseActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            if (chart.isPaused()) {
-                chartPlay();               
-            } else {
-                chartPause();
-            }
+            togglePlayPause();
+            updatePlayPauseButton();
         }
     };
     
     private final ActionListener startStopActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            if (chart.isStoped()) {
-                chartStop();
-                chartPause();
-            } else {
-                chartStart();
-                chartPlay();                 
-            }
+            toggleStartStop();
+            updateStartStopButton();
         }
     };
 
@@ -172,7 +160,6 @@ public class ChartPanel extends JPanel implements Observer {
         
         @Override
         protected void paintComponent(Graphics graphics) {
-            super.paintComponent(graphics);
             graphics.drawImage(chart.getImage(), 0, 0, this);
         }
     };
@@ -187,19 +174,21 @@ public class ChartPanel extends JPanel implements Observer {
         // graph panel
         graphPanel.addComponentListener(componentListener);
         graphPanel.setBorder(BorderFactory.createEmptyBorder());
+        graphPanel.setVisible(false);
 
         // tool bar
-        startStopButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_STOP)));
         startStopButton.setFocusable(false);
         startStopButton.addActionListener(startStopActionListener);     
-
+        
+        playPauseButton.setFocusable(false);
+        playPauseButton.addActionListener(playPauseActionListener);
+        
+        updateStartStopButton();
+        updatePlayPauseButton();
+        
         recordTime.setText(Scope.TIME_FORMAT_MIN_TIME);
         recordTime.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         
-        playPauseButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PAUSE)));
-        playPauseButton.setFocusable(false);
-        playPauseButton.addActionListener(playPauseActionListener);
-
         displayTime.setText(Scope.TIME_FORMAT_MIN_TIME);
         displayTime.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
  
@@ -228,33 +217,31 @@ public class ChartPanel extends JPanel implements Observer {
         minimizeButton.setFocusable(false);
         minimizeButton.addActionListener(minimizeActionListener);
 
-        JToolBar chartToolBar = new JToolBar();
-        chartToolBar.setFloatable(false);
-        chartToolBar.setRollover(false);
-        chartToolBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        
-        chartToolBar.add(startStopButton);
-        chartToolBar.addSeparator(new Dimension(20, 0));
-        chartToolBar.add(recordTime);
-        chartToolBar.addSeparator(new Dimension(20, 0));
-        chartToolBar.add(playPauseButton);
-        chartToolBar.addSeparator(new Dimension(20, 0));
-        chartToolBar.add(displayTime);
-        chartToolBar.addSeparator(new Dimension(20, 0));
-        chartToolBar.add(backwardButton);
-        chartToolBar.addSeparator(new Dimension(5, 0));
-        chartToolBar.add(forwardButton);
-        chartToolBar.addSeparator(new Dimension(30, 0));
-        chartToolBar.add(zoomInButton);
-        chartToolBar.addSeparator(new Dimension(5, 0));
-        chartToolBar.add(zoomOutButton);
-        chartToolBar.add(Box.createHorizontalGlue());
-        chartToolBar.add(minimizeButton);
+        toolBar.setFloatable(false);
+        toolBar.setRollover(false);
+        toolBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        toolBar.add(startStopButton);
+        toolBar.addSeparator(new Dimension(20, 0));
+        toolBar.add(recordTime);
+        toolBar.addSeparator(new Dimension(20, 0));
+        toolBar.add(playPauseButton);
+        toolBar.addSeparator(new Dimension(20, 0));
+        toolBar.add(displayTime);
+        toolBar.addSeparator(new Dimension(20, 0));
+        toolBar.add(backwardButton);
+        toolBar.addSeparator(new Dimension(5, 0));
+        toolBar.add(forwardButton);
+        toolBar.addSeparator(new Dimension(30, 0));
+        toolBar.add(zoomInButton);
+        toolBar.addSeparator(new Dimension(5, 0));
+        toolBar.add(zoomOutButton);
+        toolBar.add(Box.createHorizontalGlue());
+        toolBar.add(minimizeButton);
 
         // default content
         this.addAncestorListener(acncestorListener);
         this.setLayout(new BorderLayout());
-        this.add(chartToolBar, BorderLayout.PAGE_END);
+        this.add(toolBar, BorderLayout.PAGE_END);
         this.add(graphPanel, BorderLayout.CENTER);
         this.setBorder(BorderFactory.createEmptyBorder());
     }
@@ -267,18 +254,42 @@ public class ChartPanel extends JPanel implements Observer {
         return chart;
     }
 
+    public void setChart(Chart chart) {
+        if (!chart.equals(this.chart)) {
+            int width = graphPanel.getWidth() > 0 ? graphPanel.getWidth() : this.getWidth();
+            int height = graphPanel.getHeight() > 0 ? graphPanel.getHeight() : this.getHeight() - toolBar.getHeight();
+            
+            this.chart.deleteObserver(this);
+            this.chart.close();
+            this.chart = chart;
+            this.chart.addObserver(this);
+            this.chart.setWidth(width);
+            this.chart.setHeight(height);
+            this.chart.start();
+        }
+    }
+
     /*********************************/
     /******** override method ********/
     /*********************************/
 
     @Override
     public void update(Observable observable, Object object) {
+        // update display time
         String displayTimeText = Scope.timeFormaterToString(chart.getCurrentDisplayTime());
         displayTime.setText(displayTimeText);
         
+        // update record time
         String recordTimeText = Scope.timeFormaterToString(chart.getCurrentRecordTime());
         recordTime.setText(recordTimeText);
+
+        // update start stop button
+        updateStartStopButton();
         
+        // update play pause button
+        updatePlayPauseButton();
+        
+        // update graph
         graphPanel.repaint();
     }   
     
@@ -286,22 +297,11 @@ public class ChartPanel extends JPanel implements Observer {
     /********* public method *********/
     /*********************************/
 
-    public void hideGraph() {
+    public void resetChart() {
+        this.chart = new Chart();
         graphPanel.setVisible(false);
     }
-
-    public void setChart(Chart chart) {
-        if (!chart.equals(this.chart)) {
-            this.chart.close();
-            this.chart = chart;
-            
-            this.chart.addObserver(this);
-            this.chart.setWidth(this.getWidth());
-            this.chart.setHeight(this.getHeight());
-            this.chart.start();
-        }
-    }
-
+    
     public void load() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -315,43 +315,50 @@ public class ChartPanel extends JPanel implements Observer {
     /******** private method *********/
     /*********************************/
 
-    private void chartStart() {
-        chart.start();
-        playPauseButton.setEnabled(true);
-        startStopButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_STOP)));
+    private void togglePlayPause() {
+        if (chart.isPaused()) {
+            chart.play();               
+        } else {
+            chart.pause();
+        }
     }
     
-    private void chartStop()  {
-        chart.stop();
-        playPauseButton.setEnabled(false);
-        startStopButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_START)));
-    }
- 
-    private void chartPlay() {
-        chart.play();
-        playPauseButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PAUSE)));
-    }
-    
-    private void chartPause() {
-        chart.pause();
-        playPauseButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PLAY))); 
+    private void toggleStartStop() {
+        if (chart.isRecording()) {
+            chart.stop();
+            chart.pause();
+        } else {
+            chart.start();
+            chart.play();               
+        }
     }
 
-    private void reload() {
-        // reload start stop state
-        if (chart.isStoped()) {
+    private void updateStartStopButton() {
+        if (chart.isRecording()) {
             playPauseButton.setEnabled(true);
             startStopButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_STOP)));
         } else {
             playPauseButton.setEnabled(false);
             startStopButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_START)));
         }
-        
-        // reload play pause state
+    }
+    
+    private void updatePlayPauseButton() {
         if (chart.isPaused()) {
             playPauseButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PLAY))); 
         } else {
             playPauseButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_CONTROL_PAUSE))); 
-        }
+        }     
+    }
+    
+    private void reload() {
+        // reload graph
+        graphPanel.setVisible(true);
+        
+        // update start stop button
+        updateStartStopButton();
+        
+        // update play pause button
+        updatePlayPauseButton();
     }
 }

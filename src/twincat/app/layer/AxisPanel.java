@@ -158,7 +158,6 @@ public class AxisPanel extends JScrollPane {
         // scope
         Scope scope = new Scope();
         scope.setScopeName(axisAcquisition.getAxisName());
-        scope.setRecordTime("00:00:00.000");
 
         // chart
         Chart chart = new Chart();
@@ -172,6 +171,7 @@ public class AxisPanel extends JScrollPane {
         Axis axisVelo = new Axis();
         axisVelo.setAxisName("Velo");
         axisVelo.setAxisColor(DefaultColorTable.RED.color);
+        axisVelo.setScaleSymetrical(true);
 
         // acquisition ACTVELO
         String actVeloSymbolName = axisAcquisition.getAxisSymbolName() + ".ACTVELO";
@@ -204,8 +204,8 @@ public class AxisPanel extends JScrollPane {
         Channel channelSetVelo = new Channel();
         channelSetVelo.setAcquisition(acquisitionSetVelo);
         channelSetVelo.setChannelName("SETVELO");
-        channelSetVelo.setLineColor(DefaultColorTable.DARKGREEN.color);
-        channelSetVelo.setPlotColor(DefaultColorTable.DARKGREEN.color);
+        channelSetVelo.setLineColor(DefaultColorTable.GREEN.color);
+        channelSetVelo.setPlotColor(DefaultColorTable.GREEN.color);
 
         // add VELO to chart
         chart.addAxis(axisVelo);
@@ -215,7 +215,9 @@ public class AxisPanel extends JScrollPane {
         // axis POS
         Axis axisPosition = new Axis();
         axisPosition.setAxisName("Pos");
-        axisPosition.setAxisColor(DefaultColorTable.ORANGE.color);
+        axisPosition.setAxisColor(DefaultColorTable.PURPLE.color);
+        axisPosition.setAxisVisible(false);
+        axisPosition.setAxisNameVisible(false);
 
         // acquisition ACTPOS
         String actPosSymbolName = axisAcquisition.getAxisSymbolName() + ".ACTPOS";
@@ -231,8 +233,8 @@ public class AxisPanel extends JScrollPane {
         Channel channelActPos = new Channel();
         channelActPos.setAcquisition(acquisitionActPos);
         channelActPos.setChannelName("ACTPOS");
-        channelActPos.setLineColor(DefaultColorTable.ORANGE.color);
-        channelActPos.setPlotColor(DefaultColorTable.ORANGE.color);
+        channelActPos.setLineColor(DefaultColorTable.PURPLE.color);
+        channelActPos.setPlotColor(DefaultColorTable.PURPLE.color);
 
         // acquisition SETPOS
         String setPosSymbolName = axisAcquisition.getAxisSymbolName() + ".SETPOS";
@@ -248,8 +250,8 @@ public class AxisPanel extends JScrollPane {
         Channel channelSetPos = new Channel();
         channelSetPos.setAcquisition(acquisitionSetPos);
         channelSetPos.setChannelName("SETPOS");
-        channelSetPos.setLineColor(DefaultColorTable.PURPLE.color);
-        channelSetPos.setPlotColor(DefaultColorTable.PURPLE.color);
+        channelSetPos.setLineColor(DefaultColorTable.OLIVE.color);
+        channelSetPos.setPlotColor(DefaultColorTable.OLIVE.color);
 
         // add POS to chart
         chart.addAxis(axisPosition);
@@ -259,7 +261,9 @@ public class AxisPanel extends JScrollPane {
         // axis ACCEL
         Axis axisAcceleration = new Axis();
         axisAcceleration.setAxisName("Accel");
-        axisAcceleration.setAxisColor(DefaultColorTable.GOLDENROD.color);
+        axisAcceleration.setAxisColor(DefaultColorTable.ORANGE.color);
+        
+        axisAcceleration.setScaleSymetrical(true);
 
         // acquisition ACTACC
         String actAccSymbolName = axisAcquisition.getAxisSymbolName() + ".ACTACC";
@@ -275,8 +279,8 @@ public class AxisPanel extends JScrollPane {
         Channel channelActAcc = new Channel();
         channelActAcc.setAcquisition(acquisitionActAcc);
         channelActAcc.setChannelName("ACTACC");
-        channelActAcc.setLineColor(DefaultColorTable.GOLDENROD.color);
-        channelActAcc.setPlotColor(DefaultColorTable.GOLDENROD.color);
+        channelActAcc.setLineColor(DefaultColorTable.ORANGE.color);
+        channelActAcc.setPlotColor(DefaultColorTable.ORANGE.color);
 
         // acquisition SETACC
         String setAccSymbolName = axisAcquisition.getAxisSymbolName() + ".SETACC";
@@ -304,6 +308,7 @@ public class AxisPanel extends JScrollPane {
         Axis axisPosDiff = new Axis();
         axisPosDiff.setAxisName("PosDiff");
         axisPosDiff.setAxisColor(DefaultColorTable.BLUE.color);
+        axisPosDiff.setScaleSymetrical(true);
 
         // acquisition POSDIFF
         String posDiffSymbolName = axisAcquisition.getAxisSymbolName() + ".POSDIFF";

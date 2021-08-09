@@ -47,7 +47,7 @@ public class Resources {
 
     public static final String PATH_ICON_APP_DELETE = PATH_PACKAGE_IMAGES + "app_delete.png";
     
-    public static final String PATH_ICON_APP_SEARCH = PATH_PACKAGE_IMAGES + "app_search.png";
+    public static final String PATH_ICON_APP_ACQUISITION = PATH_PACKAGE_IMAGES + "app_acquisition.png";
 
     public static final String PATH_ICON_APP_FOLDER_OPEN = PATH_PACKAGE_IMAGES + "folder_open.png";
     
@@ -111,7 +111,7 @@ public class Resources {
 
     public static final String TEXT_SCOPE_TREE_ADD_TRIGGER = "scopeTreeAddTrigger";
     
-    public static final String TEXT_SCOPE_TREE_SEARCH = "scopeTreeSearch";
+    public static final String TEXT_SCOPE_TREE_ACQUISITION = "scopeTreeAcquisition";
     
     public static final String TEXT_SCOPE_TREE_DELETE = "scopeTreeDelete";
 
@@ -183,6 +183,10 @@ public class Resources {
        
 
     public static final String TEXT_CHANNEL_PROPERTIES_NAME = "channelPropertiesName";
+    
+    public static final String TEXT_CHANNEL_PROPERTIES_COMMON = "channelPropertiesCommon";
+    
+    public static final String TEXT_CHANNEL_PROPERTIES_ENABLED = "channelPropertiesEnabled";
 
     public static final String TEXT_CHANNEL_PROPERTIES_COLOR = "channelPropertiesColor";
 

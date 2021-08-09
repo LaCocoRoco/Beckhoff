@@ -49,9 +49,9 @@ public class AxisProperties extends JPanel {
     /*********************************/
     /****** local final variable *****/
     /*********************************/
-    
+
     private final JScrollPane scrollPanel = new JScrollPane();
-    
+
     private final TextField axisName = new TextField();
 
     private final JPanel axisColor = new JPanel();
@@ -78,7 +78,7 @@ public class AxisProperties extends JPanel {
 
     private PropertyChangeListener axisNamePropertyChanged = new PropertyChangeListener() {
         @Override
-        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {   
             axis.setAxisName(axisName.getText());
             xref.scopeBrowser.reloadSelectedTreeNode();
         }
@@ -86,10 +86,12 @@ public class AxisProperties extends JPanel {
 
     private final PropertyChangeListener axisColorChanged = new PropertyChangeListener() {
         @Override
-        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            Component component = (Component) propertyChangeEvent.getSource();
-            axis.setAxisColor(component.getBackground());
-            xref.scopeBrowser.reloadSelectedTreeNode();
+        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {   
+            if (propertyChangeEvent.getPropertyName().equals("background")) {     
+                Component component = (Component) propertyChangeEvent.getSource();
+                axis.setAxisColor(component.getBackground());
+                xref.scopeBrowser.reloadSelectedTreeNode();                         
+            }
         }
     };
 
@@ -118,24 +120,30 @@ public class AxisProperties extends JPanel {
     private PropertyChangeListener lineWidthPropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
-            axis.setLineWidth((int) numberTextField.getValue());
+            if (propertyChangeEvent.getPropertyName().equals("number")) {
+                NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
+                axis.setLineWidth((int) numberTextField.getValue());           
+            }
         }
     };
 
     private PropertyChangeListener valueMinPropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
-            axis.setValueMin(numberTextField.getValue());
+            if (propertyChangeEvent.getPropertyName().equals("number")) {
+                NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
+                axis.setValueMin(numberTextField.getValue());          
+            }
         }
     };
 
     private PropertyChangeListener valueMaxPropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
-            axis.setValueMax(numberTextField.getValue());
+            if (propertyChangeEvent.getPropertyName().equals("number")) {
+                NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
+                axis.setValueMax(numberTextField.getValue());             
+            }
         }
     };
 
@@ -183,7 +191,7 @@ public class AxisProperties extends JPanel {
     public AxisProperties(XReference xref) {
         this.xref = xref;
 
-        // common properties
+        // name properties
         axisName.setText(axis.getAxisName());
         axisName.addPropertyChangeListener(axisNamePropertyChanged);
         axisName.setBounds(15, 25, 210, 23);
@@ -191,17 +199,17 @@ public class AxisProperties extends JPanel {
         TitledPanel namePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_NAME));
         namePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
         namePanel.add(axisName);
-        
+
         JPanel namePanelContainer = new JPanel();
         namePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
-        namePanelContainer.add(namePanel); 
-        
+        namePanelContainer.add(namePanel);
+
         // color properties
         axisColor.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         axisColor.setBackground(axis.getAxisColor());
         axisColor.setBounds(15, 25, 40, 40);
         axisColor.addMouseListener(xref.colorProperties.getColorPropertieMouseAdapter());
-        axisColor.addPropertyChangeListener("background", axisColorChanged);
+        axisColor.addPropertyChangeListener(axisColorChanged);
 
         JLabel axisColorText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_AXIS_COLOR));
         axisColorText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
@@ -211,16 +219,16 @@ public class AxisProperties extends JPanel {
         colorPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 80));
         colorPanel.add(axisColor);
         colorPanel.add(axisColorText);
-        
+
         JPanel colorPanelContainer = new JPanel();
         colorPanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
-        colorPanelContainer.add(colorPanel); 
-        
+        colorPanelContainer.add(colorPanel);
+
         // style properties
         lineWidth.setValue(axis.getLineWidth());
         lineWidth.setMinValue(0);
         lineWidth.setMaxValue(100);
-        lineWidth.addPropertyChangeListener("number", lineWidthPropertyChanged);
+        lineWidth.addPropertyChangeListener(lineWidthPropertyChanged);
         lineWidth.setBounds(15, 25, 40, 20);
 
         JLabel lineWidthText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_LINE_WIDTH));
@@ -253,15 +261,15 @@ public class AxisProperties extends JPanel {
         stylePanel.add(axisNameVisibleText);
         stylePanel.add(axisVisible);
         stylePanel.add(axisVisibleText);
-        
+
         JPanel stylePanelContainer = new JPanel();
         stylePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
-        stylePanelContainer.add(stylePanel); 
-        
+        stylePanelContainer.add(stylePanel);
+
         // scale properties
         valueMax.setValue((long) axis.getValueMax());
         valueMax.setHorizontalAlignment(JTextField.LEFT);
-        valueMax.addPropertyChangeListener("number", valueMaxPropertyChanged);
+        valueMax.addPropertyChangeListener(valueMaxPropertyChanged);
         valueMax.setBounds(15, 25, 120, 23);
 
         JLabel valueMaxText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_VALUE_MAX));
@@ -269,7 +277,7 @@ public class AxisProperties extends JPanel {
         valueMaxText.setBounds(145, 25, 160, 23);
         valueMin.setValue((long) axis.getValueMin());
         valueMin.setHorizontalAlignment(JTextField.LEFT);
-        valueMin.addPropertyChangeListener("number", valueMinPropertyChanged);
+        valueMin.addPropertyChangeListener(valueMinPropertyChanged);
         valueMin.setBounds(15, 55, 120, 23);
 
         JLabel valueMinText = new JLabel(languageBundle.getString(Resources.TEXT_AXIS_PROPERTIES_VALUE_MIN));
@@ -304,11 +312,11 @@ public class AxisProperties extends JPanel {
         scalePanel.add(autoscaleText);
         scalePanel.add(scaleSymetric);
         scalePanel.add(scaleSymetricText);
-        
+
         JPanel scalePanelContainer = new JPanel();
         scalePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
-        scalePanelContainer.add(scalePanel); 
-        
+        scalePanelContainer.add(scalePanel);
+
         // default content
         ScrollablePanel contentPanel = new ScrollablePanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
@@ -363,14 +371,16 @@ public class AxisProperties extends JPanel {
         // reload common properties
         axisNameVisible.setSelected(axis.isAxisNameVisible());
 
-        if (!axisName.getText().equals(axis.getAxisName())) {
-            axisName.setText(axis.getAxisName());
-            axisName.setCaretPosition(0);
-        }
+        axisName.removePropertyChangeListener(axisNamePropertyChanged);
+        axisName.setText(axis.getAxisName());
+        axisName.setCaretPosition(0);
+        axisName.addPropertyChangeListener(axisNamePropertyChanged);
 
         // reload color properties
+        axisColor.removePropertyChangeListener(axisColorChanged);
         axisColor.setBackground(axis.getAxisColor());
-
+        axisColor.addPropertyChangeListener(axisColorChanged);
+        
         // reload style properties
         lineWidth.setValue(axis.getLineWidth());
         axisNameVisible.setSelected(axis.isAxisNameVisible());
@@ -381,7 +391,7 @@ public class AxisProperties extends JPanel {
         valueMax.setValue((long) axis.getValueMax());
         autoscale.setSelected(axis.isAutoscale());
         scaleSymetric.setSelected(axis.isScaleSymetrical());
-        
+
         scaleSymetric.setEnabled(axis.isAutoscale());
         valueMin.setEnabled(!axis.isAutoscale());
         valueMax.setEnabled(!axis.isAutoscale());

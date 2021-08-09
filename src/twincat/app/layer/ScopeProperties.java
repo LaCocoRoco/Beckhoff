@@ -61,19 +61,23 @@ public class ScopeProperties extends JPanel {
     /****** predefined variable ******/
     /*********************************/
 
-    private PropertyChangeListener recordTimePropertyChanged = new PropertyChangeListener() {
-        @Override
-        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            TimeTextField timeTextField = (TimeTextField) propertyChangeEvent.getSource();
-            scope.setRecordTime(timeTextField.getText());
-        }
-    };
-
     private PropertyChangeListener scopeNamePropertyChanged = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            scope.setScopeName(scopeName.getText());
-            xref.scopeBrowser.reloadSelectedTreeNode();
+            if (propertyChangeEvent.getPropertyName().equals("text")) {
+                scope.setScopeName(scopeName.getText());
+                xref.scopeBrowser.reloadSelectedTreeNode();            
+            }
+        }
+    };
+
+    private PropertyChangeListener recordTimePropertyChanged = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+            if (propertyChangeEvent.getPropertyName().equals("time")) {
+                TimeTextField timeTextField = (TimeTextField) propertyChangeEvent.getSource();
+                scope.setRecordTime(timeTextField.getText());         
+            }
         }
     };
 
@@ -106,9 +110,9 @@ public class ScopeProperties extends JPanel {
     public ScopeProperties(XReference xref) {
         this.xref = xref;
 
-        // common properties
+        // name properties
         scopeName.setText(scope.getScopeName());
-        scopeName.addPropertyChangeListener("text", scopeNamePropertyChanged);
+        scopeName.addPropertyChangeListener(scopeNamePropertyChanged);
         scopeName.setBounds(15, 25, 210, 23);
 
         TitledPanel namePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_NAME));
@@ -121,7 +125,7 @@ public class ScopeProperties extends JPanel {
         
         // record mode properties
         recordTime.setText(Scope.TIME_FORMAT_MIN_TIME);
-        recordTime.addPropertyChangeListener("time", recordTimePropertyChanged);
+        recordTime.addPropertyChangeListener(recordTimePropertyChanged);
         recordTime.setBounds(15, 25, 100, 23);
 
         JLabel recordTimeText = new JLabel("[" + Scope.TIME_FORMAT_TEMPLATE + "]");
@@ -198,9 +202,11 @@ public class ScopeProperties extends JPanel {
 
     private void reload() {       
         // reload common properties
+        scopeName.removePropertyChangeListener(scopeNamePropertyChanged);
         scopeName.setText(scope.getScopeName());
         scopeName.setCaretPosition(0);
-
+        scopeName.addPropertyChangeListener(scopeNamePropertyChanged);
+        
         // reload record mode properties
         recordTime.setText(scope.getRecordTime());
         autoRecord.setSelected(scope.isAutoRecord());

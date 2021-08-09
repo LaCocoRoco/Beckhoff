@@ -10,6 +10,12 @@ import twincat.constant.DefaultColorTable;
 
 public class Axis implements Observer {
     /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
+
+    private static final double AUTOSCALE_OFFSET = 0.1;
+    
+    /*********************************/
     /******** global variable ********/
     /*********************************/
 
@@ -17,7 +23,7 @@ public class Axis implements Observer {
 
     private String axisName = "Axis";
 
-    private Color axisColor = DefaultColorTable.DEEPBLUE.color;
+    private Color axisColor = DefaultColorTable.SCOPEGREEN.color;
 
     private boolean axisVisible = true;
 
@@ -45,6 +51,10 @@ public class Axis implements Observer {
 
     private double symetricalValue = 0;
 
+    private double autoscaleValueMin = 0;
+    
+    private double autoscaleValueMax = 0;
+    
     /*********************************/
     /******** setter & getter ********/
     /*********************************/
@@ -90,6 +100,7 @@ public class Axis implements Observer {
 
     public void setAxisNameVisible(boolean axisNameVisible) {
         this.axisNameVisible = axisNameVisible;
+        this.refresh = true;
     }
 
     public int getLineWidth() {
@@ -127,8 +138,8 @@ public class Axis implements Observer {
         this.autoscale = autoscale;
         this.refresh = true;
         this.symetricalValue = 0;
-        this.valueMin = autoscale ? 0 : valueMin;
-        this.valueMax = autoscale ? 0 : valueMax;
+        this.autoscaleValueMin = 0;
+        this.autoscaleValueMax = 0;
     }
 
     public boolean isScaleSymetrical() {
@@ -139,8 +150,8 @@ public class Axis implements Observer {
         this.scaleSymetrical = scaleSymetrical;
         this.refresh = true;
         this.symetricalValue = 0;
-        this.valueMin = autoscale ? 0 : valueMin;;
-        this.valueMax = autoscale ? 0 : valueMax;;
+        this.autoscaleValueMin = 0;
+        this.autoscaleValueMax = 0;
     }
 
     public CopyOnWriteArrayList<Channel> getChannelList() {
@@ -214,21 +225,26 @@ public class Axis implements Observer {
             if (scaleSymetrical) {
                 if (Math.abs(Math.ceil(value)) > Math.abs(symetricalValue)) {          
                     symetricalValue = Math.abs(Math.ceil(value));
-                    valueMax = (long) + symetricalValue;
-                    valueMin = (long) - symetricalValue;
+                    autoscaleValueMin = - symetricalValue;
+                    autoscaleValueMax = + symetricalValue;
                     refresh = true;
                 }
             } else {
-                if (Math.floor(value) < valueMin) {
-                    valueMin = (long) value;
+                if (Math.floor(value) < autoscaleValueMin) {
+                    autoscaleValueMin = value;
                     refresh = true;
                 }
 
-                if (Math.ceil(value) > valueMax) {
-                    valueMax = (long) value;
+                if (Math.ceil(value) > autoscaleValueMax) {
+                    autoscaleValueMax = value;
                     refresh = true;
                 }  
             }
+            
+            double range = Math.abs(autoscaleValueMin) + Math.abs(autoscaleValueMax);
+            
+            valueMin = autoscaleValueMin - range * AUTOSCALE_OFFSET;
+            valueMax = autoscaleValueMax + range * AUTOSCALE_OFFSET;
         }
     }
 }

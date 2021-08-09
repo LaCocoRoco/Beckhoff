@@ -175,47 +175,54 @@ public class LoaderPanel extends JPanel {
                     NodeList symbolNameList = acquisitionElement.getElementsByTagName("SymbolName");
                     NodeList amsNetIdStringList = acquisitionElement.getElementsByTagName("AmsNetIdString");
                     NodeList isSymbolBasedList = acquisitionElement.getElementsByTagName("IsSymbolBased");
+                    NodeList disabledList = acquisitionElement.getElementsByTagName("Disabled");
                     
-                    // channel data type
+                    // acquisition data type
                     if (dataTypeList.getLength() > 0) {
                         String dataType = dataTypeList.item(0).getTextContent();
                         acquisition.setDataType(DataType.valueOf(dataType));
                     }
 
-                    // channel index group
+                    // acquisition index group
                     if (indexGroupList.getLength() > 0) {
                         String indexGroup = indexGroupList.item(0).getTextContent();
                         acquisition.setIndexGroup(Integer.valueOf(indexGroup));
                     }
 
-                    // channel index offset
+                    // acquisition index offset
                     if (indexOffsetList.getLength() > 0) {
                         String indexOffset = indexOffsetList.item(0).getTextContent();
                         acquisition.setIndexOffset(Integer.valueOf(indexOffset));
                     }
 
-                    // channel target port
+                    // acquisition target port
                     if (targetPortList.getLength() > 0) {
                         String amsPort = targetPortList.item(0).getTextContent();
                         acquisition.setAmsPort(AmsPort.getByValue(Integer.valueOf(amsPort)));
                     }
 
-                    // channel symbol name
+                    // acquisition symbol name
                     if (symbolNameList.getLength() > 0) {
                         String symbolName = symbolNameList.item(0).getTextContent();
                         acquisition.setSymbolName(symbolName);
                     }
 
-                    // channel ams net id
+                    // acquisition ams net id
                     if (amsNetIdStringList.getLength() > 0) {
                         String amsNetId = amsNetIdStringList.item(0).getTextContent();
                         acquisition.setAmsNetId(amsNetId);
                     }
                     
-                    // channel symbol based
+                    // acquisition symbol based
                     if (isSymbolBasedList.getLength() > 0) {
                         String symbolBased = isSymbolBasedList.item(0).getTextContent();
                         acquisition.setSymbolBased(Boolean.valueOf(symbolBased));
+                    }
+                    
+                    // channel enabled
+                    if (disabledList.getLength() > 0) {
+                        String enabled = disabledList.item(0).getTextContent();
+                        channel.setEnabled(!Boolean.valueOf(enabled));
                     }
                 }  
                 

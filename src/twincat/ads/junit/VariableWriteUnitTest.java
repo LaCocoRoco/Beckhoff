@@ -17,8 +17,8 @@ public class VariableWriteUnitTest {
     private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getLogger();
     
-    private final String symbolName = ".JUNIT_TIME";
-    private final String value = "t#10ms";
+    private final String symbolName = ".junit_int16";
+    private final int value = 1000;
     
     @Before
     public void start() throws AdsException {

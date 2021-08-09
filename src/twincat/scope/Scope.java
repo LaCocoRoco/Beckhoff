@@ -12,6 +12,8 @@ public final class Scope {
     /*** global constant variable ****/
     /*********************************/
 
+    public static final String TIME_FORMAT_DEFAULTS = "00:10:00.000";
+    
     public static final String TIME_FORMAT_MAX_TIME = "99:59:59.999";
     
     public static final String TIME_FORMAT_MIN_TIME = "00:00:00.000";
@@ -38,7 +40,7 @@ public final class Scope {
 
     private String scopeName = "Scope";
 
-    private long recordTime = 0;
+    private long recordTime = Scope.timeFormaterToLong(TIME_FORMAT_DEFAULTS);
     
     private boolean autoRecord = true;
 
@@ -66,8 +68,18 @@ public final class Scope {
         return recordTime;
     }
 
+    public void setRecordTime(String recordTime) {
+        setRecordTime(Scope.timeFormaterToLong(recordTime));
+    }
+
     public void setRecordTime(long recordTime) {
         this.recordTime = recordTime;
+        
+        Iterator<Chart> chartIterator = chartList.iterator();
+        while (chartIterator.hasNext()) {
+            Chart chart = chartIterator.next();
+            chart.setRecordTime(recordTime);
+        }
     }
     
     public boolean isAutoRecord() {
@@ -76,6 +88,12 @@ public final class Scope {
 
     public void setAutoRecord(boolean autoRecord) {
         this.autoRecord = autoRecord;
+        
+        Iterator<Chart> chartIterator = chartList.iterator();
+        while (chartIterator.hasNext()) {
+            Chart chart = chartIterator.next();
+            chart.setAutoRecord(autoRecord);
+        }
     }
 
     public CopyOnWriteArrayList<Chart> getChartList() {
@@ -85,7 +103,7 @@ public final class Scope {
     public CopyOnWriteArrayList<TriggerGroup> getTriggerGroupList() {
         return triggerGroupList;
     }
-
+    
     /*********************************/
     /******** override method ********/
     /*********************************/
@@ -103,8 +121,6 @@ public final class Scope {
         Iterator<Chart> chartIterator = chartList.iterator();
         while (chartIterator.hasNext()) {
             Chart chart = chartIterator.next();
-            chart.setAutoRecord(autoRecord);
-            chart.setRecordTime(recordTime);
             chart.start();
         }
     }
@@ -125,12 +141,10 @@ public final class Scope {
         }
     }
 
-    public void setRecordTime(String recordTime) {
-        setRecordTime(Scope.timeFormaterToLong(recordTime));
-    }
-
     public void addChart(Chart chart) {
         chartList.add(chart);
+        chart.setAutoRecord(autoRecord);
+        chart.setRecordTime(recordTime);
         chart.getTriggerGroupList().clear();
         chart.getTriggerGroupList().addAll(triggerGroupList); 
     }

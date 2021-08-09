@@ -122,34 +122,40 @@ public class AcquisitionProperties extends JPanel {
         }
     };
 
-    private PropertyChangeListener sampleTimePropertyChanged = new PropertyChangeListener() {
+    private PropertyChangeListener sampleTimePropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
-            acquisition.setSampleTime((int) numberTextField.getValue());
+            if (propertyChangeEvent.getPropertyName().equals("number")) {
+                NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
+                acquisition.setSampleTime((int) numberTextField.getValue());     
+            }
         }
     };
 
-    private PropertyChangeListener symbolNamePropertyChanged = new PropertyChangeListener() {
+    private PropertyChangeListener symbolNamePropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
             acquisition.setSymbolName(symbolName.getText());
         }
     };
 
-    private PropertyChangeListener indexGroupPropertyChanged = new PropertyChangeListener() {
+    private PropertyChangeListener indexGroupPropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            AddressTextField numberTextField = (AddressTextField) propertyChangeEvent.getSource();
-            acquisition.setIndexGroup((int) numberTextField.getValue());
+            if (propertyChangeEvent.getPropertyName().equals("number")) {
+                AddressTextField numberTextField = (AddressTextField) propertyChangeEvent.getSource();
+                acquisition.setIndexGroup((int) numberTextField.getValue());        
+            }
         }
     };
     
-    private PropertyChangeListener indexOffsetPropertyChanged = new PropertyChangeListener() {
+    private PropertyChangeListener indexOffsetPropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            AddressTextField numberTextField = (AddressTextField) propertyChangeEvent.getSource();
-            acquisition.setIndexGroup((int) numberTextField.getValue());
+            if (propertyChangeEvent.getPropertyName().equals("number")) {
+                AddressTextField numberTextField = (AddressTextField) propertyChangeEvent.getSource();
+                acquisition.setIndexGroup((int) numberTextField.getValue());               
+            }
         }
     };
 
@@ -199,7 +205,7 @@ public class AcquisitionProperties extends JPanel {
     public AcquisitionProperties(XReference xref) {
         this.xref = xref;
 
-        // build target combo box
+        // build combo box
         buildComboBox();
 
         // target properties
@@ -236,7 +242,7 @@ public class AcquisitionProperties extends JPanel {
         sampleTime.setValue(acquisition.getSampleTime());
         sampleTime.setMinValue(0);
         sampleTime.setMaxValue(100);
-        sampleTime.addPropertyChangeListener("number", sampleTimePropertyChanged);
+        sampleTime.addPropertyChangeListener(sampleTimePropertyChangeListener);
         sampleTime.setBounds(110, 25, 60, 20);
 
         JLabel sampleTimeRange = new JLabel("[ms]");
@@ -259,7 +265,7 @@ public class AcquisitionProperties extends JPanel {
         symbolNameText.setBounds(15, 25, 110, 21);
         
         symbolName.setText(acquisition.getSymbolName());
-        symbolName.addPropertyChangeListener(symbolNamePropertyChanged);
+        symbolName.addPropertyChangeListener(symbolNamePropertyChangeListener);
         symbolName.setBounds(110, 25, 180, 23);
 
         JLabel indexGroupText = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_INDEX_GROUP));
@@ -270,7 +276,7 @@ public class AcquisitionProperties extends JPanel {
         indexGroup.setHorizontalAlignment(JTextField.LEFT);
         indexGroup.setMinValue(0);
         indexGroup.setMaxValue(100);
-        indexGroup.addPropertyChangeListener("number", indexGroupPropertyChanged);
+        indexGroup.addPropertyChangeListener(indexGroupPropertyChangeListener);
         indexGroup.setBounds(110, 55, 60, 20);
 
         JLabel indexOffsetText = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_INDEX_OFFSET));
@@ -281,7 +287,7 @@ public class AcquisitionProperties extends JPanel {
         indexOffset.setHorizontalAlignment(JTextField.LEFT);
         indexOffset.setMinValue(0);
         indexOffset.setMaxValue(100);
-        indexOffset.addPropertyChangeListener("number", indexOffsetPropertyChanged);
+        indexOffset.addPropertyChangeListener(indexOffsetPropertyChangeListener);
         indexOffset.setBounds(110, 85, 60, 20);
 
         JLabel dataTypeLabel = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_DATA_TYPE));
@@ -457,6 +463,8 @@ public class AcquisitionProperties extends JPanel {
         // reload symbol information properties
         symbolName.setText(acquisition.getSymbolName());
         symbolName.setCaretPosition(0);
+        
+        
         indexGroup.setValue(acquisition.getIndexGroup());
         indexOffset.setValue(acquisition.getIndexOffset());
         symbolBased.setSelected(acquisition.isSymbolBased());

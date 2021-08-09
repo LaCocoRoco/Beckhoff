@@ -70,59 +70,73 @@ public class ChartProperties extends JPanel {
     /****** predefined variable ******/
     /*********************************/
 
-    private final PropertyChangeListener borderColorChanged = new PropertyChangeListener() {
+    private final PropertyChangeListener borderColorPropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            Component component = (Component) propertyChangeEvent.getSource();
-            chart.setBorderColor(component.getBackground());
+            if (propertyChangeEvent.getPropertyName().equals("background")) {
+                Component component = (Component) propertyChangeEvent.getSource();
+                chart.setBorderColor(component.getBackground());         
+            }
         }
     };
 
-    private final PropertyChangeListener chartColorChanged = new PropertyChangeListener() {
+    private final PropertyChangeListener chartColorPropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            Component component = (Component) propertyChangeEvent.getSource();
-            chart.setChartColor(component.getBackground());
+            if (propertyChangeEvent.getPropertyName().equals("background")) {
+                Component component = (Component) propertyChangeEvent.getSource();
+                chart.setChartColor(component.getBackground());              
+            }
         }
     };
 
-    private PropertyChangeListener chartNamePropertyChanged = new PropertyChangeListener() {
+    private PropertyChangeListener chartNamePropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            chart.setChartName(chartName.getText());
-            xref.scopeBrowser.reloadSelectedTreeNode();
+            if (propertyChangeEvent.getPropertyName().equals("text")) {
+                chart.setChartName(chartName.getText());
+                xref.scopeBrowser.reloadSelectedTreeNode();             
+            }
         }
     };
 
-    private PropertyChangeListener displayTimePropertyChanged = new PropertyChangeListener() {
+    private PropertyChangeListener displayTimePropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            TimeTextField timeTextField = (TimeTextField) propertyChangeEvent.getSource();
-            chart.setDisplayTime(timeTextField.getText());
+            if (propertyChangeEvent.getPropertyName().equals("time")) {
+                TimeTextField timeTextField = (TimeTextField) propertyChangeEvent.getSource();
+                chart.setDisplayTime(timeTextField.getText());               
+            }
         }
     };
 
-    private PropertyChangeListener lineWidthPropertyChanged = new PropertyChangeListener() {
+    private PropertyChangeListener lineWidthPropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
-            chart.setLineWidth((int) numberTextField.getValue());
+            if (propertyChangeEvent.getPropertyName().equals("number")) {
+                NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
+                chart.setLineWidth((int) numberTextField.getValue());               
+            }
         }
     };
 
-    private PropertyChangeListener timeTickCountPropertyChanged = new PropertyChangeListener() {
+    private PropertyChangeListener timeTickCountPropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
-            chart.setTimeTickCount((int) numberTextField.getValue());
+            if (propertyChangeEvent.getPropertyName().equals("number")) {
+                NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
+                chart.setTimeTickCount((int) numberTextField.getValue());                
+            }
         }
     };
 
-    private PropertyChangeListener axisTickCountPropertyChanged = new PropertyChangeListener() {
+    private PropertyChangeListener axisTickCountPropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
-            chart.setAxisTickCount((int) numberTextField.getValue());
+            if (propertyChangeEvent.getPropertyName().equals("number")) {
+                NumberTextField numberTextField = (NumberTextField) propertyChangeEvent.getSource();
+                chart.setAxisTickCount((int) numberTextField.getValue());           
+            }
         }
     };
 
@@ -142,9 +156,9 @@ public class ChartProperties extends JPanel {
     public ChartProperties(XReference xref) {
         this.xref = xref;
 
-        // common properties
+        // name properties
         chartName.setText(chart.getChartName());
-        chartName.addPropertyChangeListener("text", chartNamePropertyChanged);
+        chartName.addPropertyChangeListener(chartNamePropertyChangeListener);
         chartName.setBounds(15, 25, 210, 23);
 
         TitledPanel namePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_NAME));
@@ -157,7 +171,7 @@ public class ChartProperties extends JPanel {
         
         // display time properties
         displayTime.setText(Scope.TIME_FORMAT_MIN_TIME);
-        displayTime.addPropertyChangeListener("time", displayTimePropertyChanged);
+        displayTime.addPropertyChangeListener(displayTimePropertyChangeListener);
         displayTime.setBounds(15, 25, 100, 23);
 
         JLabel displayTimeText = new JLabel("[" + Scope.TIME_FORMAT_TEMPLATE + "]");
@@ -178,7 +192,7 @@ public class ChartProperties extends JPanel {
         borderColor.setBackground(chart.getBorderColor());
         borderColor.setBounds(15, 25, 40, 40);
         borderColor.addMouseListener(xref.colorProperties.getColorPropertieMouseAdapter());
-        borderColor.addPropertyChangeListener("background", borderColorChanged);
+        borderColor.addPropertyChangeListener(borderColorPropertyChangeListener);
 
         JLabel borderColorText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_COLOR_BORDER));
         borderColorText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
@@ -188,7 +202,7 @@ public class ChartProperties extends JPanel {
         chartColor.setBackground(chart.getChartColor());
         chartColor.setBounds(15, 75, 40, 40);
         chartColor.addMouseListener(xref.colorProperties.getColorPropertieMouseAdapter());
-        chartColor.addPropertyChangeListener("background", chartColorChanged);
+        chartColor.addPropertyChangeListener(chartColorPropertyChangeListener);
 
         JLabel chartColorText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_COLOR_CHART));
         chartColorText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
@@ -209,7 +223,7 @@ public class ChartProperties extends JPanel {
         lineWidth.setValue(chart.getLineWidth());
         lineWidth.setMinValue(0);
         lineWidth.setMaxValue(100);
-        lineWidth.addPropertyChangeListener("number", lineWidthPropertyChanged);
+        lineWidth.addPropertyChangeListener(lineWidthPropertyChangeListener);
         lineWidth.setBounds(15, 25, 40, 20);
 
         JLabel lineWidthText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_LINE_WIDTH));
@@ -219,7 +233,7 @@ public class ChartProperties extends JPanel {
         timeTickCount.setValue(chart.getTimeTickCount());
         timeTickCount.setMinValue(0);
         timeTickCount.setMaxValue(100);
-        timeTickCount.addPropertyChangeListener("number", timeTickCountPropertyChanged);
+        timeTickCount.addPropertyChangeListener(timeTickCountPropertyChangeListener);
         timeTickCount.setBounds(15, 55, 40, 20);
 
         JLabel timeTickCountText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_TIME_TICK_COUNT));
@@ -229,7 +243,7 @@ public class ChartProperties extends JPanel {
         axisTickCount.setValue(chart.getAxisTickCount());
         axisTickCount.setMinValue(0);
         axisTickCount.setMaxValue(100);
-        axisTickCount.addPropertyChangeListener("number", axisTickCountPropertyChanged);
+        axisTickCount.addPropertyChangeListener(axisTickCountPropertyChangeListener);
         axisTickCount.setBounds(15, 85, 40, 20);
 
         JLabel axisTickCountText = new JLabel(languageBundle.getString(Resources.TEXT_CHART_PROPERTIES_AXIS_TICK_COUNT));
@@ -301,15 +315,22 @@ public class ChartProperties extends JPanel {
 
     private void reload() {
         // reload common properties
+        chartName.removePropertyChangeListener(chartNamePropertyChangeListener);
         chartName.setText(chart.getChartName());
         chartName.setCaretPosition(0);
+        chartName.addPropertyChangeListener(chartNamePropertyChangeListener);
 
         // reload display time properties
         displayTime.setText(chart.getDisplayTime());
 
         // reload color properties
+        borderColor.removePropertyChangeListener(borderColorPropertyChangeListener);
         borderColor.setBackground(chart.getBorderColor());
+        borderColor.addPropertyChangeListener(borderColorPropertyChangeListener);
+        
+        chartColor.removePropertyChangeListener(chartColorPropertyChangeListener);
         chartColor.setBackground(chart.getChartColor());
+        chartColor.addPropertyChangeListener(chartColorPropertyChangeListener);
 
         // reload style properties
         lineWidth.setValue(chart.getLineWidth());

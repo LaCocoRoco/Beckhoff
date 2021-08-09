@@ -96,7 +96,7 @@ public class ScopeBrowser extends JPanel {
         }
     };
 
-    private final ActionListener searchButtonActionListener = new ActionListener() {
+    private final ActionListener acquisitionButtonActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             searchSymbolAcquisition();
@@ -144,7 +144,8 @@ public class ScopeBrowser extends JPanel {
         browseTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         browseTree.addMouseListener(browseTreeMouseAdapter);
         browseTree.setUI(browseTreeUI);
-
+        browseTree.setBackground(ScopeTreeRenderer.DEFAULT_BACKGROUND_COLOR);
+        
         JScrollPane treePanel = new JScrollPane();
         treePanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
         treePanel.setBorder(BorderFactory.createEmptyBorder());
@@ -180,11 +181,11 @@ public class ScopeBrowser extends JPanel {
         addTriggerChannelButton.setFocusable(false);
         addTriggerChannelButton.addActionListener(addTriggerChannelActionListener);
 
-        JButton searchButton = new JButton();
-        searchButton.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_SEARCH));
-        searchButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_APP_SEARCH)));
-        searchButton.setFocusable(false);
-        searchButton.addActionListener(searchButtonActionListener);
+        JButton acquisitionButton = new JButton();
+        acquisitionButton.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_ACQUISITION));
+        acquisitionButton.setIcon(new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_APP_ACQUISITION)));
+        acquisitionButton.setFocusable(false);
+        acquisitionButton.addActionListener(acquisitionButtonActionListener);
 
         JButton buttonDelete = new JButton();
         buttonDelete.setToolTipText(languageBundle.getString(Resources.TEXT_SCOPE_TREE_DELETE));
@@ -206,7 +207,7 @@ public class ScopeBrowser extends JPanel {
         browserToolBar.addSeparator(new Dimension(5, 0));
         browserToolBar.add(addTriggerChannelButton);
         browserToolBar.addSeparator(new Dimension(30, 0));
-        browserToolBar.add(searchButton);
+        browserToolBar.add(acquisitionButton);
         browserToolBar.addSeparator(new Dimension(30, 0));
         browserToolBar.add(buttonDelete);
 
@@ -249,21 +250,24 @@ public class ScopeBrowser extends JPanel {
             // add chart
             ScopeTreeNode chartTreeNode = new ScopeTreeNode();
             chartTreeNode.setUserObject(chart);
-            rootTreeNode.add(chartTreeNode);
+            scopeTreeNode.add(chartTreeNode);
 
+            // load last chart
+            loadProperties(chartTreeNode);
+            
             List<Axis> axisList = chart.getAxisList();
             for (Axis axis : axisList) {
                 // add axis
                 ScopeTreeNode axisTreeNode = new ScopeTreeNode();
                 axisTreeNode.setUserObject(axis);
-                rootTreeNode.add(axisTreeNode);
+                chartTreeNode.add(axisTreeNode);
 
                 List<Channel> channelList = axis.getChannelList();
                 for (Channel channel : channelList) {
                     // add channel
                     ScopeTreeNode channelTreeNode = new ScopeTreeNode();
                     channelTreeNode.setUserObject(channel);
-                    rootTreeNode.add(channelTreeNode);
+                    axisTreeNode.add(channelTreeNode);
                 }
             }
 
@@ -274,20 +278,27 @@ public class ScopeBrowser extends JPanel {
                     // add trigger group
                     ScopeTreeNode triggerGroupTreeNode = new ScopeTreeNode();
                     triggerGroupTreeNode.setUserObject(triggerGroup);
-                    scopeTreeNode.add(triggerGroupTreeNode);
+                    chartTreeNode.insert(triggerGroupTreeNode, 0);
                     
                     List<TriggerChannel> triggerChannelList = triggerGroup.getTriggerChannelList();
                     for (TriggerChannel triggerChannel : triggerChannelList) {
                         // add trigger channel
                         ScopeTreeNode triggerChannelTreeNode = new ScopeTreeNode();
                         triggerChannelTreeNode.setUserObject(triggerChannel);
-                        scopeTreeNode.add(triggerChannelTreeNode);
+                        triggerGroupTreeNode.add(triggerChannelTreeNode);
                     }
                 }
-            }
-            
+            }      
         }
-
+        
+        // reload tree model
+        treeModel.reload();
+        
+        // expand all
+        for (int i = 0; i < browseTree.getRowCount(); i++) {
+            browseTree.expandRow(i);
+        }
+        
         // update tree node
         updateTreeNode(scopeTreeNode);
 
@@ -545,6 +556,9 @@ public class ScopeBrowser extends JPanel {
         // update tree node
         updateTreeNode(parentTreeNode);
 
+        // reset chart
+        xref.chartPanel.resetChart();
+        
         // display empty properties panel if root is empty
         if (parentTreeNode.getChildCount() == 0) {
             xref.propertiesPanel.setCard(Propertie.EMPTY);
@@ -564,10 +578,8 @@ public class ScopeBrowser extends JPanel {
         // update tree node
         updateTreeNode(parentTreeNode);
         
-        // hide graph if scope is empty
-        if (parentTreeNode.getChildCount() == 0) {
-            xref.chartPanel.hideGraph();
-        }
+        // reset chart
+        xref.chartPanel.resetChart();
     }
  
     private void removeAxisTreeNode(ScopeTreeNode treeNode) {
@@ -839,7 +851,7 @@ public class ScopeBrowser extends JPanel {
         
         // add channel
         Axis axis = (Axis) axisTreeNode.getUserObject();
-        //axis.addChannel(channel);
+        axis.addChannel(channel);
         
         // update tree node
         updateTreeNode(channelTreeNode);
