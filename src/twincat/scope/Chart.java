@@ -78,7 +78,7 @@ public class Chart extends Observable {
 
     private int lineWidth = 1;
 
-    private int timeTickCount = 16;
+    private int timeTickCount = 11;
 
     private int axisTickCount = 11;
 

@@ -44,7 +44,7 @@ public class ScopeFrame extends JPanel {
 
     private final JMenuBar scopeMenu = new JMenuBar();
 
-    private final JMenuItem menuItemFileNew = new JMenuItem();
+    private final JMenuItem menuItemNewFile = new JMenuItem();
 
     private final JMenuItem menuItemFileOpen = new JMenuItem();
 
@@ -72,66 +72,80 @@ public class ScopeFrame extends JPanel {
         }
     };
 
+    private final ActionListener windowScopeActionListener = new ActionListener() {
+        public void actionPerformed(ActionEvent actionEvent) {
+            xref.windowPanel.setCard(Window.SCOPE);
+            xref.navigationPanel.setCard(Navigation.CHART);
+        }
+    };
+    
+    private final ActionListener windowAdsActionListener = new ActionListener() {
+        public void actionPerformed(ActionEvent actionEvent) {
+            xref.windowPanel.setCard(Window.ADS);
+        }
+    };    
+    
+    private final ActionListener windowAxisActionListener = new ActionListener() {
+        public void actionPerformed(ActionEvent actionEvent) {
+            xref.windowPanel.setCard(Window.AXIS);
+        }
+    };     
+    
+    private final ActionListener settingsActionListener = new ActionListener() {
+        public void actionPerformed(ActionEvent actionEvent) {
+            xref.windowPanel.setCard(Window.SETTINGS);
+        }
+    };      
+    
+    private final ActionListener consoleActionListener = new ActionListener() {
+        public void actionPerformed(ActionEvent actionEvent) {
+            xref.contentPanel.consoleToggle();
+        }
+    };     
+    
+    private final ActionListener newFileActionListener = new ActionListener() {
+        public void actionPerformed(ActionEvent actionEvent) {
+            xref.scopeBrowser.removeScope();
+            xref.propertiesPanel.setCard(Propertie.EMPTY);
+            xref.browserPanel.setCard(Browser.SCOPE);
+        }
+    }; 
+    
+    private final ActionListener openFileActionListener = new ActionListener() {
+        public void actionPerformed(ActionEvent actionEvent) {
+            xref.navigationPanel.setCard(Navigation.LOADER);
+            xref.windowPanel.setCard(Window.SCOPE);
+        }
+    }; 
+      
     /*********************************/
     /********** constructor **********/
     /*********************************/
 
     public ScopeFrame() {
         menuItemWindowScope.setText(languageBundle.getString(Resources.TEXT_WINDOW_SCOPE));
-        menuItemWindowScope.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                xref.windowPanel.setCard(Window.SCOPE);
-                xref.navigationPanel.setCard(Navigation.CHART);
-            }
-        });
-
+        menuItemWindowScope.addActionListener(windowScopeActionListener);
+        
         menuItemWindowAds.setText(languageBundle.getString(Resources.TEXT_WINDOW_ADS));
-        menuItemWindowAds.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                xref.windowPanel.setCard(Window.ADS);
-            }
-        });
+        menuItemWindowAds.addActionListener(windowAdsActionListener);
 
         menuItemWindowAxis.setText(languageBundle.getString(Resources.TEXT_WINDOW_AXIS));
-        menuItemWindowAxis.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                xref.windowPanel.setCard(Window.AXIS);
-            }
-        });
+        menuItemWindowAxis.addActionListener(windowAxisActionListener);
 
         menuItemSettings.setText(languageBundle.getString(Resources.TEXT_EXTRAS_SETTINGS));
-        menuItemSettings.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                xref.windowPanel.setCard(Window.SETTINGS);
-            }
-        });
+        menuItemSettings.addActionListener(settingsActionListener);
 
         menuItemConsole.setText(languageBundle.getString(Resources.TEXT_EXTRAS_CONSOLE));
-        menuItemConsole.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                xref.contentPanel.consoleToggle();
-            }
-        });
+        menuItemConsole.addActionListener(consoleActionListener);
 
-        menuItemFileNew.setText(languageBundle.getString(Resources.TEXT_FILE_NEW));
-        menuItemFileNew.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                xref.scopeBrowser.removeScope();
-                xref.propertiesPanel.setCard(Propertie.EMPTY);
-                xref.browserPanel.setCard(Browser.SCOPE);
-            }
-        });
+        menuItemNewFile.setText(languageBundle.getString(Resources.TEXT_FILE_NEW));
+        menuItemNewFile.addActionListener(newFileActionListener);
 
         menuItemFileOpen.setText(languageBundle.getString(Resources.TEXT_FILE_OPEN));
-        menuItemFileOpen.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                xref.navigationPanel.setCard(Navigation.LOADER);
-                xref.windowPanel.setCard(Window.SCOPE);
-            }
-        });
+        menuItemFileOpen.addActionListener(openFileActionListener);
 
         JMenu menuFile = new JMenu(languageBundle.getString(Resources.TEXT_FILE));
-        menuFile.add(menuItemFileNew);
+        menuFile.add(menuItemNewFile);
         menuFile.add(menuItemFileOpen);
 
         JMenu menuWindow = new JMenu(languageBundle.getString(Resources.TEXT_WINDOW));
@@ -190,13 +204,13 @@ public class ScopeFrame extends JPanel {
     }
 
     public void minifyMenuItems() {
-        menuItemFileNew.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        menuItemFileNew.setHorizontalAlignment(JMenuItem.LEFT);
-        menuItemFileNew.setHorizontalTextPosition(JMenuItem.LEFT);
-        menuItemFileNew.setIcon(null);
-        menuItemFileNew.setIconTextGap(0);
-        menuItemFileNew.setMargin(new Insets(0, 0, 0, 0));
-        menuItemFileNew.setPressedIcon(null);
+        menuItemNewFile.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        menuItemNewFile.setHorizontalAlignment(JMenuItem.LEFT);
+        menuItemNewFile.setHorizontalTextPosition(JMenuItem.LEFT);
+        menuItemNewFile.setIcon(null);
+        menuItemNewFile.setIconTextGap(0);
+        menuItemNewFile.setMargin(new Insets(0, 0, 0, 0));
+        menuItemNewFile.setPressedIcon(null);
 
         menuItemFileOpen.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         menuItemFileOpen.setHorizontalAlignment(JMenuItem.LEFT);

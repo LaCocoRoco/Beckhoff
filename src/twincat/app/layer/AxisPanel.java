@@ -2,16 +2,21 @@ package twincat.app.layer;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingWorker;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 
+import twincat.Resources;
 import twincat.TwincatLogger;
 import twincat.Utilities;
 import twincat.ads.common.RouteSymbolData;
@@ -107,8 +112,7 @@ public class AxisPanel extends JScrollPane {
                     axisAcquisitionList.add(axisAcquisition);
                     axisNameList.add(axisName);
 
-                    // build axis button
-                    JButton axisButton = new JButton();
+                    // build axis text
                     StringBuilder stringBuilder = new StringBuilder(axisName);
 
                     if (stringBuilder.length() > MAX_TEXT_LENGTH) {
@@ -118,7 +122,15 @@ public class AxisPanel extends JScrollPane {
                     stringBuilder.insert(0, HTML_PREPEND);
                     stringBuilder.append(HTML_APPEND);
 
+                    Border lineBorder = BorderFactory.createLineBorder(DefaultColorTable.BLACK.color);
+                    Border innerBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+                    CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(lineBorder, innerBorder);
+                    
+                    // build axis button
+                    JButton axisButton = new JButton();
                     axisButton.setText(stringBuilder.toString());
+                    axisButton.setBorder(compoundBorder);
+                    axisButton.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
                     axisButton.setFocusPainted(false);
                     axisButton.setContentAreaFilled(false);
                     axisButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
