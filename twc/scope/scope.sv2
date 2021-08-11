@@ -4,7 +4,7 @@
   <Title>scope</Title>
   <LayoutString>&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;Layout&gt;
-  &lt;Window Guid="4e27dc3d-2515-4113-bf8a-840ffb5d7b84" LastFocused="132716905221229220" DockedSize="200" PopupSize="0" FloatingLocation="-1, -1" FloatingSize="550, 400" LastOpenDockSituation="Document" LastFixedDockSituation="Document" LastFixedDockLocation="Right" LastFloatingWindowGuid="00000000-0000-0000-0000-000000000000" LastDockContainerCount="0" LastDockContainerIndex="0" DockedWorkingSize="250, 400" DockedWindowGroupGuid="00000000-0000-0000-0000-000000000000" DockedIndexInWindowGroup="0" DockedSplitPath="0" DocumentWorkingSize="250, 400" DocumentWindowGroupGuid="b207d07c-5882-4333-b459-8293e323e28b" DocumentIndexInWindowGroup="0" DocumentSplitPath="0" FloatingWorkingSize="250, 400" FloatingWindowGroupGuid="00000000-0000-0000-0000-000000000000" FloatingIndexInWindowGroup="0" FloatingSplitPath="0" /&gt;
+  &lt;Window Guid="4e27dc3d-2515-4113-bf8a-840ffb5d7b84" LastFocused="132730548199390315" DockedSize="200" PopupSize="0" FloatingLocation="-1, -1" FloatingSize="550, 400" LastOpenDockSituation="Document" LastFixedDockSituation="Document" LastFixedDockLocation="Right" LastFloatingWindowGuid="00000000-0000-0000-0000-000000000000" LastDockContainerCount="0" LastDockContainerIndex="0" DockedWorkingSize="250, 400" DockedWindowGroupGuid="00000000-0000-0000-0000-000000000000" DockedIndexInWindowGroup="0" DockedSplitPath="0" DocumentWorkingSize="250, 400" DocumentWindowGroupGuid="b207d07c-5882-4333-b459-8293e323e28b" DocumentIndexInWindowGroup="0" DocumentSplitPath="0" FloatingWorkingSize="250, 400" FloatingWindowGroupGuid="00000000-0000-0000-0000-000000000000" FloatingIndexInWindowGroup="0" FloatingSplitPath="0" /&gt;
   &lt;DocumentContainer Dock="5"&gt;
     &lt;SplitLayoutSystem WorkingSize="250, 400" SplitMode="0"&gt;
       &lt;ControlLayoutSystem WorkingSize="250, 400" Guid="b207d07c-5882-4333-b459-8293e323e28b" Collapsed="0" SelectedControl="4e27dc3d-2515-4113-bf8a-840ffb5d7b84"&gt;
@@ -37,7 +37,7 @@
         <Legend>false</Legend>
         <VisibleToolstrip>true</VisibleToolstrip>
         <VisibleTimestrip>true</VisibleTimestrip>
-        <BaseTime>5000000</BaseTime>
+        <BaseTime>4000000</BaseTime>
         <Comment />
         <ScaleOnZoom>true</ScaleOnZoom>
         <AutoStartOnRecord>true</AutoStartOnRecord>
@@ -76,7 +76,7 @@
             <LineWidth>1</LineWidth>
             <AutoScale>false</AutoScale>
             <AxisMin>-30</AxisMin>
-            <AxisMax>12001</AxisMax>
+            <AxisMax>120</AxisMax>
             <ScaleFactor>0</ScaleFactor>
             <ShowCursorValue>true</ShowCursorValue>
             <GridColorValue>-13676721</GridColorValue>
@@ -104,7 +104,7 @@
                 <UseLocalServer>false</UseLocalServer>
                 <AmsNetIdString>192.168.74.128.1.1</AmsNetIdString>
                 <SampleTime>10000</SampleTime>
-                <Disabled>true</Disabled>
+                <Disabled>false</Disabled>
                 <Oversample>0</Oversample>
                 <UseTaskSampletime>true</UseTaskSampletime>
                 <ForceOversampling>false</ForceOversampling>
@@ -115,7 +115,7 @@
               <Style>
                 <ColorValue>-65536</ColorValue>
                 <SolidLine>false</SolidLine>
-                <Marks>true</Marks>
+                <Marks>false</Marks>
                 <LineWidth>1</LineWidth>
                 <Antialias>true</Antialias>
                 <Offset>0</Offset>
@@ -123,7 +123,7 @@
                 <ShowCursorValue>true</ShowCursorValue>
                 <Visible>true</Visible>
                 <MarkColorValue>-65536</MarkColorValue>
-                <MarkSize>4</MarkSize>
+                <MarkSize>3</MarkSize>
                 <TimeShift>0</TimeShift>
                 <ScaleFactor>1</ScaleFactor>
                 <Comment />
@@ -170,7 +170,7 @@
                 <TimeShift>0</TimeShift>
                 <ScaleFactor>1</ScaleFactor>
                 <Comment />
-                <AutoMarks>true</AutoMarks>
+                <AutoMarks>false</AutoMarks>
               </Style>
               <SortPriority>1</SortPriority>
             </ScopeChannelSerializable>
@@ -238,7 +238,7 @@
                 <TimeShift>0</TimeShift>
                 <ScaleFactor>1</ScaleFactor>
                 <Comment />
-                <AutoMarks>true</AutoMarks>
+                <AutoMarks>false</AutoMarks>
               </Style>
               <SortPriority>0</SortPriority>
             </ScopeChannelSerializable>
@@ -281,7 +281,7 @@
                 <TimeShift>0</TimeShift>
                 <ScaleFactor>1</ScaleFactor>
                 <Comment />
-                <AutoMarks>true</AutoMarks>
+                <AutoMarks>false</AutoMarks>
               </Style>
               <SortPriority>1</SortPriority>
             </ScopeChannelSerializable>
@@ -349,7 +349,7 @@
                 <TimeShift>0</TimeShift>
                 <ScaleFactor>1</ScaleFactor>
                 <Comment />
-                <AutoMarks>true</AutoMarks>
+                <AutoMarks>false</AutoMarks>
               </Style>
               <SortPriority>0</SortPriority>
             </ScopeChannelSerializable>
@@ -392,7 +392,7 @@
                 <TimeShift>0</TimeShift>
                 <ScaleFactor>1</ScaleFactor>
                 <Comment />
-                <AutoMarks>true</AutoMarks>
+                <AutoMarks>false</AutoMarks>
               </Style>
               <SortPriority>1</SortPriority>
             </ScopeChannelSerializable>
@@ -460,7 +460,7 @@
                 <TimeShift>0</TimeShift>
                 <ScaleFactor>1</ScaleFactor>
                 <Comment />
-                <AutoMarks>true</AutoMarks>
+                <AutoMarks>false</AutoMarks>
               </Style>
               <SortPriority>0</SortPriority>
             </ScopeChannelSerializable>
@@ -491,7 +491,7 @@
               <Style>
                 <ColorValue>-1</ColorValue>
                 <SolidLine>false</SolidLine>
-                <Marks>true</Marks>
+                <Marks>false</Marks>
                 <LineWidth>1</LineWidth>
                 <Antialias>true</Antialias>
                 <Offset>0</Offset>
@@ -520,7 +520,7 @@
         <DeltaValues>false</DeltaValues>
       </CursorModule>
       <Operating>
-        <DisplayWidth>5000000</DisplayWidth>
+        <DisplayWidth>4000000</DisplayWidth>
       </Operating>
       <ChartType>XT</ChartType>
       <SortPriority>0</SortPriority>
@@ -532,11 +532,11 @@
         <TriggerSets>
           <ScopeTriggerSingleSetSerializable>
             <CombineOption>AND</CombineOption>
-            <Name>Trigger 1</Name>
+            <Name>Trigger 3</Name>
             <ReleaseOption>RisingEdge</ReleaseOption>
-            <Threshold>1</Threshold>
+            <Threshold>0</Threshold>
             <Enabled>true</Enabled>
-            <ConnectedChannelHandle>1</ConnectedChannelHandle>
+            <ConnectedChannelHandle>2</ConnectedChannelHandle>
             <SortPriority>-1</SortPriority>
           </ScopeTriggerSingleSetSerializable>
         </TriggerSets>

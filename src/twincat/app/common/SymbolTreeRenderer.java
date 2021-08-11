@@ -10,18 +10,27 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import twincat.Resources;
 import twincat.Utilities;
+import twincat.constant.DefaultColorTable;
 
 public class SymbolTreeRenderer extends DefaultTreeCellRenderer {
     private static final long serialVersionUID = 1L;
+
+    /*********************************/
+    /*** global constant variable ****/
+    /*********************************/
+
+    public static final Color DEFAULT_BACKGROUND_COLOR = DefaultColorTable.WHITE.color;
     
     /*********************************/
     /**** local constant variable ****/
     /*********************************/
 
-    private static final Color BORDER_SELECTION_COLOR = new Color(150, 150, 150);
-    
-    private static final Color BACKGROUND_SELECTION_COLOR = new Color(234, 234, 234);
-    
+    private static final Color TEXT_SELECTION_COLOR = DefaultColorTable.BLACK.color;
+
+    private static final Color BORDER_SELECTION_COLOR = DefaultColorTable.GRAY.color;
+
+    private static final Color BACKGROUND_SELECTION_COLOR = DefaultColorTable.JAVAGRAY.color;
+
     private static final ImageIcon ICON_BIT = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_DATATYPE_BIT));
 
     private static final ImageIcon ICON_INT8 = new ImageIcon(Utilities.getImageFromFilePath(Resources.PATH_ICON_DATATYPE_INT8));
@@ -127,6 +136,11 @@ public class SymbolTreeRenderer extends DefaultTreeCellRenderer {
     }
 
     @Override
+    public void setTextSelectionColor(Color newColor) {
+        super.setTextSelectionColor(TEXT_SELECTION_COLOR);
+    }
+    
+    @Override
     public void setBorderSelectionColor(Color newColor) {
         super.setBorderSelectionColor(BORDER_SELECTION_COLOR);
     }
@@ -134,5 +148,10 @@ public class SymbolTreeRenderer extends DefaultTreeCellRenderer {
     @Override
     public void setBackgroundSelectionColor(Color newColor) {
         super.setBackgroundSelectionColor(BACKGROUND_SELECTION_COLOR);
+    }
+
+    @Override
+    public Color getBackgroundNonSelectionColor() {
+        return DEFAULT_BACKGROUND_COLOR;
     }
 }

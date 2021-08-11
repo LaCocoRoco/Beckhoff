@@ -36,7 +36,7 @@ public class Chart extends Observable {
     /*** global constant variable ****/
     /*********************************/
 
-    public static final int DEFAULT_REFRESH_RATE = 30;  
+    public static final int DEFAULT_REFRESH_RATE = 100;  
     
     /*********************************/
     /**** local constant variable ****/
@@ -366,7 +366,7 @@ public class Chart extends Observable {
     }
 
     public void pause() {
-        pauseTimeStamp = currentTimeStamp;
+        pauseTimeStamp = referenceTimeStamp;
     }
 
     public boolean isPaused() {

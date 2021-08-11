@@ -2,7 +2,6 @@ package twincat.app.layer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -14,14 +13,14 @@ import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import twincat.Resources;
-import twincat.app.components.ScrollablePanel;
+import twincat.app.components.CheckBox;
 import twincat.app.components.TextField;
 import twincat.app.components.TimeTextField;
 import twincat.app.components.TitledPanel;
@@ -53,7 +52,7 @@ public class ScopeProperties extends JPanel {
 
     private final TimeTextField recordTime = new TimeTextField();
 
-    private final JCheckBox autoRecord = new JCheckBox();
+    private final CheckBox autoRecord = new CheckBox();
 
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
@@ -113,54 +112,46 @@ public class ScopeProperties extends JPanel {
         // name properties
         scopeName.setText(scope.getScopeName());
         scopeName.addPropertyChangeListener(scopeNamePropertyChanged);
-        scopeName.setBounds(15, 25, 210, 23);
+        scopeName.setBounds(15, 30, 210, 23);
 
         TitledPanel namePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_NAME));
-        namePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
+        namePanel.setMaximumSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
         namePanel.add(scopeName);
-        
-        JPanel namePanelContainer = new JPanel();
-        namePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
-        namePanelContainer.add(namePanel); 
-        
+
         // record mode properties
         recordTime.setText(Scope.TIME_FORMAT_MIN_TIME);
         recordTime.addPropertyChangeListener(recordTimePropertyChanged);
-        recordTime.setBounds(15, 25, 100, 23);
+        recordTime.setBounds(15, 30, 100, 23);
 
         JLabel recordTimeText = new JLabel("[" + Scope.TIME_FORMAT_TEMPLATE + "]");
         recordTimeText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        recordTimeText.setBounds(125, 24, 120, 23);
+        recordTimeText.setBounds(125, 29, 120, 23);
 
         autoRecord.setSelected(scope.isAutoRecord());
         autoRecord.addItemListener(autoRecordItemListener);
-        autoRecord.setFocusPainted(false);
-        autoRecord.setBounds(25, 55, 20, 20);
+        autoRecord.setBounds(25, 60, 20, 20);
 
         JLabel autoRecordText = new JLabel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_AUTO_RECORD));
         autoRecordText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        autoRecordText.setBounds(60, 55, 180, 23);
+        autoRecordText.setBounds(60, 60, 180, 23);
 
         TitledPanel recordTimePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_SCOPE_PROPERTIES_RECORD_TIME));
-        recordTimePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 90));
+        recordTimePanel.setMaximumSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 100));
         recordTimePanel.add(recordTime);
         recordTimePanel.add(recordTimeText);
         recordTimePanel.add(autoRecord);
         recordTimePanel.add(autoRecordText);
-        
-        JPanel recordTimePanelContainer = new JPanel();
-        recordTimePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
-        recordTimePanelContainer.add(recordTimePanel); 
-        
+
         // default content
-        ScrollablePanel contentPanel = new ScrollablePanel();
+        JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
-        contentPanel.add(namePanelContainer);
-        contentPanel.add(recordTimePanelContainer);
+        contentPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL + 20, 200));
+        contentPanel.add(namePanel);
+        contentPanel.add(recordTimePanel);
         
         scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
+        scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);

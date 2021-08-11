@@ -2,6 +2,7 @@ package twincat.app.layer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -12,24 +13,34 @@ import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.JCheckBox;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import twincat.Resources;
+import twincat.app.components.CheckBox;
 import twincat.app.components.NumberTextField;
+import twincat.app.components.ScrollablePanel;
+import twincat.app.components.TitledPanel;
 import twincat.scope.Chart;
 
 public class SettingsPanel extends JPanel {
     private static final long serialVersionUID = 1L;
-
+  
     /*********************************/
     /******** cross reference ********/
     /*********************************/
 
     private final XReference xref;
 
+    /*********************************/
+    /**** local constant variable ****/
+    /*********************************/
+
+    private static final int DEFAULT_CONTAINER_WIDTH = 450;
+    
     /*********************************/
     /******** global variable ********/
     /*********************************/
@@ -48,15 +59,15 @@ public class SettingsPanel extends JPanel {
     /****** local final variable *****/
     /*********************************/
     
-    private final JCheckBox settingDebugEnabled = new JCheckBox();
+    private final CheckBox chartDebugEnabled = new CheckBox();
 
-    private final NumberTextField settingRefreshRate = new NumberTextField();
+    private final NumberTextField chartRefreshRate = new NumberTextField();
    
     /*********************************/
     /****** predefined variable ******/
     /*********************************/
 
-    private PropertyChangeListener refreshRatePropertyChangeListener = new PropertyChangeListener() {
+    private PropertyChangeListener chartRefreshRatePropertyChangeListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
             if (propertyChangeEvent.getPropertyName().equals("number")) {
@@ -66,7 +77,7 @@ public class SettingsPanel extends JPanel {
         }
     };
  
-    private final ItemListener debugEnabledItemListener = new ItemListener() {
+    private final ItemListener chartDebugEnabledItemListener = new ItemListener() {
         @Override
         public void itemStateChanged(ItemEvent itemEvent) {
             xref.scopeBrowser.reloadSelectedTreeNode();
@@ -94,35 +105,54 @@ public class SettingsPanel extends JPanel {
 
     public SettingsPanel(XReference xref) {
         this.xref = xref;
+
+        // chart settings
+        chartRefreshRate.setValue(refreshRate);
+        chartRefreshRate.setMinValue(0);
+        chartRefreshRate.setMaxValue(100);
+        chartRefreshRate.addPropertyChangeListener(chartRefreshRatePropertyChangeListener);
+        chartRefreshRate.setBounds(15, 25, 40, 20);
+
+        JLabel chartRefreshRateText = new JLabel(languageBundle.getString(Resources.TEXT_SETTINGS_CHART_REFRESH_RATE));
+        chartRefreshRateText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
+        chartRefreshRateText.setBounds(70, 25, 300, 21);
         
-        // settings
-        settingDebugEnabled.setSelected(debugEnabled);
-        settingDebugEnabled.addItemListener(debugEnabledItemListener);
-        settingDebugEnabled.setFocusPainted(false);
-        settingDebugEnabled.setBounds(15, 15, 20, 20);
+        chartDebugEnabled.setSelected(debugEnabled);
+        chartDebugEnabled.addItemListener(chartDebugEnabledItemListener);
+        chartDebugEnabled.setFocusPainted(false);
+        chartDebugEnabled.setBounds(25, 55, 20, 20);
 
-        JLabel settingDebugEnabledText = new JLabel(languageBundle.getString(Resources.TEXT_SETTINGS_CHART_DEBUG_ENABLED));
-        settingDebugEnabledText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        settingDebugEnabledText.setBounds(50, 15, 300, 23);
+        JLabel chartDebugEnabledText = new JLabel(languageBundle.getString(Resources.TEXT_SETTINGS_CHART_DEBUG_ENABLED));
+        chartDebugEnabledText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
+        chartDebugEnabledText.setBounds(70, 55, 300, 23);
  
-        settingRefreshRate.setValue(refreshRate);
-        settingRefreshRate.setMinValue(0);
-        settingRefreshRate.setMaxValue(99);
-        settingRefreshRate.addPropertyChangeListener(refreshRatePropertyChangeListener);
-        settingRefreshRate.setBounds(10, 45, 30, 20);
-
-        JLabel settingRefreshRateText = new JLabel(languageBundle.getString(Resources.TEXT_SETTINGS_CHART_REFRESH_RATE));
-        settingRefreshRateText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        settingRefreshRateText.setBounds(50, 45, 300, 21);
-
+        JTextArea chartDescriptionTextArea = new JTextArea(languageBundle.getString(Resources.TEXT_SETTINGS_CHART_DESCRIPTION));
+        chartDescriptionTextArea.setCaretPosition(0);
+        chartDescriptionTextArea.setLineWrap(true);
+        chartDescriptionTextArea.setWrapStyleWord(true);
+        chartDescriptionTextArea.setEditable(false);
+        chartDescriptionTextArea.setOpaque(false);
+        chartDescriptionTextArea.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
+        chartDescriptionTextArea.setBounds(25, 85, DEFAULT_CONTAINER_WIDTH - 25, 40);
+        
+        TitledPanel chartPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_SETTINGS_CHART));
+        chartPanel.setPreferredSize(new Dimension(DEFAULT_CONTAINER_WIDTH, 120));
+        chartPanel.add(chartRefreshRate);
+        chartPanel.add(chartRefreshRateText);
+        chartPanel.add(chartDebugEnabled);
+        chartPanel.add(chartDebugEnabledText);
+        chartPanel.add(chartDescriptionTextArea);
+ 
+        JPanel chartPanelContainer = new JPanel();
+        chartPanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
+        chartPanelContainer.add(chartPanel);   
+        
         // default content
-        JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(null);
+        ScrollablePanel contentPanel = new ScrollablePanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder());
-        contentPanel.add(settingDebugEnabled);
-        contentPanel.add(settingDebugEnabledText);
-        contentPanel.add(settingRefreshRate);
-        contentPanel.add(settingRefreshRateText);
+        contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
+        contentPanel.add(chartPanelContainer);
         
         JScrollPane scrollPanel = new JScrollPane();  
         scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
@@ -131,7 +161,7 @@ public class SettingsPanel extends JPanel {
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);
         scrollPanel.getActionMap().put("unitScrollDown", scrollPanelDisableKey);
 
-        this.setBorder(BorderFactory.createEmptyBorder());
+        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         this.setLayout(new BorderLayout());
         this.add(scrollPanel, BorderLayout.CENTER);
     }

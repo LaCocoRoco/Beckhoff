@@ -2,7 +2,6 @@ package twincat.app.layer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,12 +19,12 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import twincat.Resources;
@@ -34,9 +33,9 @@ import twincat.ads.constant.AmsPort;
 import twincat.ads.constant.DataType;
 import twincat.ads.worker.RouteLoader;
 import twincat.app.components.AddressTextField;
+import twincat.app.components.CheckBox;
 import twincat.app.components.ComboBox;
 import twincat.app.components.NumberTextField;
-import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TextField;
 import twincat.app.components.TitledPanel;
 import twincat.app.constant.Propertie;
@@ -77,7 +76,7 @@ public class AcquisitionProperties extends JPanel {
 
     private final ComboBox dataType = new ComboBox();
 
-    private final JCheckBox symbolBased = new JCheckBox();
+    private final CheckBox symbolBased = new CheckBox();
  
     private final RouteLoader routeLoader = new RouteLoader();
 
@@ -211,103 +210,95 @@ public class AcquisitionProperties extends JPanel {
         // target properties
         JLabel targetSystemText = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TARGET_SYSTEM));
         targetSystemText.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
-        targetSystemText.setBounds(20, 20, 265, 20);
+        targetSystemText.setBounds(20, 25, 265, 20);
 
         targetSystem.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        targetSystem.setBounds(18, 40, 265, 22);
+        targetSystem.setBounds(18, 45, 265, 22);
 
         JLabel targetPortText = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TARGET_PORT));
         targetPortText.setFont(new Font(Resources.DEFAULT_FONT, Font.PLAIN, Resources.DEFAULT_FONT_SIZE_SMALL));
-        targetPortText.setBounds(20, 70, 265, 20);
+        targetPortText.setBounds(20, 75, 265, 20);
 
         targetPort.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        targetPort.setBounds(18, 90, 265, 22);
+        targetPort.setBounds(18, 95, 265, 22);
 
         TitledPanel targetPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_TARGET));
-        targetPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 130));
+        targetPanel.setMaximumSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 140));
         targetPanel.add(targetSystemText);
         targetPanel.add(targetSystem);
         targetPanel.add(targetPortText);
         targetPanel.add(targetPort);
-        
-        JPanel targetPanelContainer = new JPanel();
-        targetPanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
-        targetPanelContainer.add(targetPanel);
-        
+
         // connection properties
         JLabel sampleTimeText = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_SAMPLE_TIME));
         sampleTimeText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        sampleTimeText.setBounds(15, 25, 160, 21);
+        sampleTimeText.setBounds(15, 30, 160, 21);
 
         sampleTime.setValue(acquisition.getSampleTime());
         sampleTime.setMinValue(0);
         sampleTime.setMaxValue(100);
         sampleTime.addPropertyChangeListener(sampleTimePropertyChangeListener);
-        sampleTime.setBounds(110, 25, 60, 20);
+        sampleTime.setBounds(110, 30, 60, 20);
 
         JLabel sampleTimeRange = new JLabel("[ms]");
         sampleTimeRange.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        sampleTimeRange.setBounds(180, 25, 30, 21);  
+        sampleTimeRange.setBounds(180, 30, 30, 21);  
 
         TitledPanel connectionPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_CONNETION));
-        connectionPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 60));
+        connectionPanel.setMaximumSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 70));
         connectionPanel.add(sampleTimeText);
         connectionPanel.add(sampleTime);
         connectionPanel.add(sampleTimeRange);
-        
-        JPanel connectionPanelContainer = new JPanel();
-        connectionPanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
-        connectionPanelContainer.add(connectionPanel); 
-    
+
         // symbol information properties
         JLabel symbolNameText = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_SYMBOL_NAME));
         symbolNameText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        symbolNameText.setBounds(15, 25, 110, 21);
+        symbolNameText.setBounds(15, 30, 110, 21);
         
         symbolName.setText(acquisition.getSymbolName());
         symbolName.addPropertyChangeListener(symbolNamePropertyChangeListener);
-        symbolName.setBounds(110, 25, 180, 23);
+        symbolName.setBounds(110, 30, 175, 23);
 
         JLabel indexGroupText = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_INDEX_GROUP));
         indexGroupText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        indexGroupText.setBounds(15, 55, 110, 21);
+        indexGroupText.setBounds(15, 60, 110, 21);
 
         indexGroup.setValue(acquisition.getIndexGroup());
         indexGroup.setHorizontalAlignment(JTextField.LEFT);
         indexGroup.setMinValue(0);
         indexGroup.setMaxValue(100);
         indexGroup.addPropertyChangeListener(indexGroupPropertyChangeListener);
-        indexGroup.setBounds(110, 55, 60, 20);
+        indexGroup.setBounds(110, 60, 60, 20);
 
         JLabel indexOffsetText = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_INDEX_OFFSET));
         indexOffsetText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        indexOffsetText.setBounds(15, 85, 110, 21);
+        indexOffsetText.setBounds(15, 90, 110, 21);
 
         indexOffset.setValue(acquisition.getIndexGroup());
         indexOffset.setHorizontalAlignment(JTextField.LEFT);
         indexOffset.setMinValue(0);
         indexOffset.setMaxValue(100);
         indexOffset.addPropertyChangeListener(indexOffsetPropertyChangeListener);
-        indexOffset.setBounds(110, 85, 60, 20);
+        indexOffset.setBounds(110, 90, 60, 20);
 
         JLabel dataTypeLabel = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_DATA_TYPE));
         dataTypeLabel.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        dataTypeLabel.setBounds(15, 115, 110, 21);
+        dataTypeLabel.setBounds(15, 120, 110, 21);
 
         dataType.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        dataType.setBounds(110, 115, 100, 22);
+        dataType.setBounds(110, 120, 100, 22);
  
         symbolBased.setSelected(acquisition.isSymbolBased());
         symbolBased.addItemListener(symbolBasedItemListener);
         symbolBased.setFocusPainted(false);
-        symbolBased.setBounds(25, 145, 20, 20);
+        symbolBased.setBounds(25, 150, 20, 20);
         
         JLabel symbolBasedText = new JLabel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_SYMBOL_BASED));
         symbolBasedText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        symbolBasedText.setBounds(60, 145, 160, 23);
+        symbolBasedText.setBounds(60, 150, 160, 23);
         
         TitledPanel symbolInfoPanel = new TitledPanel(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_SYMBOL_INFO));
-        symbolInfoPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 190));
+        symbolInfoPanel.setMaximumSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG, 190));
         symbolInfoPanel.add(symbolNameText);
         symbolInfoPanel.add(symbolName);
         symbolInfoPanel.add(indexGroupText);
@@ -319,18 +310,14 @@ public class AcquisitionProperties extends JPanel {
         symbolInfoPanel.add(symbolBasedText);
         symbolInfoPanel.add(symbolBased);
 
-        JPanel symbolInfoPanelContainer = new JPanel();
-        symbolInfoPanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
-        symbolInfoPanelContainer.add(symbolInfoPanel);
-
         // default content
-        ScrollablePanel contentPanel = new ScrollablePanel();
+        JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
-        contentPanel.add(targetPanelContainer);
-        contentPanel.add(connectionPanelContainer);
-        contentPanel.add(symbolInfoPanelContainer);
+        contentPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_BIG + 20, 420));
+        contentPanel.add(targetPanel);
+        contentPanel.add(connectionPanel);
+        contentPanel.add(symbolInfoPanel);
 
         JButton applyButton = new JButton(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_APPLY));
         applyButton.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -346,6 +333,8 @@ public class AcquisitionProperties extends JPanel {
         applyToolBar.add(applyButton);
 
         scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
+        scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPanel.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);

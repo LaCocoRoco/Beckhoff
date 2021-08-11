@@ -2,6 +2,7 @@ package twincat.app;
 
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,10 +10,13 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.plaf.basic.BasicMenuBarUI;
 
 import twincat.Resources;
 import twincat.TwincatLogger;
@@ -21,6 +25,7 @@ import twincat.app.constant.Navigation;
 import twincat.app.constant.Propertie;
 import twincat.app.constant.Window;
 import twincat.app.layer.XReference;
+import twincat.constant.DefaultColorTable;
 
 public class ScopeFrame extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -54,6 +59,18 @@ public class ScopeFrame extends JPanel {
     private final JMenuItem menuItemWindowAxis = new JMenuItem();
 
     private final Logger logger = TwincatLogger.getLogger();
+
+    /*********************************/
+    /****** predefined variable ******/
+    /*********************************/
+
+    private final BasicMenuBarUI scopeMenuBarUI = new BasicMenuBarUI() {
+        @Override
+        public void paint(Graphics graphics, JComponent jComponent) {
+            graphics.setColor(DefaultColorTable.TRANSLUCENT.color);
+            graphics.fillRect(0, 0, jComponent.getWidth(), jComponent.getHeight());
+        }
+    };
 
     /*********************************/
     /********** constructor **********/
@@ -126,10 +143,13 @@ public class ScopeFrame extends JPanel {
         menuExtras.add(menuItemConsole);
         menuExtras.add(menuItemWindowAds);
 
+        scopeMenu.setOpaque(true);
+        scopeMenu.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        scopeMenu.setUI(scopeMenuBarUI);
         scopeMenu.add(menuFile);
         scopeMenu.add(menuWindow);
         scopeMenu.add(menuExtras);
-
+        
         xref.contentPanel.consoleHide();
 
         this.setLayout(new BorderLayout());
@@ -168,7 +188,7 @@ public class ScopeFrame extends JPanel {
     public void preBuildSymbolBrowser() {
         xref.symbolBrowser.build();
     }
-    
+
     public void minifyMenuItems() {
         menuItemFileNew.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         menuItemFileNew.setHorizontalAlignment(JMenuItem.LEFT);

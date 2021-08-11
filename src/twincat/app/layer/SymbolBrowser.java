@@ -271,6 +271,7 @@ public class SymbolBrowser extends JPanel {
         this.xref = xref;
 
         browseTree.setCellRenderer(new SymbolTreeRenderer());
+        browseTree.setRowHeight(20);
         browseTree.setBorder(BorderFactory.createEmptyBorder(5, -5, 0, 0));
         browseTree.setRootVisible(false);
         browseTree.setScrollsOnExpand(false);
@@ -282,6 +283,7 @@ public class SymbolBrowser extends JPanel {
         browseTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         
         searchTree.setCellRenderer(new SymbolTreeRenderer());
+        searchTree.setRowHeight(20);
         searchTree.setBorder(BorderFactory.createEmptyBorder(5, -5, 0, 0));
         searchTree.setRootVisible(false);
         searchTree.setScrollsOnExpand(false);

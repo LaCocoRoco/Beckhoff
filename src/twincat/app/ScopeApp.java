@@ -42,7 +42,6 @@ public class ScopeApp extends JFrame {
         scopeFrame.setMenuVisible(true);
         scopeFrame.setConsoleVisible(false);
         scopeFrame.setWindow(Window.SCOPE);
-        //scopeFrame.preBuildSymbolBrowser();
         
         // application setup
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

@@ -7,6 +7,8 @@ public enum DefaultColorTable {
     /*** global constant variable ****/
     /*********************************/
     
+    TRANSLUCENT    (new Color(0x00, 0x00, 0x00, 0x00)),
+    
     SCOPEBLUE      (new Color(0x77, 0x88, 0x99)),
     SCOPEGREEN     (new Color(0x29, 0x3D, 0x4A)),
     SCOPEGRAY      (new Color(0xC0, 0xC0, 0xC0)),

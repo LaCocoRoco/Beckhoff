@@ -2,7 +2,6 @@ package twincat.app.layer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -14,15 +13,15 @@ import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import twincat.Resources;
+import twincat.app.components.CheckBox;
 import twincat.app.components.NumberTextField;
-import twincat.app.components.ScrollablePanel;
 import twincat.app.components.TextField;
 import twincat.app.components.TitledPanel;
 import twincat.app.constant.Propertie;
@@ -53,7 +52,7 @@ public class TriggerGroupProperties extends JPanel {
 
     private final NumberTextField offset = new NumberTextField();
     
-    private final JCheckBox enabled = new JCheckBox();
+    private final CheckBox enabled = new CheckBox();
     
     private final ResourceBundle languageBundle = ResourceBundle.getBundle(Resources.PATH_LANGUAGE);
 
@@ -109,56 +108,49 @@ public class TriggerGroupProperties extends JPanel {
         // name properties
         triggerGroupName.setText(triggerGroup.getTriggerGroupName());
         triggerGroupName.addPropertyChangeListener(triggerChannelNamePropertyChanged);
-        triggerGroupName.setBounds(15, 25, 210, 23);
+        triggerGroupName.setBounds(15, 30, 210, 23);
 
         TitledPanel namePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_NAME));
-        namePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 60));
+        namePanel.setMaximumSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 70));
         namePanel.add(triggerGroupName);
-        
-        JPanel namePanelContainer = new JPanel();
-        namePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
-        namePanelContainer.add(namePanel); 
-             
+       
         // module properties
         offset.setValue(triggerGroup.getTriggerOffset());
         offset.setMinValue(0);
         offset.setMaxValue(100);
         offset.addPropertyChangeListener(offsetPropertyChanged);
-        offset.setBounds(15, 25, 40, 20);
+        offset.setBounds(15, 30, 40, 20);
 
         JLabel offsetText = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_OFFSET));
         offsetText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        offsetText.setBounds(60, 25, 120, 21);
+        offsetText.setBounds(60, 30, 120, 21);
         
         enabled.setSelected(triggerGroup.isEnabled());
         enabled.addItemListener(enabledItemListener);
         enabled.setFocusPainted(false);
-        enabled.setBounds(25, 55, 20, 20);
+        enabled.setBounds(25, 60, 20, 20);
 
         JLabel enableText = new JLabel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_ENABLED));
         enableText.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_SMALL));
-        enableText.setBounds(60, 55, 120, 23);
+        enableText.setBounds(60, 60, 120, 23);
 
         TitledPanel modulePanel = new TitledPanel(languageBundle.getString(Resources.TEXT_TRIGGER_GROUP_PROPERTIES_MODULE));
-        modulePanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 90));
+        modulePanel.setMaximumSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL, 100));
         modulePanel.add(offset);
         modulePanel.add(offsetText);
         modulePanel.add(enabled);
         modulePanel.add(enableText);
-        
-        JPanel modulePanelContainer = new JPanel();
-        modulePanelContainer.setLayout(new FlowLayout(FlowLayout.LEADING));
-        modulePanelContainer.add(modulePanel); 
-                  
+           
         // default content
-        ScrollablePanel contentPanel = new ScrollablePanel();
+        JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        contentPanel.setScrollableWidth(ScrollablePanel.ScrollableSizeHint.FIT);
-        contentPanel.add(namePanelContainer);
-        contentPanel.add(modulePanelContainer);
+        contentPanel.setPreferredSize(new Dimension(PropertiesPanel.TEMPLATE_WIDTH_SMALL + 20, 200));
+        contentPanel.add(namePanel);
+        contentPanel.add(modulePanel);
 
         scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));
+        scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPanel.setBorder(BorderFactory.createEmptyBorder());
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.getActionMap().put("unitScrollUp", scrollPanelDisableKey);

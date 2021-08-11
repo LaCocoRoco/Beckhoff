@@ -49,9 +49,13 @@ public class Resources {
     
     public static final String PATH_ICON_APP_ACQUISITION = PATH_PACKAGE_IMAGES + "app_acquisition.png";
 
-    public static final String PATH_ICON_APP_FOLDER_OPEN = PATH_PACKAGE_IMAGES + "folder_open.png";
+    public static final String PATH_ICON_APP_FOLDER_OPEN = PATH_PACKAGE_IMAGES + "app_folder_open.png";
     
-    public static final String PATH_ICON_APP_FOLDER_CLOSED = PATH_PACKAGE_IMAGES + "folder_closed.png";
+    public static final String PATH_ICON_APP_FOLDER_CLOSED = PATH_PACKAGE_IMAGES + "app_folder_closed.png";
+    
+    public static final String PATH_ICON_APP_CHECKBOX = PATH_PACKAGE_IMAGES + "app_checkbox.png";
+      
+    public static final String PATH_ICON_APP_CHECKBOX_SELECTED = PATH_PACKAGE_IMAGES + "app_checkbox_selected.png";
     
     public static final String PATH_ICON_CONTROL_PLAY = PATH_PACKAGE_IMAGES + "control_play.png";
 
@@ -68,9 +72,7 @@ public class Resources {
     public static final String PATH_ICON_CONTROL_ZOOM_IN = PATH_PACKAGE_IMAGES + "control_zoom_in.png";
     
     public static final String PATH_ICON_CONTROL_ZOOM_OUT = PATH_PACKAGE_IMAGES + "control_zoom_out.png";
-         
-
-    
+ 
     public static final String PATH_ICON_CONTROL_MINIMIZE = PATH_PACKAGE_IMAGES + "control_minimize.png";
 
     public static final String PATH_ICON_DATATYPE_BIT = PATH_PACKAGE_IMAGES + "datatype_bit.png";
@@ -285,8 +287,12 @@ public class Resources {
     public static final String TEXT_FILE_OPEN = "fileOpen";
     
     
+ 
+    public static final String TEXT_SETTINGS_CHART = "settingsChart";
+
+    public static final String TEXT_SETTINGS_CHART_REFRESH_RATE = "settingsChartRefreshRate";
     
     public static final String TEXT_SETTINGS_CHART_DEBUG_ENABLED = "settingsChartDebugEnabled";
-    
-    public static final String TEXT_SETTINGS_CHART_REFRESH_RATE = "settingsChartRefreshRate";
+   
+    public static final String TEXT_SETTINGS_CHART_DESCRIPTION = "settingsChartDescription";       
 }
