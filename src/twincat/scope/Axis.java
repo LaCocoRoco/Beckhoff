@@ -230,12 +230,12 @@ public class Axis implements Observer {
                     refresh = true;
                 }
             } else {
-                if (Math.floor(value) < autoscaleValueMin) {
+                if (value < autoscaleValueMin) {
                     autoscaleValueMin = value;
                     refresh = true;
                 }
 
-                if (Math.ceil(value) > autoscaleValueMax) {
+                if (value > autoscaleValueMax) {
                     autoscaleValueMax = value;
                     refresh = true;
                 }  

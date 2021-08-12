@@ -88,7 +88,7 @@ public class Chart extends Observable {
 
     private boolean autoRecord = true;
 
-    private boolean debug = true;
+    private boolean debug = false;
 
     private VolatileImage image = Chart.createBitmaskVolatileImage(width, height);
 

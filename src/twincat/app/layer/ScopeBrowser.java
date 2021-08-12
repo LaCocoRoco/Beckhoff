@@ -222,12 +222,12 @@ public class ScopeBrowser extends JPanel {
     /********* public method *********/
     /*********************************/
 
-    public void removeScope() {
+    public void clearScope() {
         // get root node
         ScopeTreeNode rootNode = (ScopeTreeNode) browseTree.getModel().getRoot();
         
         // remove scopes from root
-        for (int i = 0; i < rootNode.getChildCount(); i++) {
+        for (int i = rootNode.getChildCount() - 1; i >= 0; i--) {
             ScopeTreeNode scopeNode = (ScopeTreeNode) rootNode.getChildAt(i);
             removeScopeTreeNode(scopeNode);
         }

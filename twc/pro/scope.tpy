@@ -4,7 +4,7 @@
 	<ProjectInfo>
 		<Path>C:\Workspace\Eclipse\Beckhoff\twc\pro\scope.pro</Path>
 		<IsLibrary>false</IsLibrary>
-		<ChangeDate>2021-07-22T09:16:07</ChangeDate>
+		<ChangeDate>2021-08-12T07:40:18</ChangeDate>
 		<Library>
 			<Name>STANDARD.LIB</Name>
 			<Path>C:\TWINCAT\PLC\LIB\STANDARD.LIB</Path>
@@ -13,10 +13,10 @@
 	</ProjectInfo>
 	<RoutingInfo>
 		<AdsInfo>
-			<NetId>192.168.12.129.1.1</NetId>
+			<NetId>192.168.74.128.1.1</NetId>
 			<Port>801</Port>
 			<TargetName>
-				<![CDATA[Target: Local (192.168.12.129.1.1), Laufzeit: 1]]>
+				<![CDATA[Target: Local (192.168.74.128.1.1), Laufzeit: 1]]>
 			</TargetName>
 		</AdsInfo>
 	</RoutingInfo>
@@ -879,7 +879,7 @@
 	</Functions>
 	<Programs>
 		<Program>
-			<Name Decoration="101375EA" Crc32="2182656641" LastChange="2021-07-22T09:16:07">MAIN</Name>
+			<Name Decoration="101375EA" Crc32="2182656641" LastChange="2021-08-12T07:40:18">MAIN</Name>
 			<PrgInfo>
 				<CodeIndex>51</CodeIndex>
 				<Symbol>

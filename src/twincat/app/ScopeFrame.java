@@ -105,7 +105,7 @@ public class ScopeFrame extends JPanel {
     
     private final ActionListener newFileActionListener = new ActionListener() {
         public void actionPerformed(ActionEvent actionEvent) {
-            xref.scopeBrowser.removeScope();
+            xref.scopeBrowser.clearScope();
             xref.propertiesPanel.setCard(Propertie.EMPTY);
             xref.browserPanel.setCard(Browser.SCOPE);
         }

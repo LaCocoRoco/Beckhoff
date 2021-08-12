@@ -356,6 +356,9 @@ public class AxisPanel extends JScrollPane {
         // add trigger group to chart
         scope.addTriggerGroup(triggerGroup);
 
+        // clear scope
+        xref.scopeBrowser.clearScope();
+        
         // add scope
         xref.scopeBrowser.addScope(scope);
     }
