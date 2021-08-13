@@ -12,6 +12,7 @@ import twincat.ads.common.DeviceState;
 import twincat.ads.common.Route;
 import twincat.ads.common.SymbolInfo;
 import twincat.ads.common.UploadInfo;
+import twincat.ads.common.Variable;
 import twincat.ads.constant.AdsError;
 import twincat.ads.constant.IndexGroup;
 import twincat.ads.constant.AmsNetId;
@@ -39,7 +40,6 @@ import twincat.ads.datatype.UINT32;
 import twincat.ads.datatype.UINT8;
 import twincat.ads.datatype.USINT;
 import twincat.ads.datatype.WORD;
-import twincat.ads.wrapper.Variable;
 
 public class AdsClient extends AdsNative {
     /*********************************/

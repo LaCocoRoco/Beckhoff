@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import twincat.Utilities;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
-import twincat.ads.wrapper.Variable;
+import twincat.ads.common.Variable;
 import twincat.constant.DefaultColorTable;
 
 public class Channel extends Observable implements Observer {

@@ -20,10 +20,10 @@ import twincat.ads.common.Route;
 import twincat.ads.common.RouteSymbolData;
 import twincat.ads.common.Symbol;
 import twincat.ads.common.SymbolInfo;
+import twincat.ads.common.Variable;
 import twincat.ads.constant.AdsError;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.wrapper.Variable;
 
 public class CommandLine {
     /*********************************/

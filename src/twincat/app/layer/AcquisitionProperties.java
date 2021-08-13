@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EtchedBorder;
 
 import twincat.Resources;
 import twincat.ads.common.Route;
@@ -320,7 +321,7 @@ public class AcquisitionProperties extends JPanel {
         contentPanel.add(symbolInfoPanel);
 
         JButton applyButton = new JButton(languageBundle.getString(Resources.TEXT_ACQUISITION_PROPERTIES_APPLY));
-        applyButton.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        applyButton.setBorder(BorderFactory.createEmptyBorder(4, 2, 4, 2));
         applyButton.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         applyButton.setFocusable(false);
         applyButton.addActionListener(applyActionListener);
@@ -329,7 +330,7 @@ public class AcquisitionProperties extends JPanel {
         applyToolBar.setLayout(new BorderLayout());
         applyToolBar.setFloatable(false);
         applyToolBar.setRollover(false);
-        applyToolBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        applyToolBar.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)); 
         applyToolBar.add(applyButton);
 
         scrollPanel.getVerticalScrollBar().setPreferredSize(new Dimension(Resources.DEFAULT_SCROLLBAR_WIDTH, 0));

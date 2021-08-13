@@ -9,9 +9,9 @@ import org.junit.Test;
 import twincat.TwincatLogger;
 import twincat.ads.AdsClient;
 import twincat.ads.AdsException;
+import twincat.ads.common.Variable;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
-import twincat.ads.wrapper.Variable;
 
 public class VariableWriteUnitTest {
     private final AdsClient adsClient = new AdsClient();

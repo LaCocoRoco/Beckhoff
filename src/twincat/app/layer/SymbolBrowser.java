@@ -45,6 +45,7 @@ import javax.swing.JTree;
 import javax.swing.SwingWorker;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicTreeUI;
@@ -330,7 +331,7 @@ public class SymbolBrowser extends JPanel {
         acquisitionToolbar.add(searchToolBar);
 
         JButton abortButton = new JButton(languageBundle.getString(Resources.TEXT_SYMBOL_TREE_ABORT));
-        abortButton.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        abortButton.setBorder(BorderFactory.createEmptyBorder(4, 2, 4, 2));
         abortButton.setFont(new Font(Resources.DEFAULT_FONT, Font.BOLD, Resources.DEFAULT_FONT_SIZE_NORMAL));
         abortButton.setFocusable(false);
         abortButton.addActionListener(abortButtonActionListener);
@@ -339,7 +340,7 @@ public class SymbolBrowser extends JPanel {
         abortToolBar.setLayout(new BorderLayout());
         abortToolBar.setFloatable(false);
         abortToolBar.setRollover(false);
-        abortToolBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        abortToolBar.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         abortToolBar.add(abortButton);
 
         JLabel loadingText = new JLabel();

@@ -1,4 +1,4 @@
-package twincat.ads.wrapper;
+package twincat.ads.common;
 
 import java.util.Observable;
 
