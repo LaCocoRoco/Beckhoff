@@ -19,6 +19,8 @@ public class Channel extends Observable implements Observer {
     /**** local constant variable ****/
     /*********************************/
 
+    private static final int ADS_TIMEOUT = 100;
+    
     private static final int NOTIFICATION_TIMEOUT = 200;
 
     private static final int WATCHDOG_TIMEOUT = 2000;
@@ -274,11 +276,9 @@ public class Channel extends Observable implements Observer {
 
     private void startNotification() {
         if (!notificationStarted) {
-            notificationStarted = true;
-
             try {
                 adsClient.open();
-                adsClient.setTimeout(AdsClient.DEFAULT_TIMEOUT);
+                adsClient.setTimeout(ADS_TIMEOUT);
                 adsClient.setAmsNetId(acquisition.getAmsNetId());
                 adsClient.setAmsPort(acquisition.getAmsPort());
 
@@ -292,6 +292,8 @@ public class Channel extends Observable implements Observer {
                     variable.addObserver(this);
                     variable.addNotification(acquisition.getSampleTime());
                 }
+                
+                notificationStarted = true;
             } catch (AdsException adsException) {
                 channelError = "Notification Start | " + adsException.getAdsErrorMessage();
                 notificationStarted = false;

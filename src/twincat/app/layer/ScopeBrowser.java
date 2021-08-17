@@ -553,17 +553,18 @@ public class ScopeBrowser extends JPanel {
         // remove scope
         Scope scope = (Scope) treeNode.getUserObject();
         scope.close();
-        
-        // update tree node
-        updateTreeNode(parentTreeNode);
 
+        // update tree node
+        if (parentTreeNode.getChildCount() != 0) {
+            ScopeTreeNode scopeTreeNode = (ScopeTreeNode) parentTreeNode.getChildAt(0);
+            updateTreeNode(scopeTreeNode);
+        } else {
+            updateTreeNode(parentTreeNode);
+            xref.propertiesPanel.setCard(Propertie.EMPTY);
+        }
+        
         // reset chart
         xref.chartPanel.resetChart();
-        
-        // display empty properties panel if root is empty
-        if (parentTreeNode.getChildCount() == 0) {
-            xref.propertiesPanel.setCard(Propertie.EMPTY);
-        } 
     }
 
     private void removeChartTreeNode(ScopeTreeNode treeNode) {
