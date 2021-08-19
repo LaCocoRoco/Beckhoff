@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="Beckhoff" basedir=".">
-  <property name="build.title"    value="Beckhoff"/>
+<project name="TwinCATScope" basedir=".">
+  <property name="build.title"    value="TwinCATScope"/>
   <property name="build.author"   value="Deiring Andreas"/>
-  <property name="build.name"     value="beckhoff"/>
+  <property name="build.name"     value="twinCATScope"/>
   <property name="build.version"  value="1.0"/>
   <property name="build.class"    value="twincat.app.ScopeApp"/>
 

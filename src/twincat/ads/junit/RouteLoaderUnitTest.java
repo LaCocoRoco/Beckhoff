@@ -37,9 +37,9 @@ public class RouteLoaderUnitTest {
             int symbolListSize = symbolLoader.getSymbolList().size();
 
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("HostName: " + String.format("%-8s", hostName) + " | ");
-            stringBuilder.append("AmsNetId: " + String.format("%-8s", amsNetId) + " | ");
-            stringBuilder.append("AmsPort: " + String.format("%-8s", amsPort) + " | ");
+            stringBuilder.append("HostName: "   + String.format("%-8s", hostName)   + " | ");
+            stringBuilder.append("AmsNetId: "   + String.format("%-8s", amsNetId)   + " | ");
+            stringBuilder.append("AmsPort: "    + String.format("%-8s", amsPort)    + " | ");
             stringBuilder.append("SymbolSize: " + String.format("%-8s", symbolListSize));
 
             logger.info(stringBuilder.toString());

@@ -15,6 +15,22 @@ import twincat.ads.datatype.TIME;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
 
+/** 
+ * VAR_GLOBAL
+ *     junit_bit       :BOOL;
+ *     junit_int8      :SINT;
+ *     junit_int16     :INT;
+ *     junit_int32     :DINT;
+ *     junit_uint8     :BYTE;
+ *     junit_uint16    :WORD;
+ *     junit_uint32    :DWORD;
+ *     junit_real32    :REAL;
+ *     junit_real64    :LREAL;
+ *     junit_time      :TIME;
+ *     junit_string    :STRING(100);
+ * END_VAR
+ */
+
 public class VariableUnitTest {
     private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getLogger();

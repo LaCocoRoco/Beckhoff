@@ -1,2 +1,0 @@
-<?xml version="1.0"?>
-<PlcGivenDataInfo><VarConfigAddresses><VarConfigAddress><Name>MAIN.di_set_pos</Name><Type>DINT</Type><IGroup>61488</IGroup><IOffset>0</IOffset><BitSize>32</BitSize></VarConfigAddress></VarConfigAddresses></PlcGivenDataInfo>

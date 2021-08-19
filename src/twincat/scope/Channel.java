@@ -21,7 +21,7 @@ public class Channel extends Observable implements Observer {
 
     private static final int ADS_TIMEOUT = 100;
     
-    private static final int NOTIFICATION_TIMEOUT = 200;
+    private static final int NOTIFICATION_TIMEOUT = 500;
 
     private static final int WATCHDOG_TIMEOUT = 2000;
 

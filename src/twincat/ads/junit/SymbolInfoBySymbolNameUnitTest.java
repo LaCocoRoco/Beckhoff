@@ -13,11 +13,25 @@ import twincat.ads.common.SymbolInfo;
 import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
 
+/** 
+ * VAR_GLOBAL
+ *     junit_array_small       :ARRAY[0..2] OF INT;
+ *     junit_array_simple      :ARRAY[0..2, 2..4, 4..6] OF INT;
+ *     junit_array_complex     :ARRAY[0..2, 4..8] OF TON;
+ *     junit_array_index_var   :ARRAY[junit_a..junit_b, junit_c..junit_d] OF INT;
+ * END_VAR
+ *
+ * VAR_GLOBAL CONSTANT
+ *     junit_a                 :INT := 2;
+ *     junit_b                 :INT := 5;
+ *     junit_c                 :INT := 3;
+ *     junit_d                 :INT := 20;
+ * END_VAR
+ */
+
 public class SymbolInfoBySymbolNameUnitTest {
     private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getLogger();
-
-    private final String symbolName = ".junit_array_index_var";
 
     @Before
     public void start() {
@@ -30,7 +44,7 @@ public class SymbolInfoBySymbolNameUnitTest {
             adsClient.setAmsNetId(AmsNetId.LOCAL);
             adsClient.setAmsPort(AmsPort.TC2PLC1);
 
-            SymbolInfo symbolInfo = adsClient.readSymbolInfoBySymbolName(symbolName);
+            SymbolInfo symbolInfo = adsClient.readSymbolInfoBySymbolName(".junit_array_index_var");
 
             logger.info("InfoLength : " + symbolInfo.getLength());
             logger.info("IndexGroup : " + symbolInfo.getIndexGroup());

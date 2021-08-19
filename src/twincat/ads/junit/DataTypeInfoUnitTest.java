@@ -16,8 +16,8 @@ import twincat.ads.constant.AmsPort;
 public class DataTypeInfoUnitTest {
     private final AdsClient adsClient = new AdsClient();
     private final Logger logger = TwincatLogger.getLogger();
-    
-    private final String dataTypeName = "junit_st";
+  
+    private final String dataTypeName = "TON";
     
     @Before
     public void start() {
