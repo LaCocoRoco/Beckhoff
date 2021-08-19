@@ -1,2 +1,6 @@
-# Beckhoff
-Twincat Java Application with Scope and Ads Integration
+# TwinCAT Scope
+TwinCAT Scope Java Application
+
+![Preview](doc/scope.jpg)
+
+![Layout](doc/layout.jpg)
