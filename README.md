@@ -8,8 +8,8 @@ Integration Problem with the AdsToJava Dynamic Link Library which is used for th
 - This project is classified as POC (Proof of Concept).
 - There will not be added any additional Documentation or Integration Advice.
 
-# Application Design
+# Design
 ![Preview](doc/scope.jpg)
 
-# Application Layout
+# Layout
 ![Layout](doc/layout.png)
