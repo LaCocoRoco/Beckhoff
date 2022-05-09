@@ -15,23 +15,23 @@ public abstract class Variable extends Observable implements AdsCallback {
     /******** global variable ********/
     /*********************************/
 
-	private long timeStamp = 0;
+		private long timeStamp = 0;
 
     /*********************************/
     /******** local variable *********/
     /*********************************/
 
-	private long notification = 0;
+		private long notification = 0;
 
-	private int symbolHandle = 0;
+		private int symbolHandle = 0;
 
-	private int indexGroup = 0;
-	
-	private int indexOffset = 0;
+		private int indexGroup = 0;
+		
+		private int indexOffset = 0;
 
-	private final AdsClient adsClient;
+		private final AdsClient adsClient;
 
-	protected final byte[] data;
+		protected final byte[] data;
 	
     /*********************************/
     /********** constructor **********/
