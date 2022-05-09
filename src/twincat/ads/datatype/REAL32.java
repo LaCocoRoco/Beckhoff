@@ -9,9 +9,9 @@ import twincat.ads.constant.DataType;
 import twincat.ads.constant.AdsError;
 
 public class REAL32 extends Variable {
-    /*********************************/
-    /********** constructor **********/
-    /*********************************/
+	/*********************************/
+	/********** constructor **********/
+	/*********************************/
 
 	public REAL32(AdsClient adsClient, int symbolHandle) {
 		super(adsClient, DataType.REAL32.size, symbolHandle);
@@ -25,9 +25,9 @@ public class REAL32 extends Variable {
 		super(adsClient, DataType.REAL32.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
-    /*********************************/
-    /******** override method ********/
-    /*********************************/
+	/*********************************/
+	/******** override method ********/
+	/*********************************/
 
 	@Override
 	public DataType getDataType() {
@@ -127,9 +127,9 @@ public class REAL32 extends Variable {
 		return this;
 	}
 
-    /*********************************/
-    /** public static final method ***/
-    /*********************************/
+	/*********************************/
+	/** public static final method ***/
+	/*********************************/
 
 	public static final float arrayToFloat(byte[] data) {
 		if (data.length != DataType.REAL32.size) return 0;

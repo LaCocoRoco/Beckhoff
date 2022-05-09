@@ -9,9 +9,9 @@ import twincat.ads.constant.DataType;
 import twincat.ads.constant.AdsError;
 
 public class REAL64 extends Variable {
-    /*********************************/
-    /********** constructor **********/
-    /*********************************/
+	/*********************************/
+	/********** constructor **********/
+	/*********************************/
 
 	public REAL64(AdsClient adsClient, int symbolHandle) {
 		super(adsClient, DataType.REAL64.size, symbolHandle);
@@ -25,9 +25,9 @@ public class REAL64 extends Variable {
 		super(adsClient, DataType.REAL64.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 
-    /*********************************/
-    /******** override method ********/
-    /*********************************/
+	/*********************************/
+	/******** override method ********/
+	/*********************************/
 
 	@Override
 	public DataType getDataType() {
@@ -130,9 +130,9 @@ public class REAL64 extends Variable {
 		return this;
 	}
 
-    /*********************************/
-    /** public static final method ***/
-    /*********************************/
+	/*********************************/
+	/** public static final method ***/
+	/*********************************/
 
 	public static final double arrayToDouble(byte[] data) {
 		if (data.length != DataType.REAL64.size) return 0;

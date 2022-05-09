@@ -9,9 +9,9 @@ import twincat.ads.constant.DataType;
 import twincat.ads.constant.AdsError;
 
 public class INT16 extends Variable {
-    /*********************************/
-    /********** constructor **********/
-    /*********************************/
+	/*********************************/
+	/********** constructor **********/
+	/*********************************/
 
 	public INT16(AdsClient adsClient, int symbolHandle) {
 		super(adsClient, DataType.INT16.size, symbolHandle);
@@ -25,9 +25,9 @@ public class INT16 extends Variable {
 		super(adsClient, DataType.INT16.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
-    /*********************************/
-    /******** override method ********/
-    /*********************************/
+	/*********************************/
+	/******** override method ********/
+	/*********************************/
 
 	@Override
 	public DataType getDataType() {
@@ -128,9 +128,9 @@ public class INT16 extends Variable {
 		return this;
 	}
 
-    /*********************************/
-    /** public static final method ***/
-    /*********************************/
+	/*********************************/
+	/** public static final method ***/
+	/*********************************/
 
 	public static final short arrayToShort(byte[] data) {
 		if (data.length != DataType.INT16.size) return 0;

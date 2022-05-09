@@ -3,29 +3,29 @@ package twincat.scope;
 import java.util.Arrays;
 
 public class Samples {
-    /*********************************/
-    /*** global constant variable ****/
-    /*********************************/
+	/*********************************/
+	/*** global constant variable ****/
+	/*********************************/
 	
 	public static final int CAPACITY = 100000;
 	
-    /*********************************/
-    /***** global final variable *****/
-    /*********************************/
+	/*********************************/
+	/***** global final variable *****/
+	/*********************************/
 
 	private final double[] value = new double[CAPACITY];
 	
 	private final long[] time = new long[CAPACITY];
 
-    /*********************************/
-    /******** local variable *********/
-    /*********************************/
+	/*********************************/
+	/******** local variable *********/
+	/*********************************/
 
 	private int index = 0;
 	
-    /*********************************/
-    /******** setter & getter ********/
-    /*********************************/
+	/*********************************/
+	/******** setter & getter ********/
+	/*********************************/
 
 	public void add(double value, long time) {
 		this.value[index] = value;

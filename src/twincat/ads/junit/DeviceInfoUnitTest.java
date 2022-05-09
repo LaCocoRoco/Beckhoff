@@ -14,8 +14,8 @@ import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
 
 public class DeviceInfoUnitTest {
-    private final AdsClient adsClient = new AdsClient();
-    private final Logger logger = TwincatLogger.getLogger();
+	private final AdsClient adsClient = new AdsClient();
+	private final Logger logger = TwincatLogger.getLogger();
 	
 	@Before
 	public void start() {
@@ -25,9 +25,9 @@ public class DeviceInfoUnitTest {
 	@Test
 	public void test() {   
 		try {
-	        adsClient.setAmsNetId(AmsNetId.LOCAL);
-	        adsClient.setAmsPort(AmsPort.TC2PLC1);
-		    
+			adsClient.setAmsNetId(AmsNetId.LOCAL);
+			adsClient.setAmsPort(AmsPort.TC2PLC1);
+			
 			DeviceInfo adsDeviceInfo = adsClient.readDeviceInfo();
 			
 			logger.info("DeviceName  : " + adsDeviceInfo.getDeviceName());

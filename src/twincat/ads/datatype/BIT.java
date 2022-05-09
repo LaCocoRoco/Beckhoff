@@ -6,9 +6,9 @@ import twincat.ads.common.Variable;
 import twincat.ads.constant.DataType;
 
 public class BIT extends Variable {
-    /*********************************/
-    /********** constructor **********/
-    /*********************************/
+	/*********************************/
+	/********** constructor **********/
+	/*********************************/
 
 	public BIT(AdsClient adsClient, int symbolHandle) {
 		super(adsClient, DataType.BIT.size, symbolHandle);
@@ -22,9 +22,9 @@ public class BIT extends Variable {
 		super(adsClient, DataType.BIT.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 
-    /*********************************/
-    /******** override method ********/
-    /*********************************/
+	/*********************************/
+	/******** override method ********/
+	/*********************************/
 	
 	@Override	
 	public DataType getDataType() {
@@ -126,9 +126,9 @@ public class BIT extends Variable {
 		return this;
 	}
 
-    /*********************************/
-    /** public static final method ***/
-    /*********************************/
+	/*********************************/
+	/** public static final method ***/
+	/*********************************/
 	
 	public static final boolean arrayToBoolean(byte[] data) {
 		if (data.length != DataType.BIT.size) return false;

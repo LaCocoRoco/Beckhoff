@@ -10,9 +10,9 @@ import twincat.ads.constant.DataType;
 import twincat.ads.constant.AdsError;
 
 public class UINT8 extends Variable {
-    /*********************************/
-    /********** constructor **********/
-    /*********************************/
+	/*********************************/
+	/********** constructor **********/
+	/*********************************/
 
 	public UINT8(AdsClient adsClient, int symbolHandle) {
 		super(adsClient, DataType.UINT8.size, symbolHandle);
@@ -26,9 +26,9 @@ public class UINT8 extends Variable {
 		super(adsClient, DataType.UINT8.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
-    /*********************************/
-    /******** override method ********/
-    /*********************************/
+	/*********************************/
+	/******** override method ********/
+	/*********************************/
 	
 	@Override	
 	public DataType getDataType() {
@@ -129,9 +129,9 @@ public class UINT8 extends Variable {
 		return this;
 	}
 
-    /*********************************/
-    /** public static final method ***/
-    /*********************************/
+	/*********************************/
+	/** public static final method ***/
+	/*********************************/
 	
 	public static final short arrayToShort(byte[] data) {
 		if (data.length != DataType.UINT8.size) return 0;

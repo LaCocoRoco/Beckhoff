@@ -5,9 +5,9 @@ import twincat.ads.AdsException;
 import twincat.ads.constant.DataType;
 
 public class BYTE extends UINT8 {
-    /*********************************/
-    /********** constructor **********/
-    /*********************************/
+	/*********************************/
+	/********** constructor **********/
+	/*********************************/
 
 	public BYTE(AdsClient adsClient, int symbolHandle) {
 		super(adsClient, symbolHandle);
@@ -21,9 +21,9 @@ public class BYTE extends UINT8 {
 		super(adsClient, symbolName);
 	}
 	
-    /*********************************/
-    /******** override method ********/
-    /*********************************/
+	/*********************************/
+	/******** override method ********/
+	/*********************************/
 		
 	@Override	
 	public DataType getDataType() {

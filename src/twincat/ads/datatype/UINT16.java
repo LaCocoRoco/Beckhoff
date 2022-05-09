@@ -10,9 +10,9 @@ import twincat.ads.constant.DataType;
 import twincat.ads.constant.AdsError;
 
 public class UINT16 extends Variable {
-    /*********************************/
-    /********** constructor **********/
-    /*********************************/
+	/*********************************/
+	/********** constructor **********/
+	/*********************************/
 
 	public UINT16(AdsClient adsClient, int symbolHandle) {
 		super(adsClient, DataType.UINT16.size, symbolHandle);
@@ -26,9 +26,9 @@ public class UINT16 extends Variable {
 		super(adsClient, DataType.UINT16.size, adsClient.readHandleOfSymbolName(symbolName));
 	}
 	
-    /*********************************/
-    /******** override method ********/
-    /*********************************/
+	/*********************************/
+	/******** override method ********/
+	/*********************************/
 
 	@Override
 	public DataType getDataType() {
@@ -129,9 +129,9 @@ public class UINT16 extends Variable {
 		return this;
 	}
 
-    /*********************************/
-    /** public static final method ***/
-    /*********************************/
+	/*********************************/
+	/** public static final method ***/
+	/*********************************/
 
 	public static final int arrayToInteger(byte[] data) {
 		if (data.length != DataType.UINT16.size) return 0;

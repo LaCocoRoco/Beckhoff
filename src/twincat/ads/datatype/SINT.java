@@ -5,9 +5,9 @@ import twincat.ads.AdsException;
 import twincat.ads.constant.DataType;
 
 public class SINT extends INT8 {
-    /*********************************/
-    /********** constructor **********/
-    /*********************************/
+	/*********************************/
+	/********** constructor **********/
+	/*********************************/
 
 	public SINT(AdsClient adsClient, int symbolHandle) {
 		super(adsClient, symbolHandle);
@@ -21,9 +21,9 @@ public class SINT extends INT8 {
 		super(adsClient, symbolName);
 	}
 		
-    /*********************************/
-    /******** override method ********/
-    /*********************************/
+	/*********************************/
+	/******** override method ********/
+	/*********************************/
 		
 	@Override	
 	public DataType getDataType() {

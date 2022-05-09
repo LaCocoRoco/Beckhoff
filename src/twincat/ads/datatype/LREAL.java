@@ -5,9 +5,9 @@ import twincat.ads.AdsException;
 import twincat.ads.constant.DataType;
 
 public class LREAL extends REAL64 {
-    /*********************************/
-    /********** constructor **********/
-    /*********************************/
+	/*********************************/
+	/********** constructor **********/
+	/*********************************/
 
 	public LREAL(AdsClient adsClient, int symbolHandle) {
 		super(adsClient, symbolHandle);
@@ -21,9 +21,9 @@ public class LREAL extends REAL64 {
 		super(adsClient, symbolName);
 	}
 		
-    /*********************************/
-    /******** override method ********/
-    /*********************************/
+	/*********************************/
+	/******** override method ********/
+	/*********************************/
 		
 	@Override	
 	public DataType getDataType() {

@@ -5,9 +5,9 @@ import twincat.ads.AdsException;
 import twincat.ads.constant.DataType;
 
 public class UINT extends UINT16 {
-    /*********************************/
-    /********** constructor **********/
-    /*********************************/
+	/*********************************/
+	/********** constructor **********/
+	/*********************************/
 
 	public UINT(AdsClient adsClient, int symbolHandle) {
 		super(adsClient, symbolHandle);
@@ -21,9 +21,9 @@ public class UINT extends UINT16 {
 		super(adsClient, symbolName);
 	}
 			
-    /*********************************/
-    /******** override method ********/
-    /*********************************/
+	/*********************************/
+	/******** override method ********/
+	/*********************************/
 	
 	@Override	
 	public DataType getDataType() {

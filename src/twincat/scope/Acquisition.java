@@ -5,15 +5,15 @@ import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
 
 public class Acquisition {
-    /*********************************/
-    /******** global variable ********/
-    /*********************************/
+	/*********************************/
+	/******** global variable ********/
+	/*********************************/
 	
 	private int sampleTime = 2;
 
 	private boolean symbolBased = true;
 
-    private String symbolName = "Channel";
+	private String symbolName = "Channel";
 	
 	private int indexGroup = 0;
 
@@ -25,9 +25,9 @@ public class Acquisition {
 
 	private DataType dataType = DataType.UNKNOWN;
 
-    /*********************************/
-    /******** setter & getter ********/
-    /*********************************/
+	/*********************************/
+	/******** setter & getter ********/
+	/*********************************/
 
 	public boolean isSymbolBased() {
 		return symbolBased;
@@ -93,31 +93,31 @@ public class Acquisition {
 		this.sampleTime = sampleTime;
 	}
 
-    /*********************************/
-    /********* public method *********/
-    /*********************************/
+	/*********************************/
+	/********* public method *********/
+	/*********************************/
 
 	public Acquisition clone() {
-	    Acquisition acquisition = new Acquisition();
-        acquisition.setAmsNetId(amsNetId);
-        acquisition.setAmsPort(amsPort);
-        acquisition.setDataType(dataType);
-        acquisition.setIndexGroup(indexGroup);
-        acquisition.setIndexOffset(indexOffset);
-        acquisition.setSymbolBased(symbolBased);
-        acquisition.setSymbolName(symbolName);
-        acquisition.setSampleTime(sampleTime);
-        
-        return acquisition;
+		Acquisition acquisition = new Acquisition();
+		acquisition.setAmsNetId(amsNetId);
+		acquisition.setAmsPort(amsPort);
+		acquisition.setDataType(dataType);
+		acquisition.setIndexGroup(indexGroup);
+		acquisition.setIndexOffset(indexOffset);
+		acquisition.setSymbolBased(symbolBased);
+		acquisition.setSymbolName(symbolName);
+		acquisition.setSampleTime(sampleTime);
+		
+		return acquisition;
 	}
 	
 	public String getChannelName() {
-	    String[] symbolNameArray = symbolName.split("\\.");
-	    
-	    if (symbolNameArray.length != 0) {
-	        return symbolNameArray[symbolNameArray.length - 1];
-	    } else {
-	        return symbolName;
-	    }
+		String[] symbolNameArray = symbolName.split("\\.");
+		
+		if (symbolNameArray.length != 0) {
+			return symbolNameArray[symbolNameArray.length - 1];
+		} else {
+			return symbolName;
+		}
 	}	
 }

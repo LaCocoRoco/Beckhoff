@@ -13,8 +13,8 @@ import twincat.ads.constant.AmsNetId;
 import twincat.ads.constant.AmsPort;
 
 public class AmsPortUnitTest {
-    private final AdsClient adsClient = new AdsClient();
-    private final Logger logger = TwincatLogger.getLogger();
+	private final AdsClient adsClient = new AdsClient();
+	private final Logger logger = TwincatLogger.getLogger();
 
 	@Before
 	public void start() {
@@ -23,17 +23,17 @@ public class AmsPortUnitTest {
 	
 	@Test
 	public void test() {	    
-        for (AmsPort amsPort : AmsPort.values()) {
-    		try {
-    	        adsClient.setAmsNetId(AmsNetId.LOCAL);
-    			adsClient.setAmsPort(amsPort);
-    			
-    			adsClient.readDeviceInfo();
-    			logger.info("OK : " + amsPort);
-    		} catch (AdsException e) {
-    			
-    		}
-        }
+		for (AmsPort amsPort : AmsPort.values()) {
+			try {
+				adsClient.setAmsNetId(AmsNetId.LOCAL);
+				adsClient.setAmsPort(amsPort);
+				
+				adsClient.readDeviceInfo();
+				logger.info("OK : " + amsPort);
+			} catch (AdsException e) {
+				
+			}
+		}
 	}
 
 	@After
